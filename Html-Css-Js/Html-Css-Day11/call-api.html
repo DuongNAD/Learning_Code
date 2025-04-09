@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Danh sách Category & Product</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .category-block {
+      border: 1px solid #ccc;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: 6px;
+      background-color: #fff;
+    }
+    .category-block h3 {
+      margin: 0 0 0.5rem;
+    }
+    .product-item {
+      border-top: 1px dashed #999;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+    }
+    .product-item img {
+      max-width: 100px;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Danh sách Category</h1>
+  <div id="categoriesContainer2"></div>
+
+  <hr />
+
+  <h1>Danh sách Product</h1>
+  <div id="productsContainer2"></div>
+
+  <script>
+    const storedCategories = JSON.parse(localStorage.getItem('categories')) || [];
+    const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
+
+    const categoriesContainer2 = document.getElementById('categoriesContainer2');
+    storedCategories.forEach(cat => {
+      const catDiv = document.createElement('div');
+      catDiv.classList.add('category-block');
+      catDiv.innerHTML = `
+        <h3>${cat.name}</h3>
+        <p>${cat.description}</p>
+      `;
+      categoriesContainer2.appendChild(catDiv);
+    });
+
+    const productsContainer2 = document.getElementById('productsContainer2');
+    storedProducts.forEach(prod => {
+      const productDiv = document.createElement('div');
+      productDiv.classList.add('product-item');
+      productDiv.innerHTML = `
+        <img src="${prod.image}" alt="${prod.name}">
+        <p><strong>${prod.name}</strong></p>
+        <p>Giá cũ: <s>${prod.oldPrice} VNĐ</s></p>
+        <p>Giá mới: <strong>${prod.price} VNĐ</strong></p>
+        <p>Mô tả: ${prod.description}</p>
+        <p>Thuộc danh mục ID: ${prod.category ? prod.category.id : 'Chưa gán'}</p>
+      `;
+      productsContainer2.appendChild(productDiv);
+    });
+  </script>
+</body>
+</html>

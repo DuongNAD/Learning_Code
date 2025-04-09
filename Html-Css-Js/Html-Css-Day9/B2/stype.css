@@ -1,0 +1,191 @@
+body {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    color: #333;
+    font-family: Arial, sans-serif;
+
+}
+
+.form-write {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 400px;
+}
+
+input {
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 1px 10px;
+    outline: none;
+    height: 22px;
+}
+
+input:focus {
+    border-color: #666;
+}
+
+.write-name {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+}
+
+#nameInput {
+    width: 300px;
+}
+
+#genderSelectContainer {
+    padding: 6px 0 6px 0;
+}
+
+select {
+    text-align: center;
+    text-align-last: center;
+    height: 22px;
+    border-radius: 4px;
+    border: 1px solid#ccc;
+}
+
+.write-age {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+#ageInput {
+    height: 22px;
+    width: 30px;
+    align-items: center;
+}
+
+.write-email {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+#emailInput {
+    height: 22px;
+    width: 300px;
+}
+
+.write-phone {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+#phoneInput {
+    height: 22px;
+    width: 200px;
+}
+
+#hobbySelectContainer {
+    padding: 6px 0 6px 0;
+}
+
+#submit {
+    width: 100px;
+    height: 26px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    background: linear-gradient(135deg, #9C27B0, #7B1FA2);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+#submit:hover {
+    background: linear-gradient(135deg, #7B1FA2, #9C27B0);
+    transform: scale(1.05);
+    color: #fff;
+}
+
+.submit {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+table {
+    border-collapse: collapse;
+    background-color: #fff;
+    border: 2px solid#ccc;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+table td,
+table th {
+    border: 1px solid #000;
+    padding: 4px 4px 3px;
+}
+table thead th{
+    background-color: #ede7f6;
+    color: #333;
+    border: 1px solid#ccc;
+    padding: 8px;
+    text-align: center;
+}
+table tbody td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9; 
+  }
+td:nth-child(1),
+th:nth-child(1) {
+    width: 240px;
+    padding-left: 10px;
+}
+
+td:nth-child(2),
+th:nth-child(2) {
+    width: 80px;
+    text-align: center;
+}
+
+td:nth-child(3),
+th:nth-child(3) {
+    width: 50px;
+    text-align: center;
+}
+
+td:nth-child(4),
+th:nth-child(4) {
+    width: 240px;
+    padding-left: 10px;
+}
+
+td:nth-child(5),
+th:nth-child(5) {
+    width: 120px;
+    text-align: center;
+}
+
+td:nth-child(6),
+th:nth-child(6) {
+    width: 120px;
+    text-align: center;
+}
+
+#form-user {
+    padding-bottom: 20px;
+}

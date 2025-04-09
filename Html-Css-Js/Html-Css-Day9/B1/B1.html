@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="stype.css">
+  <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>Todo App</h1>
+  <form id="todoForm">
+    <div class="form-write">
+      <div class="write-title">
+        <label for="">Nhap tieu de</label>
+        <input type="text" id="titleInput" required>
+      </div>
+      <div class="write-startDate">
+        <label for="">Start date</label>
+        <input type="time" id="startDateInput" required>
+      </div>
+      <div class="write-endDate">
+        <label for="">End date</label>
+        <input type="time" id="endDateInput" required>
+      </div>
+      <div class="select-job">
+        <label>Chon loai cong viec</label>
+        <div id="jobSelectContainer"></div>
+      </div>
+      <div class="submit">
+        <button type="submit" id="submit">Submit</button>
+      </div>
+    </div>
+
+  </form>
+
+  <div class="table-submit">
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+  <script src="B1.js"></script>
+  </div>
+</body>
+
+</html>

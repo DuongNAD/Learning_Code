@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="mysite.css">
+</head>
+
+<body>
+    <div class="title">
+        <h2>User Registration</h2>
+    </div>
+    <form id="userForm">
+        <div class="userForm">
+            <div class="userId">
+                <label for="userId">User ID:</label>
+                <input type="text" name="userId" id="userId" required>
+            </div>
+            <div class="password">
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+            <div class="checkPass">
+                <label for="confirmPassword">Confirm password:</label>
+                <input type="password" name="confirmPassword" id="confirmPassword" required>
+            </div>
+            <div class="email">
+                <label for="email">Existing E-mail ID:</label>
+                <input type="email" name="email" id="email" required>
+            </div>
+            <div class="checkEm">
+                <label for="confirmEmail">Confirm Existing E-mail ID:</label>
+                <input type="email" name="confirmEmail" id="confirmEmail" required>
+            </div>
+            <div class="tool">
+                <button type="submit" id="submit">Submit</button>
+                <button type="reset" id="reset">Reset</button>
+            </div>
+        </div>
+    </form>
+    <script src="Index.js"></script>
+</body>
+
+</html>

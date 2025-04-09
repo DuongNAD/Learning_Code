@@ -1,0 +1,118 @@
+.Block {
+    width: 60%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table th,
+table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+}
+
+table th {
+    text-align: left;
+    background-color: #f0f0f0;
+}
+
+.form-container {
+    width: 60%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fafafa;
+}
+
+#ItemForm label {
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+#ItemForm input {
+    margin-bottom: 8px;
+    padding: 4px 8px;
+
+}
+
+body p {
+    font-size: 19px;
+    font-weight: bold;
+    color: #555;
+    text-align: center;
+    margin-top: 50px;
+}
+
+body h2 {
+    color: #555;
+    text-align: center;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+#ItemForm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+button[type="submit"] {
+    background-color: #28a745;
+    color: #fff;
+    padding: 4px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 7px;
+}
+
+button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+button[type="submit"]:active {
+    background-color: #1e7e34;
+}
+
+#ItemForm input[type="text"],
+#ItemForm input[type="number"] {
+  padding: 8px 12px;             
+  font-size: 16px;               
+  border: 1px solid #ccc;         
+  border-radius: 4px;            
+  transition: border-color 0.3s, box-shadow 0.3s; 
+
+}
+
+#ItemForm input[type="text"]:focus,
+#ItemForm input[type="number"]:focus {
+  outline: none;                  
+  border-color: #28a745;          
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.3); 
+
+}
+
+#ItemForm input::placeholder {
+  color: #999;                   
+  font-style: italic;              
+}

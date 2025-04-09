@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Quản lý Danh Mục & Sản Phẩm</title>
+    <link rel="stylesheet" href="category.css">
+</head>
+
+<body>
+
+    <div class="category">
+        <h2>Nhập Category</h2>
+        <form id="categoryForm">
+            <div class="category-form">
+                <label for="nameCategory">Tên Category:</label>
+                <input type="text" id="nameCategory" name="nameCategory" placeholder="Nhập tên category" required>
+            </div>
+            <div class="category-form">
+                <label for="description">Mô tả:</label>
+                <textarea name="description" id="description" placeholder="Mô tả danh mục" required></textarea>
+            </div>
+            <div class="submit">
+                <button type="submit">Thêm Category</button>
+            </div>
+        </form>
+
+    </div>
+    <hr>
+
+    <div class="product">
+        <h2>Nhập Product</h2>
+        <form id="productForm">
+            <div class="product-form">
+                <label for="nameProduct">Tên Product:</label>
+                <input type="text" name="nameProduct" id="nameProduct" placeholder="Nhập tên sản phẩm" required>
+            </div>
+            <div class="product-form">
+                <label for="priceProduct">Giá mới:</label>
+                <input type="number" name="priceProduct" id="priceProduct" placeholder="New price" required>
+            </div>
+            <div class="product-form">
+                <label for="oldpriceProduct">Giá cũ:</label>
+                <input type="number" name="oldpriceProduct" id="oldpriceProduct" placeholder="Old price" required>
+            </div>
+            <div class="product-form">
+                <label for="descriptionProduct">Mô tả:</label>
+                <textarea name="descriptionProduct" id="descriptionProduct" placeholder="Mô tả sản phẩm"
+                    required></textarea>
+            </div>
+            <div class="product-form">
+                <label for="imageProduct">Ảnh sản phẩm (URL):</label>
+                <input type="url" name="imageProduct" id="imageProduct" placeholder="Nhập link ảnh sản phẩm" required>
+            </div>
+            <div class="product-form">
+                <label for="categorySelect">Chọn danh mục:</label>
+                <select id="categorySelect" required>
+                    <option value="">-- Chọn danh mục --</option>
+                </select>
+            </div>
+            <div class="submit">
+                <button type="submit">Thêm Product</button>
+            </div>
+        </form>
+    </div>
+    <hr>
+
+    <h2>Danh sách Category</h2>
+    <div id="categoriesContainer"></div>
+
+    <script src="category.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/billing.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+</head>
+
+<body>
+    <div class="page">
+        <div class="header">
+            <div class="header-text">
+                <h1>Billing</h1>
+                <p>Manage your billing and payment details</p>
+            </div>
+            <div class="tool">
+                <button class="add">
+                    <span class="material-symbols-outlined">
+                        add
+                    </span>
+                    Add
+                </button>
+                <button class="download">
+                    <span class="material-symbols-outlined">
+                        download
+                    </span>
+                    Download PDF Report
+                </button>
+            </div>
+        </div>
+        <nav class="billing-tabs">
+            <p class="billing-tabs__item-1">Overview</p>
+            <p class="billing-tabs__item">Segments</p>
+            <p class="billing-tabs__item">Dashboard</p>
+        </nav>
+        <div class="billing-controls">
+            <div class="billing-controls__search">
+                <span class="material-symbols-outlined">
+                    search
+                </span>
+                <input type="text" id="search" name="search" placeholder="Search by invoice number, name, amount...">
+            </div>
+            <div class="billing-controls__filter">
+                <span class="material-symbols-outlined">
+                    filter_alt
+                </span>
+                <p>Filter</p>
+            </div>
+        </div>
+        <section class="invoice-table">
+            <div class="invoice-table__header">
+                <div>
+                    <p>INVOICE NUMBER</p>
+                </div>
+                <div>
+                    <p>VENDOR</p>
+                </div>
+                <div>
+                    <p>BILLING DATE</p>
+                </div>
+                <div>
+                    <p>STATUS</p>
+                </div>
+                <div>
+                    <p>AMOUNT</p>
+                </div>
+                <div>
+                    <p></p>
+                </div>
+            </div>
+
+            <div class="invoice-table__row">
+                <div class="invoice-table__cell">
+                    <input type="checkbox" id="invoice-1" name="invoice-1" />
+                    <p>5146846548465</p>
+                </div>
+                <div class="invoice-table__cell">Jane Cooper</div>
+                <div class="invoice-table__cell">2/19/21</div>
+                <div class="invoice-table__cell-paid">Paid</div>
+                <div class="invoice-table__cell">$500.00</div>
+                <div class="invoice-table__cell">
+                    <button class="btn btn--pay" type="submit">Pay</button>
+                </div>
+            </div>
+
+            <div class="invoice-table__row">
+                <div class="invoice-table__cell invoice-table__cell--checkbox">
+                    <input type="checkbox" id="invoice-2" name="invoice-2" />
+                    <p>5467319467348</p>
+                </div>
+                <div class="invoice-table__cell">Wade Warren</div>
+                <div class="invoice-table__cell">5/7/16</div>
+                <div class="invoice-table__cell-paid">Paid</div>
+                <div class="invoice-table__cell">$500.00</div>
+                <div class="invoice-table__cell">
+                    <button class="btn btn--pay" type="submit">Pay</button>
+                </div>
+            </div>
+
+            <div class="invoice-table__row">
+                <div class="invoice-table__cell invoice-table__cell--checkbox">
+                    <input type="checkbox" id="invoice-3" name="invoice-3" />
+                    <p>1345705945446</p>
+                </div>
+                <div class="invoice-table__cell">Esther Howard</div>
+                <div class="invoice-table__cell">9/18/16</div>
+                <div class="invoice-table__cell-unpaid">Unpaid</div>
+                <div class="invoice-table__cell">$500.00</div>
+                <div class="invoice-table__cell">
+                    <button class="btn btn--pay" type="submit">Pay</button>
+                </div>
+            </div>
+
+            <div class="invoice-table__row">
+                <div class="invoice-table__cell invoice-table__cell--checkbox">
+                    <input type="checkbox" id="invoice-4" name="invoice-4" />
+                    <p>5440754979777</p>
+                </div>
+                <div class="invoice-table__cell">Cameron Williamson</div>
+                <div class="invoice-table__cell">2/11/12</div>
+                <div class="invoice-table__cell-paid">Paid</div>
+                <div class="invoice-table__cell">$500.00</div>
+                <div class="invoice-table__cell">
+                    <button class="btn btn--pay" type="submit">Pay</button>
+                </div>
+            </div>
+
+            <div class="invoice-table__row">
+                <div class="invoice-table__cell invoice-table__cell--checkbox">
+                    <input type="checkbox" id="invoice-5" name="invoice-5" />
+                    <p>1243467984543</p>
+                </div>
+                <div class="invoice-table__cell">Brooklyn Simmons</div>
+                <div class="invoice-table__cell">9/18/16</div>
+                <div class="invoice-table__cell-unpaid">Unpaid</div>
+                <div class="invoice-table__cell">$500.00</div>
+                <div class="invoice-table__cell">
+                    <button class="btn btn--pay" type="submit">Pay</button>
+                </div>
+            </div>
+
+            <div class="invoice-table__row">
+                <div class="invoice-table__cell invoice-table__cell--checkbox">
+                    <input type="checkbox" id="invoice-6" name="invoice-6" />
+                    <p>8454134649707</p>
+                </div>
+                <div class="invoice-table__cell">Leslie Alexander</div>
+                <div class="invoice-table__cell">1/28/17</div>
+                <div class="invoice-table__cell-unpaid">Unpaid</div>
+                <div class="invoice-table__cell">$500.00</div>
+                <div class="invoice-table__cell">
+                    <button class="btn btn--pay" type="submit">Pay</button>
+                </div>
+            </div>
+
+            <div class="invoice-table__row">
+                <div class="invoice-table__cell invoice-table__cell--checkbox">
+                    <input type="checkbox" id="invoice-7" name="invoice-7" />
+                    <p>2130164040451</p>
+                </div>
+                <div class="invoice-table__cell">Jenny Wilson</div>
+                <div class="invoice-table__cell">5/27/15</div>
+                <div class="invoice-table__cell-paid">Paid</div>
+                <div class="invoice-table__cell">$500.00</div>
+                <div class="invoice-table__cell">
+                    <button class="btn btn--pay" type="submit">Pay</button>
+                </div>
+            </div>
+
+            <div class="invoice-table__row">
+                <div class="invoice-table__cell invoice-table__cell--checkbox">
+                    <input type="checkbox" id="invoice-8" name="invoice-8" />
+                    <p>0439104645404</p>
+                </div>
+                <div class="invoice-table__cell">Guy Hawkins</div>
+                <div class="invoice-table__cell">8/2/19</div>
+                <div class="invoice-table__cell-paid">Paid</div>
+                <div class="invoice-table__cell">$500.00</div>
+                <div class="invoice-table__cell">
+                    <button class="btn btn--pay" type="submit">Pay</button>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="../js/billing.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,144 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f0f2f5;
+  padding: 40px 20px 0px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.category,
+.list-product {
+  background-color: #f7f4f4;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #555;
+  border-radius: 6px;
+  padding: 20px;
+}
+
+.category {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 20px;
+}
+
+.list-product {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 20px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin: 0;
+  padding-top: 10px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+#categoryForm,
+#productForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#catNameInput,
+#catDescInput {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#prodName,
+#prodPrice,
+#prodOldPrice,
+#prodImage,
+#prodDesc,
+#prodCategory {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#prodName {
+  width: 300px;
+}
+
+#prodPrice,
+#prodOldPrice {
+  width: 160px;
+}
+
+#prodCategory {
+  width: 160px;
+  height: 40px;
+}
+
+#prodDesc {
+  max-width: 440px;
+  max-height: 100px;
+  resize: vertical;
+}
+
+#prodImage {
+  width: 460px;
+  height: 30px;
+}
+
+button[type="submit"] {
+  background: linear-gradient(to right, #4CAF50, #2E7D32);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+button[type="submit"]:hover {
+  transform: scale(1.05);
+}
+
+button[type="submit"]:active {
+  transform: scale(0.98);
+}
+
+.form-actions,
+.form-product {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
+}
+
+#categoryList,
+#productList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+#categoryList li,
+#productList li {
+  background-color: #f9f9f9;
+  border-left: 4px solid #007BFF;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  margin-bottom: 10px;
+  padding: 10px 10px 10px 14px;
+}

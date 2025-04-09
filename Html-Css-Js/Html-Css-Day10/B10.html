@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="stype.css">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="category">
+      <h2>Quan li Category</h2>
+      <form id="categoryForm">
+          <input type="text" id="catNameInput" placeholder="Tên Category" required >
+          <input type="text" id="catDescInput" placeholder="Mô tả" required>
+          <div class="form-actions">
+            <button type="submit">Thêm Category</button>
+          </div>
+      </form>
+      <ul id="categoryList"></ul>
+  </div>
+  <div class="list">
+    <div class="list-product">
+    <h2>Quản lí Product</h2>
+    <form id="productForm">
+      <input type="text" id="prodName" placeholder="Tên Product" required>
+      <input type="number" id="prodPrice" placeholder="Giá" required>
+      <input type="number" id="prodOldPrice" placeholder="Giá cũ" required>
+      <select id="prodCategory" required>
+        <option value="">-- Chọn Category --</option>
+      </select>
+      <textarea id="prodDesc" placeholder="Mô tả"></textarea>
+      <input type="url" id="prodImage" placeholder="URL Hình Ảnh">
+      <div class="form-product"><button type="submit">Thêm Product</button></div>
+    </form>
+</div>
+    <ul id="productList"></ul>
+  </div>
+  <script src="B10.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+header>* {
+  margin: 0;
+  padding: 0;
+}
+
+.Block {
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: rgb(249, 245, 255);
+  width: 1000px;
+}
+
+.Block table {
+  margin: 0 auto; 
+}
+h2 {
+  color: #333;
+  text-align: center;
+
+}
+header h1{
+  text-align: center;
+}
+
+table {
+  border-collapse: collapse;
+  border: 1px solid #333;
+  margin-bottom: 16px;
+}
+
+table th {
+  border: 1px solid #333;
+  padding: 8px;
+}
+
+.col-name,
+.col-email {
+  border: 1px solid #333;
+  padding: 8px;
+  text-align: left;
+}
+
+.col-age,
+.col-id {
+  border: 1px solid #333;
+  padding: 8px;
+  text-align: center;
+  width: 100px;
+}
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+header h1 {
+  padding: 20px;
+}

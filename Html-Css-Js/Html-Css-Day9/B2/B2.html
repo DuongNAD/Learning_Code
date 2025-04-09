@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stype.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>USRE</h1>
+    <form id="form-user">
+        <div class="form-write">
+            <div class="write-name">
+                <label for="nameInput"><strong>Name</strong></label>
+                <input type="text" id="nameInput">
+            </div>
+            <div class="write-gender">
+                <label for="genderSelectContainer">Gender</label>
+                <div id="genderSelectContainer"></div>
+            </div>
+            <div class="write-age">
+                <label for="ageInput">Age</label>
+                <input type="text" id="ageInput">
+            </div>
+            <div class="write-email">
+                <label for="emailInput">Email</label>
+                <input type="text" id="emailInput">
+            </div>
+            <div class="write-phone">
+                <label for="phoneInput">Phone number</label>
+                <input type="text" id="phoneInput">
+            </div>
+            <div class="write-hobby">
+                <label for="hobbySelectContainer">Hobby</label>
+                <div id="hobbySelectContainer"></div>
+            </div>
+
+            <div class="submit">
+                <button type="submit" id="submit">Submit</button>
+            </div>
+        </div>
+    </form>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Age</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Hobby</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+
+    <script src="B2.js"></script>
+</body>
+
+</html>

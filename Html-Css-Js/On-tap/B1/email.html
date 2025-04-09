@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="email.css">
+</head>
+
+<body>
+    <div class="emailForm">
+        <div class="credit">
+            <h2>Tạo tài khoản</h>
+        </div>
+        <form id="loginForm">
+            <div class="email-form">
+                <p>Email</p>
+                <div>
+                    <label for="email"></label>
+                    <input type="text" name="email" id="email" placeholder="Email">
+                </div>
+            </div>
+
+            <div class="password-form">
+                <div>
+                    <p>Password</p>
+                </div>
+                <div>
+                    <label for="password"></label>
+                    <input type="password" name="password" id="password" placeholder="Mật khẩu">
+                </div>
+            </div>
+            <div class="check-box">
+                <div><input type="checkbox" id="checkbox"></div>
+                <div>
+                    <p>Đồng ý với các điều khoản!</p>
+                </div>
+            </div>
+            <div class="submit">
+                <button type="submit" id="submit">Credit</button>
+            </div>
+            
+        </form><ul id="dataList"></ul>
+            <p id="errorMsg" style="color: red;"></p>
+    </div>
+    <script src="email.js"></script>
+</body>
+
+</html>
