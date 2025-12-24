@@ -1,0 +1,159 @@
+/* --- Bố cục cho danh sách sản phẩm --- */
+
+/* Container chính của lưới sản phẩm */
+.product-grid {
+  display: grid; /* Kích hoạt chế độ Grid Layout */
+  /* Tạo các cột responsive: mỗi cột rộng tối thiểu 250px, tự động lấp đầy */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem; /* Khoảng cách giữa các sản phẩm */
+  padding: 20px 0;
+}
+
+/* Kiểu dáng cho mỗi thẻ sản phẩm */
+.product-card {
+  border: 1px solid #ddd;
+  border-radius: 8px; /* Bo tròn các góc */
+  padding: 16px;
+  text-align: center;
+  background-color: #ffffff;
+  /* Thêm hiệu ứng đổ bóng cho thẻ */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Hiệu ứng khi di chuột vào thẻ sản phẩm */
+.product-card:hover {
+  transform: translateY(-5px); /* Nhấc thẻ lên một chút */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Kiểu dáng cho hình ảnh sản phẩm */
+.product-image {
+  width: 100%; /* Chiếm toàn bộ chiều rộng của thẻ */
+  height: 200px; /* Cố định chiều cao */
+  object-fit: cover; /* Đảm bảo ảnh vừa vặn mà không bị méo */
+  border-radius: 4px; /* Bo tròn góc ảnh */
+  margin-bottom: 16px;
+}
+
+/* Placeholder cho trường hợp không có ảnh */
+.no-image {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  color: #888;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+/* Kiểu dáng cho tên sản phẩm */
+.product-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* Kiểu dáng cho giá sản phẩm */
+.product-card p {
+  margin: 0 0 16px 0;
+  color: #666;
+  font-size: 1rem;
+}
+
+/* Kiểu dáng cho link "Xem chi tiết" */
+.product-card a {
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #007bff;
+  padding: 10px 16px;
+  border-radius: 4px;
+  display: inline-block; /* Để padding được áp dụng đúng */
+  transition: background-color 0.2s;
+}
+
+.product-card a:hover {
+  background-color: #0056b3;
+}
+
+/* --- Bố cục cho trang Liên hệ --- */
+
+/* Container chính của trang liên hệ */
+.contact {
+  max-width: 600px; /* Giới hạn chiều rộng của form */
+  margin: 40px auto; /* Tự động căn giữa form */
+  padding: 24px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.contact h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #2c3e50;
+}
+
+/* Định dạng cho mỗi nhóm (label + input) */
+form div {
+  margin-bottom: 16px;
+}
+
+/* Định dạng cho nhãn (label) */
+form label {
+  display: block; /* Hiển thị trên một dòng riêng */
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #34495e;
+}
+
+/* Định dạng chung cho các ô nhập liệu */
+form input[type="email"],
+form textarea {
+  width: 100%; /* Chiếm toàn bộ chiều rộng */
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước */
+}
+
+/* Định dạng cho ô textarea */
+form textarea {
+  resize: vertical; /* Cho phép người dùng thay đổi chiều cao */
+  min-height: 120px;
+}
+
+/* Định dạng cho nút bấm */
+form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #28a745; /* Màu xanh lá cây */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer; /* Biến con trỏ thành hình bàn tay */
+  transition: background-color 0.2s;
+}
+
+form button:hover {
+  background-color: #218838; /* Màu xanh đậm hơn khi di chuột */
+}
+
+/* Định dạng cho thông báo lỗi */
+.error {
+  color: #dc3545; /* Màu đỏ */
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+/* Định dạng cho thông báo gửi thành công */
+.contact p {
+    text-align: center;
+    color: #28a745;
+    font-size: 1.1rem;
+}

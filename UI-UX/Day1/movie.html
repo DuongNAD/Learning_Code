@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="movie.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+</head>
+
+<body>
+    <div>
+        <div class="navbar">
+            <div class="navbar-menu">
+                <div>
+                    <h2>TMDB</h2>
+                </div>
+                <div class="block"></div>
+                <div>
+                    <p>Movies</p>
+                </div>
+                <div>
+                    <p>TV Shows</p>
+                </div>
+                <div>
+                    <p>People</p>
+                </div>
+                <div>
+                    <p>More</p>
+                </div>
+            </div>
+            <div class="navbar-actions">
+                <div class="add">
+                    <span class="material-symbols-outlined">
+                        add
+                    </span>
+                </div>
+                <div class="language">
+                    <p>Vi</p>
+                </div>
+                <div class="notice">
+                    <span class="material-symbols-outlined">
+                        notifications
+                    </span>
+                </div>
+                <div class="login">
+                    <p>D</p>
+                </div>
+                <div class="search">
+                    <span class="material-symbols-outlined">
+                        search
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="search-box">
+            <span class="material-symbols-outlined">
+                search
+            </span>
+            <input type="text" name="search-movie" id="search-movie"
+                placeholder="Search for a movie, tv show, person...">
+            <span id="close-icon" class="material-symbols-outlined close-icon">close</span>
+        </div>
+        <div class="search-film">
+            <div class="search-film-content">
+                <h1>Welcome</h1>
+                <h2>Millions of movies, TV shows and people to discover. Explore now.</h2>
+                <div class="search-film-box">
+                    <input type="text" name="search-film" id="search-film"
+                        placeholder="Search for a movie, tv show, person..." />
+                    <button type="submit">Search</button>
+                </div>
+            </div>
+
+        </div>
+        <div id="people-list"></div>
+    </div>
+    <script src="Data.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,380 @@
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Roboto', sans-serif;
+  background-image: linear-gradient(to bottom right, #9a43f7, #c93f9dde);
+}
+
+h1,
+h2 {
+  font-family: 'Open Sans', sans-serif;
+}
+
+label,
+input,
+button {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.input {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title_form {
+  text-align: center;
+}
+
+.title_form h2 {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: rgb(146, 92, 214);
+}
+
+.username,
+.password {
+  max-width: 340px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #E0D6FF;
+  border-radius: 20px;
+  padding: 6px 12px 6px 22px;
+}
+
+.username .material-symbols-outlined,
+.password .material-symbols-outlined {
+  font-size: 1.4em;
+  color: #8854d0;
+}
+
+.username input,
+.password input {
+  padding-top: 2px;
+  font-size: 0.9em;
+  padding: 7px 2px 4px 12px;
+  border: none;
+  background-color: transparent;
+  flex-grow: 1;
+  outline: none;
+}
+
+.username input:hover,
+.password input:hover {
+  background-color: #e0d6ff;
+}
+
+.remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.remember-me input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: relative;
+  height: 18px;
+  width: 18px;
+  background-color: #eee;
+  border-radius: 3px;
+  margin-right: 8px;
+}
+
+.remember-me input:checked~.checkmark {
+  background-color: #8854d0;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.remember-me input:checked~.checkmark:after {
+  display: block;
+}
+
+.remember-me .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+.forgot-password a {
+  font-size: 0.9em;
+  color: #8854d0;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+.submit_form {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.submit {
+  background-image: linear-gradient(to right, #ff6ec4, #7851a9);
+  color: white;
+  padding: 12px 60px;
+  border: none;
+  border-radius: 20px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-image 0.3s ease;
+}
+
+.submit:hover {
+  background-image: linear-gradient(to right, #d64161, #512da8);
+}
+
+.submit:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(120, 81, 169, 0.7);
+}
+
+.form_input {
+  display: flex;
+  flex-direction: row;
+  box-shadow:
+    5px 0 10px rgba(0, 0, 0, 0.2),
+    -5px 0 10px rgba(0, 0, 0, 0.2),
+    0 5px 10px rgba(0, 0, 0, 0.2),
+    0 -5px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.welcome h2,
+p {
+  color: white;
+}
+
+.welcome img {
+  height: auto;
+  width: auto;
+}
+
+.welcome {
+  flex: 2;
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.welcome img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: blur(1px);
+}
+
+.text-overlay {
+  position: absolute;
+  top: 38%;
+  left: 48%;
+  transform: translate(-50%, -50%);
+  color: white;
+  z-index: 1;
+}
+
+.text-overlay h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.text-overlay p {
+  font-size: 1em;
+}
+
+.login_form {
+  flex: 1;
+  padding-left: 38px;
+  padding-right: 30px;
+  padding-top: 40px;
+}
+
+.login_form {
+  background-color: white;
+}
+
+.design {
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  gap: 6px;
+  margin-top: 20px;
+  color: #ffffff;
+  padding-bottom: 20px;
+}
+
+.design img {
+  width: 20px;
+  height: 20px;
+}
+.title {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 46px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    font-size: large;
+    padding-top: 4px;
+    
+}
+.name_shop{
+  display: flex;
+  justify-content: flex-start;
+  flex: 1;
+  padding-left: 100px;
+  font-size: 1.4rem;
+}
+.help{
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+  padding-right: 100px;
+  font-size: 0.8rem;
+  
+}
+.name_shop a{
+  margin-right: 10px;
+}
+.fas fa-mobile-alt{
+  color: white;
+}
+.title .name_shop a{
+   text-decoration: none; 
+    color: #333; 
+    font-weight: bold; 
+}
+.title .help a {
+    text-decoration: none; 
+    color: #7851a9;
+    font-weight: bold; 
+}
+@media (max-width: 1024px) {
+  .form_input {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .welcome img {
+    max-width: 900px;
+    height: auto;
+  }
+
+  .login_form {
+    padding-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+   .name_shop, .help {
+      padding-left: 50px; 
+      padding-right: 50px;
+  }
+}
+@media (max-width: 480px) {
+  .welcome p{
+    font-size: 0.8rem;
+  }
+  body{
+    padding-top: 50px; 
+    margin-top: 0;
+  }
+    .text-overlay {
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    width: 90%; 
+    padding: 10px;
+    box-sizing: border-box; 
+  }
+
+  .text-overlay h2 {
+    font-size: 1.5em;
+  }
+
+  .welcome img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover; 
+  }
+  
+  .login_form {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 30px;
+    padding-bottom: 30px; 
+  }
+
+  .username,
+  .password {
+    max-width: 100%; 
+    padding: 8px 15px 8px 15px; 
+  }
+
+  .name_shop, .help {
+      padding-left: 20px; 
+      padding-right: 20px;
+      font-size: 0.9rem; 
+  }
+  .help {
+      font-size: 0.7rem;
+  }
+  .submit {
+      padding: 10px 40px; 
+      font-size: 0.9em; 
+  }
+  .input {
+      gap: 15px; 
+  }
+  .remember-forgot {
+      flex-direction: column; 
+      align-items: flex-start; 
+      gap: 10px;
+  }
+}

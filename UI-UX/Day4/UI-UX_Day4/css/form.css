@@ -1,0 +1,308 @@
+body {
+    padding: 5% 10%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+}
+
+.content {
+    padding: 4% 6%;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 40px;
+    border: 2px solid #e0d3ff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(160, 120, 250, 0.2);
+    background-color: white;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.form-left,
+.form-right {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    max-width: 50%;
+}
+
+.form-right {
+    align-items: center;
+    justify-content: center;
+}
+
+.form-right img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    animation: reveal 1.2s ease-in-out forwards;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes reveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+        clip-path: circle(0% at 50% 50%);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        clip-path: circle(150% at 50% 50%);
+    }
+}
+
+.header h1 {
+    font-weight: 600;
+    font-size: 2.5rem;
+    color: #333333;
+    margin-bottom: 10px;
+    line-height: 1.2;
+}
+
+.header p {
+    font-weight: 400;
+    font-size: 1.2rem;
+    color: rgba(102, 112, 133, 1);
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.name {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.first-name,
+.last-name {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 4px;
+}
+
+#first-name,
+#last-name,
+#email,
+#phone,
+#messager {
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid #CCCCCC;
+    border-radius: 6px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+#first-name:focus,
+#last-name:focus,
+#email:focus,
+#phone:focus,
+#messager:focus {
+    outline: none;
+    border-color: rgb(127, 86, 217);
+    box-shadow: 0 0 0 2px rgba(127, 86, 217, 0.2);
+}
+
+.phone-number {
+    position: relative;
+}
+
+#phone-country {
+    position: absolute;
+    top: 30px;
+    left: 8px;
+    z-index: 1;
+    border: none;
+    background: transparent;
+    height: 38px;
+}
+
+#phone {
+    padding-left: 60px;
+}
+
+.email,
+.messager,
+.phone-number {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+#messager {
+    height: 120px;
+    padding: 12px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.check-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    color: #555;
+    margin: 10px 0;
+}
+
+.check-box:hover {
+    background-color: #f5f0ff;
+}
+
+#checkbox {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    cursor: pointer;
+    accent-color: rgb(127, 86, 217);
+}
+
+.check-box a {
+    color: rgb(127, 86, 217);
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+#submit {
+    background-color: rgb(127, 86, 217);
+    border: 2px solid rgb(127, 86, 217);
+    color: white;
+    border-radius: 6px;
+    width: 100%;
+    padding: 12px 0;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#submit:hover {
+    background-color: white;
+    color: rgb(127, 86, 217);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(127, 86, 217, 0.2);
+}
+
+.submit {
+    width: 100%;
+}
+
+::placeholder {
+    color: #aaa;
+    opacity: 1;
+}
+
+@media (max-width: 1024px) {
+    body {
+        padding: 5% 5%;
+    }
+    
+    .content {
+        position: relative;
+        flex-direction: column;
+        padding: 6% 4%;
+    }
+
+    .form-left {
+        position: relative;
+        z-index: 2;
+        max-width: 100%;
+        background-color: rgba(255, 255, 255, 0.85);
+        border-radius: 8px;
+        padding: 20px;
+    }
+    
+    .form-right {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        z-index: 1;
+        opacity: 0.7;
+    }
+    
+    .form-right img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+    
+    .name {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .header h1 {
+        font-size: 2rem;
+    }
+    
+    .header p {
+        font-size: 1rem;
+    }
+    
+    /* Improve form element readability against background */
+    #first-name,
+    #last-name,
+    #email,
+    #phone,
+    #messager {
+        background-color: rgba(255, 255, 255, 0.9);
+    }
+    
+    label {
+        text-shadow: 0 0 2px white;
+    }
+    
+    .check-box {
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 0;
+    }
+    
+    .content {
+        border-radius: 0;
+        border: none;
+    }
+    
+    #submit {
+        padding: 14px 0;
+    }
+}

@@ -1,0 +1,399 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.header {
+    display: flex;
+    padding: 10px 6% 10px 6%;
+    align-items: center;
+    gap: 5%;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.header-tool {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.header-tool p {
+    cursor: pointer;
+}
+
+#sign {
+    border: none;
+    background-color: #fff;
+    color: black;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    border-radius: 8px;
+}
+
+#sign:hover {
+    cursor: pointer;
+    background-color: rgb(72, 90, 255);
+    color: white;
+}
+
+.header-login button {
+    padding: 10px;
+}
+
+#start {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    background-color: rgb(72, 90, 255);
+    border-radius: 8px;
+    border: 2px solid rgb(72, 90, 255);
+    color: white;
+}
+
+#start:hover {
+    color: rgb(72, 90, 255);
+    background-color: #fff;
+    cursor: pointer;
+    border: 2px solid rgb(72, 90, 255);
+}
+
+.header-login {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo h3 {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 24px;
+}
+
+.logo:hover {
+    cursor: pointer;
+}
+
+.text-1>* {
+    margin: 0;
+    padding: 0;
+}
+
+.section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6% 10% 0 10%;
+    gap: 20%;
+}
+
+.text-1 h1 {
+    font-size: 60px;
+}
+
+.text-2 p {
+    color: rgb(82, 82, 91);
+}
+
+.img-section .image {
+    max-width: 90%;
+    height: auto;
+}
+
+.hero-section {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.credit-card>* {
+    margin: 0;
+    padding: 0;
+}
+
+.credit-card {
+    display: flex;
+    padding: 0px 0px 0px 5%;
+    border: 1px solid#555;
+    justify-content: space-between;
+    background-color: rgb(250, 250, 250);
+    align-items: center;
+    border-radius: 10px;
+}
+
+.submit button {
+    color: white;
+    background-color: rgb(24, 24, 27);
+    border: 1px solid rgb(24, 24, 27);
+}
+
+.metrics>* {
+    margin: 0;
+    padding: 0;
+}
+
+.metrics {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 20
+}
+
+.card>*,
+.transaction>* {
+    margin: 0;
+    padding: 0;
+}
+
+.card,
+.transaction {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: 4%;
+}
+
+.card p,
+.transaction p {
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 400;
+}
+
+
+#email {
+    border: none;
+    outline: none;
+    width: 100%;
+}
+
+#submit {
+    line-height: 24px;
+    font-size: 18px;
+    padding: 10px 20px 10px 20px;
+    border-radius: 10px;
+}
+
+.submit {
+    display: flex;
+    padding: 6px;
+    justify-content: flex-end;
+
+}
+
+.email {
+    display: flex;
+    flex: 1
+}
+
+.submit button:hover {
+    cursor: pointer;
+    color: rgb(24, 24, 27);
+    background-color: white;
+    border: 1px solid rgb(24, 24, 27);
+}
+
+#email {
+    background-color: rgb(250, 250, 250);
+}
+
+#email {
+    font-size: 16px;
+    line-height: 26px;
+    font-weight: 400;
+}
+
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 5% 10%;
+    margin: 0 auto;
+    gap: 20px;
+}
+
+.items>* {
+    margin: 0;
+    padding: 0;
+}
+
+.items {
+    border: 1px solid #ddd;
+}
+
+.items img {
+    padding-top: 5%;
+}
+
+.items p {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 24px;
+    padding-left: 8%;
+    padding-bottom: 2%;
+}
+
+.items h3 {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+    padding-left: 8%;
+    padding-bottom: 10%;
+}
+
+.product-list img {
+    width: 100%;
+    height: auto;
+    max-height: 180px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 2% 10%;
+    background-color: #fff;
+    border-top:2px solid#ddd ;
+}
+
+.footer-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.footer-menu h3 {
+    margin: 0 0 15px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.footer-contact {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    text-align: right;
+    width: 100%;
+}
+
+.footer-social {
+    display: flex;
+    width: 100%;
+    gap: 4%;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.footer-social img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: contain;
+    border: 1px solid black;
+    padding: 8px;
+    transition: background-color 0.3s;
+}
+
+.footer-social img:hover {
+    background-color: #f0f0f0;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+    color: rgb(136, 136, 136);
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-contact-info {
+    margin-bottom: 15px;
+}
+
+.footer-contact-info h2 {
+    font-weight: 800;
+    font-size: 42px;
+    line-height: 100%;
+}
+
+.footer-contact-info h3 {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 100%;
+}
+@media (max-width: 1024px) {
+    .section{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 10%;
+        gap: 80px;
+    }
+}
+@media (max-width: 431px) {
+    .product-list {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px; 
+        margin:  0 auto;
+    }
+
+    .header {
+        flex-direction: column; 
+        padding: 3% 5%;
+        gap: 10px; 
+    }
+
+    .header-right {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .logo {
+        display: flex;
+        margin-bottom: 5px; 
+    }
+
+    .header-tool {
+        display: flex;
+        flex-wrap: wrap; 
+        gap: 15px;
+    }
+
+
+    .header-login {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-start;
+    }
+    .footer{
+        display: flex;
+        flex-direction: column;
+    }
+    .footer-contact{
+        display: flex;
+        flex-direction: column;        
+        align-items: center;
+        justify-content: center;
+    }
+}

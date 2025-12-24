@@ -1,0 +1,23 @@
+.register_input{
+    display: flex;
+    flex-direction: column;
+}
+
+.email,
+.confirm-password{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.email input,
+.confirm-password input{
+    width: 260px;
+    height: 20px;
+    padding-left: 4px;
+}
+
+.email label,
+.confirm-password label{
+    font-weight: bold;
+}

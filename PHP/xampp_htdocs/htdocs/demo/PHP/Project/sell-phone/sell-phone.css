@@ -1,0 +1,117 @@
+.header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 8%;
+    padding-right: 4%;
+    max-width: 100%;
+    border-bottom: 1px solid#555;
+}
+.header-logo a{
+    font-size: 1.2rem;
+    text-decoration: none;
+}
+.header-action{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+    padding-bottom: 6px;
+    padding-top: 10px;
+}
+.header-action a{
+    text-decoration: none;
+}
+.shopping-cart,
+.my-account,
+.phone{
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    border: 2px solid#f0f0f5;
+    border-radius: 6px;
+    padding:6px 16px 4px 16px;
+    color: #333333;
+    height: 26px;
+}
+
+.shopping-cart:hover,
+.my-account:hover,
+.phone:hover{
+    background-color: rgb(182, 36, 182);
+    color: white;
+}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.gradient-banner {
+    width: 100%;
+    padding-top: 6px;
+    padding-bottom: 4px;
+    text-align: center;
+    background: linear-gradient(to right, #b860d1,#56006d ,#4a4a9e);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
+}
+
+.gradient-banner p {
+    color: white;
+    font-size: 0.8em;
+    font-weight: lighter;
+    margin: 0;
+    font-style: italic;
+}
+
+.trending-keywords-container {
+    background-color: #f8f9fa; 
+    padding: 10px 16px;       
+    border-radius: 4px;         
+    display: flex;
+    align-items: center;    
+    flex-wrap: wrap;        
+    gap: 15px;              
+    font-size: 12px;        
+    border: 1px solid #e9ecef; 
+}
+
+.trending-label {
+    color: #08a584;         
+    font-weight: bold;      
+}
+
+.keyword-link {
+    color: #6c757d;         
+    text-decoration: none;  
+    transition: color 0.2s ease; 
+}
+
+.keyword-link:hover {
+    color: #08a584;         
+    text-decoration: underline; 
+}
+
+.search_input{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.search{
+    padding: 10px 26% 5px 26%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search-box{
+    width: 600px;
+}
