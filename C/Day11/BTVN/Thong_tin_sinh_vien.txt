@@ -1,0 +1,8 @@
+Thong tin sinh vien thu 1:
+Ma sinh vien: 1
+Ho va ten: Duong
+Gioi tinh: Nam
+Toan: 9.00
+Li: 8.00
+Hoa: 7.00
+

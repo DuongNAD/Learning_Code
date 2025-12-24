@@ -1,0 +1,118 @@
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Button?>
+
+<AnchorPane prefHeight="450.0" prefWidth="350.0" style="-fx-background-color: #f4f4f4"
+            xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="StudentSytem.Register">
+    <children>
+        <VBox alignment="CENTER" layoutX="25" layoutY="20" prefHeight="400" prefWidth="300" spacing="10"
+              AnchorPane.bottomAnchor="25" AnchorPane.leftAnchor="25" AnchorPane.rightAnchor="25"
+              AnchorPane.topAnchor="25">
+            <children>
+                <Label text="Đăng Ký Tài Khoản" textFill="#150d53">
+                    <font>
+                        <Font name="System Bold" size="24.0"/>
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="20"/>
+                    </VBox.margin>
+                </Label>
+
+                <VBox alignment="CENTER_LEFT" prefWidth="100">
+                    <children>
+                        <Label text="Họ và tên:" textFill="#535c68">
+                            <font>
+                                <Font size="14"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="5.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <TextField fx:id="inputFullName" promptText="Nhập họ và tên"
+                                   style="-fx-background-radius: 5; -fx-border-color: #b2bec3; -fx-border-radius: 5;"/>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="10"/>
+                    </VBox.margin>
+                </VBox>
+
+                <VBox alignment="CENTER_LEFT" prefWidth="100">
+                    <children>
+                        <Label text="Tên đăng nhập:" textFill="#535c68">
+                            <font>
+                                <Font size="14"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="5.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <TextField fx:id="inputAccount" promptText="Nhập tên đăng nhập (ít nhất 3 ký tự)"
+                                   style="-fx-background-radius: 5; -fx-border-color: #b2bec3; -fx-border-radius: 5;"/>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="10"/>
+                    </VBox.margin>
+                </VBox>
+
+                <VBox alignment="CENTER_LEFT" prefWidth="100">
+                    <children>
+                        <Label text="Mật khẩu:" textFill="#535c68">
+                            <font>
+                                <Font size="14"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="5.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <PasswordField fx:id="inputPassword" promptText="Nhập mật khẩu (ít nhất 4 ký tự)"
+                                       style="-fx-background-radius: 5; -fx-border-color: #b2bec3; -fx-border-radius: 5;"/>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="10"/>
+                    </VBox.margin>
+                </VBox>
+
+                <VBox alignment="CENTER_LEFT" prefWidth="100.0">
+                    <children>
+                        <Label text="Xác nhận mật khẩu:" textFill="#535c68">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="5.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <PasswordField fx:id="inputConfirmPassword" promptText="Nhập lại mật khẩu"
+                                       style="-fx-background-radius: 5; -fx-border-color: #b2bec3; -fx-border-radius: 5;"/>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="20.0"/>
+                    </VBox.margin>
+                </VBox>
+
+                <Button fx:id="Register" onAction="#handleRegister" mnemonicParsing="false" prefHeight="45.0" prefWidth="300.0"
+                        style="-fx-background-color: #00b894; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;"
+                        text="Đăng Ký">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </Button>
+
+                <Button fx:id="BackToLogin" onAction="#backToLogin" mnemonicParsing="false" prefHeight="45.0" prefWidth="300.0"
+                        style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;"
+                        text="Quay lại đăng nhập">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </Button>
+
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
