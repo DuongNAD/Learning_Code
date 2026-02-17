@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV - Nguyen Anh Duong</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0f172a; 
+            --accent-color: #2563eb; 
+            --text-color: #334155;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 40px 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* --- Header Section --- */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            text-align: left;
+        }
+
+        .header-content {
+            flex: 1;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+
+        header h2 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        .profile-img {
+            width: 160px;       
+            height: 160px;      
+            border-radius: 50%; 
+            object-fit: cover;  
+            border: 4px solid white; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
+            flex-shrink: 0;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 0.9rem;
+        }
+
+        .contact-info a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+
+        .contact-info a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Main Content Layout */
+        .main-content {
+            display: grid;
+            grid-template-columns: 65% 35%;
+            gap: 0;
+        }
+
+        .left-column {
+            padding: 40px;
+        }
+
+        .right-column {
+            padding: 40px;
+            background-color: #f8fafc;
+            border-left: 1px solid #e2e8f0;
+        }
+
+        /* Section Styling */
+        section {
+            margin-bottom: 30px;
+        }
+
+        h3.section-title {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            display: inline-block;
+        }
+
+        /* Projects & Experience */
+        .project-item {
+            margin-bottom: 25px;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 5px;
+        }
+
+        .project-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+
+        .tech-stack {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            font-style: italic;
+        }
+
+        ul {
+            list-style-position: outside;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        /* Sidebar Styling */
+        .sidebar-item {
+            margin-bottom: 25px;
+        }
+
+        .skill-category {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+            font-size: 1rem;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            background-color: white;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .tag:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .education-item {
+            margin-bottom: 15px;
+        }
+
+        .date {
+            font-size: 0.85rem;
+            color: #64748b;
+            display: block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .right-column {
+                border-left: none;
+                border-top: 1px solid #e2e8f0;
+            }
+            
+            header {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .contact-info {
+                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <img src="z7341665553361_472c68acc06e3bf2c9ebb71c71264b0e.jpg" alt="Nguyen Anh Duong" class="profile-img">
+            
+            <div class="header-content">
+                <h1>Nguyễn Anh Dương</h1>
+                <h2>Junior Back-End Developer</h2>
+                
+                <div class="contact-info">
+                    <a href="mailto:duonganhdn2000@gmail.com"><i class="fas fa-envelope"></i> duonganhdn2000@gmail.com</a>
+                    <a href="tel:+84967908595"><i class="fas fa-phone"></i> (+84) 96 790 8595</a>
+                    <a href="#"><i class="fas fa-map-marker-alt"></i> Hanoi, Vietnam</a>
+                </div>
+                
+                <div class="contact-info" style="margin-top: 10px;">
+                    <a href="https://github.com/DuongNAD" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                    <a href="https://linkedin.com/in/dương-nguyễn-anh-021b6a39b" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                    <a href="https://tryhackme.com/p/AnhDuong" target="_blank"><i class="fas fa-user-secret"></i> TryHackMe</a>
+                    <a href="https://huggingface.co/Duong2006" target="_blank"><i class="fas fa-robot"></i> Hugging Face</a>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="left-column">
+                
+                <section>
+                    <h3 class="section-title">Professional Summary</h3>
+                    <p>Sophomore Software Engineering student at FPT University with a robust technical foundation in Java and PHP Laravel. Passionate about the synergy between AI and Red Team Cybersecurity. <strong>Proficient in Data Analysis and Machine Learning fundamentals, with hands-on experience in model evaluation and optimization using Python libraries.</strong> Experienced in building automated workflows (n8n), AI-integrated web solutions, and fine-tuning local LLMs.</p>
+                </section>
+
+                <section>
+                    <h3 class="section-title">Notable Projects</h3>
+
+                    <div class="project-item">
+                        <div class="project-header">
+                            <span class="project-title">Sentinel – Privacy-First AI System</span>
+                            <span class="tech-stack">Python, Llama 3 (QLoRA), PyQt6, CUDA</span>
+                        </div>
+                        <ul>
+                            <li>Fine-tuned an 8B Llama 3 model in a CUDA-optimized environment for local assistance.</li>
+                            <li>Engineered a custom GUI using PyQt6 to bypass third-party wrappers, ensuring 100% data sovereignty.</li>
+                            <li>Developed a System Control Engine translating natural language into OS-level commands.</li>
+                        </ul>
+                    </div>
+
+                    <div class="project-item">
+                        <div class="project-header">
+                            <span class="project-title">LitraScan – AI Grading Automation</span>
+                            <span class="tech-stack">n8n, OCR, Gemini API</span>
+                        </div>
+                        <ul>
+                            <li>Built an n8n workflow integrating OCR and Gemini to extract/evaluate handwritten essays.</li>
+                            <li>Leveraged AI reasoning to provide human-like feedback based on academic rubrics.</li>
+                        </ul>
+                    </div>
+
+                    <div class="project-item">
+                        <div class="project-header">
+                            <span class="project-title">Beautiful Beach – Tourism Platform</span>
+                            <span class="tech-stack">Laravel, MySQL, ReactJs, n8n, Gemini API</span>
+                        </div>
+                        <ul>
+                            <li>Developed a tourism platform with an automated AI Chatbot for real-time support.</li>
+                            <li>Built a robust backend and smart search engine for coastal destinations.</li>
+                        </ul>
+                    </div>
+
+                     <div class="project-item">
+                        <div class="project-header">
+                            <span class="project-title">Cognitive Robotic Arms</span>
+                            <span class="tech-stack">Python, ROS, Computer Vision</span>
+                        </div>
+                        <ul>
+                            <li>Engineered a 6-DOF robotic arm with Computer Vision for automated package sorting.</li>
+                            <li>Increased factory productivity by 30% through autonomous operation.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h3 class="section-title">Awards</h3>
+                    <div class="project-item">
+                        <div class="project-header">
+                            <span class="project-title">Top 4 – DENSO Factory Hacks 2025</span>
+                            <span class="date">Nov 2025</span>
+                        </div>
+                        <p>Developed a Robotic Arm integrated with Computer Vision (ROS/Python), praised by DENSO executives for ROI potential.</p>
+                    </div>
+                </section>
+            </div>
+
+            <div class="right-column">
+                <section>
+                    <h3 class="section-title">Technical Skills</h3>
+                    
+                    <div class="sidebar-item">
+                        <span class="skill-category">Data Science & Machine Learning</span>
+                        <div class="tags">
+                            <span class="tag">Machine Learning</span>
+                            <span class="tag">Model Evaluation</span>
+                            <span class="tag">NumPy</span>
+                            <span class="tag">Pandas</span>
+                            <span class="tag">Data Analysis</span>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <span class="skill-category">Languages</span>
+                        <div class="tags">
+                            <span class="tag">Java</span>
+                            <span class="tag">Python</span>
+                            <span class="tag">PHP</span>
+                            <span class="tag">C/C++</span>
+                            <span class="tag">JavaScript</span>
+                            <span class="tag">HTML5/CSS3</span>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <span class="skill-category">Frameworks & Libraries</span>
+                        <div class="tags">
+                            <span class="tag">Laravel</span>
+                            <span class="tag">Spring Boot</span>
+                            <span class="tag">React.js</span>
+                            <span class="tag">PyQt6</span>
+                            <span class="tag">PyTorch</span>
+                            <span class="tag">JavaFX</span>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <span class="skill-category">AI & Automation</span>
+                        <div class="tags">
+                            <span class="tag">n8n Workflow</span>
+                            <span class="tag">Llama 3 Fine-tuning</span>
+                            <span class="tag">Gemini API</span>
+                            <span class="tag">QLoRA / PEFT</span>
+                            <span class="tag">Computer Vision (OpenCV)</span>
+                            <span class="tag">Inverse Kinematics</span>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <span class="skill-category">Cybersecurity (Red Team)</span>
+                        <div class="tags">
+                            <span class="tag">Pentesting</span>
+                            <span class="tag">Web App Security</span>
+                            <span class="tag">Vulnerability Assessment</span>
+                            <span class="tag">Linux/Windows Admin</span>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-item">
+                        <span class="skill-category">Tools & Databases</span>
+                        <div class="tags">
+                            <span class="tag">MySQL</span>
+                            <span class="tag">MS SQL Server</span>
+                            <span class="tag">Git / GitHub</span>
+                            <span class="tag">Docker</span>
+                            <span class="tag">Postman</span>
+                            <span class="tag">n8n</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3 class="section-title">Education</h3>
+                    <div class="education-item">
+                        <strong>FPT University</strong><br>
+                        <span class="date">Bachelor’s in Software Engineering</span>
+                        <span class="date">2024 – Present</span>
+                    </div>
+                    <div class="education-item">
+                        <strong>APTECH Computer Education</strong><br>
+                        <span class="date">ADSE Diploma</span>
+                        <span class="date">2024 – Present</span>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
