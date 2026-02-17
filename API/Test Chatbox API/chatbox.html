@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbox</title>
+    <style>
+        /* --- Giao diện Bình thường / Chuyên nghiệp --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #e5e5e5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .chat-container {
+            width: 400px;
+            background: #ffffff;
+            border-radius: 8px; /* Bo góc ít hơn cho nam tính */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .chat-header {
+            background-color: #2c3e50; /* Màu xám đen chuyên nghiệp */
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .chat-box {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: 6px; /* Bo góc vuông vức hơn */
+            max-width: 80%;
+            word-wrap: break-word;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .user-message {
+            background-color: #007bff; /* Xanh dương chuẩn tech */
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+
+        .bot-message {
+            background-color: #e9ecef; /* Xám nhạt */
+            color: #333;
+            align-self: flex-start;
+        }
+
+        .input-area {
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            display: flex;
+            background: white;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Loading đơn giản */
+        .loading {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-left: 20px;
+            margin-bottom: 5px;
+            display: none; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            AI Chatbox
+        </div>
+        
+        <div class="chat-box" id="chatBox"></div>
+        
+        <div class="loading" id="loadingText">Bot is typing...</div>
+        
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Nhập tin nhắn..." onkeypress="handleEnter(event)">
+            <button onclick="sendMessage()">Gửi</button>
+        </div>
+    </div>
+
+    <script>
+        // ⚠️ QUAN TRỌNG: Anh thay URL Ngrok của Anh vào đây
+        const WEBHOOK_URL = "http://localhost:5678/webhook/5089583b-b285-41aa-b39f-71b22d19adf1"; 
+
+        async function sendMessage() {
+            const inputField = document.getElementById("userInput");
+            const message = inputField.value.trim();
+            const chatBox = document.getElementById("chatBox");
+            const loadingText = document.getElementById("loadingText");
+
+            if (!message) return;
+
+            // 1. Hiện tin nhắn User
+            appendMessage(message, "user-message");
+            inputField.value = ""; 
+            loadingText.style.display = "block"; 
+
+            try {
+                // 2. Gửi Webhook
+                const response = await fetch(WEBHOOK_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ chatInput: message }) 
+                });
+
+                const data = await response.json();
+
+                // 3. Hiện tin nhắn Bot
+                const botReply = data.output || data.text || JSON.stringify(data);
+                appendMessage(botReply, "bot-message");
+
+            } catch (error) {
+                console.error("Error:", error);
+                appendMessage("Error: " + error.message, "bot-message");
+            } finally {
+                loadingText.style.display = "none";
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }
+
+        function appendMessage(text, className) {
+            const chatBox = document.getElementById("chatBox");
+            const msgDiv = document.createElement("div");
+            msgDiv.className = `message ${className}`;
+            msgDiv.innerText = text;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function handleEnter(event) {
+            if (event.key === "Enter") sendMessage();
+        }
+    </script>
+</body>
+</html>
