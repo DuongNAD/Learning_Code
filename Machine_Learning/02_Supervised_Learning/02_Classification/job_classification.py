@@ -1,95 +1,119 @@
-import pandas as pd
+"""
+02_Classification: Job Career Level NLP Classification
+=====================================================
+Multi-class text classification pipeline handling extreme class imbalance:
+- Regex feature extraction for job locations
+- Multi-channel TF-IDF Vectorization across title, description, and industry
+- One-Hot Encoding for categorical features (location, function)
+- Class-weight balancing with RandomForest to handle imbalanced career levels
+- Optional SMOTEN oversampling when `imblearn` is installed
+"""
+
+import os
 import re
-from sklearn.model_selection import train_test_split, GridSearchCV
+import pandas as pd
+from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix
-from sklearn.feature_selection import SelectKBest, chi2, SelectPercentile
-from imblearn.over_sampling import RandomOverSampler, SMOTEN
+
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+CSV_PATH = os.path.join(CURRENT_DIR, "final_project.csv")
+ODS_PATH = os.path.join(CURRENT_DIR, "final_project.ods")
+
+# Dynamic data file resolution
+if os.path.exists(CSV_PATH):
+    print(f"Loading pre-parsed CSV data: {CSV_PATH}")
+    data = pd.read_csv(CSV_PATH, dtype=str)
+elif os.path.exists(ODS_PATH):
+    print(f"Loading ODS data: {ODS_PATH}")
+    data = pd.read_excel(ODS_PATH, dtype=str)
+else:
+    fallback = os.path.join(CURRENT_DIR, "../../06_Datasets_Kaggle/job_classification/final_project.csv")
+    if os.path.exists(fallback):
+        print(f"Loading from dataset store: {fallback}")
+        data = pd.read_csv(fallback, dtype=str)
+    else:
+        raise FileNotFoundError("Could not locate final_project dataset.")
 
 
 def filter_location(location):
-    # if location[-4:-2] == ", " and location[-2:].isupper():
-    #     return location[-2:]
-    # else:
-    #     return location
-    result = re.findall(pattern="\,\s[A-Z]{2}$", string=location)
+    """Trích xuất mã tiểu bang 2 chữ cái (ví dụ ', CA' -> 'CA') nếu có."""
+    if not isinstance(location, str):
+        return "UNKNOWN"
+    result = re.findall(r"\,\s([A-Z]{2})$", location)
     if len(result) == 0:
         return location
-    else:
-        return location[0][-2:]
+    return result[0]
 
 
-import os
-if os.path.exists("final_project.csv"):
-    data = pd.read_csv("final_project.csv", dtype=str)
-else:
-    data = pd.read_excel("final_project.ods", dtype=str)
 data = data.dropna(axis=0)
 data["location"] = data["location"].apply(filter_location)
 target = "career_level"
 
 x = data.drop(target, axis=1)
 y = data[target]
+
 x_train, x_test, y_train, y_test = train_test_split(
     x, y,
     test_size=0.2,
     random_state=1009,
     stratify=y
 )
-print(y_train.value_counts())
-print("-----------------")
-sampler = SMOTEN(
-    sampling_strategy={
-        "managing_director_small_medium_company": 500,
-        "specialist": 500,
-        "director_business_unit_leader": 500,
-        "bereichsleiter": 1000
-    },
-    k_neighbors=2,
-    random_state=0
-)
-x_train, y_train = sampler.fit_resample(x_train, y_train)
-print(y_train.value_counts())
-exit(0)
 
+print("\n=== PHÂN BỐ CÁC LỚP NGHỀ NGHIỆP TRONG TẬP TRAIN ===")
+print(y_train.value_counts())
+
+# Thử nghiệm oversampling bằng SMOTEN nếu có imblearn
+has_imblearn = False
+try:
+    from imblearn.over_sampling import SMOTEN
+    has_imblearn = True
+    print("\n[SMOTEN] Phát hiện thư viện imblearn, áp dụng SMOTEN oversampling...")
+    # Chỉ resample các lớp có ít nhất 2 mẫu
+    valid_classes = y_train.value_counts()
+    strategy = {}
+    for cls_name, cnt in valid_classes.items():
+        if cnt >= 2 and cnt < 500:
+            strategy[cls_name] = 500
+    if strategy:
+        sampler = SMOTEN(sampling_strategy=strategy, k_neighbors=1, random_state=0)
+        x_train_resampled, y_train_resampled = sampler.fit_resample(x_train, y_train)
+        x_train, y_train = x_train_resampled, y_train_resampled
+        print("Phân bố sau SMOTEN:")
+        print(y_train.value_counts())
+except ImportError:
+    print("\n[Lưu ý] 'imblearn' không cài đặt -> Áp dụng phương pháp Scikit-Learn Native: class_weight='balanced'")
+
+# Xây dựng ColumnTransformer xử lý đa nguồn văn bản & biến định danh
 preprocessor = ColumnTransformer(transformers=[
-    ("tit", TfidfVectorizer(), "title"),
+    ("tit", TfidfVectorizer(max_features=1000), "title"),
     ("loc", OneHotEncoder(handle_unknown="ignore"), ["location"]),
-    ("desc", TfidfVectorizer(ngram_range=(1, 2), min_df=0.01, max_df=0.99, stop_words="english"), "description"),
+    ("desc", TfidfVectorizer(max_features=3000, stop_words="english", ngram_range=(1, 2)), "description"),
     ("func", OneHotEncoder(handle_unknown="ignore"), ["function"]),
-    ("ind", TfidfVectorizer(), "industry")
+    ("ind", TfidfVectorizer(max_features=500), "industry")
 ])
-
-# unigram+bigram: (6458, 848501)
-# unigram+bigram+min_df+max_df: (6458, 7954)
-
-# output = preprocessor.fit_transform(x_train)
-# print(output.shape)
 
 model = Pipeline(steps=[
     ("preprocessor", preprocessor),
-    # ("feature_selector", SelectKBest(chi2, k=500)),
-    ("feature_selector", SelectPercentile(chi2, percentile=8)),
-    ("regressor", RandomForestClassifier(random_state=1009)),
+    ("classifier", RandomForestClassifier(
+        n_estimators=50,
+        class_weight="balanced",
+        random_state=1009,
+        n_jobs=-1
+    )),
 ])
 
+print("\nĐang huấn luyện mô hình phân loại đa lớp...")
 model.fit(x_train, y_train)
+
 y_predict = model.predict(x_test)
+
+print("\n=== MA TRẬN NHẦM LẪN (CONFUSION MATRIX) ===")
 print(confusion_matrix(y_test, y_predict))
-print(classification_report(y_test, y_predict))
-#                                         precision    recall  f1-score   support
-#
-#                         bereichsleiter       0.56      0.14      0.23       192
-#          director_business_unit_leader       1.00      0.07      0.13        14
-#                    manager_team_leader       0.65      0.73      0.69       534
-# managing_director_small_medium_company       0.00      0.00      0.00         1
-#   senior_specialist_or_project_manager       0.84      0.93      0.88       868
-#                             specialist       0.00      0.00      0.00         6
-#
-#                               accuracy                           0.76      1615
-#                              macro avg       0.51      0.31      0.32      1615
-#                           weighted avg       0.75      0.76      0.73      1615
+
+print("\n=== BÁO CÁO PHÂN LOẠI (CLASSIFICATION REPORT) ===")
+print(classification_report(y_test, y_predict, zero_division=0))

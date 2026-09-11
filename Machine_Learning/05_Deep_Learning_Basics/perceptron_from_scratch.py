@@ -1,5 +1,6 @@
 """
 Perceptron from Scratch (Học Thuật Toán Perceptron Từ Đầu Bằng NumPy)
+===================================================================
 
 Mục tiêu học tập:
 1. Hiểu công thức toán: y_hat = step(w^T * x + b)
@@ -9,20 +10,29 @@ Mục tiêu học tập:
 
 import numpy as np
 
+
 class Perceptron:
     def __init__(self, learning_rate: float = 0.1, max_epochs: int = 100):
         self.lr = learning_rate
         self.max_epochs = max_epochs
         self.weights = None
         self.bias = 0.0
+        self.converged_ = False
 
-    def step_function(self, z: np.ndarray) -> np.ndarray:
+    def step_function(self, z: np.ndarray | float) -> np.ndarray | int:
         return np.where(z >= 0, 1, 0)
 
-    def fit(self, X: np.ndarray, y: np.ndarray):
+    def fit(self, X: np.ndarray, y: np.ndarray) -> bool:
+        """
+        Huấn luyện thuật toán Perceptron học trọng số w và bias b.
+
+        Returns:
+            bool: True nếu hội tụ (0 lỗi), False nếu vượt quá max_epochs mà không hội tụ.
+        """
         n_samples, n_features = X.shape
         self.weights = np.zeros(n_features)
         self.bias = 0.0
+        self.converged_ = False
 
         for epoch in range(self.max_epochs):
             errors = 0
@@ -30,18 +40,21 @@ class Perceptron:
                 linear_output = np.dot(xi, self.weights) + self.bias
                 y_pred = self.step_function(linear_output)
                 update = self.lr * (target - y_pred)
-                
+
                 if update != 0.0:
                     self.weights += update * xi
                     self.bias += update
                     errors += 1
             if errors == 0:
+                self.converged_ = True
                 print(f"[Perceptron] Hội tụ hoàn hảo tại epoch {epoch + 1}!")
                 break
+        return self.converged_
 
     def predict(self, X: np.ndarray) -> np.ndarray:
         linear_output = np.dot(X, self.weights) + self.bias
         return self.step_function(linear_output)
+
 
 if __name__ == "__main__":
     # Dữ liệu cổng logic AND

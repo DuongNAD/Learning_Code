@@ -32,9 +32,10 @@ Machine_Learning/
 │   ├── Clustering_and_Dimensionality...# K-Means, Elbow method, Silhouette Score, PCA 2D
 │   └── Recommender_Systems/            # Gợi ý phim MovieLens theo Content-Based Filtering
 ├── 04_Model_Evaluation_Tuning/         # Thẩm định mô hình, Tối ưu ngưỡng & Hyperparameters
-│   ├── b8_tune.py                      # GridSearchCV cho Decision Tree, Random Forest, KNN
-│   ├── b9_evaluate.py                  # Confusion Matrix, ROC-AUC, Quét ngưỡng tối ưu
-│   └── b10_save.py                     # Đóng gói artifacts: model.pkl, scaler.pkl, threshold.pkl
+│   ├── model_evaluation_metrics.py     # Thư viện đo lường phân loại/hồi quy, tối ưu ngưỡng F1/Youden
+│   ├── hyperparameter_tuning_suite.py  # So sánh Grid vs Random Search & Chẩn đoán Overfitting
+│   ├── model_benchmark_comparison.py   # Bảng xếp hạng benchmark đa mô hình tự động
+│   └── diabetes_tuning_case_study.py   # Case study thực chiến tối ưu ngưỡng trên tập dữ liệu tiểu đường
 ├── 05_Deep_Learning_Basics/            # Nhập môn Học sâu & Mạng nơ-ron
 │   ├── perceptron_from_scratch.py      # Thuật toán Perceptron từ đầu & Nghịch lý XOR
 │   ├── mlp_backprop_numpy.py           # Mạng MLP 2 tầng & Backpropagation giải quyết XOR

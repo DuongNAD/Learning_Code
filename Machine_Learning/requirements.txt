@@ -22,3 +22,8 @@ streamlit>=1.25.0
 
 # Testing & Quality Assurance
 pytest>=7.4.0
+
+# Optional Pedagogical Enhancements
+# imbalanced-learn>=0.11.0  # Advanced SMOTEN text oversampling in job_classification.py
+# lazypredict>=0.2.12       # Multi-model automated benchmark in regression.py
+# odfpy>=1.4.1              # Reading raw .ods spreadsheets directly

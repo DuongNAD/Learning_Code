@@ -1,9 +1,10 @@
 """
 FastAPI Server for Diabetes Prediction Pipeline.
-Supports calibrated probability thresholding and detailed diagnostic payloads.
+Supports calibrated probability thresholding, batch inference, and OpenAPI docs.
 """
 
 import os
+from contextlib import asynccontextmanager
 import joblib
 import pandas as pd
 from fastapi import FastAPI, HTTPException
@@ -23,13 +24,39 @@ FEATURE_NAMES = [
     "Insulin",
     "BMI",
     "DiabetesPedigreeFunction",
-    "Age"
+    "Age",
 ]
+
+# Global artifacts
+model = None
+scaler = None
+threshold = 0.27
+
+
+def load_artifacts():
+    global model, scaler, threshold
+    if not os.path.exists(MODEL_PATH) or not os.path.exists(SCALER_PATH):
+        raise RuntimeError(f"Missing model or scaler in {CURRENT_DIR}")
+    model = joblib.load(MODEL_PATH)
+    scaler = joblib.load(SCALER_PATH)
+    if os.path.exists(THRESHOLD_PATH):
+        threshold = float(joblib.load(THRESHOLD_PATH))
+    print(f"Loaded model ({type(model).__name__}), scaler, and threshold ({threshold})")
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    load_artifacts()
+    yield
+    # Shutdown
+
 
 app = FastAPI(
     title="Diabetes Prediction & Clinical Decision Support API",
-    version="2.0.0",
-    description="Production-ready FastAPI endpoint serving calibrated Random Forest model."
+    version="2.1.0",
+    description="Production-ready FastAPI endpoint serving calibrated Random Forest model with batch support.",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
@@ -40,31 +67,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load artifacts
-model = None
-scaler = None
-threshold = 0.27
-
-@app.on_event("startup")
-def load_artifacts():
-    global model, scaler, threshold
-    if not os.path.exists(MODEL_PATH) or not os.path.exists(SCALER_PATH):
-        raise RuntimeError(f"Missing model or scaler in {CURRENT_DIR}")
-    model = joblib.load(MODEL_PATH)
-    scaler = joblib.load(SCALER_PATH)
-    if os.path.exists(THRESHOLD_PATH):
-        threshold = joblib.load(THRESHOLD_PATH)
-    print(f"Loaded model ({type(model).__name__}), scaler, and threshold ({threshold})")
 
 class DiabetesInput(BaseModel):
-    Pregnancies: float = Field(..., example=2.0, description="Số lần mang thai")
-    Glucose: float = Field(..., example=120.0, description="Nồng độ Glucose huyết tương")
-    BloodPressure: float = Field(..., example=70.0, description="Huyết áp tâm trương (mm Hg)")
-    SkinThickness: float = Field(..., example=20.0, description="Độ dày nếp gấp da cơ tam đầu (mm)")
-    Insulin: float = Field(..., example=100.0, description="Insulin huyết thanh 2 giờ (mu U/ml)")
-    BMI: float = Field(..., example=29.3, description="Chỉ số khối cơ thể (kg/m^2)")
-    DiabetesPedigreeFunction: float = Field(..., example=0.5, description="Hàm phả hệ bệnh tiểu đường")
-    Age: float = Field(..., example=35.0, description="Tuổi (năm)")
+    Pregnancies: float = Field(..., json_schema_extra={"example": 2.0}, description="Số lần mang thai")
+    Glucose: float = Field(..., json_schema_extra={"example": 120.0}, description="Nồng độ Glucose huyết tương")
+    BloodPressure: float = Field(..., json_schema_extra={"example": 70.0}, description="Huyết áp tâm trương (mm Hg)")
+    SkinThickness: float = Field(..., json_schema_extra={"example": 20.0}, description="Độ dày nếp gấp da cơ tam đầu (mm)")
+    Insulin: float = Field(..., json_schema_extra={"example": 100.0}, description="Insulin huyết thanh 2 giờ (mu U/ml)")
+    BMI: float = Field(..., json_schema_extra={"example": 29.3}, description="Chỉ số khối cơ thể (kg/m^2)")
+    DiabetesPedigreeFunction: float = Field(..., json_schema_extra={"example": 0.5}, description="Hàm phả hệ bệnh tiểu đường")
+    Age: float = Field(..., json_schema_extra={"example": 35.0}, description="Tuổi (năm)")
+
 
 class PredictionOutput(BaseModel):
     prediction: int
@@ -73,51 +86,54 @@ class PredictionOutput(BaseModel):
     meaning: str
     clinical_recommendation: str
 
+
 @app.get("/")
 def root():
     return {
         "status": "online",
         "service": "Diabetes Risk Inference Service",
         "docs": "/docs",
-        "calibrated_threshold": threshold
+        "calibrated_threshold": threshold,
     }
 
-@app.post("/predict", response_model=PredictionOutput)
-def predict_diabetes(data: DiabetesInput):
+
+def _run_inference(input_dict: dict) -> dict:
     global model, scaler, threshold
     if model is None or scaler is None:
         load_artifacts()
 
-    input_dict = {
-        "Pregnancies": data.Pregnancies,
-        "Glucose": data.Glucose,
-        "BloodPressure": data.BloodPressure,
-        "SkinThickness": data.SkinThickness,
-        "Insulin": data.Insulin,
-        "BMI": data.BMI,
-        "DiabetesPedigreeFunction": data.DiabetesPedigreeFunction,
-        "Age": data.Age
-    }
-    
     df = pd.DataFrame([input_dict], columns=FEATURE_NAMES)
     scaled = scaler.transform(df)
     prob = float(model.predict_proba(scaled)[0, 1])
     is_positive = int(prob >= threshold)
-    
+
     meaning = "Có nguy cơ tiểu đường cao" if is_positive == 1 else "Nguy cơ tiểu đường thấp / Bình thường"
     recommendation = (
         "Khuyến nghị làm xét nghiệm OGTT chuyên sâu và hội chẩn với bác sĩ chuyên khoa nội tiết."
         if is_positive == 1
         else "Duy trì chế độ dinh dưỡng và lối sống lành mạnh, tái khám định kỳ hàng năm."
     )
-    
+
     return {
         "prediction": is_positive,
         "probability": round(prob, 4),
         "threshold_applied": threshold,
         "meaning": meaning,
-        "clinical_recommendation": recommendation
+        "clinical_recommendation": recommendation,
     }
+
+
+@app.post("/predict", response_model=PredictionOutput)
+def predict_diabetes(data: DiabetesInput):
+    return _run_inference(data.model_dump())
+
+
+@app.post("/predict_batch", response_model=list[PredictionOutput])
+def predict_diabetes_batch(batch: list[DiabetesInput]):
+    if not batch:
+        raise HTTPException(status_code=400, detail="Batch payload cannot be empty.")
+    return [_run_inference(item.model_dump()) for item in batch]
+
 
 if __name__ == "__main__":
     import uvicorn
