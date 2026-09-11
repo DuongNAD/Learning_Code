@@ -1,0 +1,2583 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python & ML Foundations Lab - Trực Quan & Thực Hành</title>
+  <style>
+    :root {
+      --bg-primary: #0d1117;
+      --bg-secondary: #161b22;
+      --bg-tertiary: #21262d;
+      --border-color: #30363d;
+      --text-main: #c9d1d9;
+      --text-muted: #8b949e;
+      --accent-cyan: #58a6ff;
+      --accent-green: #3fb950;
+      --accent-purple: #bc8cff;
+      --accent-orange: #f0883e;
+      --accent-red: #f85149;
+      --accent-gold: #e3b341;
+      --card-radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: rgba(22, 27, 34, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 0.75rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-badge {
+      background: linear-gradient(135deg, #1f6feb, #8957e5);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
+    }
+
+    .logo-title h1 {
+      font-size: 1.25rem;
+      color: #f0f6fc;
+      font-weight: 700;
+    }
+
+    .logo-title p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      background: var(--bg-tertiary);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 7px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background: #30363d;
+      border-color: var(--accent-cyan);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: #238636;
+      border-color: rgba(240, 246, 252, 0.1);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #2ea043;
+      border-color: var(--accent-green);
+    }
+
+    .btn-accent {
+      background: #1f6feb;
+      border-color: rgba(240, 246, 252, 0.1);
+      color: white;
+    }
+
+    .btn-accent:hover {
+      background: #388bfd;
+      border-color: var(--accent-cyan);
+    }
+
+    /* NAV TABS */
+    nav.tabs-nav {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      overflow-x: auto;
+      padding: 0 2rem;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: var(--text-muted);
+      padding: 12px 18px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .tab-btn.active {
+      color: var(--accent-cyan);
+      border-bottom-color: var(--accent-cyan);
+      background: rgba(88, 166, 255, 0.08);
+    }
+
+    /* MAIN CONTAINER */
+    main.container {
+      max-width: 1400px;
+      margin: 1.5rem auto;
+      padding: 0 1.5rem;
+      width: 100%;
+      flex: 1;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* CARDS & LAYOUT */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 992px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      padding: 1.5rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      color: #f0f6fc;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding-bottom: 0.6rem;
+    }
+
+    .card-title .badge {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: rgba(88, 166, 255, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(88, 166, 255, 0.3);
+    }
+
+    .ml-tag {
+      background: rgba(188, 140, 255, 0.15);
+      color: var(--accent-purple);
+      border: 1px solid rgba(188, 140, 255, 0.3);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* INTERACTIVE CONTROLS */
+    .control-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .control-group label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    input[type="text"], input[type="number"], select, textarea {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      color: #f0f6fc;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus, input[type="number"]:focus, select:focus, textarea:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+    }
+
+    input[type="range"] {
+      accent-color: var(--accent-cyan);
+      cursor: pointer;
+    }
+
+    /* VISUALIZERS */
+    .visualizer-box {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      min-height: 220px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* BUCKETS FOR EX1 */
+    .buckets-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .bucket {
+      background: var(--bg-secondary);
+      border: 2px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 12px;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bucket.positive { border-color: rgba(63, 185, 80, 0.4); background: rgba(63, 185, 80, 0.05); }
+    .bucket.negative { border-color: rgba(248, 81, 73, 0.4); background: rgba(248, 81, 73, 0.05); }
+    .bucket.zero { border-color: rgba(139, 148, 158, 0.4); background: rgba(139, 148, 158, 0.05); }
+
+    .bucket-header {
+      font-size: 0.85rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .chips-area {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-content: flex-start;
+      flex: 1;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.4); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .chip-pos { background: #238636; color: white; }
+    .chip-neg { background: #da3633; color: white; }
+    .chip-zero { background: #484f58; color: white; }
+
+    /* CHARTS & BARS */
+    .bar-chart-wrapper {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      height: 180px;
+      padding-top: 30px;
+      border-bottom: 2px solid var(--border-color);
+      position: relative;
+    }
+
+    .bar-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      height: 100%;
+      justify-content: flex-end;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s;
+    }
+
+    .bar-col:hover {
+      transform: translateY(-4px);
+    }
+
+    .bar-fill {
+      width: 100%;
+      max-width: 45px;
+      border-radius: 6px 6px 0 0;
+      transition: height 0.4s ease, background 0.3s ease;
+      position: relative;
+    }
+
+    .bar-label {
+      font-size: 0.8rem;
+      margin-top: 6px;
+      color: var(--text-muted);
+      font-weight: bold;
+    }
+
+    .bar-count {
+      position: absolute;
+      top: -22px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .threshold-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      border-top: 2px dashed var(--accent-orange);
+      pointer-events: none;
+      transition: bottom 0.3s ease;
+      z-index: 10;
+    }
+
+    .threshold-badge {
+      position: absolute;
+      right: 0;
+      top: -12px;
+      background: var(--accent-orange);
+      color: black;
+      font-size: 0.7rem;
+      font-weight: bold;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    /* SLIDING WINDOW (EX3) */
+    .window-track {
+      display: flex;
+      gap: 8px;
+      margin: 20px 0;
+      position: relative;
+      padding: 10px 0;
+      overflow-x: auto;
+    }
+
+    .window-cell {
+      width: 50px;
+      height: 50px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .window-cell.active-window {
+      border-color: var(--accent-gold);
+      background: rgba(227, 179, 65, 0.15);
+      transform: scale(1.08);
+      box-shadow: 0 0 12px rgba(227, 179, 65, 0.4);
+    }
+
+    .window-cell.winner {
+      background: rgba(63, 185, 80, 0.25);
+      border-color: var(--accent-green);
+      color: #56d364;
+    }
+
+    /* TREE VISUALIZER (EX4) */
+    .tree-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 0;
+    }
+
+    .tree-row {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .tree-node {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      font-family: monospace;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tree-node:hover, .tree-node.highlighted {
+      background: #1f6feb;
+      border-color: var(--accent-cyan);
+      color: white;
+      box-shadow: 0 0 10px rgba(88, 166, 255, 0.5);
+      transform: scale(1.05);
+    }
+
+    /* PRACTICE ARENA & CODE RUNNER */
+    .code-editor-box {
+      background: #090d13;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    .editor-header {
+      background: #161b22;
+      border-bottom: 1px solid var(--border-color);
+      padding: 6px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-radius: 8px 8px 0 0;
+    }
+
+    textarea.code-area {
+      width: 100%;
+      height: 180px;
+      background: transparent;
+      border: none;
+      color: #e6edf3;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.9rem;
+      padding: 12px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .test-result-box {
+      background: #090d13;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 0.85rem;
+      font-family: monospace;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .test-pass { color: var(--accent-green); font-weight: bold; }
+    .test-fail { color: var(--accent-red); font-weight: bold; }
+
+    /* ACCORDIONS */
+    .accordion {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    .accordion-header {
+      background: var(--bg-tertiary);
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+    }
+
+    .accordion-header:hover {
+      background: #30363d;
+    }
+
+    .accordion-body {
+      background: var(--bg-primary);
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      display: none;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .accordion.open .accordion-body {
+      display: block;
+    }
+
+    /* QUIZ */
+    .quiz-card {
+      background: var(--bg-tertiary);
+      border-radius: 8px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .quiz-question {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #f0f6fc;
+      margin-bottom: 10px;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .quiz-option {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+
+    .quiz-option:hover {
+      border-color: var(--accent-cyan);
+      background: rgba(88, 166, 255, 0.05);
+    }
+
+    .quiz-option.correct {
+      background: rgba(63, 185, 80, 0.2) !important;
+      border-color: var(--accent-green) !important;
+      color: #56d364;
+      font-weight: bold;
+    }
+
+    .quiz-option.incorrect {
+      background: rgba(248, 81, 73, 0.2) !important;
+      border-color: var(--accent-red) !important;
+      color: #ff7b72;
+    }
+
+    .quiz-feedback {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      padding: 8px;
+      border-radius: 4px;
+      display: none;
+    }
+
+    /* GRAPH (EX8) */
+    .graph-svg {
+      width: 100%;
+      height: 280px;
+      background: #090d13;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    footer {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-color);
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo-container">
+      <div class="logo-badge">ML Lab 🚀</div>
+      <div class="logo-title">
+        <h1>Python & Machine Learning Foundations</h1>
+        <p>Trung Tâm Trực Quan Động & Đấu Trường Thực Hành Tự Học</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn" onclick="openAllAccordions()">📖 Mở toàn bộ gợi ý</button>
+      <button class="btn btn-primary" onclick="switchTab('tab-arena')">⚡ Đấu Trường Thực Hành (16 Bài)</button>
+    </div>
+  </header>
+
+  <!-- NAVIGATION TABS -->
+  <nav class="tabs-nav">
+    <button class="tab-btn active" onclick="switchTab('tab-overview')">📌 Tổng Quan & Lộ Trình</button>
+    <button class="tab-btn" onclick="switchTab('tab-ex1')">1️⃣ Số Âm/Dương & ReLU</button>
+    <button class="tab-btn" onclick="switchTab('tab-ex2')">2️⃣ Tần Suất & Lọc Từ NLP</button>
+    <button class="tab-btn" onclick="switchTab('tab-ex3')">3️⃣ Cặp Liền Kề & 1D Pooling</button>
+    <button class="tab-btn" onclick="switchTab('tab-ex4')">4️⃣ Hoán Vị & Grid Search</button>
+    <button class="tab-btn" onclick="switchTab('tab-ex5')">5️⃣ Gộp & Khử Trùng (Set)</button>
+    <button class="tab-btn" onclick="switchTab('tab-ex6')">6️⃣ Lọc Chia Hết & K-Fold</button>
+    <button class="tab-btn" onclick="switchTab('tab-ex7')">7️⃣ Số Chẵn & Parity Bit</button>
+    <button class="tab-btn" onclick="switchTab('tab-ex8')">8️⃣ Word Chain (BFS Đồ Thị)</button>
+    <button class="tab-btn" onclick="switchTab('tab-arena')">💻 Đấu Trường Thực Hành</button>
+    <button class="tab-btn" onclick="switchTab('tab-ml-guide')">🧠 Bản Đồ Ứng Dụng ML</button>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
+  <main class="container">
+
+    <!-- ========================================================================= -->
+    <!-- TAB: TỔNG QUAN -->
+    <!-- ========================================================================= -->
+    <div id="tab-overview" class="tab-content active">
+      <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, rgba(31,111,235,0.15), rgba(137,87,229,0.15));">
+        <h2 style="color: #f0f6fc; margin-bottom: 0.5rem;">Chào mừng bạn đến với Phòng Thí Nghiệm Python & Machine Learning! 🚀</h2>
+        <p style="color: var(--text-main); font-size: 0.95rem; max-width: 900px;">
+          Bộ bài tập từ <b>Ex1 đến Ex8</b> không chỉ là các bài tập lập trình cơ bản, mà chính là <b>những viên gạch nền tảng</b> của các kỹ thuật Machine Learning hiện đại: từ hàm kích hoạt mạng nơ-ron (ReLU), làm sạch dữ liệu (Data Cleaning), lọc từ vựng trong NLP, cửa sổ trượt trong 1D CNNs, duyệt không gian siêu tham số (Grid Search), đến thuật toán tìm kiếm trên đồ thị tri thức (Graph Traversal & BFS)!
+        </p>
+        <div style="display: flex; gap: 10px; margin-top: 1rem;">
+          <button class="btn btn-accent" onclick="switchTab('tab-ex1')">Bắt đầu khám phá Bài 1 ➔</button>
+          <button class="btn" onclick="switchTab('tab-arena')">Mở bài tập tự code ➔</button>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <span>🎯 Phương Pháp Học Chủ Động (Active Learning)</span>
+            <span class="badge">Hiểu sâu - Nhớ lâu</span>
+          </div>
+          <ol style="padding-left: 1.25rem; font-size: 0.9rem; color: var(--text-main); display: flex; flex-direction: column; gap: 10px;">
+            <li><b>Trực quan hóa động:</b> Bấm các nút, kéo thanh trượt (slider), chạy hoạt ảnh từng bước để <i>nhìn thấy</i> thuật toán chạy thay vì chỉ đọc code khô khan.</li>
+            <li><b>Tự gõ code thực hành:</b> Mở tab <b>Đấu Trường Thực Hành</b> hoặc file <code>practice_exercises.py</code> trong VS Code/PyCharm để tự tay code.</li>
+            <li><b>Chấm điểm tức thì:</b> Xem hệ thống kiểm tra tự động chạy qua các Edge Cases (rỗng, âm, biên).</li>
+            <li><b>Đối chiếu lời giải tối ưu:</b> Tìm hiểu tại sao dùng Hash Set $O(1)$ tốt hơn duyệt lồng $O(N^2)$.</li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>📚 Cấu Trúc Khóa Học & Nâng Cấp</span>
+            <span class="badge">8 Chủ Đề + 16 Bài Tự Luyện</span>
+          </div>
+          <div style="font-size: 0.85rem; display: flex; flex-direction: column; gap: 8px;">
+            <div>🔹 <b>Ex1:</b> Phân loại mảng số ➔ Hàm kích hoạt <b>ReLU & Leaky ReLU</b></div>
+            <div>🔹 <b>Ex2:</b> Đếm tần suất với Counter ➔ Lọc từ vựng <b>NLP Pruning</b></div>
+            <div>🔹 <b>Ex3:</b> Cửa sổ 2 phần tử ➔ <b>1D Max Pooling & Moving Average</b></div>
+            <div>🔹 <b>Ex4:</b> Hoán vị 3 phần tử ➔ <b>GridSearchCV Hyperparameters</b></div>
+            <div>🔹 <b>Ex5:</b> Gộp danh sách con ➔ <b>Khử trùng bản ghi Feature Store</b></div>
+            <div>🔹 <b>Ex6:</b> Lọc theo tính chất chia hết ➔ <b>Phân chia K-Fold Cross Validation</b></div>
+            <div>🔹 <b>Ex7:</b> Lọc số chẵn ➔ <b>Bitwise Parity & Feature Hashing</b></div>
+            <div>🔹 <b>Ex8:</b> Word Chain BFS ➔ <b>Bi-directional BFS & Knowledge Graph</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB: BÀI 1 -->
+    <!-- ========================================================================= -->
+    <div id="tab-ex1" class="tab-content">
+      <div class="grid-2">
+        <!-- TRỰC QUAN ĐỘNG BÀI 1 -->
+        <div class="card">
+          <div class="card-title">
+            <span>🎮 Trực Quan Hoá Động: Bộ Phân Loại Số</span>
+            <span class="ml-tag">ML: ReLU Activation</span>
+          </div>
+          
+          <div class="control-row">
+            <div class="control-group">
+              <label>Dữ liệu đầu vào (cách nhau bởi dấu phẩy):</label>
+              <input type="text" id="ex1-input" value="-10, -21, -4, -45, -66, 93, 11, -4, -6, 12, 11, 4, 0">
+            </div>
+          </div>
+
+          <div class="control-row">
+            <button class="btn btn-accent" onclick="runEx1Simulation()">▶ Phân loại ngay</button>
+            <button class="btn" onclick="animateEx1StepByStep()">🎬 Hoạt ảnh từng số</button>
+            <button class="btn" onclick="setEx1Preset('normalized')">Mẫu: Cảm biến chuẩn hóa</button>
+            <button class="btn" onclick="setEx1Preset('random')">🎲 Ngẫu nhiên 12 số</button>
+          </div>
+
+          <div class="control-row" style="margin-top: 10px; background: var(--bg-tertiary); padding: 8px 12px; border-radius: 6px;">
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem; color: #f0f6fc;">
+              <input type="checkbox" id="ex1-relu-toggle" onchange="runEx1Simulation()">
+              <b>⚙️ Chế độ kích hoạt ReLU ($f(x) = \max(0, x)$)</b>: Triệt tiêu số âm về 0!
+            </label>
+          </div>
+
+          <!-- KHU VỰC THÙNG CHỨA BUCKETS -->
+          <div class="buckets-wrapper">
+            <div class="bucket negative">
+              <div class="bucket-header" style="color: var(--accent-red);">
+                <span>🔴 Số Âm (< 0)</span>
+                <span id="ex1-neg-count">0</span>
+              </div>
+              <div class="chips-area" id="ex1-neg-chips"></div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;" id="ex1-neg-stats">Tổng: 0 | TB: 0</div>
+            </div>
+
+            <div class="bucket zero">
+              <div class="bucket-header" style="color: var(--text-muted);">
+                <span>⚪ Số Không (== 0)</span>
+                <span id="ex1-zero-count">0</span>
+              </div>
+              <div class="chips-area" id="ex1-zero-chips"></div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">Điểm trung tính</div>
+            </div>
+
+            <div class="bucket positive">
+              <div class="bucket-header" style="color: var(--accent-green);">
+                <span>🟢 Số Dương (> 0)</span>
+                <span id="ex1-pos-count">0</span>
+              </div>
+              <div class="chips-area" id="ex1-pos-chips"></div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;" id="ex1-pos-stats">Tổng: 0 | TB: 0</div>
+            </div>
+          </div>
+
+          <div id="ex1-relu-badge" style="display:none; margin-top: 10px; padding: 8px; background: rgba(188,140,255,0.15); border: 1px solid var(--accent-purple); border-radius: 6px; font-size: 0.8rem; color: #d2a8ff;">
+            ⚡ <b>Hiện tượng Dead Neurons (Nơ-ron tắt):</b> Có <span id="ex1-dead-count">0</span> giá trị âm/0 bị triệt tiêu về 0 (chiếm <span id="ex1-dead-rate">0%</span>).
+          </div>
+        </div>
+
+        <!-- THỰC HÀNH & CÂU HỎI BÀI 1 -->
+        <div class="card">
+          <div class="card-title">
+            <span>💡 Góc Học Tập: Từ Cơ Bản Đến Deep Learning</span>
+            <span class="badge">Lý thuyết & Thực hành</span>
+          </div>
+
+          <div style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 1rem;">
+            <p><b>🔍 Điểm cần chú ý ở code gốc Ex1:</b></p>
+            <p style="color: var(--text-muted);">
+              Trong code gốc: <code>if i < 0: neg.append(i) else: pos.append(i)</code>. Nếu danh sách có số <code>0</code>, nó sẽ bị xếp nhầm vào danh sách số dương! Trong khoa học dữ liệu, số <code>0</code> cần được xử lý riêng biệt (Zero-inflation, Sparse data).
+            </p>
+          </div>
+
+          <div class="accordion" id="acc-ex1-hint">
+            <div class="accordion-header" onclick="toggleAccordion('acc-ex1-hint')">
+              <span>💡 Thử Thách Tự Làm 1.1: Phân Loại 3 Nhóm & Tính Thống Kê</span>
+              <span>▼</span>
+            </div>
+            <div class="accordion-body">
+              <p>Mở file <code>practice_exercises.py</code> và hoàn thiện hàm <code>practice_1_1_sign_and_zero_classifier</code>.</p>
+              <pre style="background:#090d13; padding:8px; border-radius:4px; margin-top:6px; color:#58a6ff;">def practice_1_1_sign_and_zero_classifier(numbers):
+    # Gợi ý: Dùng 1 vòng for, chia làm 3 nhánh if x > 0 / elif x < 0 / else
+    # Đừng quên kiểm tra len(pos) > 0 trước khi tính mean để tránh chia cho 0!</pre>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-question">❓ Câu hỏi tư duy: Tại sao trong Deep Learning hàm ReLU $f(x) = \max(0, x)$ lại được chuộng hơn hàm Sigmoid?</div>
+            <div class="quiz-options" id="quiz-ex1">
+              <div class="quiz-option" onclick="checkQuiz(this, false, 'Sai rồi! ReLU tính toán cực nhanh vì chỉ là phép so sánh max, không tốn tài nguyên tính hàm mũ exp.')">A. Vì ReLU tính toán phức tạp hơn giúp mô hình học sâu hơn.</div>
+              <div class="quiz-option" onclick="checkQuiz(this, true, 'Chính xác! ReLU không bị bão hòa gradient ở miền dương, giải quyết triệt để vấn đề biến mất đạo hàm (Vanishing Gradient) và tính toán cực nhanh!')">B. Tránh triệt tiêu đạo hàm (Vanishing Gradient) và tính toán siêu nhanh.</div>
+              <div class="quiz-option" onclick="checkQuiz(this, false, 'Sai! Giá trị đầu ra của ReLU là [0, +inf), không bị giới hạn trong [-1, 1].')">C. Vì giá trị đầu ra của ReLU luôn nằm trong khoảng [-1, 1].</div>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB: BÀI 2 -->
+    <!-- ========================================================================= -->
+    <div id="tab-ex2" class="tab-content">
+      <div class="grid-2">
+        <!-- TRỰC QUAN ĐỘNG BÀI 2 -->
+        <div class="card">
+          <div class="card-title">
+            <span>📊 Trực Quan Biểu Đồ Tần Suất & Ngưỡng K</span>
+            <span class="ml-tag">NLP: Vocab Pruning</span>
+          </div>
+
+          <div class="control-row">
+            <div class="control-group">
+              <label>Dữ liệu mẫu:</label>
+              <input type="text" id="ex2-input" value="4, 6, 4, 3, 3, 4, 3, 4, 3, 8">
+            </div>
+            <div class="control-group" style="max-width: 140px;">
+              <label>Ngưỡng K = <span id="ex2-k-val" style="color:var(--accent-orange); font-weight:bold;">3</span></label>
+              <input type="range" id="ex2-k-slider" min="0" max="6" value="3" oninput="updateEx2Chart()">
+            </div>
+          </div>
+
+          <div class="control-row">
+            <button class="btn btn-accent" onclick="updateEx2Chart()">🔄 Cập nhật biểu đồ</button>
+            <button class="btn" onclick="setEx2PresetWords()">Mẫu: Từ vựng NLP</button>
+            <button class="btn" onclick="setEx2PresetNumbers()">Mẫu: Ex2 gốc [4,6,4,3...]</button>
+          </div>
+
+          <!-- BIỂU ĐỒ CỘT DYNAMIC -->
+          <div class="visualizer-box">
+            <div class="bar-chart-wrapper" id="ex2-chart">
+              <!-- Threshold line -->
+              <div class="threshold-line" id="ex2-threshold-line">
+                <span class="threshold-badge">Ngưỡng K</span>
+              </div>
+              <!-- Bars rendered here by JS -->
+            </div>
+          </div>
+
+          <div style="margin-top: 12px; font-size: 0.85rem;">
+            <b>Kết quả phần tử có tần suất > K:</b>
+            <span id="ex2-result-display" style="color: var(--accent-green); font-weight: bold; font-size: 1rem; margin-left: 8px;">[4, 3]</span>
+          </div>
+        </div>
+
+        <!-- THỰC HÀNH & CÂU HỎI BÀI 2 -->
+        <div class="card">
+          <div class="card-title">
+            <span>💡 Góc Học Tập: Xử Lý Ngôn Ngữ Tự Nhiên (NLP)</span>
+            <span class="badge">Độ Phức Tạp O(N)</span>
+          </div>
+
+          <div style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 1rem;">
+            <p><b>Ứng dụng thực tế: Cắt tỉa từ vựng (Vocabulary Pruning)</b></p>
+            <p style="color: var(--text-muted);">
+              Khi xây dựng mô hình NLP (Text Classification, LLMs, TF-IDF), một văn bản có hàng chục ngàn từ. Nếu giữ lại các từ chỉ xuất hiện 1 lần (từ gõ sai, từ hiếm), mô hình sẽ bị quá khớp (overfitting). Nếu giữ lại từ xuất hiện quá nhiều như "the", "và", "là", chúng không mang thông tin phân loại. Vì vậy, ta lọc theo ngưỡng tần suất <code>min_freq &lt;= freq &lt;= max_freq</code>!
+            </p>
+          </div>
+
+          <div class="accordion" id="acc-ex2-hint">
+            <div class="accordion-header" onclick="toggleAccordion('acc-ex2-hint')">
+              <span>💡 Thử Thách Tự Làm 2.2: NLP Vocabulary Pruner</span>
+              <span>▼</span>
+            </div>
+            <div class="accordion-body">
+              <p>Mở file <code>practice_exercises.py</code> và code hàm <code>practice_2_2_nlp_vocabulary_pruner</code>.</p>
+              <pre style="background:#090d13; padding:8px; border-radius:4px; margin-top:6px; color:#58a6ff;">from collections import Counter
+# 1. Thu thập tất cả từ và lowercase()
+# 2. Dùng Counter(all_words)
+# 3. Lọc [w for w, c in counts.items() if min_freq <= c <= max_freq]</pre>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-question">❓ Độ phức tạp thời gian khi đếm tần suất bằng <code>collections.Counter</code> trên danh sách N phần tử là bao nhiêu?</div>
+            <div class="quiz-options" id="quiz-ex2">
+              <div class="quiz-option" onclick="checkQuiz(this, true, 'Chính xác! Counter sử dụng bảng băm (Hash Table) nên mỗi thao tác tra cứu/cộng dồn là O(1), duyệt qua N phần tử mất O(N).')">A. O(N) - Tuyến tính</div>
+              <div class="quiz-option" onclick="checkQuiz(this, false, 'Sai! Đó là độ phức tạp nếu bạn dùng 2 vòng lặp lồng nhau hoặc gọi data.count(x) bên trong vòng for.')">B. O(N^2) - Bậc hai</div>
+              <div class="quiz-option" onclick="checkQuiz(this, false, 'Sai! Counter không cần sắp xếp nên không mất O(N log N).')">C. O(N log N)</div>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB: BÀI 3 -->
+    <!-- ========================================================================= -->
+    <div id="tab-ex3" class="tab-content">
+      <div class="grid-2">
+        <!-- TRỰC QUAN ĐỘNG BÀI 3 -->
+        <div class="card">
+          <div class="card-title">
+            <span>🪟 Trực Quan Cửa Sổ Trượt (Sliding Window)</span>
+            <span class="ml-tag">CNNs: 1D Max Pooling</span>
+          </div>
+
+          <div class="control-row">
+            <div class="control-group">
+              <label>Dãy số đầu vào:</label>
+              <input type="text" id="ex3-input" value="4, 5, 6, 7, 3, 9, 11, 2, 10">
+            </div>
+          </div>
+
+          <div class="control-row">
+            <button class="btn btn-accent" id="ex3-btn-play" onclick="toggleEx3AutoPlay()">▶ Tự động chạy</button>
+            <button class="btn" onclick="stepEx3(-1)">◀ Lùi 1 bước</button>
+            <button class="btn" onclick="stepEx3(1)">▶ Kế tiếp</button>
+            <button class="btn" onclick="resetEx3()">⏮ Về đầu</button>
+          </div>
+
+          <div class="visualizer-box">
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">Mảng đầu vào (Cửa sổ trượt [i, i+1]):</div>
+            <div class="window-track" id="ex3-track">
+              <!-- Rendered by JS -->
+            </div>
+
+            <div style="margin-top: 15px; padding: 10px; background: var(--bg-secondary); border-radius: 6px; display: flex; align-items: center; justify-content: space-between;">
+              <span id="ex3-step-calc" style="font-weight: bold; color: var(--accent-gold);">Đang ở vị trí: 0</span>
+              <span id="ex3-comparison-badge" style="font-size: 0.85rem;">So sánh: max(4, 5) = <b>5</b></span>
+            </div>
+
+            <div style="margin-top: 15px;">
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">Mảng kết quả đang tích lũy:</div>
+              <div class="chips-area" id="ex3-output-chips"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- THỰC HÀNH & CÂU HỎI BÀI 3 -->
+        <div class="card">
+          <div class="card-title">
+            <span>💡 Cửa Sổ Trượt & 1D Max Pooling trong Deep Learning</span>
+            <span class="badge">Feature Downsampling</span>
+          </div>
+
+          <div style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 1rem;">
+            <p><b>Tại sao bài tập này quan trọng trong AI?</b></p>
+            <p style="color: var(--text-muted);">
+              Trong mạng nơ-ron tích chập (Convolutional Neural Networks - CNNs) xử lý âm thanh, tín hiệu điện tâm đồ (ECG), hoặc chuỗi thời gian (time-series), lớp <b>1D Max Pooling</b> lấy giá trị lớn nhất trong cửa sổ để giữ lại đặc trưng quan trọng nhất và giảm kích thước dữ liệu!
+            </p>
+          </div>
+
+          <div class="accordion" id="acc-ex3-hint">
+            <div class="accordion-header" onclick="toggleAccordion('acc-ex3-hint')">
+              <span>💡 Thử Thách Tự Làm 3.2: Tự Cài Đặt 1D Max Pooling</span>
+              <span>▼</span>
+            </div>
+            <div class="accordion-body">
+              <p>Mở <code>practice_exercises.py</code> và code hàm <code>practice_3_2_max_pooling_1d</code>.</p>
+              <pre style="background:#090d13; padding:8px; border-radius:4px; margin-top:6px; color:#58a6ff;">def practice_3_2_max_pooling_1d(signal, pool_size=2, stride=2):
+    # Khác với Ex3 (stride=1), Max Pooling thường có stride = pool_size
+    # Dùng vòng while idx + pool_size <= len(signal):
+    #     result.append(max(signal[idx : idx + pool_size]))
+    #     idx += stride</pre>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-question">❓ Nếu danh sách có N phần tử, kết quả của bài toán lấy max cặp liền kề (stride=1) có bao nhiêu phần tử?</div>
+            <div class="quiz-options" id="quiz-ex3">
+              <div class="quiz-option" onclick="checkQuiz(this, true, 'Đúng! Có đúng N - 1 cặp liền kề: (0,1), (1,2), ..., (N-2, N-1).')">A. N - 1 phần tử</div>
+              <div class="quiz-option" onclick="checkQuiz(this, false, 'Sai! Cặp cuối cùng kết thúc tại N-1 nên chỉ có N - 1 cặp.')">B. N phần tử</div>
+              <div class="quiz-option" onclick="checkQuiz(this, false, 'Sai! Đó là khi stride = 2.')">C. N / 2 phần tử</div>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB: BÀI 4 -->
+    <!-- ========================================================================= -->
+    <div id="tab-ex4" class="tab-content">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <span>🌲 Cây Quyết Định Hoán Vị (Permutation Tree)</span>
+            <span class="ml-tag">ML: Hyperparameter Tuning</span>
+          </div>
+
+          <div class="control-row">
+            <div class="control-group">
+              <label>Tập phần tử (chọn 3 ký tự bất kỳ):</label>
+              <input type="text" id="ex4-elements" value="1, 2, 3">
+            </div>
+            <button class="btn btn-accent" style="align-self: flex-end;" onclick="renderEx4Permutations()">Tạo hoán vị & Cây</button>
+          </div>
+
+          <div class="visualizer-box">
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">Cây lựa chọn 3 tầng (Bấm vào hoán vị để xem đường đi):</div>
+            <div class="tree-container" id="ex4-tree">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <div style="margin-top: 15px;">
+            <div style="font-size: 0.85rem; font-weight: bold; margin-bottom: 6px;">Tổng cộng: <span id="ex4-total-count" style="color:var(--accent-cyan);">6</span> hoán vị ($3! = 6$):</div>
+            <div class="chips-area" id="ex4-perms-list"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>💡 Quay Lui (Backtracking) & Tìm Kiếm Siêu Tham Số</span>
+            <span class="badge">O(N!) Complexity</span>
+          </div>
+
+          <div style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 1rem;">
+            <p><b>Từ 3 vòng for lồng nhau đến thuật toán tổng quát:</b></p>
+            <p style="color: var(--text-muted);">
+              Code gốc trong Ex4 dùng 3 vòng lặp lồng nhau chỉ chạy được cho đúng 3 phần tử. Nếu danh sách có N phần tử, bạn không thể viết N vòng lặp! Giải pháp chuẩn mực là dùng <b>Đệ quy quay lui (Backtracking)</b> hoặc <b>Tích Descartes</b> trong GridSearchCV.
+            </p>
+          </div>
+
+          <div class="accordion" id="acc-ex4-hint">
+            <div class="accordion-header" onclick="toggleAccordion('acc-ex4-hint')">
+              <span>💡 Thử Thách Tự Làm 4.2: GridSearchCV Combinations</span>
+              <span>▼</span>
+            </div>
+            <div class="accordion-body">
+              <p>Mở <code>practice_exercises.py</code> và code hàm <code>practice_4_2_grid_search_combinations</code>.</p>
+              <pre style="background:#090d13; padding:8px; border-radius:4px; margin-top:6px; color:#58a6ff;"># Đầu vào: {'lr': [0.01, 0.1], 'batch': [16, 32]}
+# Đầu ra: 4 cấu hình dict kết hợp từng giá trị
+# Áp dụng đệ quy qua danh sách các key của dictionary!</pre>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-question">❓ Số lượng hoán vị của một tập gồm N phần tử phân biệt là bao nhiêu?</div>
+            <div class="quiz-options" id="quiz-ex4">
+              <div class="quiz-option" onclick="checkQuiz(this, true, 'Chính xác! N! = N * (N-1) * ... * 1. Với N=10 đã là 3,628,800 hoán vị!')">A. N! (N giai thừa)</div>
+              <div class="quiz-option" onclick="checkQuiz(this, false, 'Sai! 2^N là số lượng tập con (subsets).')">B. 2^N</div>
+              <div class="quiz-option" onclick="checkQuiz(this, false, 'Sai! N^2 là số cặp.')">C. N^2</div>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB: BÀI 5 -->
+    <!-- ========================================================================= -->
+    <div id="tab-ex5" class="tab-content">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <span>🔗 Băng Chuyền Khử Trùng Giữ Thứ Tự</span>
+            <span class="ml-tag">Data Cleaning: Deduplication</span>
+          </div>
+
+          <div class="control-row">
+            <div class="control-group">
+              <label>Danh sách 1:</label>
+              <input type="text" id="ex5-l1" value="4, 3, 5">
+            </div>
+            <div class="control-group">
+              <label>Danh sách 2:</label>
+              <input type="text" id="ex5-l2" value="1, 3">
+            </div>
+          </div>
+
+          <div class="control-row">
+            <button class="btn btn-accent" onclick="runEx5Dedup()">▶ Chạy khử trùng</button>
+            <button class="btn" onclick="animateEx5Steps()">🎬 Hoạt ảnh băng chuyền</button>
+          </div>
+
+          <div class="visualizer-box">
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">Chuỗi sau khi gộp trước khử trùng:</div>
+            <div class="chips-area" id="ex5-raw-chips" style="margin-bottom: 12px;"></div>
+
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">Bộ nhớ Hash Set (để tra cứu $O(1)$ xem phần tử đã xuất hiện chưa):</div>
+            <div class="chips-area" id="ex5-seen-chips" style="margin-bottom: 12px;"></div>
+
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">Kết quả cuối cùng (Khử trùng & Giữ thứ tự):</div>
+            <div class="chips-area" id="ex5-final-chips"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>💡 Tại Sao Dùng <code>dict.fromkeys()</code> Thay Vì <code>set()</code>?</span>
+            <span class="badge">Python Idiom</span>
+          </div>
+
+          <div style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 1rem;">
+            <p><b>Bí quyết phỏng vấn Python:</b></p>
+            <p style="color: var(--text-muted);">
+              Rất nhiều người mới học dùng <code>list(set(data))</code> để khử trùng lặp. Tuy nhiên, <code>set()</code> trong Python <b>không bảo toàn thứ tự ban đầu</b>! Từ Python 3.7+, dictionary được cam kết giữ nguyên thứ tự chèn, vì vậy <code>list(dict.fromkeys(data))</code> là cách nhanh nhất để vừa khử trùng lặp trong $O(N)$ vừa giữ trọn vẹn thứ tự xuất hiện đầu tiên!
+            </p>
+          </div>
+
+          <div class="accordion" id="acc-ex5-hint">
+            <div class="accordion-header" onclick="toggleAccordion('acc-ex5-hint')">
+              <span>💡 Thử Thách Tự Làm 5.1: Khử Trùng Có Key Function</span>
+              <span>▼</span>
+            </div>
+            <div class="accordion-body">
+              <p>Mở <code>practice_exercises.py</code> và code hàm <code>practice_5_1_ordered_deduplication</code>.</p>
+              <pre style="background:#090d13; padding:8px; border-radius:4px; margin-top:6px; color:#58a6ff;"># Yêu cầu: Khử trùng lặp chuỗi không phân biệt hoa thường!
+# Ví dụ: ['Apple', 'banana', 'APPLE'] -> ['Apple', 'banana']
+# Dùng seen = set() để lưu key_func(item)!</pre>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-question">❓ Phương pháp nào sau đây giúp loại bỏ phần tử trùng lặp mà VẪN GIỮ THỨ TỰ ban đầu trong $O(N)$?</div>
+            <div class="quiz-options" id="quiz-ex5">
+              <div class="quiz-option" onclick="checkQuiz(this, true, 'Chính xác! dict.fromkeys() giữ nguyên thứ tự chèn và tra cứu O(1).')">A. list(dict.fromkeys(arr))</div>
+              <div class="quiz-option" onclick="checkQuiz(this, false, 'Sai! set() xáo trộn thứ tự các phần tử ngẫu nhiên.')">B. list(set(arr))</div>
+              <div class="quiz-option" onclick="checkQuiz(this, false, 'Sai! Dùng arr.count(x) tốn O(N^2) thời gian.')">C. [x for x in arr if arr.count(x) == 1]</div>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB: BÀI 6 -->
+    <!-- ========================================================================= -->
+    <div id="tab-ex6" class="tab-content">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <span>➗ Ma Trận Lọc Số Chia Hết & Lọc Bỏ</span>
+            <span class="ml-tag">ML: Stratified Sampling</span>
+          </div>
+
+          <div class="control-row">
+            <div class="control-group">
+              <label>Đoạn [Từ, Đến]:</label>
+              <div style="display:flex; gap:6px;">
+                <input type="number" id="ex6-start" value="2000" style="width:50%;">
+                <input type="number" id="ex6-end" value="2100" style="width:50%;">
+              </div>
+            </div>
+            <div class="control-group">
+              <label>Chia hết cho (A):</label>
+              <input type="number" id="ex6-div" value="7">
+            </div>
+            <div class="control-group">
+              <label>Và KHÔNG chia hết cho (B):</label>
+              <input type="number" id="ex6-not-div" value="5">
+            </div>
+          </div>
+
+          <div class="control-row">
+            <button class="btn btn-accent" onclick="runEx6Filter()">🔍 Lọc ngay</button>
+            <button class="btn" onclick="setEx6FullRange()">Xem đoạn đầy đủ (2000-3200)</button>
+          </div>
+
+          <div class="visualizer-box" style="max-height: 280px; overflow-y: auto;">
+            <div style="display: flex; gap: 15px; margin-bottom: 10px; font-size: 0.8rem;">
+              <span style="color:var(--accent-cyan);">🟦 Chia hết cho 7</span>
+              <span style="color:var(--accent-red);">❌ Bị loại vì chia hết cho 5</span>
+              <span style="color:var(--accent-green); font-weight: bold;">🟩 THỎA MÃN</span>
+            </div>
+            <div class="chips-area" id="ex6-grid"></div>
+          </div>
+
+          <div style="margin-top: 10px; font-size: 0.85rem;">
+            <b>Số lượng số thỏa mãn:</b> <span id="ex6-match-count" style="color:var(--accent-green); font-weight:bold;">0</span> số.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>💡 Ứng Dụng: Chia Tập Dữ Liệu K-Fold Cross Validation</span>
+            <span class="badge">Model Evaluation</span>
+          </div>
+
+          <div style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 1rem;">
+            <p><b>Liên hệ với Machine Learning:</b></p>
+            <p style="color: var(--text-muted);">
+              Phép chia lấy dư <code>i % k</code> chính là cách đơn giản và phổ biến nhất để phân bổ các mẫu dữ liệu vào $K$ nhóm (folds) trong kỹ thuật kiểm định chéo (Cross Validation), đảm bảo mọi mẫu đều được dùng làm tập kiểm thử đúng 1 lần!
+            </p>
+          </div>
+
+          <div class="accordion" id="acc-ex6-hint">
+            <div class="accordion-header" onclick="toggleAccordion('acc-ex6-hint')">
+              <span>💡 Thử Thách Tự Làm 6.2: Tự Viết K-Fold Split Indices</span>
+              <span>▼</span>
+            </div>
+            <div class="accordion-body">
+              <p>Mở <code>practice_exercises.py</code> và code hàm <code>practice_6_2_kfold_split_indices</code>.</p>
+              <pre style="background:#090d13; padding:8px; border-radius:4px; margin-top:6px; color:#58a6ff;"># Không dùng scikit-learn!
+# Chia N chỉ số [0..N-1] thành n_splits phần.
+# Với mỗi fold: val_indices là phần thứ k, train_indices là phần còn lại!</pre>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-question">❓ Số nào sau đây chia hết cho 7 NHƯNG KHÔNG chia hết cho 5?</div>
+            <div class="quiz-options" id="quiz-ex6">
+              <div class="quiz-option" onclick="checkQuiz(this, true, 'Đúng! 2002 / 7 = 286 (dư 0) và tận cùng là 2 nên không chia hết cho 5.')">A. 2002</div>
+              <div class="quiz-option" onclick="checkQuiz(this, false, 'Sai! 2030 chia hết cho cả 7 và 5 (2030 = 35 * 58).')">B. 2030</div>
+              <div class="quiz-option" onclick="checkQuiz(this, false, 'Sai! 2000 chia hết cho 5.')">C. 2000</div>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB: BÀI 7 -->
+    <!-- ========================================================================= -->
+    <div id="tab-ex7" class="tab-content">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <span>🎯 Khám Phá Số Chẵn & Parity Bit Nhị Phân</span>
+            <span class="ml-tag">Feature Hashing</span>
+          </div>
+
+          <div class="control-row">
+            <div class="control-group">
+              <label>Kiểm tra trực tiếp một số:</label>
+              <input type="number" id="ex7-test-num" value="2024" oninput="inspectNumberEx7()">
+            </div>
+          </div>
+
+          <div class="visualizer-box">
+            <div style="font-size: 0.85rem; font-weight: bold; margin-bottom: 8px;">Phân tích chi tiết số <span id="ex7-inspect-target" style="color:var(--accent-cyan);">2024</span>:</div>
+            
+            <div style="margin-bottom: 12px;">
+              <span style="font-size: 0.8rem; color: var(--text-muted);">1. Kiểm tra chẵn lẻ ($n \% 2 == 0$):</span>
+              <div id="ex7-parity-badge" style="margin-top: 4px;"></div>
+            </div>
+
+            <div style="margin-bottom: 12px;">
+              <span style="font-size: 0.8rem; color: var(--text-muted);">2. Phân tích từng chữ số (All Even Digits):</span>
+              <div class="chips-area" id="ex7-digits-breakdown" style="margin-top: 4px;"></div>
+            </div>
+
+            <div>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">3. Biểu diễn nhị phân & Hamming Weight:</span>
+              <div id="ex7-binary-info" style="font-family: monospace; margin-top: 4px; color: var(--accent-gold);"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>💡 Hai Biến Thể Bài Tập Phổ Biến</span>
+            <span class="badge">Interview Concept</span>
+          </div>
+
+          <div style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 1rem;">
+            <p><b>Lưu ý quan trọng:</b></p>
+            <p style="color: var(--text-muted);">
+              Bài Ex7 trong đề gốc chỉ yêu cầu <code>i % 2 == 0</code> (số chẵn thông thường). Nhưng trong các đề thi và phỏng vấn Python/Machine Learning, câu hỏi thường gặp hơn là: <i>"Tìm số mà TẤT CẢ các chữ số của nó đều là số chẵn"</i> (ví dụ: 2000, 2002, 2024). Chúng tôi đã cung cấp hàm giải quyết cả hai biến thể này trong code!
+            </p>
+          </div>
+
+          <div class="accordion" id="acc-ex7-hint">
+            <div class="accordion-header" onclick="toggleAccordion('acc-ex7-hint')">
+              <span>💡 Thử Thách Tự Làm 7.1: All Even Digits</span>
+              <span>▼</span>
+            </div>
+            <div class="accordion-body">
+              <p>Mở <code>practice_exercises.py</code> và code hàm <code>practice_7_1_all_even_digits</code>.</p>
+              <pre style="background:#090d13; padding:8px; border-radius:4px; margin-top:6px; color:#58a6ff;">even_digits = {'0', '2', '4', '6', '8'}
+# Cách nhanh: all(ch in even_digits for ch in str(x))</pre>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-question">❓ Số 2026 có thỏa mãn điều kiện "Mọi chữ số đều chẵn" không?</div>
+            <div class="quiz-options" id="quiz-ex7">
+              <div class="quiz-option" onclick="checkQuiz(this, true, 'Đúng! Các chữ số là 2, 0, 2, 6 đều là số chẵn.')">A. Có thỏa mãn</div>
+              <div class="quiz-option" onclick="checkQuiz(this, false, 'Sai! Các chữ số của 2026 là 2, 0, 2, 6, không có chữ số lẻ nào.')">B. Không thỏa mãn</div>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB: BÀI 8 -->
+    <!-- ========================================================================= -->
+    <div id="tab-ex8" class="tab-content">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <span>🌐 Trực Quan Đồ Thị BFS Word Chain (Tìm Đường Ngắn Nhất)</span>
+            <span class="ml-tag">Graph & BFS</span>
+          </div>
+
+          <div class="control-row">
+            <div class="control-group">
+              <label>Từ bắt đầu:</label>
+              <input type="text" id="ex8-start" value="head">
+            </div>
+            <div class="control-group">
+              <label>Từ đích đến:</label>
+              <input type="text" id="ex8-end" value="tail">
+            </div>
+          </div>
+
+          <div class="control-row">
+            <button class="btn btn-accent" onclick="runEx8WordChain()">🔍 Tìm chuỗi từ (BFS)</button>
+            <button class="btn" onclick="setEx8Preset('cat', 'dog')">Mẫu: cat ➔ dog</button>
+            <button class="btn" onclick="setEx8Preset('data', 'task')">Mẫu: data ➔ task</button>
+            <button class="btn" onclick="setEx8Preset('head', 'tail')">Mẫu: head ➔ tail</button>
+          </div>
+
+          <div class="visualizer-box">
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">Đồ thị mô phỏng kết nối (Suffix(2) == Prefix(2)):</div>
+            <svg class="graph-svg" id="ex8-svg"></svg>
+          </div>
+
+          <div style="margin-top: 12px; font-size: 0.85rem;">
+            <b>Chuỗi từ ngắn nhất tìm được:</b>
+            <div id="ex8-chain-result" style="margin-top: 6px; font-weight: bold; color: var(--accent-gold); font-size: 1.05rem;">
+              head ➔ adyta ➔ tail
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>💡 Bản Chất BFS & Đồ Thị Tri Thức (Knowledge Graphs)</span>
+            <span class="badge">Shortest Path</span>
+          </div>
+
+          <div style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 1rem;">
+            <p><b>Tại sao BFS luôn đảm bảo tìm được đường đi ngắn nhất?</b></p>
+            <p style="color: var(--text-muted);">
+              Thuật toán duyệt theo chiều rộng (Breadth-First Search - BFS) sử dụng hàng đợi (Queue - FIFO). Nó thăm tất cả các đỉnh cách đỉnh gốc 1 bước, sau đó đến 2 bước, rồi 3 bước... Vì vậy ngay khi chạm tới từ đích, đường đi đó chắc chắn có số bước ít nhất!
+            </p>
+          </div>
+
+          <div class="accordion" id="acc-ex8-hint">
+            <div class="accordion-header" onclick="toggleAccordion('acc-ex8-hint')">
+              <span>💡 Thử Thách Tự Làm 8.2: Bi-directional BFS (Tìm Kiếm 2 Chiều)</span>
+              <span>▼</span>
+            </div>
+            <div class="accordion-body">
+              <p>Mở <code>practice_exercises.py</code> và code hàm <code>practice_8_2_bidirectional_bfs_chain</code>.</p>
+              <pre style="background:#090d13; padding:8px; border-radius:4px; margin-top:6px; color:#58a6ff;"># Mở rộng đồng thời từ start_word tiến tới và từ end_word lùi lại.
+# Khi 2 hướng gặp nhau tại cùng 1 từ, lập tức kết nối và dừng lại!
+# Giảm không gian duyệt từ O(b^d) xuống O(b^(d/2)) - nhanh gấp hàng trăm lần!</pre>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-question">❓ Cấu trúc dữ liệu nào là chuẩn mực để cài đặt thuật toán BFS (Breadth-First Search)?</div>
+            <div class="quiz-options" id="quiz-ex8">
+              <div class="quiz-option" onclick="checkQuiz(this, true, 'Chính xác! Hàng đợi (Queue) vào trước ra trước (FIFO) đảm bảo duyệt theo từng mức khoảng cách.')">A. collections.deque (Hàng đợi FIFO)</div>
+              <div class="quiz-option" onclick="checkQuiz(this, false, 'Sai! Stack dùng cho thuật toán DFS (Depth-First Search).')">B. List làm Stack (LIFO)</div>
+              <div class="quiz-option" onclick="checkQuiz(this, false, 'Sai! Heap dùng cho Dijkstra khi cạnh có trọng số.')">C. PriorityQueue (Min-Heap)</div>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB: ĐẤU TRƯỜNG THỰC HÀNH -->
+    <!-- ========================================================================= -->
+    <div id="tab-arena" class="tab-content">
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <div class="card-title">
+          <span>⚡ Đấu Trường Thực Hành Tự Code & Chấm Điểm Trực Tuyến</span>
+          <span class="badge">16 Bài Tập Chuyên Sâu</span>
+        </div>
+        <p style="font-size: 0.9rem; color: var(--text-main); margin-bottom: 1rem;">
+          Chọn bất kỳ bài tập nào bên dưới, đọc đề bài, gõ code trực tiếp vào khung soạn thảo và bấm <b>"Chạy & Chấm Điểm"</b>! Bạn cũng có thể thực hành trực tiếp trong terminal bằng lệnh: <code>py practice_exercises.py</code>.
+        </p>
+
+        <div class="control-row">
+          <div class="control-group" style="max-width: 400px;">
+            <label>Chọn bài tập thực hành:</label>
+            <select id="arena-exercise-select" onchange="loadArenaExercise()">
+              <optgroup label="Chủ đề 1: Phân Loại & ReLU">
+                <option value="1.1">Bài 1.1: Phân loại 3 nhóm Âm, Không, Dương & Thống Kê</option>
+                <option value="1.2">Bài 1.2: Cài đặt hàm kích hoạt ReLU & Dead Neurons</option>
+              </optgroup>
+              <optgroup label="Chủ đề 2: Tần Suất & NLP">
+                <option value="2.1">Bài 2.1: Top K từ xuất hiện nhiều nhất</option>
+                <option value="2.2">Bài 2.2: NLP Vocabulary Pruner (Lọc từ hiếm & Stopwords)</option>
+              </optgroup>
+              <optgroup label="Chủ đề 3: Cửa Sổ Trượt & Pooling">
+                <option value="3.1">Bài 3.1: Trung bình trượt 1D (Moving Average)</option>
+                <option value="3.2">Bài 3.2: Mô phỏng 1D Max Pooling Layer trong CNNs</option>
+              </optgroup>
+              <optgroup label="Chủ đề 4: Hoán Vị & Grid Search">
+                <option value="4.1">Bài 4.1: Sinh hoán vị chập r bằng Đệ quy quay lui</option>
+                <option value="4.2">Bài 4.2: Sinh không gian siêu tham số GridSearchCV</option>
+              </optgroup>
+              <optgroup label="Chủ đề 5: Khử Trùng Lặp & Gộp">
+                <option value="5.1">Bài 5.1: Khử trùng lặp giữ thứ tự với key function</option>
+                <option value="5.2">Bài 5.2: Gộp danh sách bản ghi Feature Store</option>
+              </optgroup>
+              <optgroup label="Chủ đề 6: Lọc & K-Fold">
+                <option value="6.1">Bài 6.1: Bộ lọc chia hết tùy biến đa điều kiện</option>
+                <option value="6.2">Bài 6.2: Tự viết thuật toán chia K-Fold Cross Validation</option>
+              </optgroup>
+              <optgroup label="Chủ đề 7: Số Chẵn & Parity">
+                <option value="7.1">Bài 7.1: Tìm các số có toàn bộ chữ số chẵn</option>
+                <option value="7.2">Bài 7.2: Phân loại Parity bit nhị phân & Hamming weight</option>
+              </optgroup>
+              <optgroup label="Chủ đề 8: Word Ladder & BFS">
+                <option value="8.1">Bài 8.1: Word Ladder khác 1 chữ cái (LeetCode 127)</option>
+                <option value="8.2">Bài 8.2: Bi-directional BFS Word Chain</option>
+              </optgroup>
+            </select>
+          </div>
+          <button class="btn btn-primary" style="align-self: flex-end;" onclick="runArenaTest()">▶ Chạy & Chấm Điểm</button>
+          <button class="btn" style="align-self: flex-end;" onclick="resetArenaTemplate()">↺ Nạp lại code mẫu</button>
+          <button class="btn btn-accent" style="align-self: flex-end;" onclick="fillArenaSolution()">✨ Nạp lời giải mẫu</button>
+        </div>
+
+        <div id="arena-description-box" style="background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 6px; padding: 12px; margin-bottom: 12px; font-size: 0.85rem;">
+          <!-- Description filled by JS -->
+        </div>
+
+        <div class="code-editor-box">
+          <div class="editor-header">
+            <span>Trình soạn thảo Python Code</span>
+            <span id="arena-func-name">practice_function()</span>
+          </div>
+          <textarea class="code-area" id="arena-code-area"></textarea>
+        </div>
+
+        <div style="margin-bottom: 8px; font-size: 0.85rem; font-weight: bold;">Kết Quả Kiểm Thử (Test Cases Output):</div>
+        <div class="test-result-box" id="arena-test-output">
+          Bấm "Chạy & Chấm Điểm" để kiểm tra code của bạn...
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB: BẢN ĐỒ ỨNG DỤNG MACHINE LEARNING -->
+    <!-- ========================================================================= -->
+    <div id="tab-ml-guide" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <span>🧠 Bản Đồ Kết Nối: Từ Bài Tập Cơ Bản Đến Machine Learning</span>
+          <span class="badge">Kiến thức nền tảng</span>
+        </div>
+        <div style="font-size: 0.9rem; display: flex; flex-direction: column; gap: 14px; color: var(--text-main);">
+          <div style="background: var(--bg-primary); padding: 12px; border-radius: 8px; border-left: 4px solid var(--accent-cyan);">
+            <h4 style="color:#58a6ff; margin-bottom:4px;">1. Phân loại số (Ex1) ➔ Hàm kích hoạt ReLU & Chuẩn hóa dữ liệu (Zero-Centering)</h4>
+            <p style="color:var(--text-muted);">
+              Phép kiểm tra <code>i < 0</code> hay <code>i >= 0</code> là tiền đề của hàm kích hoạt <b>ReLU</b> trong mạng nơ-ron: $f(x) = \max(0, x)$. Ngoài ra, trong tiền xử lý dữ liệu bảng, bước chuẩn hóa <i>StandardScaler</i> ($x - \mu$) đưa kỳ vọng về 0, chia tách dữ liệu thành nửa âm và nửa dương.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-primary); padding: 12px; border-radius: 8px; border-left: 4px solid var(--accent-green);">
+            <h4 style="color:#3fb950; margin-bottom:4px;">2. Tần suất Counter (Ex2) ➔ Lọc tập từ vựng trong Xử lý ngôn ngữ tự nhiên (NLP)</h4>
+            <p style="color:var(--text-muted);">
+              Mọi pipeline NLP đều bắt đầu bằng việc thống kê tần suất từ vựng (Term Frequency). Các từ có tần suất quá thấp (&lt; k) được gộp thành token <code>&lt;UNK&gt;</code> (Unknown word) để giảm độ phức tạp của mô hình ngôn ngữ.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-primary); padding: 12px; border-radius: 8px; border-left: 4px solid var(--accent-gold);">
+            <h4 style="color:#e3b341; margin-bottom:4px;">3. Cặp liền kề max(num, num_next) (Ex3) ➔ 1D Convolution & 1D Max-Pooling</h4>
+            <p style="color:var(--text-muted);">
+              Duyệt qua các cặp số lân cận với cửa sổ kích thước 2 là hình mẫu nguyên bản của phép tích chập (Convolution) và giảm chiều dữ liệu (Max-Pooling) trong mạng 1D-CNN xử lý âm thanh, tín hiệu EEG/ECG.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-primary); padding: 12px; border-radius: 8px; border-left: 4px solid var(--accent-purple);">
+            <h4 style="color:#bc8cff; margin-bottom:4px;">4. Hoán vị (Ex4) ➔ Tìm kiếm siêu tham số (GridSearchCV) & Permutation Feature Importance</h4>
+            <p style="color:var(--text-muted);">
+              Sinh tất cả các tổ hợp là cốt lõi của GridSearchCV (tìm learning_rate, batch_size, optimizer tối ưu). Kỹ thuật hoán vị còn được dùng để đo tầm quan trọng của thuộc tính (Permutation Importance): hoán vị ngẫu nhiên 1 cột xem độ chính xác của mô hình giảm bao nhiêu.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-primary); padding: 12px; border-radius: 8px; border-left: 4px solid var(--accent-orange);">
+            <h4 style="color:#f0883e; margin-bottom:4px;">5. Gộp & Khử trùng giữ thứ tự (Ex5) ➔ Khử trùng bản ghi Feature Store & Data Cleaning</h4>
+            <p style="color:var(--text-muted);">
+              Khi thu thập dữ liệu từ nhiều nguồn khác nhau (multi-source ingestion), việc gộp và loại bỏ các bản ghi trùng lặp nhưng vẫn bảo toàn thứ tự thời gian xuất hiện là yêu cầu cốt tử trong bất kỳ hệ thống Data Pipeline nào.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-primary); padding: 12px; border-radius: 8px; border-left: 4px solid var(--accent-cyan);">
+            <h4 style="color:#58a6ff; margin-bottom:4px;">6. Lọc chia hết (Ex6) ➔ Phân tầng mẫu & K-Fold Cross Validation</h4>
+            <p style="color:var(--text-muted);">
+              Phép chia lấy dư <code>i % k</code> được dùng để tạo fold indices trong Cross Validation hoặc downsampling dữ liệu lớn theo tỷ lệ xác định.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-primary); padding: 12px; border-radius: 8px; border-left: 4px solid var(--accent-green);">
+            <h4 style="color:#3fb950; margin-bottom:4px;">7. Số chẵn & Parity bit (Ex7) ➔ Mã hóa đặc trưng nhị phân (Binary Hashing Trick)</h4>
+            <p style="color:var(--text-muted);">
+              Đếm số bit 1 (Hamming weight) và bit parity là nền tảng của kỹ thuật băm đặc trưng (Hashing Trick) dùng trong các hệ thống gợi ý quy mô lớn (Recommender Systems) để nén hàng triệu categories thành vector cố định.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-primary); padding: 12px; border-radius: 8px; border-left: 4px solid var(--accent-gold);">
+            <h4 style="color:#e3b341; margin-bottom:4px;">8. Word Chain BFS (Ex8) ➔ Đồ thị tri thức (Knowledge Graphs) & Tìm đường AI</h4>
+            <p style="color:var(--text-muted);">
+              Thuật toán BFS trên đồ thị từ vựng mở ra cánh cửa đến các mô hình đồ thị tri thức (Knowledge Graphs), thuật toán tìm kiếm A*, và bài toán xâu chuỗi suy luận (Chain of Thought) trong trí tuệ nhân tạo.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    Python & Machine Learning Foundations Lab • Xây dựng để học tập, thực hành chủ động và tư duy thuật toán trực quan.
+  </footer>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    // =========================================================================
+    // NAVIGATION & TAB SWITCHING
+    // =========================================================================
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+      const target = document.getElementById(tabId);
+      if (target) target.classList.add('active');
+
+      const btn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick')?.includes(tabId));
+      if (btn) btn.classList.add('active');
+
+      if (tabId === 'tab-ex2') updateEx2Chart();
+      if (tabId === 'tab-ex3') resetEx3();
+      if (tabId === 'tab-ex4') renderEx4Permutations();
+      if (tabId === 'tab-ex5') runEx5Dedup();
+      if (tabId === 'tab-ex6') runEx6Filter();
+      if (tabId === 'tab-ex7') inspectNumberEx7();
+      if (tabId === 'tab-ex8') runEx8WordChain();
+      if (tabId === 'tab-arena') loadArenaExercise();
+    }
+
+    function toggleAccordion(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('open');
+    }
+
+    function openAllAccordions() {
+      document.querySelectorAll('.accordion').forEach(el => el.classList.add('open'));
+    }
+
+    // =========================================================================
+    // QUIZ CHECKER
+    // =========================================================================
+    function checkQuiz(element, isCorrect, feedbackText) {
+      const parent = element.closest('.quiz-card');
+      const options = parent.querySelectorAll('.quiz-option');
+      options.forEach(opt => {
+        opt.classList.remove('correct', 'incorrect');
+        opt.style.pointerEvents = 'none';
+      });
+
+      if (isCorrect) {
+        element.classList.add('correct');
+      } else {
+        element.classList.add('incorrect');
+      }
+
+      const feedback = parent.querySelector('.quiz-feedback');
+      feedback.style.display = 'block';
+      feedback.style.background = isCorrect ? 'rgba(63, 185, 80, 0.15)' : 'rgba(248, 81, 73, 0.15)';
+      feedback.style.border = isCorrect ? '1px solid var(--accent-green)' : '1px solid var(--accent-red)';
+      feedback.style.color = isCorrect ? '#56d364' : '#ff7b72';
+      feedback.innerHTML = (isCorrect ? '✅ ' : '❌ ') + feedbackText;
+    }
+
+    // =========================================================================
+    // EXERCISE 1 VISUALIZER
+    // =========================================================================
+    function setEx1Preset(type) {
+      const input = document.getElementById('ex1-input');
+      if (type === 'normalized') {
+        input.value = "-1.45, 0.82, -0.15, 2.10, -0.05, 0.0, 1.34, -0.92, 0.45";
+      } else if (type === 'random') {
+        const r = [];
+        for (let i = 0; i < 12; i++) r.push(Math.floor(Math.random() * 80) - 40);
+        input.value = r.join(', ');
+      }
+      runEx1Simulation();
+    }
+
+    function runEx1Simulation() {
+      const raw = document.getElementById('ex1-input').value;
+      const isRelu = document.getElementById('ex1-relu-toggle').checked;
+      const nums = raw.split(',').map(x => parseFloat(x.trim())).filter(x => !isNaN(x));
+
+      const negChips = document.getElementById('ex1-neg-chips');
+      const zeroChips = document.getElementById('ex1-zero-chips');
+      const posChips = document.getElementById('ex1-pos-chips');
+
+      negChips.innerHTML = '';
+      zeroChips.innerHTML = '';
+      posChips.innerHTML = '';
+
+      let posCount = 0, negCount = 0, zeroCount = 0;
+      let posSum = 0, negSum = 0;
+
+      nums.forEach(num => {
+        let displayVal = num;
+        if (isRelu && num < 0) {
+          displayVal = 0;
+        }
+
+        const chip = document.createElement('div');
+        chip.className = 'chip';
+
+        if (num < 0) {
+          if (isRelu) {
+            chip.className += ' chip-zero';
+            chip.innerHTML = `<s>${num}</s> ➔ 0`;
+            zeroChips.appendChild(chip);
+            zeroCount++;
+          } else {
+            chip.className += ' chip-neg';
+            chip.textContent = num;
+            negChips.appendChild(chip);
+            negCount++;
+            negSum += num;
+          }
+        } else if (num === 0) {
+          chip.className += ' chip-zero';
+          chip.textContent = num;
+          zeroChips.appendChild(chip);
+          zeroCount++;
+        } else {
+          chip.className += ' chip-pos';
+          chip.textContent = num;
+          posChips.appendChild(chip);
+          posCount++;
+          posSum += num;
+        }
+      });
+
+      document.getElementById('ex1-neg-count').textContent = negCount;
+      document.getElementById('ex1-zero-count').textContent = zeroCount;
+      document.getElementById('ex1-pos-count').textContent = posCount;
+
+      document.getElementById('ex1-neg-stats').textContent = `Tổng: ${negSum} | TB: ${negCount ? (negSum/negCount).toFixed(2) : 0}`;
+      document.getElementById('ex1-pos-stats').textContent = `Tổng: ${posSum} | TB: ${posCount ? (posSum/posCount).toFixed(2) : 0}`;
+
+      const reluBadge = document.getElementById('ex1-relu-badge');
+      if (isRelu) {
+        reluBadge.style.display = 'block';
+        const deadCount = nums.filter(x => x <= 0).length;
+        const deadRate = nums.length ? ((deadCount / nums.length) * 100).toFixed(1) : 0;
+        document.getElementById('ex1-dead-count').textContent = deadCount;
+        document.getElementById('ex1-dead-rate').textContent = deadRate + '%';
+      } else {
+        reluBadge.style.display = 'none';
+      }
+    }
+
+    let ex1Timer = null;
+    function animateEx1StepByStep() {
+      if (ex1Timer) clearInterval(ex1Timer);
+      const raw = document.getElementById('ex1-input').value;
+      const nums = raw.split(',').map(x => parseFloat(x.trim())).filter(x => !isNaN(x));
+      
+      const negChips = document.getElementById('ex1-neg-chips');
+      const zeroChips = document.getElementById('ex1-zero-chips');
+      const posChips = document.getElementById('ex1-pos-chips');
+      negChips.innerHTML = ''; zeroChips.innerHTML = ''; posChips.innerHTML = '';
+
+      let idx = 0;
+      ex1Timer = setInterval(() => {
+        if (idx >= nums.length) {
+          clearInterval(ex1Timer);
+          ex1Timer = null;
+          return;
+        }
+        const num = nums[idx];
+        const chip = document.createElement('div');
+        chip.className = 'chip';
+
+        if (num < 0) {
+          chip.className += ' chip-neg';
+          chip.textContent = num;
+          negChips.appendChild(chip);
+        } else if (num === 0) {
+          chip.className += ' chip-zero';
+          chip.textContent = num;
+          zeroChips.appendChild(chip);
+        } else {
+          chip.className += ' chip-pos';
+          chip.textContent = num;
+          posChips.appendChild(chip);
+        }
+        idx++;
+      }, 180);
+    }
+
+    // =========================================================================
+    // EXERCISE 2 VISUALIZER (FREQUENCY HISTOGRAM)
+    // =========================================================================
+    function setEx2PresetWords() {
+      document.getElementById('ex2-input').value = "ai, model, data, learning, model, ai, model, machine, data, deep";
+      document.getElementById('ex2-k-slider').value = 1;
+      updateEx2Chart();
+    }
+
+    function setEx2PresetNumbers() {
+      document.getElementById('ex2-input').value = "4, 6, 4, 3, 3, 4, 3, 4, 3, 8";
+      document.getElementById('ex2-k-slider').value = 3;
+      updateEx2Chart();
+    }
+
+    function updateEx2Chart() {
+      const raw = document.getElementById('ex2-input').value;
+      const k = parseInt(document.getElementById('ex2-k-slider').value, 10);
+      document.getElementById('ex2-k-val').textContent = k;
+
+      const items = raw.split(',').map(x => x.trim()).filter(x => x.length > 0);
+      const counts = {};
+      const order = [];
+      items.forEach(item => {
+        if (!counts[item]) {
+          counts[item] = 0;
+          order.push(item);
+        }
+        counts[item]++;
+      });
+
+      const maxCount = Math.max(...Object.values(counts), 1);
+      const chart = document.getElementById('ex2-chart');
+      
+      // Clear old columns, keep threshold line
+      const oldCols = chart.querySelectorAll('.bar-col');
+      oldCols.forEach(c => c.remove());
+
+      const threshLine = document.getElementById('ex2-threshold-line');
+      const chartHeight = 150; // px
+      const threshBottom = (k / maxCount) * chartHeight;
+      threshLine.style.bottom = `${Math.min(threshBottom + 25, 175)}px`;
+
+      const passedItems = [];
+
+      order.forEach(item => {
+        const cnt = counts[item];
+        const isPass = cnt > k;
+        if (isPass) passedItems.push(item);
+
+        const col = document.createElement('div');
+        col.className = 'bar-col';
+
+        const fill = document.createElement('div');
+        fill.className = 'bar-fill';
+        const heightPx = (cnt / maxCount) * chartHeight;
+        fill.style.height = `${Math.max(heightPx, 8)}px`;
+
+        if (isPass) {
+          fill.style.background = 'linear-gradient(to top, #238636, #3fb950)';
+          fill.style.boxShadow = '0 0 10px rgba(63, 185, 80, 0.4)';
+        } else {
+          fill.style.background = '#30363d';
+          fill.style.opacity = '0.5';
+        }
+
+        const countBadge = document.createElement('span');
+        countBadge.className = 'bar-count';
+        countBadge.textContent = cnt;
+
+        const label = document.createElement('span');
+        label.className = 'bar-label';
+        label.textContent = item;
+
+        fill.appendChild(countBadge);
+        col.appendChild(fill);
+        col.appendChild(label);
+        chart.appendChild(col);
+      });
+
+      document.getElementById('ex2-result-display').textContent = JSON.stringify(passedItems);
+    }
+
+    // =========================================================================
+    // EXERCISE 3 VISUALIZER (SLIDING WINDOW)
+    // =========================================================================
+    let ex3StepIndex = 0;
+    let ex3Timer = null;
+
+    function resetEx3() {
+      if (ex3Timer) clearInterval(ex3Timer);
+      ex3StepIndex = 0;
+      document.getElementById('ex3-btn-play').textContent = '▶ Tự động chạy';
+      renderEx3Window();
+    }
+
+    function stepEx3(delta) {
+      const raw = document.getElementById('ex3-input').value;
+      const nums = raw.split(',').map(x => parseFloat(x.trim())).filter(x => !isNaN(x));
+      if (nums.length < 2) return;
+
+      const maxSteps = nums.length - 2;
+      ex3StepIndex = Math.max(0, Math.min(maxSteps, ex3StepIndex + delta));
+      renderEx3Window();
+    }
+
+    function toggleEx3AutoPlay() {
+      const btn = document.getElementById('ex3-btn-play');
+      if (ex3Timer) {
+        clearInterval(ex3Timer);
+        ex3Timer = null;
+        btn.textContent = '▶ Tự động chạy';
+      } else {
+        btn.textContent = '⏸ Tạm dừng';
+        ex3Timer = setInterval(() => {
+          const raw = document.getElementById('ex3-input').value;
+          const nums = raw.split(',').map(x => parseFloat(x.trim())).filter(x => !isNaN(x));
+          if (ex3StepIndex >= nums.length - 2) {
+            ex3StepIndex = 0;
+          } else {
+            ex3StepIndex++;
+          }
+          renderEx3Window();
+        }, 900);
+      }
+    }
+
+    function renderEx3Window() {
+      const raw = document.getElementById('ex3-input').value;
+      const nums = raw.split(',').map(x => parseFloat(x.trim())).filter(x => !isNaN(x));
+      const track = document.getElementById('ex3-track');
+      track.innerHTML = '';
+
+      if (nums.length < 2) {
+        track.innerHTML = '<div style="color:var(--accent-red); padding:10px;">Cần ít nhất 2 phần tử để tạo cặp!</div>';
+        return;
+      }
+
+      const a = nums[ex3StepIndex];
+      const b = nums[ex3StepIndex + 1];
+      const winner = Math.max(a, b);
+
+      nums.forEach((num, idx) => {
+        const cell = document.createElement('div');
+        cell.className = 'window-cell';
+        cell.textContent = num;
+
+        if (idx === ex3StepIndex || idx === ex3StepIndex + 1) {
+          cell.classList.add('active-window');
+          if (num === winner) {
+            cell.classList.add('winner');
+          }
+        }
+        track.appendChild(cell);
+      });
+
+      document.getElementById('ex3-step-calc').textContent = `Bước ${ex3StepIndex + 1}/${nums.length - 1} (Chỉ số i = ${ex3StepIndex})`;
+      document.getElementById('ex3-comparison-badge').innerHTML = `Cặp [${a}, ${b}] ➔ max(${a}, ${b}) = <b style="color:#56d364; font-size:1.1rem;">${winner}</b>`;
+
+      // Results up to current step
+      const outChips = document.getElementById('ex3-output-chips');
+      outChips.innerHTML = '';
+      for (let i = 0; i <= ex3StepIndex; i++) {
+        const chip = document.createElement('div');
+        chip.className = 'chip chip-pos';
+        chip.textContent = Math.max(nums[i], nums[i+1]);
+        outChips.appendChild(chip);
+      }
+    }
+
+    // =========================================================================
+    // EXERCISE 4 VISUALIZER (PERMUTATION TREE)
+    // =========================================================================
+    function renderEx4Permutations() {
+      const raw = document.getElementById('ex4-elements').value;
+      const items = raw.split(',').map(x => x.trim()).filter(x => x.length > 0);
+      if (items.length < 3) {
+        alert("Vui lòng nhập ít nhất 3 phần tử!");
+        return;
+      }
+
+      const a = items[0], b = items[1], c = items[2];
+      const perms = [
+        [a, b, c], [a, c, b],
+        [b, a, c], [b, c, a],
+        [c, a, b], [c, b, a]
+      ];
+
+      document.getElementById('ex4-total-count').textContent = perms.length;
+
+      // Render Tree Diagram
+      const tree = document.getElementById('ex4-tree');
+      tree.innerHTML = `
+        <div class="tree-row">
+          <div class="tree-node" style="background:#21262d; border-color:var(--accent-purple);">ROOT (Chọn phần tử 1)</div>
+        </div>
+        <div class="tree-row">
+          <div class="tree-node node-l1" data-val="${a}">Chọn [${a}]</div>
+          <div class="tree-node node-l1" data-val="${b}">Chọn [${b}]</div>
+          <div class="tree-node node-l1" data-val="${c}">Chọn [${c}]</div>
+        </div>
+        <div class="tree-row">
+          <div class="tree-node node-l2" data-p1="${a}" data-p2="${b}">+ [${b}]</div>
+          <div class="tree-node node-l2" data-p1="${a}" data-p2="${c}">+ [${c}]</div>
+          <div class="tree-node node-l2" data-p1="${b}" data-p2="${a}">+ [${a}]</div>
+          <div class="tree-node node-l2" data-p1="${b}" data-p2="${c}">+ [${c}]</div>
+          <div class="tree-node node-l2" data-p1="${c}" data-p2="${a}">+ [${a}]</div>
+          <div class="tree-node node-l2" data-p1="${c}" data-p2="${b}">+ [${b}]</div>
+        </div>
+      `;
+
+      // Render Output Chips
+      const list = document.getElementById('ex4-perms-list');
+      list.innerHTML = '';
+      perms.forEach(perm => {
+        const chip = document.createElement('div');
+        chip.className = 'chip';
+        chip.style.background = '#1f6feb';
+        chip.style.color = '#fff';
+        chip.style.cursor = 'pointer';
+        chip.textContent = `[${perm.join(', ')}]`;
+        chip.onclick = () => highlightPermPath(perm);
+        list.appendChild(chip);
+      });
+    }
+
+    function highlightPermPath(perm) {
+      document.querySelectorAll('.tree-node').forEach(n => n.classList.remove('highlighted'));
+      const l1 = document.querySelector(`.node-l1[data-val="${perm[0]}"]`);
+      if (l1) l1.classList.add('highlighted');
+
+      const l2 = document.querySelector(`.node-l2[data-p1="${perm[0]}"][data-p2="${perm[1]}"]`);
+      if (l2) l2.classList.add('highlighted');
+    }
+
+    // =========================================================================
+    // EXERCISE 5 VISUALIZER (ORDERED DEDUPLICATION)
+    // =========================================================================
+    function runEx5Dedup() {
+      const l1 = document.getElementById('ex5-l1').value.split(',').map(x => x.trim()).filter(x => x);
+      const l2 = document.getElementById('ex5-l2').value.split(',').map(x => x.trim()).filter(x => x);
+      const combined = l1.concat(l2);
+
+      const rawArea = document.getElementById('ex5-raw-chips');
+      const seenArea = document.getElementById('ex5-seen-chips');
+      const finalArea = document.getElementById('ex5-final-chips');
+
+      rawArea.innerHTML = '';
+      seenArea.innerHTML = '';
+      finalArea.innerHTML = '';
+
+      combined.forEach(item => {
+        const chip = document.createElement('div');
+        chip.className = 'chip';
+        chip.style.background = '#30363d';
+        chip.textContent = item;
+        rawArea.appendChild(chip);
+      });
+
+      const seen = new Set();
+      const finalItems = [];
+
+      combined.forEach(item => {
+        if (!seen.has(item)) {
+          seen.add(item);
+          finalItems.push(item);
+
+          const seenChip = document.createElement('div');
+          seenChip.className = 'chip chip-pos';
+          seenChip.textContent = item;
+          seenArea.appendChild(seenChip);
+
+          const finChip = document.createElement('div');
+          finChip.className = 'chip chip-pos';
+          finChip.textContent = item;
+          finalArea.appendChild(finChip);
+        }
+      });
+    }
+
+    let ex5Timer = null;
+    function animateEx5Steps() {
+      if (ex5Timer) clearInterval(ex5Timer);
+      const l1 = document.getElementById('ex5-l1').value.split(',').map(x => x.trim()).filter(x => x);
+      const l2 = document.getElementById('ex5-l2').value.split(',').map(x => x.trim()).filter(x => x);
+      const combined = l1.concat(l2);
+
+      const seenArea = document.getElementById('ex5-seen-chips');
+      const finalArea = document.getElementById('ex5-final-chips');
+      seenArea.innerHTML = '';
+      finalArea.innerHTML = '';
+
+      const seen = new Set();
+      let idx = 0;
+
+      ex5Timer = setInterval(() => {
+        if (idx >= combined.length) {
+          clearInterval(ex5Timer);
+          ex5Timer = null;
+          return;
+        }
+        const item = combined[idx];
+        if (!seen.has(item)) {
+          seen.add(item);
+          const sChip = document.createElement('div');
+          sChip.className = 'chip chip-pos';
+          sChip.textContent = item;
+          seenArea.appendChild(sChip);
+
+          const fChip = document.createElement('div');
+          fChip.className = 'chip chip-pos';
+          fChip.textContent = item;
+          finalArea.appendChild(fChip);
+        } else {
+          // Flash duplicate
+          const dupChip = document.createElement('div');
+          dupChip.className = 'chip chip-neg';
+          dupChip.textContent = `${item} (Trùng!)`;
+          finalArea.appendChild(dupChip);
+          setTimeout(() => dupChip.remove(), 700);
+        }
+        idx++;
+      }, 350);
+    }
+
+    // =========================================================================
+    // EXERCISE 6 VISUALIZER (DIVISIBILITY FILTER)
+    // =========================================================================
+    function setEx6FullRange() {
+      document.getElementById('ex6-start').value = 2000;
+      document.getElementById('ex6-end').value = 3200;
+      runEx6Filter();
+    }
+
+    function runEx6Filter() {
+      const start = parseInt(document.getElementById('ex6-start').value, 10);
+      const end = parseInt(document.getElementById('ex6-end').value, 10);
+      const div = parseInt(document.getElementById('ex6-div').value, 10);
+      const notDiv = parseInt(document.getElementById('ex6-not-div').value, 10);
+
+      const grid = document.getElementById('ex6-grid');
+      grid.innerHTML = '';
+
+      let matchCount = 0;
+      // Limit DOM render to 250 items for speed if range is large
+      const displayEnd = Math.min(end, start + 300);
+
+      for (let x = start; x <= displayEnd; x++) {
+        const isDiv = (x % div === 0);
+        const isNotDiv = (x % notDiv !== 0);
+
+        if (isDiv) {
+          const chip = document.createElement('div');
+          chip.className = 'chip';
+          if (isNotDiv) {
+            chip.className += ' chip-pos';
+            chip.textContent = x;
+            matchCount++;
+          } else {
+            chip.className += ' chip-neg';
+            chip.innerHTML = `<s>${x}</s>`;
+          }
+          grid.appendChild(chip);
+        }
+      }
+
+      // Calculate total match count across full range
+      let fullCount = 0;
+      for (let x = start; x <= end; x++) {
+        if (x % div === 0 && x % notDiv !== 0) fullCount++;
+      }
+
+      document.getElementById('ex6-match-count').textContent = fullCount;
+    }
+
+    // =========================================================================
+    // EXERCISE 7 VISUALIZER (EVEN & PARITY BIT)
+    // =========================================================================
+    function inspectNumberEx7() {
+      const val = parseInt(document.getElementById('ex7-test-num').value, 10);
+      if (isNaN(val)) return;
+
+      document.getElementById('ex7-inspect-target').textContent = val;
+
+      // 1. Even check
+      const isEven = (val % 2 === 0);
+      const parityBadge = document.getElementById('ex7-parity-badge');
+      if (isEven) {
+        parityBadge.innerHTML = `<span class="chip chip-pos">✅ ${val} là SỐ CHẴN (${val} % 2 == 0)</span>`;
+      } else {
+        parityBadge.innerHTML = `<span class="chip chip-neg">❌ ${val} là SỐ LẺ (${val} % 2 != 0)</span>`;
+      }
+
+      // 2. Digits breakdown
+      const strVal = Math.abs(val).toString();
+      const evenDigits = new Set(['0', '2', '4', '6', '8']);
+      const breakdown = document.getElementById('ex7-digits-breakdown');
+      breakdown.innerHTML = '';
+
+      let allEven = true;
+      for (const ch of strVal) {
+        const chip = document.createElement('div');
+        chip.className = 'chip';
+        if (evenDigits.has(ch)) {
+          chip.className += ' chip-pos';
+          chip.textContent = `${ch} (Chẵn)`;
+        } else {
+          chip.className += ' chip-neg';
+          chip.textContent = `${ch} (Lẻ)`;
+          allEven = false;
+        }
+        breakdown.appendChild(chip);
+      }
+
+      const allEvenStatus = document.createElement('div');
+      allEvenStatus.style.marginTop = '6px';
+      allEvenStatus.style.fontWeight = 'bold';
+      allEvenStatus.style.fontSize = '0.85rem';
+      allEvenStatus.innerHTML = allEven 
+        ? '<span style="color:#56d364;">✨ Kết luận: MỌI chữ số đều là số chẵn!</span>' 
+        : '<span style="color:#ff7b72;">⚠️ Kết luận: KHÔNG thỏa mãn vì có chứa chữ số lẻ!</span>';
+      breakdown.appendChild(allEvenStatus);
+
+      // 3. Binary & Hamming
+      const binStr = (val >>> 0).toString(2);
+      const onesCount = (binStr.match(/1/g) || []).length;
+      const binParity = (onesCount % 2 === 0) ? "CHẴN (Even Parity)" : "LẺ (Odd Parity)";
+
+      document.getElementById('ex7-binary-info').innerHTML = `
+        Nhị phân: <b>${binStr}</b><br>
+        Hamming Weight (số bit 1): <b>${onesCount}</b> ➔ Tính Parity: <b>${binParity}</b>
+      `;
+    }
+
+    // =========================================================================
+    // EXERCISE 8 VISUALIZER (WORD CHAIN GRAPH BFS)
+    // =========================================================================
+    const sampleDict = [
+      "head", "adyta", "tail", "cat", "atheistical", "albedo", "dog",
+      "data", "task", "code", "work", "play", "cold", "warm", "lead", "gold"
+    ];
+
+    function setEx8Preset(start, end) {
+      document.getElementById('ex8-start').value = start;
+      document.getElementById('ex8-end').value = end;
+      runEx8WordChain();
+    }
+
+    function solveWordChainLocalBFS(start, end) {
+      const words = [
+        "head", "adyta", "tail", "cat", "atheistical", "albedo", "dog",
+        "data", "task", "code", "deregulate", "test", "work", "play", "cold", "warm", "lead", "gold",
+        "apple", "lemon", "tree", "eel", "elasticize", "zebu", "bush", "train", "intr", "tarpaulin",
+        "target", "star", "army", "myth", "than", "antique", "queen", "energy", "gym", "machine",
+        "network", "neuron", "online", "neat", "attack", "ck", "know", "owl", "word", "riddle",
+        "deep", "epoch", "chess", "ss", "science", "center", "error", "or", "orange", "gear",
+        "area", "easy", "system", "model", "elite", "team"
+      ];
+      if (!words.includes(start)) words.push(start);
+      if (!words.includes(end)) words.push(end);
+
+      const prefixMap = {};
+      words.forEach(w => {
+        if (w.length >= 2) {
+          const p = w.slice(0, 2);
+          if (!prefixMap[p]) prefixMap[p] = [];
+          prefixMap[p].push(w);
+        }
+      });
+
+      const queue = [[start]];
+      const visited = new Set([start]);
+
+      while (queue.length > 0) {
+        const path = queue.shift();
+        const last = path[path.length - 1];
+        if (last === end) return path;
+
+        const suffix = last.slice(-2);
+        const nextWords = prefixMap[suffix] || [];
+        for (const next of nextWords) {
+          if (!visited.has(next)) {
+            visited.add(next);
+            queue.push([...path, next]);
+          }
+        }
+      }
+      return null;
+    }
+
+    async function runEx8WordChain() {
+      const start = document.getElementById('ex8-start').value.trim().toLowerCase();
+      const end = document.getElementById('ex8-end').value.trim().toLowerCase();
+
+      document.getElementById('ex8-chain-result').textContent = 'Đang tìm kiếm đường đi ngắn nhất...';
+
+      let path = null;
+      if (window.location.protocol.startsWith('http')) {
+        try {
+          const resp = await fetch('/api/word_chain', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ start, end })
+          });
+          const data = await resp.json();
+          if (data.success && Array.isArray(data.path)) {
+            path = data.path;
+          }
+        } catch (e) {}
+      }
+
+      if (!path) {
+        if (start === end) {
+          path = [start];
+        } else {
+          path = solveWordChainLocalBFS(start, end);
+        }
+      }
+
+      if (!path || path.length === 0) {
+        document.getElementById('ex8-chain-result').innerHTML = `<span style="color:var(--accent-red);">❌ Không tìm thấy chuỗi nào kết nối giữa "${start}" và "${end}"!</span>`;
+        document.getElementById('ex8-svg').innerHTML = '';
+        return;
+      }
+
+      document.getElementById('ex8-chain-result').textContent = path.join(' ➔ ');
+
+      // Render SVG Graph
+      const svg = document.getElementById('ex8-svg');
+      svg.innerHTML = '';
+
+      const n = path.length;
+      const stepX = Math.min(160, 600 / (n + 1));
+      const startX = 60;
+      const centerY = 140;
+
+      // Draw Edges
+      for (let i = 0; i < n - 1; i++) {
+        const x1 = startX + i * stepX;
+        const x2 = startX + (i + 1) * stepX;
+
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", x1);
+        line.setAttribute("y1", centerY);
+        line.setAttribute("x2", x2);
+        line.setAttribute("y2", centerY);
+        line.setAttribute("stroke", "#e3b341");
+        line.setAttribute("stroke-width", "3");
+        line.setAttribute("stroke-dasharray", "5,5");
+        svg.appendChild(line);
+
+        // Text matching letters
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", (x1 + x2) / 2);
+        text.setAttribute("y", centerY - 14);
+        text.setAttribute("fill", "#58a6ff");
+        text.setAttribute("font-size", "11");
+        text.setAttribute("font-weight", "bold");
+        text.setAttribute("text-anchor", "middle");
+        text.textContent = `${path[i].slice(-2)} ➔ ${path[i+1].slice(0, 2)}`;
+        svg.appendChild(text);
+      }
+
+      // Draw Nodes
+      path.forEach((word, idx) => {
+        const cx = startX + idx * stepX;
+        const cy = centerY;
+
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", cx);
+        circle.setAttribute("cy", cy);
+        circle.setAttribute("r", "28");
+        circle.setAttribute("fill", idx === 0 ? "#238636" : (idx === n - 1 ? "#da3633" : "#1f6feb"));
+        circle.setAttribute("stroke", "#f0f6fc");
+        circle.setAttribute("stroke-width", "2");
+        svg.appendChild(circle);
+
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", cx);
+        text.setAttribute("y", cy + 5);
+        text.setAttribute("fill", "#ffffff");
+        text.setAttribute("font-size", "11");
+        text.setAttribute("font-weight", "bold");
+        text.setAttribute("text-anchor", "middle");
+        text.textContent = word;
+        svg.appendChild(text);
+      });
+    }
+
+    // =========================================================================
+    // ARENA EXERCISE DATABASE & CODE RUNNER
+    // =========================================================================
+    const arenaProblems = {
+  "1.1": {
+    "title": "Bài 1.1: Phân Loại 3 Nhóm Số Âm, Không, Dương & Thống Kê",
+    "funcName": "practice_1_1_sign_and_zero_classifier",
+    "desc": "[BÀI 1.1] Phân loại 3 nhóm: Dương (>0), Số Không (==0), Âm (<0).<br>Yêu cầu:<br>- Trả về dictionary có 3 keys: 'positive', 'zero', 'negative'.<br>- 'positive': dict gồm {'values': list_số_dương, 'count': số_lượng, 'sum': tổng, 'mean': trung_bình (làm tròn 4 chữ số)}",
+    "template": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_1_1_sign_and_zero_classifier(numbers: List[float]) -> Dict[str, Any]:\n    \"\"\"\n    [BÀI 1.1] Phân loại 3 nhóm: Dương (>0), Số Không (==0), Âm (<0).\n    \n    Yêu cầu:\n    - Trả về dictionary có 3 keys: 'positive', 'zero', 'negative'.\n    - 'positive': dict gồm {'values': list_số_dương, 'count': số_lượng, 'sum': tổng, 'mean': trung_bình (làm tròn 4 chữ số)}\n    - 'zero': dict gồm {'count': số_lượng_số_0}\n    - 'negative': dict gồm {'values': list_số_âm, 'count': số_lượng, 'sum': tổng, 'mean': trung_bình (làm tròn 4 chữ số)}\n    - Nếu danh sách con rỗng, sum = 0.0 và mean = 0.0.\n    \n    Gợi ý:\n    - Duyệt qua từng số x trong numbers, kiểm tra x > 0, x < 0, và x == 0.\n    \"\"\"\n        \n    # TODO: Viết code thực hành của bạn tại đây\n    raise NotImplementedError(\"Hãy tự viết code cho bài 1.1!\")",
+    "solution": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_1_1_sign_and_zero_classifier(numbers: List[float]) -> Dict[str, Any]:\n    \"\"\"\n    Phân loại danh sách số thành 3 nhóm: dương (>0), số 0 (==0), âm (<0)\n    và tính các đại lượng thống kê (count, sum, mean) cho từng nhóm.\n    \n    Độ phức tạp: O(N) thời gian (duyệt 1 lần), O(N) không gian lưu trữ.\n    \"\"\"\n    pos = []\n    neg = []\n    zero_count = 0\n    \n    for x in numbers:\n        if x > 0:\n            pos.append(x)\n        elif x < 0:\n            neg.append(x)\n        else:\n            zero_count += 1\n            \n    pos_sum = sum(pos) if pos else 0.0\n    neg_sum = sum(neg) if neg else 0.0\n    \n    return {\n        \"positive\": {\n            \"values\": pos,\n            \"count\": len(pos),\n            \"sum\": round(pos_sum, 4),\n            \"mean\": round(pos_sum / len(pos), 4) if pos else 0.0\n        },\n        \"zero\": {\n            \"count\": zero_count\n        },\n        \"negative\": {\n            \"values\": neg,\n            \"count\": len(neg),\n            \"sum\": round(neg_sum, 4),\n            \"mean\": round(neg_sum / len(neg), 4) if neg else 0.0\n        }\n    }\n"
+  },
+  "1.2": {
+    "title": "Bài 1.2: Cài Đặt Hàm Kích Hoạt ReLU & Leaky ReLU (Dead Neurons)",
+    "funcName": "practice_1_2_relu_and_leaky_relu",
+    "desc": "[BÀI 1.2 - Ứng dụng Machine Learning] Cài đặt hàm kích hoạt ReLU & Leaky ReLU.<br>Yêu cầu:<br>- ReLU: f(x) = max(0.0, x)<br>- Leaky ReLU: f(x) = x nếu x >= 0 else round(alpha * x, 4)",
+    "template": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_1_2_relu_and_leaky_relu(features: List[float], alpha: float = 0.01) -> Dict[str, Any]:\n    \"\"\"\n    [BÀI 1.2 - Ứng dụng Machine Learning] Cài đặt hàm kích hoạt ReLU & Leaky ReLU.\n    \n    Yêu cầu:\n    - ReLU: f(x) = max(0.0, x)\n    - Leaky ReLU: f(x) = x nếu x >= 0 else round(alpha * x, 4)\n    - Đếm số lượng 'dead_neuron_count' (các giá trị x <= 0)\n    - Tính tỷ lệ phần trăm nơ-ron chết: 'dead_neuron_rate' = (dead_count / total) * 100 (làm tròn 2 chữ số)\n    \n    Trả về Dict:\n    {\n        'relu_output': List[float],\n        'leaky_relu_output': List[float],\n        'dead_neuron_count': int,\n        'dead_neuron_rate': float\n    }\n    \"\"\"\n        \n    # TODO: Viết code thực hành của bạn tại đây\n    raise NotImplementedError(\"Hãy tự viết code cho bài 1.2!\")",
+    "solution": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_1_2_relu_and_leaky_relu(features: List[float], alpha: float = 0.01) -> Dict[str, Any]:\n    \"\"\"\n    Áp dụng hàm kích hoạt ReLU: f(x) = max(0, x)\n    và Leaky ReLU: f(x) = x nếu x >= 0 else alpha * x.\n    Tính tỷ lệ nơ-ron 'bị chết' (dying ReLU percentage: giá trị <= 0).\n    \n    Ý nghĩa ML: ReLU là activation function phổ biến nhất trong Deep Learning.\n    \"\"\"\n    if not features:\n        return {\n            \"relu_output\": [],\n            \"leaky_relu_output\": [],\n            \"dead_neuron_count\": 0,\n            \"dead_neuron_rate\": 0.0\n        }\n        \n    relu_out = [max(0.0, float(x)) for x in features]\n    leaky_out = [float(x) if x >= 0 else round(alpha * float(x), 4) for x in features]\n    \n    dead_count = sum(1 for x in features if x <= 0)\n    dead_rate = round((dead_count / len(features)) * 100.0, 2)\n    \n    return {\n        \"relu_output\": relu_out,\n        \"leaky_relu_output\": leaky_out,\n        \"dead_neuron_count\": dead_count,\n        \"dead_neuron_rate\": dead_rate\n    }\n"
+  },
+  "2.1": {
+    "title": "Bài 2.1: Top K Từ Xuất Hiện Nhiều Nhất Trong Văn Bản",
+    "funcName": "practice_2_1_top_k_frequent_words",
+    "desc": "[BÀI 2.1] Tìm Top K từ xuất hiện nhiều nhất trong văn bản.<br>Yêu cầu:<br>- Làm sạch văn bản: chuyển thành chữ thường, dấu câu biến thành khoảng trắng.<br>- Lọc các từ có độ dài >= min_len.",
+    "template": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_2_1_top_k_frequent_words(text: str, k: int, min_len: int = 3) -> List[Tuple[str, int]]:\n    \"\"\"\n    [BÀI 2.1] Tìm Top K từ xuất hiện nhiều nhất trong văn bản.\n    \n    Yêu cầu:\n    - Làm sạch văn bản: chuyển thành chữ thường, dấu câu biến thành khoảng trắng.\n    - Lọc các từ có độ dài >= min_len.\n    - Trả về danh sách k tuples [(word, count), ...] xếp theo số lần xuất hiện giảm dần.\n    \"\"\"\n        \n    # TODO: Viết code thực hành của bạn tại đây\n    raise NotImplementedError(\"Hãy tự viết code cho bài 2.1!\")",
+    "solution": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_2_1_top_k_frequent_words(text: str, k: int, min_len: int = 3) -> List[Tuple[str, int]]:\n    \"\"\"\n    Tách từ trong chuỗi văn bản, loại bỏ ký tự đặc biệt, chuyển chữ thường,\n    lọc các từ có độ dài >= min_len và trả về top k từ có tần suất cao nhất.\n    \n    Độ phức tạp: O(N log k) với heap hoặc O(N log U) với Counter.most_common().\n    \"\"\"\n    if not text.strip() or k <= 0:\n        return []\n        \n    # Loại bỏ dấu câu đơn giản\n    clean_chars = [ch.lower() if ch.isalnum() or ch.isspace() else ' ' for ch in text]\n    clean_text = \"\".join(clean_chars)\n    tokens = [w for w in clean_text.split() if len(w) >= min_len]\n    \n    counts = Counter(tokens)\n    # Sắp xếp theo tần suất giảm dần, nếu bằng nhau thì theo thứ tự alphabet\n    sorted_items = sorted(counts.items(), key=lambda x: (-x[1], x[0]))\n    return sorted_items[:k]\n"
+  },
+  "2.2": {
+    "title": "Bài 2.2: Cắt Tỉa Tập Từ Vựng NLP (Vocabulary Pruning)",
+    "funcName": "practice_2_2_nlp_vocabulary_pruner",
+    "desc": "[BÀI 2.2 - Ứng dụng NLP] Cắt tỉa tập từ vựng (Vocabulary Pruning).<br>Yêu cầu:<br>- Cho danh sách các câu đã tách từ: corpus = [['hello', 'world'], ['world', 'machine', 'learning']]<br>- Tính tổng số lần xuất hiện của từng từ (chuẩn hóa chữ thường).",
+    "template": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_2_2_nlp_vocabulary_pruner(\n    corpus: List[List[str]], \n    min_freq: int = 2, \n    max_freq: int = 10\n) -> List[str]:\n    \"\"\"\n    [BÀI 2.2 - Ứng dụng NLP] Cắt tỉa tập từ vựng (Vocabulary Pruning).\n    \n    Yêu cầu:\n    - Cho danh sách các câu đã tách từ: corpus = [['hello', 'world'], ['world', 'machine', 'learning']]\n    - Tính tổng số lần xuất hiện của từng từ (chuẩn hóa chữ thường).\n    - Chỉ giữ lại các từ có tần suất thỏa mãn: min_freq <= freq <= max_freq.\n    - Sắp xếp kết quả theo tần suất giảm dần, nếu bằng nhau thì theo thứ tự bảng chữ cái.\n    \"\"\"\n        \n    # TODO: Viết code thực hành của bạn tại đây\n    raise NotImplementedError(\"Hãy tự viết code cho bài 2.2!\")",
+    "solution": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_2_2_nlp_vocabulary_pruner(\n    corpus: List[List[str]], \n    min_freq: int = 2, \n    max_freq: int = 10\n) -> List[str]:\n    \"\"\"\n    Lọc danh sách từ vựng từ tập văn bản (corpus):\n    Chỉ giữ lại các từ có tần suất xuất hiện tổng cộng trong khoảng [min_freq, max_freq].\n    Loại bỏ từ quá hiếm (noise) và từ quá phổ biến (stop words).\n    \n    Giữ thứ tự từ theo tần suất giảm dần, nếu bằng nhau thì theo thứ tự alphabet.\n    \"\"\"\n    all_words = []\n    for doc in corpus:\n        for word in doc:\n            w = word.lower().strip()\n            if w:\n                all_words.append(w)\n            \n    counts = Counter(all_words)\n    filtered = [\n        word for word, cnt in counts.items() \n        if min_freq <= cnt <= max_freq\n    ]\n    \n    # Sắp xếp theo tần suất giảm dần, sau đó alphabet\n    filtered.sort(key=lambda w: (-counts[w], w))\n    return filtered\n"
+  },
+  "3.1": {
+    "title": "Bài 3.1: Trung Bình Trượt 1D Làm Mịn Tín Hiệu (Moving Average)",
+    "funcName": "practice_3_1_moving_average_1d",
+    "desc": "[BÀI 3.1] Tính trung bình trượt (Moving Average) làm mịn chuỗi tín hiệu.<br>Yêu cầu:<br>- Với mỗi cửa sổ độ dài window_size, tính giá trị trung bình (làm tròn 4 chữ số).<br>- Kết quả có độ dài = len(signal) - window_size + 1.",
+    "template": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_3_1_moving_average_1d(signal: List[float], window_size: int) -> List[float]:\n    \"\"\"\n    [BÀI 3.1] Tính trung bình trượt (Moving Average) làm mịn chuỗi tín hiệu.\n    \n    Yêu cầu:\n    - Với mỗi cửa sổ độ dài window_size, tính giá trị trung bình (làm tròn 4 chữ số).\n    - Kết quả có độ dài = len(signal) - window_size + 1.\n    - Nếu len(signal) < window_size hoặc window_size <= 0: trả về [].\n    \"\"\"\n        \n    # TODO: Viết code thực hành của bạn tại đây\n    raise NotImplementedError(\"Hãy tự viết code cho bài 3.1!\")",
+    "solution": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_3_1_moving_average_1d(signal: List[float], window_size: int) -> List[float]:\n    \"\"\"\n    Tính trung bình trượt (Moving Average) với kích thước cửa sổ window_size.\n    Dùng kỹ thuật sliding window O(N): duy trì tổng cửa sổ thay vì sum lại.\n    \n    Ý nghĩa ML: Khử nhiễu tín hiệu chuỗi thời gian (time series smoothing).\n    \"\"\"\n    if not signal or window_size <= 0 or window_size > len(signal):\n        return []\n        \n    result = []\n    window_sum = sum(signal[:window_size])\n    result.append(round(window_sum / window_size, 4))\n    \n    for i in range(window_size, len(signal)):\n        window_sum += signal[i] - signal[i - window_size]\n        result.append(round(window_sum / window_size, 4))\n        \n    return result\n"
+  },
+  "3.2": {
+    "title": "Bài 3.2: Mô Phỏng 1D Max Pooling Layer Trong Mạng Nơ-ron",
+    "funcName": "practice_3_2_max_pooling_1d",
+    "desc": "[BÀI 3.2 - Ứng dụng Deep Learning] Mô phỏng 1D Max Pooling Layer.<br>Yêu cầu:<br>- Trượt cửa sổ kích thước pool_size qua signal, mỗi bước nhảy cách stride phần tử.<br>- Lấy giá trị lớn nhất trong mỗi cửa sổ.",
+    "template": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_3_2_max_pooling_1d(\n    signal: List[float], \n    pool_size: int = 2, \n    stride: int = 2\n) -> List[float]:\n    \"\"\"\n    [BÀI 3.2 - Ứng dụng Deep Learning] Mô phỏng 1D Max Pooling Layer.\n    \n    Yêu cầu:\n    - Trượt cửa sổ kích thước pool_size qua signal, mỗi bước nhảy cách stride phần tử.\n    - Lấy giá trị lớn nhất trong mỗi cửa sổ.\n    - Dừng lại khi không đủ pool_size phần tử tiếp theo.\n    \"\"\"\n        \n    # TODO: Viết code thực hành của bạn tại đây\n    raise NotImplementedError(\"Hãy tự viết code cho bài 3.2!\")",
+    "solution": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_3_2_max_pooling_1d(\n    signal: List[float], \n    pool_size: int = 2, \n    stride: int = 2\n) -> List[float]:\n    \"\"\"\n    Mô phỏng phép toán 1D Max Pooling trong Convolutional Neural Networks (CNNs).\n    Trượt cửa sổ kích thước pool_size qua mảng với bước nhảy stride,\n    tại mỗi vị trí lấy giá trị lớn nhất.\n    \"\"\"\n    if not signal or pool_size <= 0 or stride <= 0 or pool_size > len(signal):\n        return []\n        \n    result = []\n    idx = 0\n    while idx + pool_size <= len(signal):\n        window = signal[idx : idx + pool_size]\n        result.append(max(window))\n        idx += stride\n        \n    return result\n"
+  },
+  "4.1": {
+    "title": "Bài 4.1: Sinh Hoán Vị Chập r Bằng Đệ Quy Quay Lui (Backtracking)",
+    "funcName": "practice_4_1_recursive_permutations",
+    "desc": "[BÀI 4.1] Tự cài đặt thuật toán đệ quy quay lui (Backtracking) để sinh hoán vị chập r.<br>Yêu cầu:<br>- Không dùng thư viện itertools.<br>- Trả về danh sách tất cả các tuple hoán vị chập r. Nếu r là None, mặc định r = len(elements).",
+    "template": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_4_1_recursive_permutations(\n    elements: List[Any], \n    r: Optional[int] = None\n) -> List[Tuple[Any, ...]]:\n    \"\"\"\n    [BÀI 4.1] Tự cài đặt thuật toán đệ quy quay lui (Backtracking) để sinh hoán vị chập r.\n    \n    Yêu cầu:\n    - Không dùng thư viện itertools.\n    - Trả về danh sách tất cả các tuple hoán vị chập r. Nếu r là None, mặc định r = len(elements).\n    \"\"\"\n        \n    # TODO: Viết code thực hành của bạn tại đây\n    raise NotImplementedError(\"Hãy tự viết code cho bài 4.1!\")",
+    "solution": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_4_1_recursive_permutations(\n    elements: List[Any], \n    r: Optional[int] = None\n) -> List[Tuple[Any, ...]]:\n    \"\"\"\n    Sinh tất cả hoán vị hoặc chỉnh hợp chập r từ danh sách elements\n    bằng thuật toán đệ quy quay lui (Backtracking).\n    \"\"\"\n    if r is None:\n        r = len(elements)\n    if r > len(elements) or r < 0:\n        return []\n    if r == 0:\n        return [()]\n        \n    result = []\n    \n    def backtrack(current_perm: List[Any], used_indices: Set[int]):\n        if len(current_perm) == r:\n            result.append(tuple(current_perm))\n            return\n            \n        for i in range(len(elements)):\n            if i not in used_indices:\n                used_indices.add(i)\n                current_perm.append(elements[i])\n                backtrack(current_perm, used_indices)\n                current_perm.pop()\n                used_indices.remove(i)\n                \n    backtrack([], set())\n    return result\n"
+  },
+  "4.2": {
+    "title": "Bài 4.2: Sinh Không Gian Siêu Tham Số GridSearchCV",
+    "funcName": "practice_4_2_grid_search_combinations",
+    "desc": "[BÀI 4.2 - Ứng dụng Machine Learning] Sinh không gian siêu tham số GridSearchCV.<br>Ví dụ:<br>param_grid = {<br>'lr': [0.01, 0.1],",
+    "template": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_4_2_grid_search_combinations(param_grid: Dict[str, List[Any]]) -> List[Dict[str, Any]]:\n    \"\"\"\n    [BÀI 4.2 - Ứng dụng Machine Learning] Sinh không gian siêu tham số GridSearchCV.\n    \n    Ví dụ:\n        param_grid = {\n            'lr': [0.01, 0.1],\n            'batch_size': [16, 32]\n        }\n    Trả về 4 dictionary cấu hình tương ứng với tích Descartes (Cartesian product).\n    \"\"\"\n        \n    # TODO: Viết code thực hành của bạn tại đây\n    raise NotImplementedError(\"Hãy tự viết code cho bài 4.2!\")",
+    "solution": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_4_2_grid_search_combinations(param_grid: Dict[str, List[Any]]) -> List[Dict[str, Any]]:\n    \"\"\"\n    Sinh tất cả tổ hợp tham số từ một không gian tìm kiếm siêu tham số (GridSearchCV).\n    Ví dụ: {'lr': [0.01, 0.1], 'batch': [16, 32]}\n    Trả về 4 cấu hình dict kết hợp.\n    \"\"\"\n    if not param_grid:\n        return []\n        \n    keys = list(param_grid.keys())\n    combinations = []\n    \n    def backtrack(key_idx: int, current_config: Dict[str, Any]):\n        if key_idx == len(keys):\n            combinations.append(dict(current_config))\n            return\n            \n        key = keys[key_idx]\n        values = param_grid[key]\n        for val in values:\n            current_config[key] = val\n            backtrack(key_idx + 1, current_config)\n            del current_config[key]\n            \n    backtrack(0, {})\n    return combinations\n"
+  },
+  "5.1": {
+    "title": "Bài 5.1: Khử Trùng Lặp Danh Sách Bảo Toàn Thứ Tự (Key Func)",
+    "funcName": "practice_5_1_ordered_deduplication",
+    "desc": "[BÀI 5.1] Khử trùng lặp danh sách giữ nguyên thứ tự xuất hiện ban đầu.<br>Yêu cầu:<br>- Hỗ trợ tham số key_func tùy chọn (ví dụ: key_func=str.lower để khử trùng không phân biệt hoa thường).<br>- Độ phức tạp thời gian đạt O(N) nhờ sử dụng tập băm (hash set).",
+    "template": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_5_1_ordered_deduplication(\n    items: List[Any], \n    key_func: Optional[Callable[[Any], Any]] = None\n) -> List[Any]:\n    \"\"\"\n    [BÀI 5.1] Khử trùng lặp danh sách giữ nguyên thứ tự xuất hiện ban đầu.\n    \n    Yêu cầu:\n    - Hỗ trợ tham số key_func tùy chọn (ví dụ: key_func=str.lower để khử trùng không phân biệt hoa thường).\n    - Độ phức tạp thời gian đạt O(N) nhờ sử dụng tập băm (hash set).\n    \"\"\"\n        \n    # TODO: Viết code thực hành của bạn tại đây\n    raise NotImplementedError(\"Hãy tự viết code cho bài 5.1!\")",
+    "solution": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_5_1_ordered_deduplication(\n    items: List[Any], \n    key_func: Optional[Callable[[Any], Any]] = None\n) -> List[Any]:\n    \"\"\"\n    Khử trùng lặp danh sách các phần tử nhưng bảo toàn thứ tự xuất hiện đầu tiên.\n    Hỗ trợ hàm key_func (ví dụ: str.lower để khử trùng không phân biệt hoa thường).\n    \n    Độ phức tạp: O(N) thời gian sử dụng hash set.\n    \"\"\"\n    seen = set()\n    unhashable_seen = []\n    result = []\n    \n    for item in items:\n        k = key_func(item) if key_func is not None else item\n        try:\n            if k not in seen:\n                seen.add(k)\n                result.append(item)\n        except TypeError:\n            if k not in unhashable_seen:\n                unhashable_seen.append(k)\n                result.append(item)\n            \n    return result\n"
+  },
+  "5.2": {
+    "title": "Bài 5.2: Hợp Nhất 2 Bảng Bản Ghi Feature Store Theo ID",
+    "funcName": "practice_5_2_merge_feature_dictionaries",
+    "desc": "[BÀI 5.2 - Ứng dụng Làm sạch Dữ liệu] Hợp nhất 2 bảng bản ghi theo khóa định danh.<br>Yêu cầu:<br>- Nối các bản ghi có cùng id_key.<br>- Nếu trường dữ liệu là danh sách (list), gộp 2 danh sách và khử trùng giữ thứ tự.",
+    "template": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_5_2_merge_feature_dictionaries(\n    dataset_a: List[Dict[str, Any]], \n    dataset_b: List[Dict[str, Any]], \n    id_key: str = \"id\"\n) -> List[Dict[str, Any]]:\n    \"\"\"\n    [BÀI 5.2 - Ứng dụng Làm sạch Dữ liệu] Hợp nhất 2 bảng bản ghi theo khóa định danh.\n    \n    Yêu cầu:\n    - Nối các bản ghi có cùng id_key.\n    - Nếu trường dữ liệu là danh sách (list), gộp 2 danh sách và khử trùng giữ thứ tự.\n    - Nếu không phải list, bản ghi sau (dataset_b) ghi đè bản ghi trước.\n    \"\"\"\n        \n    # TODO: Viết code thực hành của bạn tại đây\n    raise NotImplementedError(\"Hãy tự viết code cho bài 5.2!\")",
+    "solution": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef _dedup_list(items: List[Any]) -> List[Any]:\n    seen = set()\n    unhashable_seen = []\n    result = []\n    for item in items:\n        try:\n            if item not in seen:\n                seen.add(item)\n                result.append(item)\n        except TypeError:\n            if item not in unhashable_seen:\n                unhashable_seen.append(item)\n                result.append(item)\n    return result\n\ndef practice_5_2_merge_feature_dictionaries(\n    dataset_a: List[Dict[str, Any]], \n    dataset_b: List[Dict[str, Any]], \n    id_key: str = \"id\"\n) -> List[Dict[str, Any]]:\n    \"\"\"\n    Gộp 2 tập dữ liệu bảng/bản ghi theo khóa chính id_key.\n    Nếu thuộc tính là danh sách (ví dụ danh sách nhãn, tags),\n    thực hiện gộp và khử trùng lặp giữ nguyên thứ tự.\n    \"\"\"\n    lookup: Dict[Any, Dict[str, Any]] = {}\n    ordered_ids = []\n    \n    for row in dataset_a:\n        row_id = row.get(id_key)\n        if row_id is None:\n            continue\n        if row_id not in lookup:\n            lookup[row_id] = dict(row)\n            ordered_ids.append(row_id)\n        else:\n            merged_row = lookup[row_id]\n            for field, val in row.items():\n                if field == id_key:\n                    continue\n                if isinstance(val, list) and isinstance(merged_row.get(field), list):\n                    merged_row[field] = _dedup_list(merged_row[field] + val)\n                else:\n                    merged_row[field] = val\n            \n    for row in dataset_b:\n        row_id = row.get(id_key)\n        if row_id is None:\n            continue\n            \n        if row_id not in lookup:\n            lookup[row_id] = dict(row)\n            ordered_ids.append(row_id)\n        else:\n            merged_row = lookup[row_id]\n            for field, val in row.items():\n                if field == id_key:\n                    continue\n                if isinstance(val, list) and isinstance(merged_row.get(field), list):\n                    # Gộp list và khử trùng giữ thứ tự\n                    merged_row[field] = _dedup_list(merged_row[field] + val)\n                else:\n                    merged_row[field] = val\n                    \n    return [lookup[rid] for rid in ordered_ids]\n"
+  },
+  "6.1": {
+    "title": "Bài 6.1: Bộ Lọc Chia Hết Tùy Biến Đa Điều Kiện",
+    "funcName": "practice_6_1_custom_filter_range",
+    "desc": "[BÀI 6.1] Lọc các số trong [start, end] thỏa mãn:<br>- Chia hết cho TẤT CẢ các số trong divisors.<br>- KHÔNG chia hết cho BẤT KỲ số nào trong exclude_divisors.",
+    "template": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_6_1_custom_filter_range(\n    start: int, \n    end: int, \n    divisors: List[int], \n    exclude_divisors: List[int]\n) -> List[int]:\n    \"\"\"\n    [BÀI 6.1] Lọc các số trong [start, end] thỏa mãn:\n    - Chia hết cho TẤT CẢ các số trong divisors.\n    - KHÔNG chia hết cho BẤT KỲ số nào trong exclude_divisors.\n    \"\"\"\n        \n    # TODO: Viết code thực hành của bạn tại đây\n    raise NotImplementedError(\"Hãy tự viết code cho bài 6.1!\")",
+    "solution": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_6_1_custom_filter_range(\n    start: int, \n    end: int, \n    divisors: List[int], \n    exclude_divisors: List[int]\n) -> List[int]:\n    \"\"\"\n    Tìm các số trong khoảng [start, end] chia hết cho TẤT CẢ các số trong divisors\n    và KHÔNG chia hết cho BẤT KỲ số nào trong exclude_divisors.\n    \"\"\"\n    if start > end:\n        return []\n        \n    divisors = [d for d in divisors if d != 0]\n    exclude_divisors = [ed for ed in exclude_divisors if ed != 0]\n        \n    result = []\n    for x in range(start, end + 1):\n        # Kiểm tra chia hết cho tất cả divisors\n        div_ok = all(x % d == 0 for d in divisors) if divisors else True\n        if not div_ok:\n            continue\n            \n        # Kiểm tra không chia hết cho bất kỳ số nào trong exclude_divisors\n        ex_ok = all(x % ed != 0 for ed in exclude_divisors) if exclude_divisors else True\n        if ex_ok:\n            result.append(x)\n            \n    return result\n"
+  },
+  "6.2": {
+    "title": "Bài 6.2: Tự Viết Thuật Toán Phân Tách K-Fold Cross Validation",
+    "funcName": "practice_6_2_kfold_split_indices",
+    "desc": "[BÀI 6.2 - Ứng dụng Đánh giá Mô hình ML] Tự cài đặt K-Fold Cross Validation.<br>Yêu cầu:<br>- Chia n_samples chỉ số [0, 1, ..., n_samples - 1] thành n_splits phần bằng nhau<br>(hoặc chênh lệch tối đa 1 phần tử nếu không chia hết).",
+    "template": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_6_2_kfold_split_indices(\n    n_samples: int, \n    n_splits: int = 5, \n    shuffle: bool = False, \n    seed: int = 42\n) -> List[Tuple[List[int], List[int]]]:\n    \"\"\"\n    [BÀI 6.2 - Ứng dụng Đánh giá Mô hình ML] Tự cài đặt K-Fold Cross Validation.\n    \n    Yêu cầu:\n    - Chia n_samples chỉ số [0, 1, ..., n_samples - 1] thành n_splits phần bằng nhau\n      (hoặc chênh lệch tối đa 1 phần tử nếu không chia hết).\n    - Trả về danh sách gồm n_splits tuple: (train_indices, val_indices).\n    \"\"\"\n        \n    # TODO: Viết code thực hành của bạn tại đây\n    raise NotImplementedError(\"Hãy tự viết code cho bài 6.2!\")",
+    "solution": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_6_2_kfold_split_indices(\n    n_samples: int, \n    n_splits: int = 5, \n    shuffle: bool = False, \n    seed: int = 42\n) -> List[Tuple[List[int], List[int]]]:\n    \"\"\"\n    Tự cài đặt thuật toán chia tập dữ liệu thành K Folds (K-Fold Cross Validation).\n    Trả về danh sách gồm n_splits cặp (train_indices, val_indices).\n    \"\"\"\n    if n_samples < n_splits or n_splits <= 1:\n        raise ValueError(\"n_samples phải >= n_splits và n_splits > 1\")\n        \n    indices = list(range(n_samples))\n    if shuffle:\n        rng = random.Random(seed)\n        rng.shuffle(indices)\n        \n    # Tính kích thước từng fold\n    fold_sizes = [n_samples // n_splits] * n_splits\n    for i in range(n_samples % n_splits):\n        fold_sizes[i] += 1\n        \n    folds = []\n    current = 0\n    for fold_size in fold_sizes:\n        val_idx = indices[current : current + fold_size]\n        train_idx = indices[:current] + indices[current + fold_size :]\n        folds.append((train_idx, val_idx))\n        current += fold_size\n        \n    return folds\n"
+  },
+  "7.1": {
+    "title": "Bài 7.1: Tìm Các Số Có MỌI Chữ Số Đều Là Số Chẵn",
+    "funcName": "practice_7_1_all_even_digits",
+    "desc": "[BÀI 7.1] Tìm các số trong [start, end] mà MỌI chữ số đều là số chẵn.<br>Ví dụ:<br>- 2000, 2002, 2024, 2888 -> Thỏa mãn<br>- 2001, 2023 -> Loại bỏ vì chứa chữ số lẻ 1, 3",
+    "template": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_7_1_all_even_digits(start: int, end: int) -> List[int]:\n    \"\"\"\n    [BÀI 7.1] Tìm các số trong [start, end] mà MỌI chữ số đều là số chẵn.\n    \n    Ví dụ:\n    - 2000, 2002, 2024, 2888 -> Thỏa mãn\n    - 2001, 2023 -> Loại bỏ vì chứa chữ số lẻ 1, 3\n    \"\"\"\n        \n    # TODO: Viết code thực hành của bạn tại đây\n    raise NotImplementedError(\"Hãy tự viết code cho bài 7.1!\")",
+    "solution": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_7_1_all_even_digits(start: int, end: int) -> List[int]:\n    \"\"\"\n    Tìm tất cả các số trong khoảng [start, end] mà MỌI chữ số của nó đều chẵn (0, 2, 4, 6, 8).\n    Ví dụ: 2000, 2002, 2024 thỏa mãn; 2001 loại vì có chữ số 1.\n    \"\"\"\n    if start > end:\n        return []\n    even_digits = {'0', '2', '4', '6', '8'}\n    return [i for i in range(start, end + 1) if all(ch in even_digits for ch in str(abs(i)))]\n"
+  },
+  "7.2": {
+    "title": "Bài 7.2: Phân Loại Parity Bit Nhị Phân & Hamming Weight",
+    "funcName": "practice_7_2_binary_parity_and_hamming",
+    "desc": "[BÀI 7.2 - Xử lý Nhị phân / Feature Hashing] Phân loại Parity bit nhị phân.<br>Yêu cầu:<br>- Đếm số lượng bit 1 trong biểu diễn nhị phân của từng số (Hamming weight).<br>- Phân loại:",
+    "template": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_7_2_binary_parity_and_hamming(numbers: List[int]) -> Dict[str, Any]:\n    \"\"\"\n    [BÀI 7.2 - Xử lý Nhị phân / Feature Hashing] Phân loại Parity bit nhị phân.\n    \n    Yêu cầu:\n    - Đếm số lượng bit 1 trong biểu diễn nhị phân của từng số (Hamming weight).\n    - Phân loại:\n      + even_parity_numbers: danh sách các số có số bit 1 là số chẵn.\n      + odd_parity_numbers: danh sách các số có số bit 1 là số lẻ.\n      + hamming_weights: dict ánh xạ {số: số_lượng_bit_1}.\n    \"\"\"\n        \n    # TODO: Viết code thực hành của bạn tại đây\n    raise NotImplementedError(\"Hãy tự viết code cho bài 7.2!\")",
+    "solution": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_7_2_binary_parity_and_hamming(numbers: List[int]) -> Dict[str, Any]:\n    \"\"\"\n    Phân loại các số nguyên theo tính Parity của biểu diễn nhị phân:\n    - Hamming Weight: số lượng bit 1 trong biểu diễn nhị phân.\n    - Even Parity: nếu số lượng bit 1 là số chẵn.\n    - Odd Parity: nếu số lượng bit 1 là số lẻ.\n    \"\"\"\n    even_parity = []\n    odd_parity = []\n    hamming_weights = {}\n    \n    for num in numbers:\n        # Đếm số bit 1\n        bits_count = bin(num).count('1')\n        hamming_weights[num] = bits_count\n        if bits_count % 2 == 0:\n            even_parity.append(num)\n        else:\n            odd_parity.append(num)\n            \n    return {\n        \"even_parity_numbers\": even_parity,\n        \"odd_parity_numbers\": odd_parity,\n        \"hamming_weights\": hamming_weights\n    }\n"
+  },
+  "8.1": {
+    "title": "Bài 8.1: Word Ladder Kinh Điển Khác Đúng 1 Ký Tự (LeetCode 127)",
+    "funcName": "practice_8_1_word_ladder_one_letter_diff",
+    "desc": "[BÀI 8.1] Word Ladder kinh điển (LeetCode 127):<br>Mỗi bước biến đổi đúng 1 chữ cái sang một từ có trong word_list.<br>Tìm đường đi ngắn nhất bằng thuật toán BFS.",
+    "template": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_8_1_word_ladder_one_letter_diff(\n    begin_word: str, \n    end_word: str, \n    word_list: List[str]\n) -> List[str]:\n    \"\"\"\n    [BÀI 8.1] Word Ladder kinh điển (LeetCode 127):\n    Mỗi bước biến đổi đúng 1 chữ cái sang một từ có trong word_list.\n    Tìm đường đi ngắn nhất bằng thuật toán BFS.\n    \"\"\"\n        \n    # TODO: Viết code thực hành của bạn tại đây\n    raise NotImplementedError(\"Hãy tự viết code cho bài 8.1!\")",
+    "solution": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_8_1_word_ladder_one_letter_diff(\n    begin_word: str, \n    end_word: str, \n    word_list: List[str]\n) -> List[str]:\n    \"\"\"\n    Bài toán kinh điển Word Ladder (LeetCode 127):\n    Mỗi bước biến đổi đúng 1 chữ cái sang một từ có trong word_list.\n    Tìm chuỗi từ ngắn nhất nối begin_word với end_word.\n    \"\"\"\n    words = set(w.lower() for w in word_list)\n    begin = begin_word.lower()\n    end = end_word.lower()\n    \n    if end not in words:\n        return []\n    if begin == end:\n        return [begin]\n        \n    # BFS\n    queue = deque([[begin]])\n    visited = {begin}\n    \n    while queue:\n        path = queue.popleft()\n        last_word = path[-1]\n        \n        if last_word == end:\n            return path\n            \n        # Tìm các từ láng giềng khác 1 ký tự\n        for i in range(len(last_word)):\n            for c in \"abcdefghijklmnopqrstuvwxyz\":\n                if c == last_word[i]:\n                    continue\n                next_word = last_word[:i] + c + last_word[i+1:]\n                if next_word in words and next_word not in visited:\n                    visited.add(next_word)\n                    queue.append(path + [next_word])\n                    \n    return []\n"
+  },
+  "8.2": {
+    "title": "Bài 8.2: Tối Ưu Hóa Tìm Kiếm Bi-directional BFS Word Chain",
+    "funcName": "practice_8_2_bidirectional_bfs_chain",
+    "desc": "[BÀI 8.2 - Tối ưu Đồ thị] Bi-directional BFS cho chuỗi từ Suffix(2) == Prefix(2).<br>Tìm kiếm 2 chiều: 1 đầu đi từ start_word tiến tới, 1 đầu đi từ end_word lùi lại.<br>Khi 2 hướng gặp nhau tại cùng 1 từ, lập tức kết nối và trả về kết quả!",
+    "template": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_8_2_bidirectional_bfs_chain(\n    start_word: str, \n    end_word: str, \n    filename: str = \"wordsEn.txt\"\n) -> Any:\n    \"\"\"\n    [BÀI 8.2 - Tối ưu Đồ thị] Bi-directional BFS cho chuỗi từ Suffix(2) == Prefix(2).\n    \n    Tìm kiếm 2 chiều: 1 đầu đi từ start_word tiến tới, 1 đầu đi từ end_word lùi lại.\n    Khi 2 hướng gặp nhau tại cùng 1 từ, lập tức kết nối và trả về kết quả!\n    \"\"\"\n        \n    # TODO: Viết code thực hành của bạn tại đây\n    raise NotImplementedError(\"Hãy tự viết code cho bài 8.2!\")",
+    "solution": "from typing import List, Tuple, Dict, Any, Optional, Callable, Set, Union\nfrom collections import Counter, defaultdict, deque\nimport random, math, os\n\ndef practice_8_2_bidirectional_bfs_chain(\n    start_word: str, \n    end_word: str, \n    filename: str = \"wordsEn.txt\"\n) -> Union[List[str], str]:\n    \"\"\"\n    Tìm chuỗi từ nối theo quy tắc: từ sau có prefix(2) == suffix(2) của từ trước.\n    Tối ưu hóa bằng tìm kiếm 2 chiều Bi-directional BFS giúp tăng tốc độ tìm kiếm.\n    \"\"\"\n    # Tái sử dụng bộ nạp từ điển từ Ex8\n    from Ex8 import load_dictionary\n    try:\n        valid_words, prefix_map = load_dictionary(filename)\n    except Exception as e:\n        return f\"Lỗi đọc file từ điển: {e}\"\n        \n    start = start_word.strip().lstrip('\\ufeff').lstrip('ï»¿').lower()\n    end = end_word.strip().lstrip('\\ufeff').lstrip('ï»¿').lower()\n    \n    if start not in valid_words or end not in valid_words:\n        return \"Từ không hợp lệ hoặc không có trong từ điển.\"\n    if start == end:\n        return [start]\n        \n    # Tạo thêm suffix_map để hỗ trợ đi ngược từ end về start\n    # suffix_map[prefix] -> danh sách các từ có suffix bằng prefix này\n    suffix_map = defaultdict(list)\n    for w in valid_words:\n        suffix_map[w[-2:]].append(w)\n        \n    forward_queue = deque([[start]])\n    forward_visited = {start: [start]}\n    \n    backward_queue = deque([[end]])\n    backward_visited = {end: [end]}\n    \n    while forward_queue and backward_queue:\n        # Mở rộng phía trước\n        f_path = forward_queue.popleft()\n        f_word = f_path[-1]\n        f_suffix = f_word[-2:]\n        \n        for next_word in prefix_map.get(f_suffix, []):\n            if next_word in backward_visited:\n                # Giao nhau! Nối đường đi phía trước và phía sau\n                b_path = backward_visited[next_word]\n                # b_path đi từ end về next_word -> đảo ngược lại\n                return f_path + b_path[::-1]\n            if next_word not in forward_visited:\n                new_path = f_path + [next_word]\n                forward_visited[next_word] = new_path\n                forward_queue.append(new_path)\n                \n        # Mở rộng phía sau\n        b_path = backward_queue.popleft()\n        b_word = b_path[-1]\n        b_prefix = b_word[:2]\n        \n        for prev_word in suffix_map.get(b_prefix, []):\n            if prev_word in forward_visited:\n                # Giao nhau!\n                f_path = forward_visited[prev_word]\n                return f_path + b_path[::-1]\n            if prev_word not in backward_visited:\n                new_path = b_path + [prev_word]\n                backward_visited[prev_word] = new_path\n                backward_queue.append(new_path)\n                \n    return \"Không tìm thấy chuỗi nào kết nối 2 từ\"\n"
+  }
+};
+
+    function loadArenaExercise() {
+      const exId = document.getElementById('arena-exercise-select').value;
+      const p = arenaProblems[exId];
+      if (!p) return;
+
+      document.getElementById('arena-description-box').innerHTML = `<b>${p.title}</b><p style="margin-top:6px; color:var(--text-muted); line-height:1.5;">${p.desc}</p>`;
+      document.getElementById('arena-func-name').textContent = `${p.funcName || 'practice_function'}()`;
+      document.getElementById('arena-code-area').value = p.template;
+      document.getElementById('arena-test-output').innerHTML = 'Sẵn sàng! Hãy viết code giải thuật của bạn hoặc bấm <b>"✨ Nạp lời giải mẫu"</b> rồi bấm <b>"▶ Chạy & Chấm Điểm"</b> để kiểm tra...';
+    }
+
+    function resetArenaTemplate() {
+      const exId = document.getElementById('arena-exercise-select').value;
+      const p = arenaProblems[exId];
+      if (p) {
+        document.getElementById('arena-code-area').value = p.template;
+        document.getElementById('arena-test-output').textContent = 'Đã nạp lại code mẫu ban đầu.';
+      }
+    }
+
+    function fillArenaSolution() {
+      const exId = document.getElementById('arena-exercise-select').value;
+      const p = arenaProblems[exId];
+      if (p) {
+        document.getElementById('arena-code-area').value = p.solution || p.template;
+        document.getElementById('arena-test-output').innerHTML = 'Đã nạp lời giải chuẩn! Bấm <b>"▶ Chạy & Chấm Điểm"</b> để kiểm tra kết quả...';
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    async function runArenaTest() {
+      const output = document.getElementById('arena-test-output');
+      const exId = document.getElementById('arena-exercise-select').value;
+      const code = document.getElementById('arena-code-area').value;
+      const p = arenaProblems[exId];
+
+      if (code.includes('raise NotImplementedError') || code.trim().length < 20) {
+        output.innerHTML = `
+          <div style="color: #f85149; font-weight: bold; margin-bottom: 6px;">⚠️ Chưa hoàn thành bài tập (NotImplementedError)</div>
+          <div>Bạn chưa thay thế dòng <code>raise NotImplementedError(...)</code> bằng code giải thuật của mình!</div>
+          <div style="margin-top: 6px; color: var(--text-muted);">Mẹo: Đọc kỹ phần gợi ý trong docstring hoặc bấm nút "✨ Nạp lời giải mẫu" để tham khảo cách làm.</div>
+        `;
+        return;
+      }
+
+      output.innerHTML = '⏳ Đang kết nối với môi trường Python để biên dịch và kiểm thử code...';
+
+      if (window.location.protocol.startsWith('http')) {
+        try {
+          const resp = await fetch('/api/run_code', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ exercise_id: exId, code: code })
+          });
+          const res = await resp.json();
+          if (res.success) {
+            output.innerHTML = `
+              <div style="color: #3fb950; font-weight: bold; font-size: 1.05rem; margin-bottom: 8px;">
+                🎉 CHÚC MỪNG! BÀI LÀM ĐÃ VƯỢT QUA KIỂM THỬ THÀNH CÔNG (100% PASS)!
+              </div>
+              <div style="background: rgba(63, 185, 80, 0.1); border: 1px solid var(--accent-green); border-radius: 6px; padding: 10px; color: #56d364; font-family: monospace;">
+                ${escapeHtml(res.message || 'Tất cả test cases đều khớp chính xác với yêu cầu!')}
+              </div>
+              ${res.output ? `<div style="margin-top: 8px; color: var(--text-muted); font-size: 0.85rem;">Kết quả trả về: <code style="color:#58a6ff;">${escapeHtml(res.output)}</code></div>` : ''}
+            `;
+          } else {
+            output.innerHTML = `
+              <div style="color: #f85149; font-weight: bold; font-size: 1.05rem; margin-bottom: 8px;">
+                ❌ KIỂM THỬ CHƯA ĐẠT YÊU CẦU:
+              </div>
+              <div style="background: rgba(248, 81, 73, 0.1); border: 1px solid var(--accent-red); border-radius: 6px; padding: 10px; color: #ff7b72; font-family: monospace; white-space: pre-wrap;">
+                ${escapeHtml(res.error || res.message || 'Kết quả trả về không khớp với test cases.')}
+              </div>
+              <div style="margin-top: 8px; color: var(--text-muted); font-size: 0.85rem;">
+                Hãy kiểm tra lại điều kiện biên, giá trị trả về hoặc kiểu dữ liệu nhé!
+              </div>
+            `;
+          }
+          return;
+        } catch (err) {}
+      }
+
+      output.innerHTML = `
+        <div style="color: #e3b341; font-weight: bold; font-size: 1rem; margin-bottom: 8px;">
+          ⚡ BẠN ĐANG MỞ FILE TĨNH OFFLINE (file:///)
+        </div>
+        <div style="background: rgba(227, 179, 65, 0.1); border: 1px solid var(--accent-gold); border-radius: 6px; padding: 10px; color: #e3b341; line-height: 1.5;">
+          Để kích hoạt <b>trình chấm điểm Python tự động trực tiếp trên trình duyệt</b>, hãy mở PowerShell tại thư mục này và chạy:
+          <div style="margin: 8px 0; background: #0d1117; padding: 6px 12px; border-radius: 4px; color: #58a6ff; font-family: monospace;">
+            py launch_hub.py
+          </div>
+          Hoặc bạn có thể chấm điểm trực tiếp trong terminal bằng lệnh:
+          <div style="margin: 8px 0; background: #0d1117; padding: 6px 12px; border-radius: 4px; color: #3fb950; font-family: monospace;">
+            py practice_exercises.py ${exId.split('.')[0]}
+          </div>
+        </div>
+      `;
+    }
+
+    // INIT ON LOAD
+    window.addEventListener('DOMContentLoaded', () => {
+      runEx1Simulation();
+      updateEx2Chart();
+      renderEx3Window();
+      renderEx4Permutations();
+      runEx5Dedup();
+      runEx6Filter();
+      inspectNumberEx7();
+      runEx8WordChain();
+      loadArenaExercise();
+    });
+  </script>
+</body>
+</html>

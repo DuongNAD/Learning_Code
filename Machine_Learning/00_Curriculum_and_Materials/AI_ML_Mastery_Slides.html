@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI & Data Science Mastery | 10 Phần Trọng Tâm</title>
+    <!-- Typography: Be Vietnam Pro (Display/Headings) + Plus Jakarta Sans (Body) + JetBrains Mono (Code) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- KaTeX for Beautiful Math Formula Rendering (Local offline with CDN fallback) -->
+    <link rel="stylesheet" href="vendor/katex/katex.min.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css';">
+    <script src="vendor/katex/katex.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js';"></script>
+    <script src="vendor/katex/auto-render.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js';"></script>
+    <style>
+        :root {
+            --bg-base: #070b14;
+            --bg-surface: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --border-light: rgba(255, 255, 255, 0.08);
+            --border-active: rgba(99, 102, 241, 0.4);
+            
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.35);
+            --cyan: #06b6d4;
+            --emerald: #10b981;
+            --amber: #f59e0b;
+            --rose: #f43f5e;
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            
+            --font-display: 'Be Vietnam Pro', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-body: 'Plus Jakarta Sans', 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .global-header {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-light);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            z-index: 50;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--cyan));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 0 16px var(--primary-glow);
+        }
+
+        .brand-text h1 {
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.3px;
+        }
+
+        .brand-text span {
+            font-size: 11px;
+            color: var(--cyan);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .player-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(30, 41, 59, 0.5);
+            padding: 6px 14px;
+            border-radius: 99px;
+            border: 1px solid var(--border-light);
+        }
+
+        .rank-tag {
+            font-family: var(--font-display);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--amber);
+        }
+
+        .xp-pill {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: #fff;
+            background: rgba(99, 102, 241, 0.2);
+            padding: 2px 8px;
+            border-radius: 99px;
+            border: 1px solid rgba(99, 102, 241, 0.4);
+        }
+
+        .progress-pill {
+            font-size: 11px;
+            color: var(--emerald);
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 600;
+            font-family: var(--font-display);
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            outline: none;
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border-light);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #4f46e5);
+            box-shadow: 0 4px 14px var(--primary-glow);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--emerald), #059669);
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+        }
+
+        .parts-nav-bar {
+            background: rgba(11, 17, 32, 0.95);
+            border-bottom: 1px solid var(--border-light);
+            padding: 6px 20px;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            flex-shrink: 0;
+            z-index: 40;
+        }
+
+        .part-tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            background: rgba(255, 255, 255, 0.02);
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .part-tab:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .part-tab.active {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
+        }
+
+        .part-tab-num {
+            font-family: var(--font-display);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--cyan);
+        }
+
+        .part-tab.active .part-tab-num {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .part-tab-title {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .part-tab.active .part-tab-title {
+            color: #fff;
+        }
+
+        .app-body {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .slides-sidebar {
+            width: 280px;
+            background: rgba(15, 23, 42, 0.6);
+            border-right: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            flex-shrink: 0;
+            padding: 16px 12px;
+        }
+
+        .part-banner {
+            padding: 12px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(6, 182, 212, 0.08));
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .part-banner-title {
+            font-family: var(--font-display);
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .part-banner-sub {
+            font-size: 11px;
+            color: var(--cyan);
+            font-weight: 600;
+        }
+
+        .slide-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            margin-bottom: 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12.5px;
+            color: var(--text-muted);
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .slide-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-main);
+        }
+
+        .slide-item.active {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: var(--primary);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .slide-num-badge {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-family: var(--font-mono);
+            flex-shrink: 0;
+        }
+
+        .slide-item.completed .slide-num-badge {
+            background: var(--emerald);
+            color: #fff;
+        }
+
+        .slide-title-text {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .stage {
+            flex: 1;
+            overflow-y: auto;
+            padding: 36px 48px 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.06), transparent 50%),
+                        radial-gradient(circle at bottom left, rgba(6, 182, 212, 0.04), transparent 50%);
+        }
+
+        .slide-card {
+            max-width: 920px;
+            width: 100%;
+        }
+
+        .slide-header {
+            margin-bottom: 24px;
+        }
+
+        .slide-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--cyan);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .slide-title-hero {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+        }
+
+        .analogy-box {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(99, 102, 241, 0.05));
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+
+        .analogy-header {
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--cyan);
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .analogy-text {
+            font-size: 14.5px;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+
+        .points-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 24px 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .points-box h3 {
+            font-family: var(--font-display);
+            font-size: 15px;
+            color: #fff;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .point-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+            font-size: 14px;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .point-bullet {
+            width: 6px;
+            height: 6px;
+            border-radius: 99px;
+            background: var(--primary);
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+
+        .math-card {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .math-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(99, 102, 241, 0.1);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 700;
+            color: #a5b4fc;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .math-box {
+            padding: 16px 20px;
+            font-size: 15px;
+            color: #f1f5f9;
+            overflow-x: auto;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        /* KaTeX typography and formatting */
+        .katex {
+            font-size: 1.15em;
+        }
+        .katex-display {
+            margin: 6px 0 !important;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 4px 0;
+        }
+        .katex, .katex-html {
+            font-family: KaTeX_Main, 'Plus Jakarta Sans', 'Be Vietnam Pro', sans-serif;
+        }
+        .katex .text {
+            font-family: var(--font-body) !important;
+        }
+
+        .code-box {
+            background: #020617;
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border-light);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+
+        .code-content {
+            padding: 16px;
+            font-family: var(--font-mono);
+            font-size: 12.5px;
+            color: #38bdf8;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.6;
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .copy-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tip-box {
+            background: rgba(245, 158, 11, 0.08);
+            border-left: 4px solid var(--amber);
+            border-radius: 0 12px 12px 0;
+            padding: 14px 18px;
+            margin-bottom: 32px;
+        }
+
+        .tip-title {
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .tip-text {
+            font-size: 13.5px;
+            color: #fde68a;
+        }
+
+        .quiz-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border: 1px solid var(--border-active);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 36px;
+        }
+
+        .quiz-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: #fff;
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .quiz-question {
+            font-family: var(--font-display);
+            font-size: 15.5px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-light);
+            padding: 12px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13.5px;
+            color: var(--text-main);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .quiz-option:hover {
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .quiz-option.correct {
+            background: rgba(16, 185, 129, 0.2) !important;
+            border-color: var(--emerald) !important;
+            color: #a7f3d0 !important;
+        }
+
+        .quiz-option.wrong {
+            background: rgba(244, 63, 94, 0.2) !important;
+            border-color: var(--rose) !important;
+            color: #fecdd3 !important;
+        }
+
+        .quiz-feedback {
+            margin-top: 14px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            display: none;
+            line-height: 1.5;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        .quiz-feedback.success {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--emerald);
+            color: #6ee7b7;
+        }
+
+        .quiz-feedback.error {
+            background: rgba(244, 63, 94, 0.15);
+            border: 1px solid var(--rose);
+            color: #fda4af;
+        }
+
+        .stage-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-light);
+            margin-top: 20px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 640px;
+            padding: 28px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            font-family: var(--font-display);
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            max-height: 420px;
+            overflow-y: auto;
+        }
+
+        .badge-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0.4;
+            transition: all 0.3s;
+        }
+
+        .badge-box.unlocked {
+            opacity: 1;
+            border-color: var(--amber);
+            background: rgba(245, 158, 11, 0.08);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.15);
+        }
+
+        .badge-box-icon {
+            font-size: 26px;
+        }
+
+        .badge-box-name {
+            font-family: var(--font-display);
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .badge-box-desc {
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="confetti-canvas"></canvas>
+
+    <header class="global-header">
+        <div class="brand">
+            <div class="brand-icon">⚡</div>
+            <div class="brand-text">
+                <h1>AI & DATA SCIENCE MASTERY</h1>
+                <span>10 Phần Học Tập Chuyên Sâu • Zero To Master</span>
+            </div>
+        </div>
+
+        <div class="player-bar">
+            <span class="rank-tag" id="player-rank">🔰 Tập Sự AI</span>
+            <span class="xp-pill"><strong id="player-xp">0</strong> XP</span>
+            <span class="progress-pill" id="player-progress">0 / 33 Hoàn thành (0%)</span>
+        </div>
+
+        <div class="header-actions">
+            <button class="btn btn-outline" id="btn-badges">🏆 Huy Hiệu (<span id="unlocked-count">0</span>/10)</button>
+            <button class="btn btn-outline" id="btn-fullscreen">⛶ Toàn màn hình</button>
+        </div>
+    </header>
+
+    <nav class="parts-nav-bar" id="parts-nav-bar"></nav>
+
+    <div class="app-body">
+        <aside class="slides-sidebar">
+            <div class="part-banner">
+                <div class="part-banner-title" id="cur-part-title">Phần 1: Nền tảng AI & Dữ liệu</div>
+                <div class="part-banner-sub" id="cur-part-lessons">Lesson 01 - 02</div>
+            </div>
+            <div id="slides-list"></div>
+        </aside>
+
+        <main class="stage">
+            <div class="slide-card">
+                <div class="slide-header">
+                    <div class="slide-breadcrumb">
+                        <span id="sc-part">Phần 1</span>
+                        <span>•</span>
+                        <span id="sc-slide">Slide 1 / 33</span>
+                    </div>
+                    <h2 class="slide-title-hero" id="slide-title">Bức tranh AI, ML & Data Science</h2>
+                </div>
+
+                <div class="analogy-box">
+                    <div class="analogy-header">💡 Ẩn Dụ Trực Quan Dễ Hiểu</div>
+                    <div class="analogy-text" id="slide-analogy"></div>
+                </div>
+
+                <div class="points-box">
+                    <h3>📌 Trọng Tâm Kiến Thức Cần Nắm</h3>
+                    <div id="slide-points"></div>
+                </div>
+
+                <div class="math-card" id="math-card">
+                    <div class="math-header">
+                        <span>📐 CÔNG THỨC TOÁN HỌC & ĐỊNH NGHĨA CỐT LÕI</span>
+                    </div>
+                    <div class="math-box" id="slide-math"></div>
+                </div>
+
+                <div class="code-box">
+                    <div class="code-header">
+                        <span>🐍 PYTHON SCIKIT-LEARN THỰC HÀNH</span>
+                        <button class="copy-btn" id="btn-copy-code">📋 Sao chép code</button>
+                    </div>
+                    <pre class="code-content" id="slide-code"></pre>
+                </div>
+
+                <div class="tip-box">
+                    <div class="tip-title">⚠️ Lưu Ý Thực Chiến & Cạm Bẫy</div>
+                    <div class="tip-text" id="slide-tip"></div>
+                </div>
+
+                <div class="quiz-card" id="quiz-box">
+                    <span class="quiz-badge">⚡ THỬ THÁCH PHẢN XẠ (+50 XP)</span>
+                    <div class="quiz-question" id="quiz-question"></div>
+                    <div class="quiz-options" id="quiz-options"></div>
+                    <div class="quiz-feedback" id="quiz-feedback"></div>
+                </div>
+
+                <div class="stage-footer">
+                    <button class="btn btn-outline" id="btn-prev">← Bài trước</button>
+                    <button class="btn btn-success" id="btn-next">Hoàn thành & Tiếp tục →</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="badges-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>🏆 Bộ Sưu Tập 10 Huy Hiệu Khóa Học</h2>
+                <button class="btn btn-outline" id="btn-close-modal">Đóng</button>
+            </div>
+            <div class="badges-grid" id="badges-grid"></div>
+        </div>
+    </div>
+
+    <script>
+        const PARTS = [{"id": "p1", "part_num": "PHẦN 1", "title": "Nền tảng AI & Bản đồ Dữ liệu", "lessons_covered": "Lesson 01 - 02", "icon": "🌐", "badge": "🔰 Khởi Đầu Nan", "slides": [{"id": "s1", "title": "Bức tranh AI, ML & Data Science trong Kỷ nguyên LLM", "analogy": "AI là chiếc xe tự hành, Machine Learning là cỗ động cơ tự học cách bẻ lái, còn Data Science là kỹ sư phân tích bản đồ địa hình và xăng dầu.", "points": ["<strong>AI (Trí tuệ nhân tạo):</strong> Khái niệm bao trùm lớn nhất - mọi cỗ máy mô phỏng trí thông minh con người (kể cả hệ luật IF-ELSE cổ điển).", "<strong>Machine Learning (Học máy):</strong> Tập con của AI - hệ thống tự tìm ra quy luật từ dữ liệu quá khứ mà không cần lập trình luật cứng.", "<strong>Data Science (Khoa học dữ liệu):</strong> Ngành liên ngành kết hợp Toán, Thống kê, Lập trình và Hiểu biết kinh doanh để giải quyết bài toán thực tế.", "<strong>Vì sao LLM (ChatGPT/Gemini) không thể thay thế ML truyền thống?</strong> Dữ liệu nội bộ bảo mật; chi phí và độ trễ quá cao khi phân loại hàng triệu lượt/giây (Overkill); và yêu cầu giải trình minh bạch (Explainability) trong ngân hàng, y tế."], "math": "Quy trình ánh xạ toán học: $$\\mathbf{y} = f(\\mathbf{X}; \\mathbf{W}) + \\epsilon$$ trong đó $\\mathbf{X}$ là ma trận đặc trưng, $\\mathbf{W}$ là tập trọng số mô hình cần tối ưu.", "code": "# Kiểm tra các thư viện trụ cột trong môi trường Data Science\nimport sklearn\nimport pandas as pd\nimport numpy as np\n\nprint(f'Scikit-learn: {sklearn.__version__}')\nprint(f'Pandas: {pd.__version__}')\nprint(f'NumPy: {np.__version__}')", "tip": "Đừng bao giờ cố dùng Deep Learning hay LLM khổng lồ cho dữ liệu dạng bảng. Cây quyết định và Random Forest/Gradient Boosting vẫn là 'ông vua' của dữ liệu bảng!"}, {"id": "s2", "title": "Phân loại Bài toán: Supervised vs Unsupervised Learning", "analogy": "Supervised Learning giống học sinh có sách giải bài tập (được xem trước đáp án đúng để học). Unsupervised Learning giống nhà thám hiểm vào hang tối, tự phân loại đá quý dựa trên màu sắc mà không ai nói trước tên đá.", "points": ["<strong>Học có giám sát (Supervised Learning):</strong> Dữ liệu có nhãn Ground Truth ($y$).", "• <em>Hồi quy (Regression):</em> $y$ là số thực liên tục (Giá nhà, nhiệt độ, nồng độ CO2, doanh thu).", "• <em>Phân loại (Classification):</em> $y$ là nhãn danh mục rời rạc (Spam / Không Spam, 4 nhóm bệnh lý).", "<strong>Học không giám sát (Unsupervised Learning):</strong> Dữ liệu không có nhãn chỉ dẫn ($X$).", "• <em>Phân cụm (Clustering - K-Means):</em> Tự động gom nhóm khách hàng có hành vi tương đồng.", "• <em>Giảm chiều (Dimensionality Reduction - PCA):</em> Nén 100 đặc trưng xuống 2-3 chiều để trực quan hóa."], "math": "\\text{Regression: } y \\in \\mathbb{R} \\quad \\longleftrightarrow \\quad \\text{Classification: } y \\in \\{0, 1, \\dots, C-1\\}", "code": "from sklearn.linear_model import LinearRegression, LogisticRegression\n\n# Hồi quy (dự đoán điểm số)\nreg = LinearRegression()\n\n# Phân loại (dự đoán tiểu đường 0/1)\nclf = LogisticRegression()", "tip": "Khi nhận một bài toán mới, câu hỏi đầu tiên bạn phải đặt ra là: 'Target $y$ là số thực liên tục hay là nhãn danh mục?' để chọn đúng nhánh thuật toán."}, {"id": "s3", "title": "Bản đồ Đặc trưng: Numerical vs Categorical", "analogy": "Dữ liệu như nguyên liệu nấu ăn: Target (y) là món ăn thành phẩm bạn muốn nấu, còn Features (X) là các loại gia vị, thịt, rau củ bạn đưa vào nồi.", "points": ["<strong>Đặc trưng Số học (Numerical Features):</strong>", "• <em>Liên tục (Continuous):</em> Đo lường được dưới dạng số thực vô hạn (Chiều cao 1.75m, Cân nặng 68.4kg, Diện tích nhà).", "• <em>Rời rạc (Discrete):</em> Giá trị số nguyên đếm được (3 phòng ngủ, 2 người con, 5 lần nhập viện).", "<strong>Đặc trưng Danh mục (Categorical Features):</strong>", "• <em>Định danh (Nominal):</em> Không có thứ tự hơn kém (Giới tính: Nam/Nữ, Thành phố: HN/HCM/ĐN, Màu sắc).", "• <em>Thứ bậc (Ordinal):</em> Có thứ tự cấp bậc rõ ràng (Trình độ học vấn: Cấp 3 < Đại học < Thạc sĩ < Tiến sĩ)."], "math": "\\text{Feature Matrix } \\mathbf{X} \\in \\mathbb{R}^{N \\times D} \\quad (N: \\text{số mẫu}, \\ D: \\text{số đặc trưng})", "code": "import pandas as pd\ndf = pd.read_csv('diabetes.csv')\n\n# Tách cột số và cột phân loại tự động\nnum_cols = df.select_dtypes(include=['number']).columns.tolist()\ncat_cols = df.select_dtypes(include=['object', 'category']).columns.tolist()", "tip": "Cảnh giác với các cột ID! Chúng là số nguyên (1001, 1002) nhưng thực chất là nhãn định danh vô nghĩa. Phải loại bỏ ngay lập tức trước khi train!"}, {"id": "s4", "title": "Chia dữ liệu Train/Val/Test & Bẫy Data Leakage", "analogy": "Bạn đi thi: Tập Train là sách giáo khoa bạn ôn ở nhà, tập Test là đề thi niêm phong trong phòng thi. Nếu bạn lén xem trước đề thi rồi mới học, điểm 10 đó là gian lận (Data Leakage)!", "points": ["<strong>Tỷ lệ chia chuẩn mực:</strong> 70% Train - 15% Validation - 15% Test (hoặc 80% Train - 20% Test).", "<strong>Bẫy Data Leakage (Rò rỉ dữ liệu):</strong> Sai lầm kinh điển nhất là chuẩn hóa (Scale) hoặc điền khuyết (Impute) trên toàn bộ dữ liệu trước khi chia Train/Test.", "<strong>Hậu quả:</strong> Giá trị trung bình ($\\mu$) và độ lệch chuẩn ($\\sigma$) của tập Test đã rò rỉ vào tập Train. Điểm test cao ảo nhưng mô hình sập khi chạy thực tế.", "<strong>Nguyên tắc vàng:</strong> Chỉ gọi `.fit()` trên `X_train`, sau đó dùng lại nguyên vẹn các tham số đó để `.transform()` trên `X_test`!"], "math": "\\mu_{\\text{train}} = \\frac{1}{N_{\\text{train}}} \\sum_{i=1}^{N_{\\text{train}}} x_i \\quad \\implies \\quad x_{\\text{test, scaled}} = \\frac{x_{\\text{test}} - \\mu_{\\text{train}}}{\\sigma_{\\text{train}}}", "code": "from sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\n\n# CHUẨN XÁC: Chia trước rồi mới tiền xử lý\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y, test_size=0.2, random_state=42, stratify=y\n)\n\nscaler = StandardScaler()\nX_train_scaled = scaler.fit_transform(X_train) # Học từ Train\nX_test_scaled = scaler.transform(X_test)       # Dùng lại thông số Train!", "tip": "Khi dữ liệu phân loại bị mất cân bằng, luôn truyền tham số `stratify=y` vào `train_test_split` để giữ nguyên tỷ lệ phân bố các lớp!"}], "quiz": {"question": "Hành vi nào dưới đây gây ra lỗi nghiêm trọng Data Leakage?", "options": ["Gọi scaler.fit_transform() trên X_train và scaler.transform() trên X_test", "Tính giá trị trung bình của toàn bộ tập dữ liệu để điền ô trống trước khi gọi train_test_split()", "Đặt random_state=42 để kết quả phân chia có thể tái lập", "Sử dụng stratify=y khi chia dữ liệu phân loại mất cân bằng"], "answer": 1, "explanation": "Chính xác! Điền missing value bằng trung bình của toàn bộ dữ liệu trước khi chia sẽ khiến thông tin của tập Test bị rò rỉ vào tập Train."}}, {"id": "p2", "part_num": "PHẦN 2", "title": "Thước đo Hiệu năng & Đánh giá Mô hình", "lessons_covered": "Lesson 03", "icon": "🎯", "badge": "🎯 Xạ Thủ Đo Lường", "slides": [{"id": "s5", "title": "Thước đo Hồi quy: MAE, MSE, RMSE & Hệ số R²", "analogy": "Dự đoán giá nhà: Nếu thực tế 10 tỷ mà đoán 8 tỷ thì lệch 2 tỷ. MAE tính trung bình độ lệch, MSE bình phương độ lệch để phạt thẳng tay các cú đoán hớ nặng.", "points": ["<strong>MAE (Mean Absolute Error):</strong> Trung bình sai số tuyệt đối. Rất trực quan, cùng đơn vị với biến mục tiêu, ít bị kéo lệch bởi ngoại lai.", "<strong>MSE (Mean Squared Error):</strong> Bình phương sai số. Phạt cực nặng sai số lớn do tính chất lũy thừa 2.", "<strong>RMSE (Root MSE):</strong> Căn bậc hai của MSE, vừa phạt nặng sai số lớn vừa đưa đơn vị về đúng đơn vị thực tế.", "<strong>Hệ số xác định $R^2$ Score:</strong> Đo lường % sự biến thiên của dữ liệu được giải thích bởi mô hình. $R^2 = 1$ là dự đoán hoàn hảo; $R^2 = 0$ tương đương đoán bằng trung bình $\\bar{y}$; $R^2 < 0$ là mô hình tệ hại hơn cả đoán bừa!"], "math": "R^2 = 1 - \\frac{\\sum (y_i - \\hat{y}_i)^2}{\\sum (y_i - \\bar{y})^2}, \\quad \\text{MAE} = \\frac{1}{N}\\sum |y_i - \\hat{y}_i|", "code": "from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score\nimport numpy as np\n\nmae = mean_absolute_error(y_test, y_pred)\nrmse = np.sqrt(mean_squared_error(y_test, y_pred))\nr2 = r2_score(y_test, y_pred)\n\nprint(f'MAE: {mae:.2f} | RMSE: {rmse:.2f} | R²: {r2:.4f}')", "tip": "Khi báo cáo cho ban giám đốc không rành kỹ thuật, hãy luôn dùng MAE và R² vì con số sai lệch tiền tệ trực quan ai cũng hiểu được!"}, {"id": "s6", "title": "Ma trận Nhầm lẫn & Cạm bẫy Accuracy trên Dữ liệu Imbalanced", "analogy": "Trong 100 người đi xét nghiệm chỉ có 1 người nhiễm virus hiểm nghèo. Một cỗ máy luôn in ra 'Bạn khỏe mạnh' sẽ đạt Accuracy 99%, nhưng đã gián tiếp hại chết 1 người bệnh!", "points": ["<strong>Ma trận Nhầm lẫn (Confusion Matrix):</strong> Bảng thống kê 4 ô: True Positive (TP), False Positive (FP), False Negative (FN), True Negative (TN).", "<strong>Cạm bẫy Accuracy:</strong> $\\text{Accuracy} = \\frac{\\text{TP} + \\text{TN}}{\\text{Tổng số mẫu}}$. Khi dữ liệu mất cân bằng nặng (ví dụ: 98% bình thường, 2% gian lận), đoán bừa tất cả bình thường vẫn đạt Accuracy = 98%!", "<strong>Quy tắc nghề nghiệp:</strong> Bất cứ khi nào dữ liệu có tỷ lệ chênh lệch từ 80/20 trở lên, HÃY VỨT BỎ Accuracy và chuyển sang đánh giá bằng Precision, Recall, F1 hoặc ROC-AUC."], "math": "\\text{Confusion Matrix} = \\begin{bmatrix} \\text{TN} & \\text{FP} \\\\ \\text{FN} & \\text{TP} \\end{bmatrix}", "code": "from sklearn.metrics import confusion_matrix\n\ncm = confusion_matrix(y_test, y_pred)\nprint('Ma trận nhầm lẫn:\\n', cm)", "tip": "Luôn in `y_train.value_counts()` ngay khi nạp dữ liệu để kiểm tra độ mất cân bằng trước khi chọn metric đánh giá!"}, {"id": "s7", "title": "Cuộc chiến Precision vs Recall & Điểm F1 Cân Bằng", "analogy": "Precision như vị thẩm phán: Thà tha lầm chứ không được kết án oan người vô tội. Recall như cảnh sát hình sự: Thà vây bắt nhầm nghi can còn hơn để lọt tên tội phạm nguy hiểm!", "points": ["<strong>Precision (Độ chuẩn xác):</strong> Trong các ca mô hình báo 'Dương tính', có bao nhiêu ca đúng? Ưu tiên khi chi phí báo động giả (FP) rất đắt (lọc spam email không được đưa nhầm thư đối tác vào rác).", "<strong>Recall (Độ thu hồi / Độ nhạy):</strong> Trong toàn bộ các ca Dương tính thực tế, mô hình tìm ra được bao nhiêu ca? Ưu tiên khi chi phí bỏ sót (FN) là thảm họa (chẩn đoán ung thư, phát hiện nứt cầu đường).", "<strong>F1-Score:</strong> Trung bình điều hòa giữa Precision và Recall. Chỉ đạt điểm cao khi cả hai chỉ số cùng tốt."], "math": "\\text{Precision} = \\frac{\\text{TP}}{\\text{TP}+\\text{FP}}, \\quad \\text{Recall} = \\frac{\\text{TP}}{\\text{TP}+\\text{FN}}, \\quad \\text{F1} = 2 \\times \\frac{\\text{P} \\times \\text{R}}{\\text{P} + \\text{R}}", "code": "from sklearn.metrics import classification_report\n\n# In báo cáo toàn diện Precision, Recall, F1 cho từng lớp\nprint(classification_report(y_test, y_pred))", "tip": "Muốn tăng Recall? Hãy hạ ngưỡng quyết định (Threshold) từ 0.5 xuống 0.2 hoặc 0.3 trong hàm `predict_proba()`!"}, {"id": "s8", "title": "Đường cong ROC & Diện tích AUC – Vũ khí Đánh giá Ngưỡng", "analogy": "Núm vặn âm lượng: Bạn có thể vặn độ nhạy của radar cảnh báo cao lên hoặc thấp xuống. ROC-AUC đo lường xem chiếc radar đó hoạt động xuất sắc thế nào trên mọi nấc vặn.", "points": ["<strong>ROC (Receiver Operating Characteristic):</strong> Đồ thị biểu diễn tương quan giữa TPR (True Positive Rate = Recall) và FPR (False Positive Rate) khi quét ngưỡng xác suất từ 0 đến 1.", "<strong>Chỉ số AUC (Area Under Curve):</strong> Diện tích nằm dưới đường cong ROC (từ 0.5 đến 1.0).", "• $\\text{AUC} = 1.0$: Bộ phân loại hoàn hảo tuyệt đối.", "• $\\text{AUC} = 0.85 - 0.95$: Mô hình rất mạnh.", "• $\\text{AUC} = 0.50$: Vô dụng, tương đương tung đồng xu may rủi.", "<strong>Ưu điểm vượt trội:</strong> Không phụ thuộc vào ngưỡng threshold cụ thể, đánh giá khách quan năng lực xếp hạng của mô hình."], "math": "\\text{TPR} = \\frac{\\text{TP}}{\\text{TP}+\\text{FN}}, \\quad \\text{FPR} = \\frac{\\text{FP}}{\\text{FP}+\\text{TN}}", "code": "from sklearn.metrics import roc_auc_score\n\n# Tính xác suất thay vì nhãn 0/1\ny_prob = model.predict_proba(X_test)[:, 1]\nauc = roc_auc_score(y_test, y_prob)\nprint(f'ROC-AUC Score: {auc:.4f}')", "tip": "Nếu dữ liệu bị mất cân bằng cực kỳ nghiêm trọng (ví dụ 1 trên 10,000), đường cong PR-AUC (Precision-Recall AUC) sẽ phản ánh thực tế chính xác hơn cả ROC-AUC!"}], "quiz": {"question": "Trong bài toán chẩn đoán sớm bệnh ung thư từ phim chụp X-quang phổi, chỉ số nào dưới đây bắt buộc phải được ưu tiên cao nhất?", "options": ["Accuracy", "Precision", "Recall (Độ nhạy)", "Specificity"], "answer": 2, "explanation": "Chính xác! Trong y tế cứu mạng người, Recall phải là ưu tiên số 1 để giảm thiểu tối đa ca bỏ sót (False Negative)."}}, {"id": "p3", "part_num": "PHẦN 3", "title": "Tiền xử lý Dữ liệu & Chuẩn hóa", "lessons_covered": "Lesson 04", "icon": "🧹", "badge": "🧹 Bậc Thầy Làm Sạch", "slides": [{"id": "s9", "title": "Chiến lược Điền khuyết Missing Values: Mean, Median, Mode & KNN", "analogy": "Một cuốn sổ tay bị ố mực vài chỗ: Điền Mean như lấy điểm trung bình cả lớp chép vào; còn KNNImputer như đi tìm 5 bạn có học lực giống bạn nhất để ước lượng điểm bài thi đó.", "points": ["<strong>Mean (Trung bình):</strong> Chỉ dùng khi biến số có phân phối chuẩn đối xứng, không có ngoại lai.", "<strong>Median (Trung vị):</strong> Lựa chọn số 1 cho biến số thực tế! Rất lì lợm trước ngoại lai (Ví dụ thu nhập: 9 người lương 10 triệu và 1 tỷ phú lương 10 tỷ -> Mean = 1 tỷ [phi thực tế], Median = 10 triệu [rất chuẩn!]).", "<strong>Mode (Tần suất cao nhất):</strong> Bắt buộc dùng cho biến danh mục (Categorical).", "<strong>KNNImputer:</strong> Tìm $k$ mẫu lân cận có đặc trưng tương đồng nhất để nội suy giá trị khuyết."], "math": "\\text{Median} = x_{(N+1)/2} \\quad (\\text{không bị ảnh hưởng bởi giá trị cực đoan } x_{\\max})", "code": "from sklearn.impute import SimpleImputer, KNNImputer\n\n# Điền median cho biến số\nnum_imp = SimpleImputer(strategy='median')\nX_train_num = num_imp.fit_transform(X_train[['age', 'bmi']])\n\n# Điền mode cho biến phân loại\ncat_imp = SimpleImputer(strategy='most_frequent')\nX_train_cat = cat_imp.fit_transform(X_train[['gender', 'city']])", "tip": "Đừng vội điền khuyết! Hãy tự hỏi: 'Việc thiếu dữ liệu này có mang thông điệp gì không?' (Ví dụ: khách hàng không điền mã số thuế vì họ là cá nhân -> Tạo biến nhị phân `is_company=0`)."}, {"id": "s10", "title": "Phát hiện & Xử lý Ngoại lai: Khoảng Tứ phân vị IQR & Z-Score", "analogy": "Trong giải chạy 5km, có người chạy mất 20 phút, người 30 phút, nhưng có người ghi nhận chỉ mất 3 giây (lỗi thiết bị) hoặc 10 tiếng (bỏ cuộc giữa chừng). Đó là Outliers cần thanh lọc.", "points": ["<strong>Phương pháp Khoảng tứ phân vị (IQR):</strong> Sắp xếp dữ liệu từ bé đến lớn và chia làm 4 phần bằng nhau. $\\text{IQR} = Q_3 - Q_1$.", "• Hàng rào dưới: $Q_1 - 1.5 \\times \\text{IQR}$", "• Hàng rào trên: $Q_3 + 1.5 \\times \\text{IQR}$", "• Mọi điểm nằm ngoài khoảng này là ngoại lai (Outliers)!", "<strong>Cách xử lý thông minh:</strong> Capping / Winsorization (giới hạn trần/sàn thay vì xóa bỏ mẫu) hoặc biến đổi logarit $\\log(1+x)$."], "math": "\\text{Z-score}: z_i = \\frac{x_i - \\mu}{\\sigma}, \\quad \\text{Ngoại lai khi } |z_i| > 3", "code": "import numpy as np\n\nQ1 = df['bmi'].quantile(0.25)\nQ3 = df['bmi'].quantile(0.75)\nIQR = Q3 - Q1\n\nlower_bound = Q1 - 1.5 * IQR\nupper_bound = Q3 + 1.5 * IQR\n\n# Capping an toàn bảo toàn số lượng dòng\ndf['bmi_clean'] = np.clip(df['bmi'], lower_bound, upper_bound)", "tip": "Trong các bài toán phát hiện gian lận ngân hàng hoặc rò rỉ mạng, chính các điểm ngoại lai mới là 'mỏ vàng' bạn cần săn lùng, không bao giờ được xóa!"}, {"id": "s11", "title": "Feature Scaling: MinMaxScaler vs StandardScaler", "analogy": "Nếu bạn so sánh chiều cao (180 cm) và số căn nhà sở hữu (2 căn), máy tính sẽ nghĩ 180 quan trọng gấp 90 lần số căn nhà chỉ vì số 180 to hơn! Scaling giúp đưa mọi thước đo về cùng một vạch xuất phát.", "points": ["<strong>MinMaxScaler (Co giãn về đoạn $[0, 1]$):</strong> $x_{\\text{scaled}} = \\frac{x - x_{\\min}}{x_{\\max} - x_{\\min}}$. Dùng khi biết chắc biên độ (như pixel ảnh 0-255) hoặc thuật toán yêu cầu số dương.", "<strong>StandardScaler (Chuẩn hóa Z-score):</strong> $x_{\\text{std}} = \\frac{x - \\mu}{\\sigma}$. Đưa về trung bình bằng 0, độ lệch chuẩn bằng 1. Ít bị ảnh hưởng bởi ngoại lai hơn.", "<strong>Khi nào BẮT BUỘC scale?</strong> KNN, SVM, K-Means (tính khoảng cách hình học), Linear/Logistic Regression, Neural Networks (tối ưu hóa Gradient Descent).", "<strong>Khi nào KHÔNG CẦN scale?</strong> Decision Tree, Random Forest, XGBoost (cây chỉ so sánh thứ tự lớn hơn/nhỏ hơn $x > \\text{threshold}$, scale bao nhiêu lần thì thứ tự vẫn không đổi!)."], "math": "\\text{StandardScaler}: \\mu = 0, \\ \\sigma^2 = 1 \\quad \\implies \\quad z_i = \\frac{x_i - \\mu}{\\sigma}", "code": "from sklearn.preprocessing import StandardScaler\n\nscaler = StandardScaler()\nX_train_scaled = scaler.fit_transform(X_train)\nX_test_scaled = scaler.transform(X_test)", "tip": "Nếu dữ liệu có nhiều ngoại lai cực đoan mà bạn không muốn xóa, hãy sử dụng `RobustScaler` (chuẩn hóa dựa trên Median và IQR thay vì Mean và Std)!"}, {"id": "s12", "title": "Mã hóa Danh mục: One-Hot vs Ordinal & Bẫy Dummy Trap", "analogy": "Máy tính chỉ hiểu số học, không hiểu chữ 'Đỏ', 'Xanh', 'Vàng'. Ta phải phiên dịch ngôn ngữ danh mục sang các bit nhị phân 0 và 1 mà máy tính hiểu được.", "points": ["<strong>One-Hot Encoding (Cho biến Nominal không có thứ bậc):</strong> Biến mỗi giá trị thành 1 cột nhị phân (0 hoặc 1).", "<strong>Bẫy Dummy Variable Trap:</strong> Nếu một biến có $K$ giá trị, chỉ giữ lại $K-1$ cột nhị phân (dùng `drop='first'`) trong các mô hình tuyến tính để tránh đa cộng tuyến hoàn hảo.", "<strong>Ordinal Encoding (Cho biến Ordinal có thứ bậc logic):</strong> Gán nhãn số nguyên theo đúng trật tự định sẵn (Nhỏ < Vừa < Lớn -> 0, 1, 2)."], "math": "\\text{Gender: [Nam, Nữ]} \\implies \\text{Chỉ cần 1 cột: } [\\text{is\\_Male}] \\in \\{0, 1\\}", "code": "from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder\n\n# OneHot cho định danh (bỏ cột đầu tránh dummy trap)\nohe = OneHotEncoder(drop='first', sparse_output=False)\nX_ohe = ohe.fit_transform(df[['city']])\n\n# Ordinal cho thứ bậc\nord_enc = OrdinalEncoder(categories=[['Low', 'Medium', 'High']])\nX_ord = ord_enc.fit_transform(df[['risk_level']])", "tip": "Nếu một cột danh mục có hàng nghìn giá trị khác nhau (High Cardinality như tên trường học, mã bưu điện), One-Hot sẽ làm bùng nổ số chiều! Hãy gom nhóm hoặc dùng Target Encoding."}], "quiz": {"question": "Thuật toán nào dưới đây HOÀN TOÀN KHÔNG bị ảnh hưởng bởi việc bạn có chuẩn hóa (scale) dữ liệu hay không?", "options": ["K-Nearest Neighbors (KNN)", "Support Vector Machine (SVM)", "Random Forest", "Logistic Regression"], "answer": 2, "explanation": "Chính xác! Cây quyết định và Rừng ngẫu nhiên chỉ so sánh thứ bậc (split points) nên hoàn toàn trơ lỳ trước các phép co giãn tỉ lệ."}}, {"id": "p4", "part_num": "PHẦN 4", "title": "Thuật toán Học máy Tuyến tính Kinh điển", "lessons_covered": "Lesson 05 - 07", "icon": "⚡", "badge": "⚡ Kiếm Sĩ Tuyến Tính", "slides": [{"id": "s13", "title": "Linear Regression: OLS Loss & Gradient Descent", "analogy": "Bạn vẽ một đường thẳng chạy xuyên qua một đám mây điểm sao cho tổng khoảng cách từ các điểm đến đường thẳng là ngắn nhất. Đó là Hồi quy tuyến tính.", "points": ["<strong>Phương trình dự báo:</strong> $\\hat{y} = w_1 x_1 + w_2 x_2 + \\dots + w_n x_n + b = \\mathbf{w}^T \\mathbf{x} + b$.", "<strong>Ý nghĩa trọng số:</strong> $w_j$ cho biết khi đặc trưng $x_j$ tăng 1 đơn vị, dự đoán $\\hat{y}$ tăng bao nhiêu đơn vị.", "<strong>Tối ưu hóa bằng Gradient Descent:</strong> Giống người leo núi bị bịt mắt muốn tìm đáy thung lũng, bước từng bước nhỏ (Learning Rate $\\alpha$) ngược hướng đạo hàm dốc nhất.", "<strong>Nhược điểm:</strong> Rất nhạy cảm với ngoại lai (Outliers) vì sai số bị bình phương trong hàm OLS."], "math": "J(\\mathbf{w}, b) = \\frac{1}{2N} \\sum_{i=1}^N (y_i - (\\mathbf{w}^T \\mathbf{x}_i + b))^2, \\quad w_j \\leftarrow w_j - \\alpha \\frac{\\partial J}{\\partial w_j}", "code": "from sklearn.linear_model import LinearRegression\n\nmodel = LinearRegression()\nmodel.fit(X_train_scaled, y_train)\n\nprint('Trọng số w:', model.coef_)\nprint('Hệ số chặn bias b:', model.intercept_)", "tip": "Luôn kiểm tra hiện tượng đa cộng tuyến giữa các đặc trưng đầu vào trước khi chạy Linear Regression bằng chỉ số VIF hoặc ma trận tương quan!"}, {"id": "s14", "title": "Logistic Regression: Hàm Sigmoid & Binary Cross-Entropy", "analogy": "Đường thẳng tuyến tính có thể cho ra kết quả từ $-\\infty$ đến $+\\infty$. Hàm Sigmoid như một chiếc phễu cao su bóp nghẹt mọi con số vô tận đó về khoảng an toàn $[0, 1]$ tương ứng xác suất phần trăm.", "points": ["<strong>Hàm kích hoạt Sigmoid:</strong> $\\sigma(z) = \\frac{1}{1 + e^{-z}}$ (với $z = \\mathbf{w}^T \\mathbf{x} + b$).", "• Khi $z \\to +\\infty \\Rightarrow \\sigma(z) \\to 1$. Khi $z \\to -\\infty \\Rightarrow \\sigma(z) \\to 0$. Khi $z=0 \\Rightarrow \\sigma(z)=0.5$.", "<strong>Hàm mất mát Log-Loss:</strong> $J = -\\frac{1}{N}\\sum [y\\log(\\hat{y}) + (1-y)\\log(1-\\hat{y})]$. Phạt cực nặng nếu mô hình tự tin đoán sai.", "<strong>Ưu điểm lớn:</strong> Trả về xác suất thực tế, tốc độ chạy siêu nhanh, diễn giải kết quả cực kỳ minh bạch."], "math": "\\sigma(z) = \\frac{1}{1 + e^{-z}}, \\quad P(y=1|\\mathbf{x}) = \\sigma(\\mathbf{w}^T \\mathbf{x} + b)", "code": "from sklearn.linear_model import LogisticRegression\n\nlog_reg = LogisticRegression(C=1.0, max_iter=1000)\nlog_reg.fit(X_train_scaled, y_train)\n\n# Lấy xác suất % thay vì nhãn cứng\nprobs = log_reg.predict_proba(X_test_scaled)\nprint('Xác suất [Lớp 0, Lớp 1]:\\n', probs[:3])", "tip": "Tham số `C` trong LogisticRegression là nghịch đảo của hệ số phạt Regularization ($C=1/\\lambda$). Giảm `C` giúp mô hình đơn giản hơn và chống Overfitting!"}, {"id": "s15", "title": "Naive Bayes & Support Vector Machine (SVM)", "analogy": "Naive Bayes tính xác suất dựa trên từng bằng chứng độc lập (tiếng sủa + vẫy đuôi -> 99% chó). SVM là người thiết kế hàng rào ranh giới an toàn giữa 2 bộ tộc sao cho dải đất trống (Margin) giữa 2 bên là rộng rãi nhất.", "points": ["<strong>Naive Bayes:</strong> Dựa trên định lý Bayes với giả định các từ hoàn toàn độc lập với nhau. Rất mạnh và siêu tốc cho phân loại văn bản dạng túi từ (MultinomialNB).", "<strong>SVM (Support Vector Machine):</strong> Tìm siêu phẳng có khoảng cách tới các điểm dữ liệu gần nhất (Support Vectors) là lớn nhất có thể.", "<strong>Kernel Trick:</strong> Khi dữ liệu đan xen không thể phân tách tuyến tính, hàm Kernel (như RBF Kernel) chiếu dữ liệu lên không gian đa chiều để phân tách mượt mà."], "math": "\\text{Bayes}: P(y|\\mathbf{x}) = \\frac{P(\\mathbf{x}|y)P(y)}{P(\\mathbf{x})}, \\quad \\text{RBF Kernel}: K(\\mathbf{x}, \\mathbf{x}') = \\exp(-\\gamma \\|\\mathbf{x} - \\mathbf{x}'\\|^2)", "code": "from sklearn.svm import SVC\nfrom sklearn.naive_bayes import MultinomialNB\n\n# SVM phi tuyến với RBF Kernel (bắt buộc phải scale dữ liệu trước!)\nsvm = SVC(kernel='rbf', C=1.0)\nsvm.fit(X_train_scaled, y_train)", "tip": "BẮT BUỘC phải chuẩn hóa dữ liệu trước khi đưa vào SVM! Nếu không scale, đặc trưng có đơn vị lớn sẽ thống trị hoàn toàn hàm khoảng cách lề."}, {"id": "s16", "title": "K-Nearest Neighbors (KNN) & K-Means Clustering", "analogy": "KNN: 'Gần mực thì đen, gần đèn thì rạng' - nhìn vào 5 người bạn thân nhất để đoán tính cách bạn. K-Means: Tự động gom 1000 khách hàng vào 3 cụm sở thích mà không cần ai dán nhãn trước.", "points": ["<strong>K-Nearest Neighbors (Học có giám sát):</strong> Không cần huấn luyện trước (Lazy Learner). Khi có mẫu mới, tính khoảng cách Euclidean tới mọi điểm và lấy biểu quyết đa số từ $K$ láng giềng gần nhất.", "<strong>K-Means Clustering (Học không giám sát):</strong> Khởi tạo $K$ tâm cụm (Centroids) ngẫu nhiên. Lặp lại 2 bước: Gán điểm vào tâm cụm gần nhất -> Tính lại tọa độ tâm cụm bằng trung bình cộng.", "<strong>Chọn $K$ tối ưu trong K-Means:</strong> Dùng phương pháp Elbow Method (Đồ thị điểm uốn khuỷu tay) hoặc Silhouette Score."], "math": "d(\\mathbf{p}, \\mathbf{q}) = \\sqrt{\\sum_{i=1}^n (p_i - q_i)^2}", "code": "from sklearn.neighbors import KNeighborsClassifier\nfrom sklearn.cluster import KMeans\n\n# KNN phân loại\nknn = KNeighborsClassifier(n_neighbors=5)\nknn.fit(X_train_scaled, y_train)\n\n# K-Means gom cụm\nkmeans = KMeans(n_clusters=3, random_state=42)\nclusters = kmeans.fit_predict(X_scaled)", "tip": "KNN chạy rất chậm khi tập dữ liệu lớn vì mỗi lần dự đoán nó phải tính khoảng cách tới toàn bộ hàng triệu mẫu trong cơ sở dữ liệu!"}], "quiz": {"question": "Trong thuật toán SVM, yếu tố nào quyết định trực tiếp vị trí và góc nghiêng của siêu phẳng phân tách?", "options": ["Tất cả các điểm dữ liệu trong tập train", "Chỉ các điểm dữ liệu nằm sát lề siêu phẳng nhất (Support Vectors)", "Trọng tâm của các cụm dữ liệu", "Các điểm ngoại lai nằm xa nhất"], "answer": 1, "explanation": "Chính xác! Đúng như tên gọi, chỉ các Support Vectors (các điểm sát lề) mới quyết định siêu phẳng."}}, {"id": "p5", "part_num": "PHẦN 5", "title": "Cây Quyết định & Rừng Học máy Ensemble", "lessons_covered": "Lesson 06 - 08", "icon": "🌲", "badge": "🌲 Thần Rừng Quyết Định", "slides": [{"id": "s17", "title": "Decision Tree: Phân nhánh qua Gini & Entropy", "analogy": "Trò chơi 20 câu hỏi: Bạn hỏi từng câu 'Lương trên 20 triệu không?', 'Có nhà riêng không?' để đoán xem người đó có được duyệt vay tín dụng hay không.", "points": ["<strong>Cơ chế hoạt động:</strong> Cây liên tục thử mọi đặc trưng và ngưỡng cắt để tìm ra điểm chia làm cho dữ liệu ở nhánh con tinh khiết nhất (Purity cao nhất).", "<strong>Gini Impurity (Độ vẩn đục Gini):</strong> $\\text{Gini} = 1 - \\sum p_i^2$. Khi $\\text{Gini} = 0$, nhánh hoàn toàn tinh khiết 100% cùng 1 lớp.", "<strong>Entropy (Độ hỗn loạn thông tin):</strong> Tiêu chí đo mức độ bất định của dữ liệu.", "<strong>Ưu điểm:</strong> Mô hình hộp trắng (White-box) minh bạch nhất, có thể vẽ cây ra cho bất kỳ ai xem hiểu."], "math": "\\text{Gini} = 1 - \\sum_{i=1}^C p_i^2, \\quad \\text{Entropy} = -\\sum_{i=1}^C p_i \\log_2(p_i)", "code": "from sklearn.tree import DecisionTreeClassifier, plot_tree\nimport matplotlib.pyplot as plt\n\ntree = DecisionTreeClassifier(max_depth=3, criterion='gini')\ntree.fit(X_train, y_train)\n\n# Vẽ cây quyết định\nplt.figure(figsize=(10, 6))\nplot_tree(tree, feature_names=X.columns, filled=True)", "tip": "Decision Tree hoàn toàn không bị ảnh hưởng bởi việc scale dữ liệu hay sự xuất hiện của ngoại lai trên biến đầu vào!"}, {"id": "s18", "title": "Bệnh Nan y Overfitting & Kỹ thuật Tỉa Cành (Pruning)", "analogy": "Một học sinh học thuộc lòng từng dấu chấm dấu phẩy trong sách giáo khoa (Train Score 100%), nhưng khi đi thi gặp đề đổi số một chút là không làm được gì (Test Score 40%). Đó là Overfitting!", "points": ["<strong>Vì sao Decision Tree cực kỳ nghiện Overfitting?</strong> Nếu để `max_depth=None`, cây sẽ chia nhánh cho tới khi mỗi chiếc lá chỉ chứa đúng 1 mẫu! Nó học thuộc cả các hạt nhiễu ngẫu nhiên.", "<strong>Kỹ thuật Tỉa cành (Pre-pruning):</strong>", "• `max_depth`: Giới hạn độ sâu tối đa (ví dụ 3 đến 7 tầng).", "• `min_samples_split`: Số lượng mẫu tối thiểu để được phép rẽ nhánh tiếp.", "• `min_samples_leaf`: Số lượng mẫu tối thiểu bắt buộc phải có ở một chiếc lá."], "math": "\\text{Overfitting}: \\text{Error}_{\\text{train}} \\approx 0 \\quad \\text{nhưng} \\quad \\text{Error}_{\\text{test}} \\gg 0", "code": "# Cây kiểm soát chặt chẽ, tổng quát hóa cao\ngood_tree = DecisionTreeClassifier(\n    max_depth=5,\n    min_samples_split=20,\n    min_samples_leaf=10,\n    random_state=42\n)\ngood_tree.fit(X_train, y_train)", "tip": "Luôn so sánh điểm số Train vs Test. Nếu Train Accuracy 99% mà Test Accuracy chỉ 70%, 100% cây của bạn đã bị quá khớp!"}, {"id": "s19", "title": "Random Forest: Ma thuật Bagging & Feature Subsampling", "analogy": "Hội chẩn y khoa: Thay vì tin vào ý kiến của 1 bác sĩ duy nhất (có thể có định kiến), bệnh viện tập hợp 100 chuyên gia cùng thảo luận và bỏ phiếu bầu đa số.", "points": ["<strong>Ensemble Learning (Học kết hợp):</strong> Kết hợp sức mạnh của nhiều mô hình yếu để tạo thành một mô hình mạnh vượt trội.", "<strong>Bagging (Bootstrap Aggregating):</strong> Lấy mẫu ngẫu nhiên có hoàn lại từ tập train gốc để huấn luyện 100 cây độc lập.", "<strong>Random Feature Subsampling:</strong> Tại mỗi nút rẽ nhánh, cây chỉ được nhìn thấy ngẫu nhiên $\\sqrt{D}$ đặc trưng.", "<strong>Vì sao Random Forest vô địch?</strong> Các cây trong rừng không bị tương quan hóa (Uncorrelated). Sai số của cây này bị triệt tiêu bởi quyết định đúng của 99 cây còn lại, phương sai giảm mạnh!"], "math": "\\hat{y}_{\\text{RF}} = \\text{mode} \\{ \\hat{y}_1, \\hat{y}_2, \\dots, \\hat{y}_B \\}", "code": "from sklearn.ensemble import RandomForestClassifier\n\nrf = RandomForestClassifier(\n    n_estimators=200,\n    max_depth=10,\n    random_state=42,\n    n_jobs=-1 # Tận dụng đa nhân CPU\n)\nrf.fit(X_train, y_train)", "tip": "Sử dụng thuộc tính `rf.feature_importances_` để biết chính xác những đặc trưng nào đóng góp lớn nhất vào dự đoán của mô hình!"}, {"id": "s20", "title": "Thực hành Pipeline Phân loại hoàn chỉnh (classification.py)", "analogy": "Dây chuyền lắp ráp xe hơi tự động: Từ thép cuộn thô đi qua từng máy dập, sơn, lắp máy rồi lăn bánh ra khỏi xưởng hoàn chỉnh và được kiểm tra chất lượng tự động.", "points": ["<strong>Quy trình thực chiến trong bài giảng:</strong>", "1. Đọc dữ liệu `diabetes.csv`, tách Target `Outcome`.", "2. Chia Train/Test với `stratify=y` và `random_state` cố định.", "3. Dùng `LazyClassifier` để chạy thử nghiệm nhanh 30 mô hình và tìm ra các thuật toán hàng đầu.", "4. Sử dụng `GridSearchCV` trên `RandomForestClassifier` (`n_estimators`, `criterion`, `cv=6`, `scoring='f1'`).", "5. Đánh giá chi tiết bằng `classification_report` và xuất file `model.pkl` bằng `pickle`."], "math": "\\text{Grid Search}: \\text{Thử nghiệm toàn bộ tổ hợp tham số qua } K\\text{-Fold Cross Validation}", "code": "from sklearn.model_selection import GridSearchCV\nimport pickle\n\nparams = {'n_estimators': [100, 300], 'max_depth': [5, 10]}\ngrid = GridSearchCV(rf, param_grid=params, cv=5, scoring='f1', n_jobs=-1)\ngrid.fit(X_train_scaled, y_train)\n\nwith open('model.pkl', 'wb') as f:\n    pickle.dump([grid.best_estimator_, scaler], f)", "tip": "Luôn lưu kèm đối tượng `scaler` vào cùng file `model.pkl` để khi triển khai lên API server dữ liệu mới được scale chuẩn xác hệt như lúc train!"}], "quiz": {"question": "Điểm khác biệt cốt lõi giữa Random Forest và phương pháp Bagging thông thường trên Cây quyết định là gì?", "options": ["Random Forest chỉ chọn ngẫu nhiên một tập con đặc trưng tại mỗi nhánh rẽ (Feature Subsampling) để các cây không bị tương quan với nhau", "Random Forest huấn luyện các cây theo thứ tự sửa sai tuần tự", "Random Forest bắt buộc phải chuẩn hóa dữ liệu trước khi train", "Random Forest chỉ áp dụng được cho bài toán phân loại nhị phân"], "answer": 0, "explanation": "Chính xác! Feature Subsampling giúp các cây trong Random Forest độc lập và đa dạng góc nhìn, triệt tiêu phương sai Overfitting."}}, {"id": "p6", "part_num": "PHẦN 6", "title": "Scikit-Learn Pipeline & Hồi quy Phức hợp", "lessons_covered": "Lesson 09 - 10", "icon": "⚙️", "badge": "⚙️ Bậc Thầy Pipeline", "slides": [{"id": "s21", "title": "Kỹ thuật Xử lý Dữ liệu Mất cân bằng: SMOTE & SMOTEN", "analogy": "Lớp học chỉ có 2 học sinh giỏi toán và 98 học sinh yếu. SMOTE tạo ra thêm các học sinh giỏi nhân tạo bằng cách lấy đặc điểm nằm giữa 2 học sinh giỏi thật.", "points": ["<strong>Undersampling:</strong> Xóa bớt mẫu ở lớp đa số -> Nguy cơ mất thông tin quý giá.", "<strong>Random Oversampling:</strong> Nhân bản copy y nguyên mẫu thiểu số -> Rất dễ Overfitting.", "<strong>SMOTE (Synthetic Minority Over-sampling Technique):</strong> Sinh mẫu tổng hợp mới nằm trên đoạn thẳng nối giữa 1 mẫu thiểu số và các láng giềng gần nhất của nó.", "<strong>SMOTEN:</strong> Biến thể chuyên dụng của SMOTE dành riêng cho dữ liệu danh mục và văn bản phi số học."], "math": "\\mathbf{x}_{\\text{new}} = \\mathbf{x}_i + \\lambda (\\mathbf{x}_{zi} - \\mathbf{x}_i) \\quad (\\lambda \\in [0, 1])", "code": "from imblearn.over_sampling import SMOTE, SMOTEN\n\nsmote = SMOTE(random_state=42)\nX_res, y_res = smote.fit_resample(X_train, y_train)\nprint('Phân bố nhãn sau SMOTE:\\n', y_res.value_counts())", "tip": "CHỈ áp dụng SMOTE trên tập `X_train`, TUYỆT ĐỐI KHÔNG áp dụng trên tập `X_test`! Tập Test bắt buộc phải phản ánh đúng thực tế tự nhiên của dữ liệu."}, {"id": "s22", "title": "Thiết kế Pipeline Chuyên nghiệp với ColumnTransformer", "analogy": "Nhà máy xử lý rác phân loại: Rác hữu cơ đi vào một băng chuyền (làm phân bón), rác nhựa đi vào băng chuyền khác (tái chế), cuối cùng tất cả hội tụ về kho thành phẩm.", "points": ["<strong>Vì sao phải dùng Pipeline?</strong> Gom toàn bộ các bước tiền xử lý và mô hình hóa thành 1 đối tượng duy nhất, loại bỏ 100% nguy cơ rò rỉ dữ liệu (Data Leakage) và code cực kỳ sạch sẽ.", "<strong>ColumnTransformer:</strong> Cho phép áp dụng các biến đổi khác nhau lên từng nhóm cột riêng biệt:", "• Nhánh số học: `SimpleImputer(median)` + `StandardScaler()`.", "• Nhánh định danh (Nominal): `SimpleImputer(mode)` + `OneHotEncoder()`.", "• Nhánh thứ bậc (Ordinal): `OrdinalEncoder()` theo danh sách thứ tự."], "math": "\\text{Pipeline: Raw Data} \\xrightarrow{\\text{ColumnTransformer}} \\mathbf{X}_{\\text{clean}} \\xrightarrow{\\text{Model}} \\hat{y}", "code": "from sklearn.compose import ColumnTransformer\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.impute import SimpleImputer\nfrom sklearn.preprocessing import StandardScaler, OneHotEncoder\n\nnum_pipe = Pipeline([('imp', SimpleImputer(strategy='median')), ('scale', StandardScaler())])\ncat_pipe = Pipeline([('imp', SimpleImputer(strategy='most_frequent')), ('ohe', OneHotEncoder(handle_unknown='ignore'))])\n\npreprocessor = ColumnTransformer([\n    ('num', num_pipe, ['reading score', 'writing score']),\n    ('cat', cat_pipe, ['gender', 'lunch'])\n])", "tip": "Trong `OneHotEncoder`, luôn thêm tham số `handle_unknown='ignore'` để khi tập Test có giá trị danh mục mới lạ, code không bị báo lỗi văng ứng dụng!"}, {"id": "s23", "title": "Tối ưu Siêu tham số Toàn diện cho Pipeline (regression.py)", "analogy": "Bạn có thể chỉnh cả nhiệt độ nấu lẫn lượng muối cùng một lúc trong một bài thử nghiệm để tìm ra món ăn ngon nhất.", "points": ["<strong>Tối ưu hóa đa tầng:</strong> Trong Scikit-learn, bạn có thể dùng `GridSearchCV` để dò tìm siêu tham số của cả bước tiền xử lý lẫn bước mô hình cùng lúc.", "<strong>Cú pháp hai dấu gạch dưới `__`:</strong>", "• `preprocessor__num__imp__strategy`: Dò tìm cách điền số (mean hay median).", "• `regressor__n_estimators`: Dò tìm số cây trong rừng ngẫu nhiên.", "• `regressor__max_depth`: Dò tìm độ sâu tối ưu của cây."], "math": "\\text{Search Space: } \\Theta = \\Theta_{\\text{preprocessor}} \\times \\Theta_{\\text{model}}", "code": "full_pipe = Pipeline([('prep', preprocessor), ('reg', RandomForestRegressor())])\n\nparams = {\n    'prep__num__imp__strategy': ['mean', 'median'],\n    'reg__n_estimators': [50, 100, 200]\n}\n\ngrid = GridSearchCV(full_pipe, param_grid=params, cv=5, scoring='r2', n_jobs=-1)\ngrid.fit(X_train, y_train)", "tip": "Khi xuất `full_pipe` ra file pickle, bạn chỉ cần gọi `pipeline.predict(raw_data)` với dữ liệu thô ban đầu, toàn bộ quá trình điền khuyết và mã hóa sẽ tự động chạy ngầm!"}], "quiz": {"question": "Khi áp dụng kỹ thuật sinh mẫu nhân tạo SMOTE để cân bằng dữ liệu, thao tác nào dưới đây là chuẩn xác?", "options": ["Áp dụng SMOTE trên toàn bộ tập dữ liệu trước khi chia train/test", "Áp dụng SMOTE chỉ trên tập X_train và y_train, giữ nguyên tập X_test", "Áp dụng SMOTE chỉ trên tập X_test", "Áp dụng SMOTE sau khi mô hình đã huấn luyện xong"], "answer": 1, "explanation": "Chính xác! SMOTE chỉ được áp dụng trên tập Train để mô hình học tốt hơn, tập Test phải giữ nguyên phân bố thực tế."}}, {"id": "p7", "part_num": "PHẦN 7", "title": "Xử lý Ngôn ngữ Tự nhiên (NLP)", "lessons_covered": "Lesson 10 - 12", "icon": "📜", "badge": "📜 Pháp Sư Ngôn Ngữ", "slides": [{"id": "s24", "title": "Quy trình Text Preprocessing: Từ Chữ thô đến Token sạch", "analogy": "Đãi cát tìm vàng: Một bài viết chứa đầy bụi bẩn (dấu chấm phẩy, từ nối vô nghĩa). Bạn phải rửa sạch để chỉ giữ lại những hạt vàng từ khóa cốt lõi.", "points": ["<strong>1. Lowercasing:</strong> Đưa về chữ thường ('AI', 'ai' -> 'ai').", "<strong>2. Remove Punctuations:</strong> Xóa các dấu câu, ký tự đặc biệt <code>#$@!.</code>", "<strong>3. Tokenization:</strong> Tách câu văn bản thành mảng các từ độc lập.", "<strong>4. Stopwords Removal:</strong> Loại bỏ các từ nối xuất hiện quá nhiều nhưng không mang giá trị ngữ nghĩa ('is', 'the', 'thì', 'là', 'mà').", "<strong>5. Stemming vs Lemmatization:</strong> Stemming cắt đuôi từ thô bạo (`studies` -> `studi`); Lemmatization tra từ điển hình thái học chuẩn xác (`studies` -> `study`, `better` -> `good`)."], "math": "\\text{Text} \\xrightarrow{\\text{Clean}} \\text{Tokens} = [t_1, t_2, \\dots, t_M]", "code": "import re\n\nraw_text = 'Machine Learning is AMAZING! It solves 99% problems...'\nclean_text = re.sub(r'[^a-zA-Z\\s]', '', raw_text.lower())\ntokens = clean_text.split()\nprint('Tokens:', tokens)", "tip": "Với tiếng Việt, bắt buộc phải dùng thư viện chuyên biệt như `underthesea` hoặc `pyvi` để ghép từ đôi ('trí tuệ nhân tạo', 'học sinh') thay vì chỉ dùng `split()` khoảng trắng!"}, {"id": "s25", "title": "Vector hóa TF-IDF & Sức mạnh của N-grams", "analogy": "Từ 'học máy' xuất hiện trong 1 bài báo thì rất quý. Nhưng từ 'hôm nay' xuất hiện ở mọi tờ báo trên đời thì giá trị phân biệt của nó bằng 0. TF-IDF đo lường độ quý hiếm đó.", "points": ["<strong>Bag of Words (CountVectorizer):</strong> Chỉ đếm số lần từ xuất hiện -> Từ phổ biến bị điểm quá cao vô lý.", "<strong>TF-IDF (Term Frequency - Inverse Document Frequency):</strong>", "• $TF(t, d)$: Tần suất từ xuất hiện trong bài viết.", "• $IDF(t, D) = \\log(\\frac{\\text{Tổng số bài}}{1 + \\text{Số bài chứa từ } t})$: Phạt nặng các từ xuất hiện đại trà ở mọi nơi.", "<strong>N-grams:</strong> Ghép $N$ từ liền nhau để bảo tồn ngữ cảnh. Unigram: ['không', 'ngon'] (mất ngữ cảnh); Bigram: ['không ngon'] (hiểu ngay là tiêu cực!)."], "math": "\\text{TF-IDF}(t, d) = TF(t, d) \\times \\log\\left(\\frac{|D|}{1 + |\\{d \\in D : t \\in d\\}|}\\right)", "code": "from sklearn.feature_extraction.text import TfidfVectorizer\n\ntfidf = TfidfVectorizer(ngram_range=(1, 2), min_df=0.01, max_df=0.99)\nX_tfidf = tfidf.fit_transform(corpus)", "tip": "N-grams (1, 2) sẽ làm bùng nổ số lượng cột từ điển. Luôn dùng `min_df` và `max_df` để hãm kích thước ma trận!"}, {"id": "s26", "title": "Thực chiến Tuyển dụng: Tối ưu min_df/max_df & Chi-Square (job_classification.py)", "analogy": "Bạn có 10.000 hồ sơ tuyển dụng với 850.000 từ vựng. Máy tính sẽ cạn kiệt RAM nếu bạn không biết cách gọt giũa chắt lọc tinh hoa.", "points": ["<strong>Bài học thực chiến từ video bài giảng:</strong>", "• Khi tạo Bigram, không gian từ vựng tăng vọt lên **848,501 đặc trưng**!", "• Đặt `min_df=0.01` (bỏ từ xuất hiện dưới 1% bài viết) và `max_df=0.99` (bỏ từ xuất hiện trên 99%) -> Giảm ngay xuống còn **7,954 đặc trưng** (giảm hơn 99% cột thừa).", "• Dùng kiểm định thống kê Chi-Square ($\\chi^2$) qua `SelectPercentile(chi2, percentile=8)` để chọn top 8% từ vựng có liên quan mật thiết nhất với chức danh nghề nghiệp.", "• Dùng **SMOTEN** để cân bằng các chức danh hiếm (`specialist`, `bereichsleiter`)."], "math": "\\chi^2 = \\sum \\frac{(O - E)^2}{E} \\quad (O: \\text{Tần suất thực tế}, \\ E: \\text{Tần suất kỳ vọng})", "code": "from sklearn.feature_selection import SelectPercentile, chi2\nfrom imblearn.over_sampling import SMOTEN\n\n# 1. Cân bằng nhãn thiểu số cho văn bản\nsampler = SMOTEN(sampling_strategy={'specialist': 500}, k_neighbors=2)\nX_res, y_res = sampler.fit_resample(X_train, y_train)\n\n# 2. Chọn lọc 8% từ vựng xuất sắc nhất bằng Chi-Square\nselector = SelectPercentile(chi2, percentile=8)\nX_selected = selector.fit_transform(X_tfidf, y_train)", "tip": "Kiểm định Chi-Square (chi2) chỉ áp dụng được cho dữ liệu không âm, là người bạn đồng hành hoàn hảo cùng ma trận trọng số TF-IDF!"}], "quiz": {"question": "Trong TfidfVectorizer, thiết lập min_df=0.01 mang ý nghĩa kỹ thuật gì?", "options": ["Loại bỏ tất cả các từ xuất hiện trong ít hơn 1% tổng số lượng tài liệu", "Mỗi tài liệu phải có ít nhất 1 từ vựng", "Thu nhỏ dung lượng bộ nhớ xuống còn 1%", "Chỉ lấy 100 từ vựng xuất hiện nhiều nhất"], "answer": 0, "explanation": "Chính xác! min_df=0.01 loại bỏ các từ quá hiếm gặp (từ sai chính tả, tên riêng ngẫu nhiên) xuất hiện dưới 1% tổng số văn bản."}}, {"id": "p8", "part_num": "PHẦN 8", "title": "Dự báo Chuỗi Thời gian (Time Series)", "lessons_covered": "Lesson 13 - 14", "icon": "⏳", "badge": "⏳ Du Hành Thời Gian", "slides": [{"id": "s27", "title": "Bản chất Time Series: Vì sao CẤM Shuffle dữ liệu?", "analogy": "Đọc một cuốn tiểu thuyết trinh thám: Nếu bạn xới tung các trang sách lên đọc ngẫu nhiên (Shuffle), bạn sẽ biết trước ai là thủ phạm từ trang cuối trước khi đọc trang đầu!", "points": ["<strong>Tính phụ thuộc thời gian (Temporal Dependency):</strong> Dữ liệu chuỗi thời gian vi phạm hoàn toàn giả định độc lập $i.i.d$. Giá trị hôm nay $y_t$ phụ thuộc vào hôm qua $y_{t-1}$ và tuần trước.", "<strong>Cấm kỵ Shuffle:</strong> Nếu xáo trộn dữ liệu khi chia Train/Test, bạn sẽ vô tình dùng dữ liệu tương lai (ngày mai) để dự đoán quá khứ (hôm qua). Lỗi này gọi là **Look-ahead Bias (Tiên tri dữ liệu)**.", "<strong>Quy tắc bất di bất dịch:</strong> Luôn cắt dữ liệu theo trục thời gian tuyến tính (Ví dụ: Tháng 1 đến tháng 9 là Train, tháng 10 đến tháng 12 là Test)."], "math": "\\text{Cov}(y_t, y_{t-k}) \\ne 0 \\quad (\\text{Tự tương quan Autocorrelation qua độ trễ } k)", "code": "# CHUẨN XÁC: Cắt train/test theo thứ tự thời gian tuyến tính\ntrain_len = int(len(df) * 0.8)\ntrain = df.iloc[:train_len]\ntest = df.iloc[train_len:]", "tip": "Khi vẽ đồ thị chuỗi thời gian, nếu thấy giá trị bị khuyết, hãy dùng `df['val'].interpolate(method='time')` để nối trơn dữ liệu thay vì điền số 0!"}, {"id": "s28", "title": "Kỹ thuật Sliding Window & Recursive vs Direct Forecasting", "analogy": "Dự báo thời tiết 3 ngày tới: Bạn có thể dự đoán ngày mai, rồi lấy thời tiết ngày mai để tính tiếp ngày kia (Recursive); hoặc lập hẳn 3 đội chuyên gia riêng biệt cho từng ngày (Direct).", "points": ["<strong>Tạo đặc trưng trễ (Sliding Window / Lag Features):</strong> Biến chuỗi 1 chiều thành bảng Supervised: $X = [y_{t-1}, y_{t-2}, y_{t-3}] \\rightarrow \\text{Target } y_t$.", "<strong>Recursive Forecasting (Dự báo đệ quy):</strong> Chỉ cần 1 mô hình. Lấy dự báo $\\hat{y}_{t+1}$ nhét ngược lại làm đầu vào để dự báo tiếp $t+2$.", "• *Nhược điểm chí mạng:* **Sai số tích lũy (Error Accumulation)**. Bước 1 lệch thì bước 5 sẽ phân kỳ.", "<strong>Direct Forecasting (Dự báo trực tiếp):</strong> Huấn luyện riêng biệt $K$ mô hình cho từng bước tương lai. Không bị tích lũy sai số nhưng tốn tài nguyên quản lý $K$ mô hình."], "math": "\\text{Recursive}: \\hat{y}_{t+2} = f(\\hat{y}_{t+1}, y_t, \\dots) \\quad \\text{vs} \\quad \\text{Direct}: \\hat{y}_{t+2} = f_2(y_t, y_{t-1}, \\dots)", "code": "def make_lags(df, window=5):\n    for i in range(1, window):\n        df[f'lag_{i}'] = df['co2'].shift(i)\n    df['target'] = df['co2']\n    return df.dropna()", "tip": "Dự báo ngắn hạn (1-2 bước) hãy dùng Recursive. Dự báo dài hạn (7-30 bước) Direct Forecasting luôn chính xác hơn hẳn!"}], "quiz": {"question": "Nhược điểm lớn nhất của chiến lược dự báo đệ quy (Recursive Multi-step Forecasting) là gì?", "options": ["Sai số của các bước dự báo trước bị tích lũy và khuếch đại sang các bước sau (Error Accumulation)", "Phải huấn luyện quá nhiều mô hình riêng biệt", "Không thể kết hợp cùng thuật toán Random Forest", "Bắt buộc dữ liệu phải là phân phối chuẩn"], "answer": 0, "explanation": "Chính xác! Trong Recursive forecasting, nếu ngày $t+1$ dự đoán hơi lệch, sai số đó sẽ bị dùng làm đầu vào cho ngày $t+2$ và thổi phồng sai số lên gấp nhiều lần."}}, {"id": "p9", "part_num": "PHẦN 9", "title": "Giảm chiều Dữ liệu & Hệ thống Gợi ý", "lessons_covered": "Lesson 15 - 16", "icon": "🎬", "badge": "🎬 Đạo Diễn Gợi Ý", "slides": [{"id": "s29", "title": "Lời nguyền Số chiều & Giải phẫu Thuật toán PCA", "analogy": "Bạn chụp ảnh một bức tượng 3D thành bức ảnh 2D trên giấy: Bạn mất đi 1 chiều không gian nhưng vẫn nhận ra ngay đó là bức tượng gì nếu chọn góc máy giữ lại nhiều chi tiết nhất. Đó là PCA!", "points": ["<strong>Lời nguyền số chiều (Curse of Dimensionality):</strong> Càng nhiều cột, không gian càng thưa thớt, khoảng cách giữa các điểm gần nhất và xa nhất tiệm cận bằng nhau, mô hình cực dễ Overfitting.", "<strong>PCA (Principal Component Analysis):</strong> Tìm các trục tọa độ trực giao mới sao cho dữ liệu có phương sai (Variance) lớn nhất.", "<strong>Quy trình 5 bước:</strong> Chuẩn hóa (`StandardScaler`) -> Tính Ma trận Hiệp phương sai (Covariance) -> Tìm Eigenvalues & Eigenvectors -> Sắp xếp giảm dần -> Chiếu dữ liệu sang không gian mới."], "math": "\\mathbf{\\Sigma} = \\frac{1}{N-1} \\mathbf{X}^T \\mathbf{X}, \\quad \\mathbf{\\Sigma} \\mathbf{v} = \\lambda \\mathbf{v}", "code": "from sklearn.decomposition import PCA\n\npca = PCA(n_components=2)\nX_pca = pca.fit_transform(X_scaled)\nprint('Tỷ lệ phương sai giữ lại:', pca.explained_variance_ratio_.sum())", "tip": "BẮT BUỘC phải chuẩn hóa dữ liệu bằng `StandardScaler` trước khi chạy PCA! Nếu không, đặc trưng có đơn vị tiền tệ hàng tỷ sẽ lấn át hoàn toàn các đặc trưng khác."}, {"id": "s30", "title": "Hệ thống Gợi ý (Recommendation) & Độ tương đồng Cosine", "analogy": "Bạn vừa xem phim hành động 'Kẻ Hủy Diệt'. Hệ thống sẽ tìm trong kho phim những bộ phim nào có vector thể loại chỉ về cùng một hướng hẹp nhất trong không gian.", "points": ["<strong>Phân loại hệ thống gợi ý:</strong>", "• <em>Content-Based:</em> Gợi ý dựa trên thuộc tính sản phẩm (Thích phim hành động có bắn súng -> Gợi ý phim cùng thể loại).", "• <em>Collaborative Filtering:</em> Gợi ý dựa trên hành vi tương đồng giữa người dùng (Người có gu xem phim giống bạn cũng thích phim A -> Gợi ý phim A cho bạn).", "<strong>Độ tương đồng Cosine (Cosine Similarity):</strong> Đo góc giữa 2 vector. $\\cos(\\theta) = 1$ nghĩa là 2 sản phẩm hoàn toàn tương đồng về tỷ lệ thể loại."], "math": "\\text{Cosine Similarity}(\\mathbf{A}, \\mathbf{B}) = \\frac{\\mathbf{A} \\cdot \\mathbf{B}}{\\|\\mathbf{A}\\| \\|\\mathbf{B}\\|} = \\frac{\\sum A_i B_i}{\\sqrt{\\sum A_i^2} \\sqrt{\\sum B_i^2}}", "code": "from sklearn.metrics.pairwise import cosine_similarity\n\n# Tính ma trận tương đồng giữa các vector thể loại phim\ncos_sim = cosine_similarity(tfidf_matrix)\n# Gợi ý top 5 phim giống phim 0 nhất\ntop5 = cos_sim[0].argsort()[::-1][1:6]", "tip": "Cosine Similarity ưu việt hơn khoảng cách Euclidean ở chỗ nó không bị ảnh hưởng bởi độ dài của văn bản (đo góc chứ không đo độ dài vector)!"}], "quiz": {"question": "Bước BẮT BUỘC đầu tiên phải làm trước khi áp dụng thuật toán giảm chiều dữ liệu PCA là gì?", "options": ["Chuẩn hóa dữ liệu về trung bình 0 bằng StandardScaler", "Xóa bỏ toàn bộ các biến danh mục", "Chạy thử nghiệm mô hình với Random Forest", "Cắt tỉa các điểm ngoại lai bằng IQR"], "answer": 0, "explanation": "Chính xác! PCA tìm hướng có phương sai lớn nhất, nếu không scale, đặc trưng có đơn vị lớn sẽ thống trị thuật toán."}}, {"id": "p10", "part_num": "PHẦN 10", "title": "Triển khai Sản phẩm & Đỉnh cao Master", "lessons_covered": "Lesson 17 - 18", "icon": "🚀", "badge": "🚀 Kiến Trúc Sư Trưởng", "slides": [{"id": "s31", "title": "Triển khai REST API với FastAPI & Frontend Streamlit", "analogy": "Nấu ăn trong bếp (Backend AI) và phục vụ tại bàn tiệc (Frontend UI). Nhân viên bồi bàn bưng đĩa thức ăn qua lại chính là giao thức REST API kết nối giữa 2 thế giới!", "points": ["<strong>Kiến trúc Client - Server hiện đại:</strong> Tách biệt hoàn toàn việc tính toán ML nặng nề ở server và hiển thị giao diện thân thiện cho người dùng.", "<strong>Backend (FastAPI):</strong> Đọc file `model.pkl` lên RAM một lần duy nhất, nhận dữ liệu qua POST `/predict`, trả về kết quả JSON chỉ trong vài mili-giây.", "<strong>Frontend (Streamlit):</strong> Viết web app bằng Python thuần túy, tạo thanh trượt, form nhập liệu trực quan cho người dùng không biết code."], "math": "\\text{Client (Streamlit)} \\xrightarrow{\\text{POST JSON}} \\text{FastAPI Server} \\xrightarrow{\\text{model.predict()}} \\text{JSON Result}", "code": "# server.py với FastAPI\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel\nimport pickle\n\napp = FastAPI()\nwith open('model.pkl', 'rb') as f:\n    model, scaler = pickle.load(f)\n\nclass Patient(BaseModel):\n    glucose: float\n    bmi: float\n    age: float\n\n@app.post('/predict')\ndef predict(p: Patient):\n    x_scaled = scaler.transform([[p.glucose, p.bmi, p.age]])\n    pred = int(model.predict(x_scaled)[0])\n    return {'risk': pred}", "tip": "Tuyệt đối không nhúng code train mô hình vào API server! Quá trình Train diễn ra offline, API server chỉ đóng vai trò load mô hình lên để dự đoán (Inference)."}, {"id": "s32", "title": "Container hóa Docker & Đóng gói Ứng dụng Chuẩn Sản xuất", "analogy": "Vận tải biển quốc tế: Thay vì khuân vác từng món hàng rời rạc, cả thế giới dùng những chiếc thùng Container tiêu chuẩn để đưa lên bất kỳ con tàu hay xe tải nào cũng vừa khít.", "points": ["<strong>Nỗi ám ảnh kinh điển:</strong> 'Code chạy mượt mà trên máy em nhưng đem lên server thì lỗi!' do lệch phiên bản Python hoặc thiếu thư viện hệ thống.", "<strong>Giải pháp Docker:</strong> Đóng gói toàn bộ: Hệ điều hành Linux tối giản + Python runtime + Thư viện `requirements.txt` + Mã nguồn vào 1 chiếc hộp Container duy nhất.", "Bất kỳ máy chủ nào (AWS, Google Cloud, Azure) chỉ cần cài Docker là chạy được 100% nhất quán."], "math": "\\text{Dockerfile} \\xrightarrow{\\text{docker build}} \\text{Docker Image} \\xrightarrow{\\text{docker run}} \\text{Live Container}", "code": "# Dockerfile mẫu chuẩn sản xuất\nFROM python:3.11-slim\nWORKDIR /app\nCOPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\nCOPY . .\nCMD [\"uvicorn\", \"server:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]", "tip": "Luôn dùng cờ `--no-cache-dir` khi cài pip trong Dockerfile để giảm bớt hàng trăm MB rác dung lượng cho Docker Image!"}, {"id": "s33", "title": "Tổng kết Khóa học: Đánh đổi Bias vs Variance & Lộ trình Master", "analogy": "Bắn cung: High Bias là luôn bắn lệch tâm về một phía (ngắm sai). High Variance là bắn tản mát khắp nơi (tay run bất ổn). Mục tiêu đỉnh cao của Master là vừa trúng hồng tâm vừa gom đạn lại một cụm!", "points": ["<strong>Phân rã Sai số tổng quát:</strong> $\\text{Total Error} = \\text{Bias}^2 + \\text{Variance} + \\text{Nhiễu}$.", "• <em>High Bias (Underfitting):</em> Mô hình quá ngây thơ, không học đủ quy luật -> Cần tăng độ phức tạp mô hình.", "• <em>High Variance (Overfitting):</em> Mô hình học vẹt cả nhiễu của tập train -> Cần thêm data, áp dụng Regularization ($L_1, L_2$) hoặc dùng Random Forest.", "<strong>Tiêu chí chọn mô hình thực tế:</strong>", "• Dữ liệu bảng $< 10.000$ dòng: Logistic/Linear Regression, Random Forest.", "• Dữ liệu bảng hàng triệu dòng: LightGBM, XGBoost, CatBoost.", "• Dữ liệu ảnh, âm thanh, văn bản dài: Deep Learning, CNN, Transformer."], "math": "\\text{Total Error} = \\text{Bias}^2 + \\text{Variance} + \\sigma_\\epsilon^2", "code": "# Regularization chống High Variance\nfrom sklearn.linear_model import Ridge, Lasso\n\nridge = Ridge(alpha=1.0) # L2: Co nhỏ trọng số\nlasso = Lasso(alpha=0.1) # L1: Ép trọng số rác về 0", "tip": "Một Data Scientist giỏi không phải là người luôn dùng mô hình phức tạp nhất, mà là người biết chọn mô hình ĐƠN GIẢN NHẤT giải quyết trọn vẹn bài toán kinh doanh!"}], "quiz": {"question": "Trong kiến trúc triển khai mô hình Machine Learning chuẩn sản xuất, vai trò cốt lõi của Docker là gì?", "options": ["Đóng gói toàn bộ mã nguồn, thư viện và môi trường vào container độc lập để chạy nhất quán trên mọi máy chủ", "Tự động làm tăng độ chính xác của mô hình lên 10%", "Điền tự động các giá trị thiếu trong dữ liệu", "Thay thế hoàn toàn ngôn ngữ lập trình Python"], "answer": 0, "explanation": "Chính xác! Docker giải quyết triệt để bài toán môi trường triển khai, đảm bảo code chạy trên dev giống hệt trên production."}}];
+
+        const ALL_SLIDES = [];
+        PARTS.forEach((p, pIdx) => {
+            p.slides.forEach((s, sIdx) => {
+                ALL_SLIDES.push({
+                    ...s,
+                    partId: p.id,
+                    partNum: p.part_num,
+                    partTitle: p.title,
+                    partLessons: p.lessons_covered,
+                    partBadge: p.badge,
+                    partQuiz: p.quiz,
+                    isLastInPart: sIdx === p.slides.length - 1
+                });
+            });
+        });
+
+        let currentPartIndex = 0;
+        let currentSlideGlobalIndex = 0;
+        let completedSlides = new Set(JSON.parse(localStorage.getItem('ds_completed_slides') || '[]'));
+        let answeredQuizzes = new Set(JSON.parse(localStorage.getItem('ds_answered_quizzes') || '[]'));
+        let userXP = parseInt(localStorage.getItem('ds_user_xp') || '0');
+
+        function saveState() {
+            localStorage.setItem('ds_completed_slides', JSON.stringify([...completedSlides]));
+            localStorage.setItem('ds_answered_quizzes', JSON.stringify([...answeredQuizzes]));
+            localStorage.setItem('ds_user_xp', userXP.toString());
+            updatePlayerStats();
+        }
+
+        function fireConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const pieces = [];
+            const colors = ['#6366f1', '#06b6d4', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'];
+            for (let i = 0; i < 90; i++) {
+                pieces.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    w: Math.random() * 8 + 4,
+                    h: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    vx: (Math.random() - 0.5) * 16,
+                    vy: (Math.random() - 0.7) * 16,
+                    rotation: Math.random() * 360,
+                    rspeed: Math.random() * 10 - 5
+                });
+            }
+
+            let frames = 0;
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                pieces.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.35;
+                    p.rotation += p.rspeed;
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate((p.rotation * Math.PI) / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                    ctx.restore();
+                });
+                frames++;
+                if (frames < 80) requestAnimationFrame(animate);
+                else ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+            animate();
+        }
+
+        function getRank(xp) {
+            if (xp >= 3000) return '👑 ĐẠI SƯ DATA SCIENCE';
+            if (xp >= 2000) return '🚀 KỸ SƯ ML TRƯỞNG';
+            if (xp >= 1200) return '⚡ CHUYÊN VIÊN DỮ LIỆU';
+            if (xp >= 500) return '🏹 THỢ SĂN DỮ LIỆU';
+            return '🔰 TẬP SỰ AI';
+        }
+
+        function updatePlayerStats() {
+            const completedCount = completedSlides.size;
+            const totalCount = ALL_SLIDES.length;
+            const percent = Math.round((completedCount / totalCount) * 100);
+
+            document.getElementById('player-xp').textContent = userXP;
+            document.getElementById('player-rank').textContent = getRank(userXP);
+            document.getElementById('player-progress').textContent = `${completedCount} / ${totalCount} Hoàn thành (${percent}%)`;
+
+            let unlockedCount = 0;
+            PARTS.forEach(p => {
+                const allDone = p.slides.every(s => completedSlides.has(s.id));
+                if (allDone) unlockedCount++;
+            });
+            document.getElementById('unlocked-count').textContent = unlockedCount;
+        }
+
+        function renderPartTabs() {
+            const bar = document.getElementById('parts-nav-bar');
+            bar.innerHTML = '';
+            PARTS.forEach((p, idx) => {
+                const tab = document.createElement('div');
+                tab.className = `part-tab ${idx === currentPartIndex ? 'active' : ''}`;
+                tab.innerHTML = `
+                    <span class="part-tab-num">${p.part_num}</span>
+                    <span class="part-tab-title">${p.title}</span>
+                `;
+                tab.onclick = () => selectPart(idx);
+                bar.appendChild(tab);
+            });
+        }
+
+        function renderSlidesSidebar() {
+            const curPart = PARTS[currentPartIndex];
+            document.getElementById('cur-part-title').textContent = `${curPart.part_num}: ${curPart.title}`;
+            document.getElementById('cur-part-lessons').textContent = curPart.lessons_covered;
+
+            const list = document.getElementById('slides-list');
+            list.innerHTML = '';
+
+            curPart.slides.forEach(s => {
+                const gIdx = ALL_SLIDES.findIndex(item => item.id === s.id);
+                const item = document.createElement('div');
+                item.className = `slide-item ${gIdx === currentSlideGlobalIndex ? 'active' : ''} ${completedSlides.has(s.id) ? 'completed' : ''}`;
+                item.innerHTML = `
+                    <div class="slide-num-badge">${completedSlides.has(s.id) ? '✓' : gIdx + 1}</div>
+                    <div class="slide-title-text">${s.title}</div>
+                `;
+                item.onclick = () => selectSlide(gIdx);
+                list.appendChild(item);
+            });
+        }
+
+        function renderMathSafely(container) {
+            if (!container) return;
+            if (window.renderMathInElement) {
+                try {
+                    renderMathInElement(container, {
+                        delimiters: [
+                            { left: '$$', right: '$$', display: true },
+                            { left: '$', right: '$', display: false },
+                            { left: '\\(', right: '\\)', display: false },
+                            { left: '\\[', right: '\\]', display: true }
+                        ],
+                        throwOnError: false,
+                        strict: false,
+                        ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                    });
+                } catch (e) {
+                    console.warn('KaTeX auto-render error:', e);
+                }
+            }
+        }
+
+        function renderMathFormula(mathStr, targetEl) {
+            if (!targetEl) return;
+            const cardEl = document.getElementById('math-card');
+            if (!mathStr || !mathStr.trim()) {
+                if (cardEl) cardEl.style.display = 'none';
+                targetEl.innerHTML = '';
+                return;
+            }
+            if (cardEl) cardEl.style.display = 'block';
+            targetEl.innerHTML = '';
+
+            if (mathStr.includes('$$') || (mathStr.includes('$') && !mathStr.trim().startsWith('\\'))) {
+                targetEl.innerHTML = mathStr;
+                renderMathSafely(targetEl);
+            } else {
+                if (window.katex) {
+                    try {
+                        katex.render(mathStr, targetEl, {
+                            displayMode: true,
+                            throwOnError: false,
+                            strict: false
+                        });
+                    } catch (e) {
+                        console.warn('KaTeX render error:', e);
+                        targetEl.textContent = mathStr;
+                    }
+                } else {
+                    targetEl.textContent = mathStr;
+                }
+            }
+        }
+
+        function renderSlide(gIndex) {
+            currentSlideGlobalIndex = gIndex;
+            const s = ALL_SLIDES[gIndex];
+
+            currentPartIndex = PARTS.findIndex(p => p.id === s.partId);
+
+            renderPartTabs();
+            renderSlidesSidebar();
+
+            document.getElementById('sc-part').textContent = `${s.partNum}: ${s.partTitle}`;
+            document.getElementById('sc-slide').textContent = `Slide ${gIndex + 1} / ${ALL_SLIDES.length}`;
+            document.getElementById('slide-title').textContent = s.title;
+            document.getElementById('slide-analogy').textContent = s.analogy;
+
+            const pointsContainer = document.getElementById('slide-points');
+            pointsContainer.innerHTML = '';
+            s.points.forEach(pt => {
+                const pDiv = document.createElement('div');
+                pDiv.className = 'point-item';
+                pDiv.innerHTML = `<div class="point-bullet"></div><div>${pt}</div>`;
+                pointsContainer.appendChild(pDiv);
+            });
+
+            renderMathFormula(s.math, document.getElementById('slide-math'));
+            document.getElementById('slide-code').textContent = s.code.trim();
+            document.getElementById('slide-tip').textContent = s.tip;
+            renderMathSafely(pointsContainer);
+            renderMathSafely(document.getElementById('slide-analogy'));
+            renderMathSafely(document.getElementById('slide-tip'));
+
+            const quizCard = document.getElementById('quiz-box');
+            if (s.isLastInPart && s.partQuiz) {
+                quizCard.style.display = 'block';
+                const q = s.partQuiz;
+                document.getElementById('quiz-question').textContent = q.question;
+                const optContainer = document.getElementById('quiz-options');
+                optContainer.innerHTML = '';
+                const fb = document.getElementById('quiz-feedback');
+                fb.className = 'quiz-feedback';
+                fb.style.display = 'none';
+
+                renderMathSafely(document.getElementById('quiz-question'));
+                q.options.forEach((opt, oIdx) => {
+                    const optDiv = document.createElement('div');
+                    optDiv.className = 'quiz-option';
+                    optDiv.innerHTML = `<span style="font-weight:700;">${String.fromCharCode(65 + oIdx)}.</span> <span>${opt}</span>`;
+                    renderMathSafely(optDiv);
+                    optDiv.onclick = () => handleAnswer(oIdx, q.answer, q.explanation, optDiv);
+                    optContainer.appendChild(optDiv);
+                });
+            } else {
+                quizCard.style.display = 'none';
+            }
+
+            document.getElementById('btn-prev').style.visibility = gIndex === 0 ? 'hidden' : 'visible';
+            const nextBtn = document.getElementById('btn-next');
+            if (completedSlides.has(s.id)) {
+                nextBtn.textContent = gIndex === ALL_SLIDES.length - 1 ? '🎉 Hoàn thành toàn bộ!' : 'Tiếp tục bài sau →';
+            } else {
+                nextBtn.textContent = 'Hoàn thành & Tiếp tục →';
+            }
+
+            document.querySelector('.stage').scrollTop = 0;
+        }
+
+        function handleAnswer(selectedIdx, correctIdx, explanation, optElement) {
+            const s = ALL_SLIDES[currentSlideGlobalIndex];
+            const feedback = document.getElementById('quiz-feedback');
+            const allOptions = document.querySelectorAll('.quiz-option');
+
+            if (selectedIdx === correctIdx) {
+                optElement.classList.add('correct');
+                feedback.className = 'quiz-feedback show success';
+                feedback.innerHTML = `<strong>🎉 CHÍNH XÁC (+50 XP)!</strong><br>${explanation}`;
+                renderMathSafely(feedback);
+                if (!answeredQuizzes.has(s.partId)) {
+                    answeredQuizzes.add(s.partId);
+                    userXP += 50;
+                    fireConfetti();
+                    saveState();
+                }
+            } else {
+                optElement.classList.add('wrong');
+                allOptions[correctIdx].classList.add('correct');
+                feedback.className = 'quiz-feedback show error';
+                feedback.innerHTML = `<strong>❌ CHƯA CHÍNH XÁC:</strong><br>${explanation}`;
+                renderMathSafely(feedback);
+            }
+        }
+
+        function selectPart(partIdx) {
+            currentPartIndex = partIdx;
+            const firstSlideId = PARTS[partIdx].slides[0].id;
+            const gIdx = ALL_SLIDES.findIndex(s => s.id === firstSlideId);
+            renderSlide(gIdx);
+        }
+
+        function selectSlide(gIdx) {
+            if (gIdx >= 0 && gIdx < ALL_SLIDES.length) {
+                renderSlide(gIdx);
+            }
+        }
+
+        document.getElementById('btn-next').onclick = () => {
+            const s = ALL_SLIDES[currentSlideGlobalIndex];
+            if (!completedSlides.has(s.id)) {
+                completedSlides.add(s.id);
+                userXP += 100;
+                fireConfetti();
+                saveState();
+            }
+            if (currentSlideGlobalIndex < ALL_SLIDES.length - 1) {
+                selectSlide(currentSlideGlobalIndex + 1);
+            } else {
+                alert('CHÚC MỪNG BẠN ĐÃ HOÀN THÀNH TOÀN BỘ 10 PHẦN CỦA KHÓA HỌC!');
+            }
+        };
+
+        document.getElementById('btn-prev').onclick = () => {
+            if (currentSlideGlobalIndex > 0) {
+                selectSlide(currentSlideGlobalIndex - 1);
+            }
+        };
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                document.getElementById('btn-next').click();
+            } else if (e.key === 'ArrowLeft') {
+                document.getElementById('btn-prev').click();
+            }
+        });
+
+        document.getElementById('btn-copy-code').onclick = () => {
+            const code = document.getElementById('slide-code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.getElementById('btn-copy-code');
+                btn.textContent = '✅ Đã chép!';
+                setTimeout(() => btn.textContent = '📋 Sao chép code', 2000);
+            });
+        };
+
+        document.getElementById('btn-fullscreen').onclick = () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        };
+
+        function renderBadges() {
+            const grid = document.getElementById('badges-grid');
+            grid.innerHTML = '';
+            PARTS.forEach(p => {
+                const isUnlocked = p.slides.every(s => completedSlides.has(s.id));
+                const box = document.createElement('div');
+                box.className = `badge-box ${isUnlocked ? 'unlocked' : ''}`;
+                box.innerHTML = `
+                    <div class="badge-box-icon">${p.badge.split(' ')[0]}</div>
+                    <div>
+                        <div class="badge-box-name">${p.badge}</div>
+                        <div class="badge-box-desc">${p.part_num}: ${p.title}</div>
+                    </div>
+                `;
+                grid.appendChild(box);
+            });
+        }
+
+        document.getElementById('btn-badges').onclick = () => {
+            renderBadges();
+            document.getElementById('badges-modal').classList.add('active');
+        };
+
+        document.getElementById('btn-close-modal').onclick = () => {
+            document.getElementById('badges-modal').classList.remove('active');
+        };
+
+        updatePlayerStats();
+        renderPartTabs();
+        renderSlide(0);
+
+        window.addEventListener('load', () => {
+            renderSlide(currentSlideGlobalIndex);
+        });
+    </script>
+</body>
+</html>
