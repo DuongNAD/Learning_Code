@@ -103,7 +103,10 @@ def practice_2_1_top_k_frequent_words(text: str, k: int, min_len: int = 3) -> Li
     if USE_SOLUTIONS_FOR_TESTING:
         return sol.solution_2_1_top_k_frequent_words(text, k, min_len)
         
-    # TODO: Viết code thực hành của bạn tại đây
+    # TODO: Bắt đầu viết code của bạn tại đây
+    # Gợi ý:
+    # for word in text.split():
+    #     pass
     raise NotImplementedError("Hãy tự viết code cho bài 2.1!")
 
 
