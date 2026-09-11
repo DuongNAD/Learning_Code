@@ -4,6 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Python & ML Foundations Lab - Trực Quan & Thực Hành</title>
+  <!-- Google Fonts: Be Vietnam Pro (Chuẩn tiếng Việt 100%) + Plus Jakarta Sans + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+  <!-- KaTeX for Beautiful Math Formula Rendering (Local offline with CDN fallback) -->
+  <link rel="stylesheet" href="vendor/katex/katex.min.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css';">
+  <script defer src="vendor/katex/katex.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js';"></script>
+  <script defer src="vendor/katex/auto-render.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js';" onload="initKaTeX();"></script>
   <style>
     :root {
       --bg-primary: #0d1117;
@@ -25,7 +34,40 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: 'Be Vietnam Pro', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    code, pre, kbd, samp, .mono {
+      font-family: 'JetBrains Mono', 'Fira Code', SFMono-Regular, Consolas, monospace !important;
+    }
+
+    .math-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 1px 7px;
+      margin: 0 2px;
+      background: rgba(188, 140, 255, 0.15);
+      border: 1px solid rgba(188, 140, 255, 0.3);
+      border-radius: 4px;
+      color: #d2a8ff;
+      font-size: 0.9em;
+      vertical-align: middle;
+    }
+
+    nav.tabs-nav::-webkit-scrollbar {
+      height: 6px;
+    }
+    nav.tabs-nav::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+    }
+    nav.tabs-nav::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 3px;
+    }
+    nav.tabs-nav::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-cyan);
     }
 
     body {
@@ -752,7 +794,7 @@
         <!-- TRỰC QUAN ĐỘNG BÀI 1 -->
         <div class="card">
           <div class="card-title">
-            <span>🎮 Trực Quan Hoá Động: Bộ Phân Loại Số</span>
+            <span>🎮 Trực Quan Hóa Động: Bộ Phân Loại Số</span>
             <span class="ml-tag">ML: ReLU Activation</span>
           </div>
           
@@ -773,7 +815,7 @@
           <div class="control-row" style="margin-top: 10px; background: var(--bg-tertiary); padding: 8px 12px; border-radius: 6px;">
             <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem; color: #f0f6fc;">
               <input type="checkbox" id="ex1-relu-toggle" onchange="runEx1Simulation()">
-              <b>⚙️ Chế độ kích hoạt ReLU ($f(x) = \max(0, x)$)</b>: Triệt tiêu số âm về 0!
+              <b>⚙️ Chế độ kích hoạt ReLU <span class="math-pill">$f(x) = \max(0, x)$</span></b>: Triệt tiêu số âm về 0!
             </label>
           </div>
 
@@ -840,7 +882,7 @@
           </div>
 
           <div class="quiz-card">
-            <div class="quiz-question">❓ Câu hỏi tư duy: Tại sao trong Deep Learning hàm ReLU $f(x) = \max(0, x)$ lại được chuộng hơn hàm Sigmoid?</div>
+            <div class="quiz-question">❓ Câu hỏi tư duy: Tại sao trong Deep Learning hàm ReLU <span class="math-pill">$f(x) = \max(0, x)$</span> lại được chuộng hơn hàm Sigmoid?</div>
             <div class="quiz-options" id="quiz-ex1">
               <div class="quiz-option" onclick="checkQuiz(this, false, 'Sai rồi! ReLU tính toán cực nhanh vì chỉ là phép so sánh max, không tốn tài nguyên tính hàm mũ exp.')">A. Vì ReLU tính toán phức tạp hơn giúp mô hình học sâu hơn.</div>
               <div class="quiz-option" onclick="checkQuiz(this, true, 'Chính xác! ReLU không bị bão hòa gradient ở miền dương, giải quyết triệt để vấn đề biến mất đạo hàm (Vanishing Gradient) và tính toán cực nhanh!')">B. Tránh triệt tiêu đạo hàm (Vanishing Gradient) và tính toán siêu nhanh.</div>
@@ -1505,7 +1547,7 @@
           <div style="background: var(--bg-primary); padding: 12px; border-radius: 8px; border-left: 4px solid var(--accent-cyan);">
             <h4 style="color:#58a6ff; margin-bottom:4px;">1. Phân loại số (Ex1) ➔ Hàm kích hoạt ReLU & Chuẩn hóa dữ liệu (Zero-Centering)</h4>
             <p style="color:var(--text-muted);">
-              Phép kiểm tra <code>i < 0</code> hay <code>i >= 0</code> là tiền đề của hàm kích hoạt <b>ReLU</b> trong mạng nơ-ron: $f(x) = \max(0, x)$. Ngoài ra, trong tiền xử lý dữ liệu bảng, bước chuẩn hóa <i>StandardScaler</i> ($x - \mu$) đưa kỳ vọng về 0, chia tách dữ liệu thành nửa âm và nửa dương.
+              Phép kiểm tra <code>i < 0</code> hay <code>i >= 0</code> là tiền đề của hàm kích hoạt <b>ReLU</b> trong mạng nơ-ron: <span class="math-pill">$f(x) = \max(0, x)$</span>. Ngoài ra, trong tiền xử lý dữ liệu bảng, bước chuẩn hóa <i>StandardScaler</i> ($x - \mu$) đưa kỳ vọng về 0, chia tách dữ liệu thành nửa âm và nửa dương.
             </p>
           </div>
 
@@ -1573,7 +1615,24 @@
     // =========================================================================
     // NAVIGATION & TAB SWITCHING
     // =========================================================================
+    function initKaTeX() {
+      if (window.renderMathInElement) {
+        try {
+          renderMathInElement(document.body, {
+            delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false}
+            ],
+            throwOnError: false,
+            ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+          });
+        } catch(e) { console.warn('KaTeX render error:', e); }
+      }
+    }
+    document.addEventListener('DOMContentLoaded', () => { setTimeout(initKaTeX, 150); });
+
     function switchTab(tabId) {
+      setTimeout(initKaTeX, 50);
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 
