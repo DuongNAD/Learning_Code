@@ -1,0 +1,142 @@
+=================== Comparison for 6. Exercise_ Regression ===================
+
+--------------------------------------------------
+Level 0: Exercise_Regression_Level_0.ipynb
+Total cells: 63 (Markdown: 48, Code: 15)
+
+  Cell 0 [MD]: #**Regression Course**
+  Cell 1 [MD]: #Level 0（☆☆☆☆）; In Level 0, you will learn about linear regression. You will also learn about data characteristics and basic preprocessing methods.
+  Cell 2 [MD]: ##0.1. Liner Regression
+  Cell 11 [MD]: ##0.2. Understanding the Data
+  Cell 15 [MD]: ##0.3. Preprocessing Data
+  Cell 19 [Code, 1 lines]: import pandas as pd
+  Cell 22 [Code, 2 lines]: df = pd.DataFrame([[57, 120],[52, 130],[55, 115], [51, 140]])
+  Cell 24 [Code, 2 lines]: df.columns = ['column1', 'column2']
+  Cell 26 [Code, 2 lines]: df = df.rename(columns={'column1': 'width', 'column2': 'engine-size'})
+  Cell 28 [Code, 1 lines]: df.to_csv('car_test_data.csv', index = False)
+  Cell 30 [Code, 2 lines]: df2 = pd.read_csv('car_test_data.csv')
+  Cell 32 [MD]: ##0.4. Model Building and Evaluation
+  Cell 36 [Code, 2 lines]: from sklearn.linear_model import LinearRegression
+  Cell 38 [Code, 12 lines]: import pandas as pd
+  Cell 40 [Code, 2 lines]: x = test_data[['width', 'engine-size']]
+  Cell 42 [Code, 2 lines]: t = test_data['price']
+  Cell 44 [Code, 1 lines]: model.fit(x, t)
+  Cell 47 [Code, 2 lines]: print(f'Estimated bias: {model.intercept_}')
+  Cell 53 [MD]: Level 0 content ends here. To wrap up, let’s try the following practical exercises as a review.
+  Cell 54 [MD]: ##0.5. Practice Problems
+  Cell 55 [MD]: In Level 0, you learned about the characteristics of data, preprocessing methods, and linear regression.; Based on the contents of Level 0, please work through the following practice problems.
+  Cell 57 [Code, 0 lines]: <EMPTY>
+  Cell 59 [Code, 0 lines]: <EMPTY>
+  Cell 61 [Code, 0 lines]: <EMPTY>
+  Cell 62 [MD]: That’s all for Level 0. Great job!
+
+--------------------------------------------------
+Level 1: Exercise_Regression_Level_1.ipynb
+Total cells: 61 (Markdown: 38, Code: 23)
+
+  Cell 0 [MD]: #**Regression Course**
+  Cell 1 [MD]: #Level 1 (★☆☆☆); Level 1 builds on the methods introduced in Level 0 and applies them to more practical datasets, with a focus on processing data and model building.
+  Cell 2 [MD]: ##1.1. Understanding the Data
+  Cell 3 [MD]: Let’s begin by exploring the dataset we'll be working with. This step is essential for effective data transformation and model building later on. The dataset contains approximately 200 rows related to appearances and performance of different cars. Unlike Level 0, understanding this data won’t be as straightforward. Start by examining a few dozen rows directly, then analyze each feature in more detail.; After downloading, drag and drop the CSV file into the same location you used in Level 0. (Click and hold the left mouse button on the file, then move it to the desired location). Once uploaded, use the following code to read the CSV file and display it as a DataFrame.
+  Cell 5 [Code, 5 lines]: import pandas as pd
+  Cell 7 [Code, 1 lines]: len(df)
+  Cell 9 [Code, 1 lines]: df.head(10)
+  Cell 11 [Code, 1 lines]: df.tail(10)
+  Cell 14 [Code, 2 lines]: df_isnull = df.isnull()
+  Cell 16 [Code, 1 lines]: df_isnull.sum()
+  Cell 19 [Code, 1 lines]: df.isnull().sum()
+  Cell 21 [Code, 1 lines]: df.describe()
+  Cell 23 [Code, 1 lines]: import matplotlib.pyplot as plt
+  Cell 25 [Code, 4 lines]: plt.scatter(df['engine-size'], df['price'])
+  Cell 27 [Code, 4 lines]: plt.scatter(df['city-mpg'], df['price'])
+  Cell 29 [Code, 4 lines]: plt.scatter(df['curb-weight'], df['price'])
+  Cell 31 [MD]: ##1.2. Processing Data
+  Cell 34 [Code, 1 lines]: df_drop = df.dropna()
+  Cell 36 [Code, 1 lines]: df.isnull().sum()
+  Cell 37 [Code, 2 lines]: print('Number of data before removal', len(df))
+  Cell 39 [Code, 2 lines]: X = df_drop.drop('price', axis=1)
+  Cell 41 [Code, 1 lines]: X
+  Cell 42 [MD]: ##1.3. Model Building and Evaluation
+  Cell 43 [MD]: This time, we will build a regression model using multiple linear regression, just like we did in Level 0. The process of building and evaluating the model will be almost the same as last time. In Level 0, we trained the model on the entire dataset and evaluated its prediction accuracy using the same data. However, this approach doesn’t show how well the model performs on unseen data. The main goal is to evaluate how accurately the trained model predicts unseen data.
+  Cell 46 [Code, 8 lines]: from sklearn.linear_model import LinearRegression
+  Cell 50 [Code, 2 lines]: print('R² score for each split:', scores)
+  Cell 52 [MD]: ##1.4.Practice Problems
+  Cell 54 [Code, 0 lines]: <EMPTY>
+  Cell 56 [Code, 0 lines]: <EMPTY>
+  Cell 58 [Code, 0 lines]: <EMPTY>
+  Cell 60 [Code, 0 lines]: <EMPTY>
+
+--------------------------------------------------
+Level 2: Exercise_Regression_Level_2.ipynb
+Total cells: 49 (Markdown: 33, Code: 16)
+
+  Cell 0 [MD]: #**Regression Course**
+  Cell 1 [MD]: # Level 2 (★★☆☆); In Level 2, we will first remove outliers from the data. Then, we will train a model using the preprocessed data and make predictions.; We will explore two different methods for identifying outliers — one in Level 2 and another in Level 3.
+  Cell 2 [MD]: ## 2.1. Preprocessing Data
+  Cell 3 [MD]: In this Level 2 exercise, we will continue to use the `Car_Price_Data.csv` from Level 1.; As a quick review of Level 1, please download the file from the link below, upload it to the designated location, and use the code provided to load it into a DataFrame.
+  Cell 4 [Code, 4 lines]: import pandas as pd
+  Cell 6 [MD]: *  Based on a box plot (Level 2 ★★☆☆); *  Based on scatter plot (Level 3 ★★★☆)
+  Cell 10 [Code, 7 lines]: import matplotlib.pyplot as plt
+  Cell 14 [Code, 3 lines]: columns = ['engine-size', 'curb-weight', 'city-mpg']
+  Cell 16 [Code, 3 lines]: Q1 = desc.loc['25%']
+  Cell 18 [Code, 6 lines]: IQR = Q3 - Q1
+  Cell 20 [Code, 1 lines]: lower_bound['engine-size']
+  Cell 22 [Code, 2 lines]: is_over_100 = df['engine-size'] >= 100
+  Cell 24 [Code, 1 lines]: df_over_100 = df[is_over_100]
+  Cell 29 [Code, 1 lines]: df2 = df[(df['engine-size'] >= lower_bound['engine-size']) & (df['engine-size'] 
+  Cell 32 [Code, 3 lines]: menu = ['salad', 'soup', 'steak', 'cake']
+  Cell 34 [Code, 1 lines]: columns = ['engine-size', 'curb-weight', 'city-mpg']
+  Cell 36 [Code, 5 lines]: for column in columns:
+  Cell 39 [Code, 2 lines]: X = df.drop('price', axis=1)
+  Cell 40 [MD]: ## 2.2. Model Building and Evaluation
+  Cell 42 [Code, 10 lines]: from sklearn.linear_model import LinearRegression
+  Cell 43 [MD]: As a result of removing outliers using a box plot, the model's accuracy decreased compared to Level 1, where outliers were not removed.　This shows that removing outliers does not always lead to improved accuracy.
+  Cell 44 [MD]: ## 2.3. Practice Problems
+  Cell 46 [Code, 0 lines]: <EMPTY>
+  Cell 48 [Code, 0 lines]: <EMPTY>
+
+--------------------------------------------------
+Level 3: Exercise_Regression_Level_3.ipynb
+Total cells: 42 (Markdown: 29, Code: 13)
+
+  Cell 0 [MD]: #**Regression Course**
+  Cell 1 [MD]: #Level３（★★★☆）; In Level 3, you will train a model and make predictions using the data with outliers removed, based on the scatter plot.
+  Cell 2 [MD]: ##3.1. Preprocessing Data
+  Cell 4 [Code, 4 lines]: import pandas as pd
+  Cell 5 [MD]: In Level 2, we focused on detecting outliers by examining individual variables using a boxplot, identifying six outliers.; Now in Level 3, we shift our focus to identifying outliers visually using scatter plots.; Let’s begin by revisiting the scatter plot of `engine-size` versus `price` that we explored in Level 1.
+  Cell 12 [MD]: This time, we want to keep only the data where the `city-mpg` value is 40 or less. As we did in Level 2, you can use a comparison operator to set this condition, as shown below.
+  Cell 13 [Code, 2 lines]: is_under_40 = df['city-mpg'] <= 40
+  Cell 15 [Code, 6 lines]: import matplotlib.pyplot as plt
+  Cell 20 [Code, 1 lines]: df_out = df[(df['curb-weight'] <= 3000) & (df['price'] >= 30000)]
+  Cell 22 [Code, 1 lines]: df_out
+  Cell 24 [Code, 1 lines]: df = df[~((df['curb-weight'] <= 3000) & (df['price'] >= 30000))]
+  Cell 26 [Code, 4 lines]: plt.scatter(df['curb-weight'], df['price'])
+  Cell 28 [Code, 2 lines]: X = df.drop('price', axis=1)
+  Cell 29 [MD]: ##3.2. Model Building and Evaluation
+  Cell 31 [Code, 10 lines]: from sklearn.linear_model import LinearRegression
+  Cell 32 [MD]: After removing outliers using the scatter plot, the average R² increased compared to Level 1 (no outlier processing) and Level 2 (outliers removed using box plots).
+  Cell 33 [MD]: ##3.3. Practice Problems
+  Cell 35 [Code, 0 lines]: <EMPTY>
+  Cell 37 [Code, 0 lines]: <EMPTY>
+  Cell 39 [Code, 0 lines]: <EMPTY>
+  Cell 41 [Code, 0 lines]: <EMPTY>
+
+--------------------------------------------------
+Level 4: Exercise_Regression_Level_4.ipynb
+Total cells: 29 (Markdown: 20, Code: 9)
+
+  Cell 0 [MD]: #**Regression Course**
+  Cell 1 [MD]: #Level 4（★★★★）; In Level 4, we’ll learn how to train a model and make predictions using standardized data.
+  Cell 2 [MD]: ##4.1. Preprocessing Data
+  Cell 3 [Code, 4 lines]: import pandas as pd
+  Cell 7 [Code, 1 lines]: df[['engine-size', 'curb-weight', 'city-mpg']].describe().loc[['mean', 'std']]
+  Cell 9 [Code, 12 lines]: from sklearn.preprocessing import StandardScaler
+  Cell 11 [Code, 1 lines]: df[['engine-size std', 'curb-weight std', 'city-mpg std']].describe().loc[['mean
+  Cell 16 [Code, 11 lines]: from sklearn.model_selection import train_test_split
+  Cell 17 [MD]: ##4.2. Model Building
+  Cell 19 [Code, 6 lines]: from sklearn.linear_model import LinearRegression
+  Cell 22 [Code, 3 lines]: model = LinearRegression()
+  Cell 24 [MD]: ##4.3. Practice Problems
+  Cell 25 [MD]: **Q4-1.** Download the file `Regression_Lv1_Practice.csv` used in Level 1, upload it, and read it into a pandas DataFrame.
+  Cell 26 [Code, 0 lines]: <EMPTY>
+  Cell 28 [Code, 0 lines]: <EMPTY>

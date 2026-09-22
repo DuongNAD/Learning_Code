@@ -1,0 +1,12 @@
+# AgriCarbon Agent - Production Dependencies
+# Vietnam Japan AI Hackathon 2026 (Track 3: Green Growth)
+
+fastapi>=0.115.0
+uvicorn>=0.30.0
+pydantic>=2.7.0
+langgraph>=0.2.0
+langchain-core>=0.3.0
+streamlit>=1.35.0
+requests>=2.31.0
+httpx>=0.27.0
+pytest>=8.0.0

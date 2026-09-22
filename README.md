@@ -5,6 +5,8 @@ Thư mục lưu trữ toàn bộ mã nguồn, bài tập thực hành, tài li�
 Toàn bộ kho lưu trữ này được đồng bộ từ Git repository:
 🔗 **GitHub**: [DuongNAD/Learning_Code](https://github.com/DuongNAD/Learning_Code.git)
 
+> 🎯 **Active Learning Hub:** Tham khảo [`ACTIVE_LEARNING.md`](./ACTIVE_LEARNING.md) để theo dõi 4–5 dự án trọng tâm và vòng quay quyết định hàng ngày (Roulette).
+
 ---
 
 ## 🗂️ Mục Lục Chủ Đề

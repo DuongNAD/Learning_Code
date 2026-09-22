@@ -1,0 +1,91 @@
+<?xml version="1.0" ?>
+<EventConfiguration>
+<Template id="0" Name="Standard template">
+	<Event id="10"/>
+	<Event id="12"/>
+	<Event id="14"/>
+	<Event id="15"/>
+	<Event id="17"/>
+</Template>
+
+<Template id="1" Name="TSQL replay">
+	<Event id="11"/>
+	<Event id="13"/>
+	<Event id="14"/>
+	<Event id="15"/>
+	<Event id="17"/>
+	<Event id="53"/>
+	<Event id="70"/>
+	<Event id="71"/>
+	<Event id="72"/>
+	<Event id="74"/>
+	<Event id="77"/>
+	<Event id="78"/>
+	<Event id="100"/>
+</Template>
+
+<Template id="2" Name="TSQL">
+	<Event id="11"/>
+	<Event id="12"/>
+	<Event id="14"/>
+	<Event id="15"/>
+	<Event id="17"/>
+</Template>
+
+<Template id="3" Name="TSQL SPs">
+	<Event id="11"/>
+	<Event id="13"/>
+	<Event id="14"/>
+	<Event id="15"/>
+	<Event id="17"/>
+	<Event id="42"/>
+	<Event id="43"/>
+</Template>
+
+<Template id="4" Name="Batch and RPC">
+	<Event id="10"/>
+	<Event id="11"/>
+	<Event id="12"/>
+	<Event id="13"/>
+</Template>
+
+<Template id="5" Name="Replay">
+	<Event id="10"/>
+	<Event id="11"/>
+	<Event id="12"/>
+	<Event id="13"/>
+	<Event id="14"/>
+	<Event id="15"/>
+	<Event id="16"/>
+	<Event id="17"/>
+	<Event id="18"/>
+	<Event id="19"/>
+	<Event id="20"/>
+	<Event id="22"/>
+	<Event id="25"/>
+	<Event id="26"/>
+	<Event id="27"/>
+	<Event id="33"/>
+	<Event id="50"/>
+	<Event id="53"/>
+	<Event id="55"/>
+	<Event id="58"/>
+	<Event id="59"/>
+	<Event id="60"/>
+	<Event id="61"/>
+	<Event id="67"/>
+	<Event id="69"/>
+	<Event id="70"/>
+	<Event id="71"/>
+	<Event id="72"/>
+	<Event id="73"/>
+	<Event id="77"/>
+	<Event id="78"/>
+	<Event id="79"/>
+	<Event id="80"/>
+	<Event id="81"/>
+	<Event id="100"/>
+	<Event id="116"/>
+</Template>
+
+</EventConfiguration>

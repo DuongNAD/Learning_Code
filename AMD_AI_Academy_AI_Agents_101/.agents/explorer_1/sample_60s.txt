@@ -1,0 +1,13 @@
+Hey everyone, welcome to AI Agent 101.
+Today we're going to take a fun practical look at what makes large language models more than just chatbots,
+and how to turn them into powerful open source agents that can actually do things.
+To warm up, let's look at a real open source example built by a project called WebUI by Browser Use.
+Here's a scenario. Say I want to cook chili for dinner.
+So I'm going to prompt the agent, I want to cook chili for dinner tonight.
+Can you find the ingredients and put them in my shopping cart?
+This open source agent plans the workflow for me.
+It finds the recipe, extracts the ingredients, and adds them to the cart automatically.
+Watch how it alternates between thinking and doing, reasoning about the recipe, then browsing online, then taking action to fill the basket.
+That's the React agent pattern in motion, combining reasoning with real-world action.
+Instead of just answering questions, the model becomes
+the same.

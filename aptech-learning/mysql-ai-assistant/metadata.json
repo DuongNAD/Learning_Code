@@ -1,0 +1,5 @@
+{
+  "name": "MySQL AI Assistant",
+  "description": "A web application that integrates AI with a MySQL database to answer questions based on your data.",
+  "requestFramePermissions": []
+}

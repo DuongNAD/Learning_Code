@@ -1,0 +1,279 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "preset_id": "an_giang_rice",
+  "title": "An Giang 5.0 ha Jasmine 85 Export Rice Polder",
+  "title_vi": "Mô hình Đê bao Lúa thơm Jasmine 85 Xuất khẩu 5.0 ha - Tri Tôn, An Giang",
+  "title_ja": "アンザン省 トリートンドック 輸出用高品質ジャスミン85水田 5.0ha",
+  "version": "1.0.0",
+  "created_at": "2026-09-08T06:00:00Z",
+  "target_market": "Japan (Tokyo Innovation Base / MAFF Green Transformation)",
+  "scenario_type": "flood_avoidance_and_rain_harvesting",
+  "summary": "5.0 ha export rice polder in An Giang with 42% soil moisture and 35mm upcoming convective rainfall in next 48h. Agent must recommend PUMP OFF to prevent waterlogging, save electricity, avoid nutrient leaching, and demonstrate AWD water savings over conventional continuous flooding.",
+  "farm_profile": {
+    "farm_id": "VN-AG-TRITON-001",
+    "name": "Tri Ton High-Tech Agri Cooperative (HTX Nông Nghiệp Tri Tôn)",
+    "province": "An Giang",
+    "district": "Tri Tôn",
+    "commune": "Tà Đảnh",
+    "country": "Vietnam",
+    "coordinates": {
+      "latitude": 10.3842,
+      "longitude": 105.0125,
+      "elevation_meters": 2.5
+    },
+    "polder_system": {
+      "type": "closed_dyke_ring (đê bao khép kín)",
+      "total_area_ha": 5.0,
+      "sub_plots": 5,
+      "sub_plot_area_ha": 1.0,
+      "sluice_gates": 2,
+      "sluice_status": "closed",
+      "pumping_station": {
+        "pump_id": "PUMP-AG-01",
+        "pump_type": "low_lift_axial_flow (bơm trục ngang cột áp thấp)",
+        "rated_power_kw": 15.0,
+        "flow_rate_m3_per_hour": 350.0,
+        "current_status": "OFF",
+        "control_mode": "autonomous_agent_relay"
+      }
+    }
+  },
+  "crop_profile": {
+    "crop_name": "Rice (Oryza sativa L.)",
+    "cultivar": "Jasmine 85 (Lúa thơm Jasmine 85)",
+    "market_segment": "High-Grade Export Rice to Japan / EU",
+    "growth_cycle_days": 98,
+    "current_day_after_sowing": 28,
+    "growth_stage": "active_tillering (đẻ nhánh rộ)",
+    "growth_stage_code": "STAGE_2_TILLERING",
+    "fao_kc": 1.10,
+    "water_management_method": "AWD (Alternate Wetting and Drying - Nông Lộ Phơi xen kẽ)",
+    "submergence_tolerance_cm": 10.0,
+    "target_water_depth_cm": 3.0,
+    "critical_drying_depth_cm": -15.0
+  },
+  "soil_profile": {
+    "soil_classification": "Fluvisols (Đất phù sa bồi tụ sông Tiền / sông Hậu)",
+    "texture": "heavy_clay (sét nặng)",
+    "bulk_density_g_cm3": 1.25,
+    "effective_root_depth_m": 0.25,
+    "saturation_capacity_pct": 52.0,
+    "field_capacity_pct": 40.0,
+    "management_allowed_depletion_pct": 0.20,
+    "permanent_wilting_point_pct": 22.0,
+    "percolation_rate_mm_day": 2.0,
+    "salinity_hazard": "low_freshwater",
+    "salinity_ec_ds_m": 0.45,
+    "salinity_threshold_ds_m": 1.50,
+    "soil_ph": 6.2,
+    "organic_carbon_pct": 2.4
+  },
+  "sensor_telemetry": {
+    "timestamp": "2026-09-08T06:00:00Z",
+    "telemetry_source": "IoT Polder Telemetry Mesh (LoRaWAN Gateway AG-GW-01)",
+    "soil_moisture_pct": 42.0,
+    "soil_moisture_sub_plots": [
+      {"plot_id": "P1", "soil_moisture_pct": 42.5, "water_depth_cm": 3.8},
+      {"plot_id": "P2", "soil_moisture_pct": 41.8, "water_depth_cm": 3.2},
+      {"plot_id": "P3", "soil_moisture_pct": 42.0, "water_depth_cm": 3.5},
+      {"plot_id": "P4", "soil_moisture_pct": 41.5, "water_depth_cm": 3.1},
+      {"plot_id": "P5", "soil_moisture_pct": 42.2, "water_depth_cm": 3.9}
+    ],
+    "surface_water_depth_cm": 3.5,
+    "water_salinity_ec_ds_m": 0.45,
+    "soil_temperature_celsius": 28.5,
+    "ambient_temperature_celsius": 31.2,
+    "ambient_humidity_pct": 82.0,
+    "available_npk_mg_kg": {
+      "nitrogen_n": 38.0,
+      "phosphorus_p": 18.0,
+      "potassium_k": 125.0
+    },
+    "pump_operational_state": "OFF",
+    "pump_hours_run_today": 0.0,
+    "power_consumption_today_kwh": 0.0,
+    "battery_gateway_voltage_v": 12.6,
+    "sensor_status_code": "ALL_HEALTHY_NORMAL"
+  },
+  "weather_forecast": {
+    "provider": "Open-Meteo Precision Agro Forecast API",
+    "forecast_generated_at": "2026-09-08T05:30:00Z",
+    "current": {
+      "temperature_c": 31.2,
+      "relative_humidity_pct": 82.0,
+      "wind_speed_m_s": 2.1,
+      "solar_radiation_w_m2": 520.0,
+      "precipitation_past_1h_mm": 0.0,
+      "weather_code": 2,
+      "weather_description": "Partly cloudy, convective clouds building"
+    },
+    "summary_48h": {
+      "expected_precipitation_mm": 35.0,
+      "precipitation_probability_pct": 88.0,
+      "rain_event_start_hours_from_now": 6,
+      "rain_event_peak_intensity_mm_h": 14.5,
+      "evapotranspiration_et0_mm_day": 3.8
+    },
+    "daily_forecast": [
+      {
+        "date": "2026-09-08",
+        "temp_max_c": 32.5,
+        "temp_min_c": 25.0,
+        "precipitation_mm": 18.5,
+        "precipitation_probability_pct": 85,
+        "et0_mm": 3.8,
+        "wind_speed_max_m_s": 3.2
+      },
+      {
+        "date": "2026-09-09",
+        "temp_max_c": 30.8,
+        "temp_min_c": 24.5,
+        "precipitation_mm": 16.5,
+        "precipitation_probability_pct": 90,
+        "et0_mm": 3.4,
+        "wind_speed_max_m_s": 3.8
+      },
+      {
+        "date": "2026-09-10",
+        "temp_max_c": 31.5,
+        "temp_min_c": 24.8,
+        "precipitation_mm": 4.2,
+        "precipitation_probability_pct": 45,
+        "et0_mm": 3.9,
+        "wind_speed_max_m_s": 2.4
+      }
+    ]
+  },
+  "electricity_tariff": {
+    "utility_provider": "EVN An Giang (Điện lực An Giang)",
+    "regulatory_code": "QĐ 2699/QĐ-BCT - Biểu giá bán lẻ điện bơm tưới nông nghiệp",
+    "voltage_level": "Medium Voltage (Cấp điện áp dưới 6kV)",
+    "rates_vnd_per_kwh": {
+      "normal_hours": 1650,
+      "peak_hours": 3050,
+      "off_peak_hours": 1120
+    },
+    "peak_hour_windows": [
+      {"start": "09:30", "end": "11:30"},
+      {"start": "17:00", "end": "20:00"}
+    ],
+    "off_peak_hour_windows": [
+      {"start": "22:00", "end": "04:00"}
+    ],
+    "avoided_peak_cost_savings_pct": 63.3
+  },
+  "agronomic_parameters": {
+    "water_balance_calculation": {
+      "current_ponding_mm": 35.0,
+      "upcoming_rain_mm": 35.0,
+      "daily_crop_water_demand_etc_mm": 4.18,
+      "daily_percolation_mm": 2.0,
+      "total_daily_loss_mm": 6.18,
+      "projected_ponding_after_rain_mm": 63.82,
+      "max_safe_ponding_mm": 100.0,
+      "irrigation_needed_mm": 0.0,
+      "recommendation_action": "MAINTAIN_PUMP_OFF",
+      "agronomic_rationale": "Soil moisture is already at 42.0% (above 40% FC) with 3.5 cm standing water. Forecast indicates 35mm rain over 48h (88% prob). Pumping now would increase water depth to >9.8 cm, risking plant lodging, severe fertilizer leaching, wasted pumping electricity, and intensified anaerobic methane production."
+    }
+  },
+  "baseline_conventional": {
+    "cultivation_mode": "Continuous Deep Flooding (Tưới ngập liên tục 5-10cm)",
+    "water_consumption_m3_per_ha": 7500.0,
+    "water_consumption_total_5ha_m3": 37500.0,
+    "pumping_electricity_kwh_per_ha": 1800.0,
+    "pumping_electricity_total_5ha_kwh": 9000.0,
+    "pumping_electricity_cost_vnd": 16830000,
+    "fertilizer_chemical_n_kg_per_ha": 180.0,
+    "fertilizer_chemical_n_total_5ha_kg": 900.0,
+    "fertilizer_cost_vnd": 23400000,
+    "diesel_liters_per_ha": 80.0,
+    "diesel_total_5ha_liters": 400.0,
+    "ghg_emissions_co2e": {
+      "scope_1_direct_tco2e": {
+        "methane_ch4_anaerobic_paddy_tco2e": 14.0,
+        "n2o_synthetic_fertilizer_tco2e": 3.75,
+        "diesel_combustion_tco2e": 1.07,
+        "subtotal_scope_1_tco2e": 18.82
+      },
+      "scope_2_indirect_electricity_tco2e": 6.50,
+      "scope_3_supply_chain_logistics_tco2e": 3.90,
+      "total_emissions_5ha_tco2e": 29.22,
+      "emissions_per_ha_tco2e": 5.84
+    }
+  },
+  "optimized_agricarbon": {
+    "cultivation_mode": "Autonomous AWD (Alternate Wetting & Drying) + Rain-Adaptive Dispatch",
+    "water_consumption_m3_per_ha": 4650.0,
+    "water_consumption_total_5ha_m3": 23250.0,
+    "water_savings_m3": 14250.0,
+    "water_savings_pct": 38.0,
+    "pumping_electricity_kwh_per_ha": 1150.0,
+    "pumping_electricity_total_5ha_kwh": 5750.0,
+    "pumping_electricity_savings_kwh": 3250.0,
+    "pumping_electricity_savings_pct": 36.1,
+    "pumping_electricity_cost_vnd": 8855000,
+    "electricity_cost_savings_vnd": 7975000,
+    "fertilizer_chemical_n_kg_per_ha": 125.0,
+    "fertilizer_chemical_n_total_5ha_kg": 625.0,
+    "fertilizer_savings_kg": 275.0,
+    "fertilizer_savings_pct": 30.55,
+    "fertilizer_cost_vnd": 16250000,
+    "fertilizer_cost_savings_vnd": 7150000,
+    "total_farmer_input_cost_savings_vnd": 15125000,
+    "ghg_emissions_co2e": {
+      "scope_1_direct_tco2e": {
+        "methane_ch4_anaerobic_paddy_tco2e": 7.28,
+        "n2o_synthetic_fertilizer_tco2e": 2.60,
+        "diesel_combustion_tco2e": 1.07,
+        "subtotal_scope_1_tco2e": 10.95
+      },
+      "scope_2_indirect_electricity_tco2e": 4.15,
+      "scope_3_supply_chain_logistics_tco2e": 3.90,
+      "total_emissions_5ha_tco2e": 19.00,
+      "emissions_per_ha_tco2e": 3.80,
+      "total_co2e_reduction_tco2e": 10.22,
+      "total_co2e_reduction_pct": 34.97,
+      "scope_1_2_reduction_pct": 40.36
+    }
+  },
+  "agent_expected_execution": {
+    "step_1_sensing": {
+      "action": "query_sensor_telemetry & get_weather_forecast",
+      "observed": "Soil moisture is 42.0%, surface water depth is +3.5cm, approaching convective storm with 35mm rain over 48h (88% prob)."
+    },
+    "step_2_dispatch": {
+      "action": "evaluate_water_balance & dispatch_schedule",
+      "decision": "PUMP_OFF",
+      "duration_minutes": 0,
+      "reason": "Sufficient hydrological buffer; rain forecast fully satisfies crop evapotranspiration for next 5-7 days."
+    },
+    "step_3_carbon": {
+      "action": "calculate_agricultural_emissions",
+      "audit_result": "AWD avoids 14,250 m3 water and 10.22 tons CO2e emission across 5.0 ha polder."
+    },
+    "step_4_critic_guardrail": {
+      "action": "agronomic_safety_check",
+      "verdict": "APPROVED",
+      "check_rules": [
+        {"rule": "Moisture above wilting point (22%)", "passed": true},
+        {"rule": "Projected water depth < max threshold (10cm)", "projected_cm": 6.38, "passed": true},
+        {"rule": "Salinity safe (<1.5 dS/m)", "current_ds_m": 0.45, "passed": true}
+      ]
+    },
+    "step_5_ledger": {
+      "action": "record_esg_audit_entry",
+      "ledger_status": "COMMITTED_TAMPER_PROOF"
+    }
+  },
+  "esg_certificate_metadata": {
+    "certificate_id": "CERT-2026-AG85-0091",
+    "standard": "GHG Protocol Agricultural Guidance / IPCC Tier 2 / Japan Green Transformation (GX)",
+    "issuing_entity": "AgriCarbon Multi-Agent Verifier",
+    "producer_org": "HTX Nông Nghiệp Tri Tôn, An Giang",
+    "batch_code": "JAS85-2026-HT-BATCH01",
+    "target_recipient": "Tokyo Food Supply Trading Co., Ltd. (Yurakucho, Tokyo)",
+    "audit_hash_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "audit_generation_latency_seconds": 2.4,
+    "conventional_audit_days": 21
+  }
+}

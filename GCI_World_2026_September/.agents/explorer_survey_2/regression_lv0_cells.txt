@@ -1,0 +1,436 @@
+# Notebook: extracted_gci_world/GCI World_202609/02. Preparatory Materials/6. Exercise_ Regression/Exercise_Regression_Level_0.ipynb
+
+--- Cell 0 [markdown] ---
+#**Regression Course**
+
+
+
+
+
+---
+
+
+In this course, you will learn how to apply ***the supervised learning workflow (explained in Section 4 of the lecture) to regression problems***. We will use **"linear regression" model** throughout the exercises and look at each step of the workflow: ***understanding the data, processing data, model building, and model evaluation***.The goal is to practice the knowledge required for each step depending on the level.
+
+--- Cell 1 [markdown] ---
+#Level 0（☆☆☆☆）
+
+
+---
+In Level 0, you will learn about linear regression. You will also learn about data characteristics and basic preprocessing methods.
+
+--- Cell 2 [markdown] ---
+##0.1. Liner Regression
+
+--- Cell 3 [markdown] ---
+**Linear Regression** is a model which represents the **target variable** (variables you want to predict) as a weighted sum of several **explanatory variables** (variables used to make predictions) plus a bias term.
+
+--- Cell 4 [markdown] ---
+**【Linear Regression Formula】**
+
+
+$$f(x) = w_1 x_1 + w_2 x_2 + \dots + w_m x_m + b$$
+
+--- Cell 5 [markdown] ---
+- $x_{1}, x_{2}, \dots, x_{m}$ : the values of the $m$ explanatory variables.
+- $w_1, w_2, \dots, w_m$ : the corresponding weights that indicate how strongly each explanatory variable affects the prediction.
+- $b$ : the bias term, representing the predicted value when all explanatory variables are zero.
+
+
+
+The model learns to output prediction values close to the actual target values when given explanatory variables.
+
+In the formula above, we wrote the prediction as $f(x)$, which represents a function of the input $x$.
+In this notebook, we use $\hat{y}$ to represent the predicted value of the target variable.
+The hat symbol (^) is commonly used in statistics and machine learning to indicate an estimated or predicted value.
+
+ If there is one explanatory variable, it is called **simple linear regression**, if there are multiple, it is called **multiple linear regression**.
+
+ In **simple linear regression**, when using a single explanatory variable $x$ to predict target variable $y$, the relationship between the two is represented by the following linear equation:
+
+\begin{equation}
+\hat{y} = wx + b
+\end{equation}
+
+
+We refer to $w$ and $b$ as weight and bias, respectively. If the weight and the bias can be determined, you can plug in $x$ to predict $y$. In the scatterplot below, the values were estimated by training to be approximately $w = 0.3$, $b = 0.8$.
+
+--- Cell 6 [markdown] ---
+![output_1.png](data:image/png;base64,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)![output.png](data:image/png;base64,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)
+
+--- Cell 7 [markdown] ---
+In **multiple linear regression**, when using multiple explanatory variables $x₁, x₂, ..., xₙ$ to predict $y$, the relationship is expressed as the following linear equation:
+
+\begin{eqnarray}
+\hat{y} = w_1 \cdot x_1 + w_2 \cdot x_2 + \cdots + w_n \cdot x_n + b
+\end{eqnarray}
+
+Here, $w_1, w_2,\cdots,w_n$ are the weights corresponding to each explanatory variable, and $b$ is the bias. Once these are determined, you can substitute values for the explanatory variables $x₁, x₂, ..., xₙ$ to predict $y$.
+
+--- Cell 8 [markdown] ---
+For example, let’s say we have the following table containing data about car prices.
+If the goal is to predict car prices from this information, the price column becomes the target variable, and the width and engine size columns are the explanatory variables.
+
+
+| ID  | width | engine-size | price |
+|-----|--------|--------|---|
+| 001 | 65        |   120    |12000 |
+| 002 | 70        |   115    |15000|
+| 003 | 66        |   130    |13500|
+| 004 | 64        |   133    |12100|
+| 005 | 67        |   127    |14200|
+
+--- Cell 9 [markdown] ---
+This time we are doing multiple regression analysis.
+When there are two explanatory variables, the model is expressed as:
+
+\begin{equation}
+\hat{y} = w_1 \cdot x_1 + w_2 \cdot x_2 + b
+\end{equation}
+
+
+Here, $w₁$ is 940, $w₂$ is 130, and $b$ is -65000.
+Substituting these into the equation gives:
+
+
+\begin{eqnarray}
+\hat{y} = 940 \cdot x_1 + 130 \cdot x_2  - 65000
+\end{eqnarray}
+
+Thus, the predicted values become the following `pred_price` column:
+
+--- Cell 10 [markdown] ---
+| ID  | width | engine-size | price | pred_price |
+|-----|--------|--------|---|-----|
+| 001 | 65        | 120        |12000 | 11700|
+| 002 | 70        | 115        |15000| 15750 |
+| 003 | 66        | 130        |13500| 13940 |
+| 004 | 64        | 133       |12100| 12450 |
+| 005 | 67        | 127       |14200| 14490 |
+
+--- Cell 11 [markdown] ---
+##0.2. Understanding the Data
+
+--- Cell 12 [markdown] ---
+Let’s learn about important types of data when it comes to understanding data.
+
+--- Cell 13 [markdown] ---
+Features can be classified into **quantitative** and **qualitative data**.
+
+**Quantitative data** is numerical and expresses information such as width or size on a continuous scale. **Qualitative data**, on the other hand, includes data such as fuel type or whether the car is a hybrid, and represents categories.
+These categories are not always binary — for example, the car color may belong to three or more categories.
+
+In linear regression, even qualitative (categorical) data can be converted into numerical values through a process called **dummy variable encoding**, so that they can be used as features.
+
+--- Cell 14 [markdown] ---
+Dummy variables allow us to transform non-numeric, qualitative data into a form that’s easier for a computer to process.
+An example of a dataset with categorical features related to cars is shown in the table below.
+
+| ID  | color | fuel-type |
+|-----|------|------|
+| 001 | white | diesel |
+| 002 | black | gas |
+| 003 | white | gas |
+| 004 | black | diesel |
+
+For example, when converting categorical data such as car color and fuel type into dummy variables (i.e. 0s and 1s), the table would look like this:
+
+| ID  | color | fuel-type |
+|-----|------|------|
+| 001 | 0 | 1 |
+| 002 | 1 | 0 |
+| 003 | 0 | 0 |
+| 004 | 1 | 1 |
+
+
+By converting to dummy variables, categorical data can also be handled as numerical features.
+
+--- Cell 15 [markdown] ---
+##0.3. Preprocessing Data
+
+--- Cell 16 [markdown] ---
+To perform data preprocessing and build machine learning models like this, there are **libraries** such as pandas and scikit-learn, which allow for easy implementation. Therefore, as long as you can write minimal code yourself, you can work with data without much difficulty.
+
+External libraries refer to packages (modules) created by organizations outside of Python itself. To use them, you need to **install** and **import** them. In Google Colaboratory, commonly used libraries like pandas and scikit-learn are already installed, so you only need to perform the import step to use them.
+
+In a code cell, you can you can import by writing, `import (library name)`.
+
+--- Cell 17 [markdown] ---
+>**[Importing a library]**
+>
+>```Python
+>import library_name
+>```
+
+--- Cell 18 [markdown] ---
+Next, let’s import the **pandas** library, which is used to manage tabular data.
+Just enter the following code into a code cell to import pandas.
+In Python, it is common to give an alias name when importing a library so that it can be used efficiently.
+For pandas, the alias `pd` is commonly used.
+
+To use functions in the pandas library, it is necessary to prefix them with the alias `pd`.
+
+Let’s execute the following code in a code cell:
+
+--- Cell 19 [code] ---
+import pandas as pd
+
+--- Cell 20 [markdown] ---
+Next, let’s create a table using pandas.
+To create a table, you use the `pandas.DataFrame` class.
+When creating an instance, you pass either a 2D list or a dictionary where the keys are column names and the values are data.
+For strings, be careful not to forget to enclose them in single or double quotes.
+
+--- Cell 21 [markdown] ---
+>**[Creating a Table in pandas]**
+>
+>```Python
+>Variable_name = pd.DataFrame(2D list)
+>```
+
+--- Cell 22 [code] ---
+df = pd.DataFrame([[57, 120],[52, 130],[55, 115], [51, 140]])
+df
+
+--- Cell 23 [markdown] ---
+In a DataFrame, data is managed in rows and columns.
+The row numbers on the left side (vertical direction) are called the **indices**, and the names of the **columns** at the top (horizontal direction) are called columns.
+By default, the index starts at 0, and there are no column names set unless explicitly defined.
+
+You can assign column names to an existing DataFrame by using the columns attribute and providing a list of new column names like ['column1', 'column2'].
+You can also assign column names when creating a DataFrame by specifying a list with the columns argument.
+
+--- Cell 24 [code] ---
+df.columns = ['column1', 'column2']
+df
+
+--- Cell 25 [markdown] ---
+To rename columns in a DataFrame, use the `rename()` method.
+This method lets you specify the column names you want to change using the columns argument.
+
+For example, if you want to change `column1` to `width` and `column2` to `engine-size`, you would write the code as shown below.
+
+--- Cell 26 [code] ---
+df = df.rename(columns={'column1': 'width', 'column2': 'engine-size'})
+df
+
+--- Cell 27 [markdown] ---
+Using the `to_csv()` method of a DataFrame, you can save the created table as a CSV file as follows:
+
+```
+df.to_csv('car_test_data.csv', index=False)
+```
+
+By running this, it will save the DataFrame as a file named `data.csv`.
+The csv in CSV file stands for comma-separated values, which refers to a format where values are separated by commas **(,)** to separate each column and manage each row with line breaks.
+
+By passing `index=False`, the index numbers will not be saved in the CSV file.
+
+For the data above, the CSV file would look like this:
+
+---
+
+
+
+width, engine-size
+
+57,120
+
+52,130
+
+55,115
+
+51,140
+
+--- Cell 28 [code] ---
+df.to_csv('car_test_data.csv', index = False)
+
+--- Cell 29 [markdown] ---
+By running the code above, a CSV file will be saved.
+Click the file icon on the left side of Google Colaboratory to confirm that the file `car_test_data.csv` is saved.
+Right click to download it to your local environment. CSV files can also be opened in spreadsheet software like Excel.
+You can also open the CSV file directly in Google Colaboratory. By clicking on the file, you can check its content in the sidebar of Google Colaboratory.
+
+To read the saved file, use pandas' `read_csv()` function to import the file and store it as a variable:
+
+--- Cell 30 [code] ---
+df2 = pd.read_csv('car_test_data.csv')
+df2
+
+--- Cell 31 [markdown] ---
+In section 0.3, you learned the basic operations for handling data using pandas:
+*   Importing pandas
+*   Handling DataFrames
+*   How to save as a CSV file
+
+--- Cell 32 [markdown] ---
+##0.4. Model Building and Evaluation
+
+--- Cell 33 [markdown] ---
+To build a machine learning model, you will import the **scikit-learn** machine learning library.
+The import method is the same as when using pandas.
+scikit-learn offers various types of models, but you only need to import the model you want to use.
+
+When importing scikit-learn, one thing to note is that the library is called ***sklearn*** in the code.
+We will use LinearRegression, the class for linear regression models, from the linear_model module of sklearn.
+
+Here is how to import it:
+
+--- Cell 34 [markdown] ---
+>**[Importing the LinearRegression class from scikit-learn's linear_model module]**
+>
+>```Python
+>from sklearn.linear_model import LinearRegression
+>```
+
+--- Cell 35 [markdown] ---
+By using `from ... import ...`, you can specify and import only the class you need.
+You can then use it with the format: `module_name.class_name`.
+
+Now, let’s go ahead and build a simple linear regression model.
+
+--- Cell 36 [code] ---
+from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+
+--- Cell 37 [markdown] ---
+With just these two lines, we have now created a linear regression model. In the second line, we instantiated the class we imported. This way, you can simply assign the instance to a variable using the class name, and creating a model instance becomes easy.
+
+Now, we just need to train the model with the data to complete the predictive model.
+Here, we will use data related to car prices explained by linear regression.
+Let's begin by running the code block below.
+
+--- Cell 38 [code] ---
+import pandas as pd
+test_data = pd.DataFrame(
+    [
+        [65, 120, 12000],
+        [70, 115, 15000],
+        [66, 130, 13500],
+        [64, 133, 12100],
+        [67, 127, 14200],
+    ],
+    columns=["width", "engine-size", "price"],
+)
+test_data
+
+--- Cell 39 [markdown] ---
+Now, let’s separate the explanatory variables and target variable from this table and train the machine learning model.
+To extract specific columns from a DataFrame, add [['Column1', 'Column2']] after the variable name to extract the columns you want.
+Let’s extract the explanatory variables.
+
+--- Cell 40 [code] ---
+x = test_data[['width', 'engine-size']]
+x
+
+--- Cell 41 [markdown] ---
+You can extract the target variable the same way.
+Since it’s just one column, you don’t need to use a list; you can simply enclose the column name in quotes.
+
+--- Cell 42 [code] ---
+t = test_data['price']
+t
+
+--- Cell 43 [markdown] ---
+Now, let’s pass the explanatory variables and the target variable to the model and train it.
+In scikit-learn's machine learning model training, the `fit()` method is used.
+
+--- Cell 44 [code] ---
+model.fit(x, t)
+
+--- Cell 45 [markdown] ---
+Training is completed with just this line.
+
+Here, we assume a linear regression formula using the two explanatory variables width and engine-size, as follows:
+
+\begin{eqnarray}
+\hat{y} = w_1 \cdot x_1 + w_2 \cdot x_2  + b
+\end{eqnarray}
+
+--- Cell 46 [markdown] ---
+Let’s check the estimated bias and how the estimated weights are derived.
+The estimated bias is stored in the attribute `intercept_`, and the weights are stored in the attribute `coef_`.
+
+By putting variables inside a string using curly braces {} and placing f before the string, you can embed the variable values inside the string.
+
+--- Cell 47 [code] ---
+print(f'Estimated bias: {model.intercept_}')
+print(f'Estimated weights: {model.coef_}')
+
+--- Cell 48 [markdown] ---
+From the expression above, we can now say:
+$w₁$ = 725.63271188, $w₂$ = 83.74313249, and $b$ = -45289.90362964962.
+Therefore, we can interpret this as:
+“For every 1 unit increase in vehicle width, the predicted price increases by approximately 725.63.”
+
+--- Cell 49 [markdown] ---
+In linear regression, the method used to calculate the bias and weights is called **least squares**.
+This method minimizes the sum of squared differences between the actual target variable (true value) and the predicted value.
+
+--- Cell 50 [markdown] ---
+**【Linear Regression Formula】**
+$$
+\hat{y}  = f(x) = w_1 x_1 + w_2 x_2 + \dots + w_m x_m + b
+$$
+
+--- Cell 51 [markdown] ---
+In least squares, the following value is minimized:
+
+--- Cell 52 [markdown] ---
+$$
+\sum_{i=1}^{n} \left( y_i - \hat{y}_i \right)^2
+$$
+
+--- Cell 53 [markdown] ---
+*n* : the number of data points in the dataset.
+
+$y_i$ : the actual value of the target variable for the $i$-th observation.
+
+$\hat{y}_i$  :the predicted value for the $i$-th observation.
+
+
+That concludes the supervised learning workflow for regression problem.
+Using an external library called scikit-learn, you can construct a machine learning prediction model in just three lines of code:
+
+* Import the machine learning library → from ... import ...
+* Create an instance of the model → model = LinearRegression()
+* Fit the model to the data → model.fit()
+
+
+Level 0 content ends here. To wrap up, let’s try the following practical exercises as a review.
+
+--- Cell 54 [markdown] ---
+##0.5. Practice Problems
+
+--- Cell 55 [markdown] ---
+In Level 0, you learned about the characteristics of data, preprocessing methods, and linear regression.
+Based on the contents of Level 0, please work through the following practice problems.
+
+--- Cell 56 [markdown] ---
+**Q0-1.** Create a pandas DataFrame using the table below.
+
+|  | column1 | column2 | Price |
+|-----|------|------|--|
+| 0 | 50 | 128   | 12000 |
+| 1 | 65 | 147   | 13400 |
+
+--- Cell 57 [code] ---
+
+
+--- Cell 58 [markdown] ---
+**Q0-2.** Rename the columns: `column1` as `height` and `column2` as `horsepower`.
+
+--- Cell 59 [code] ---
+
+
+--- Cell 60 [markdown] ---
+**Q0-3.** Save the above table as a CSV file with an appropriate file name (e.g., `data.csv`).
+Make sure the file has been saved.
+Note: Use single quotes when writing string values.
+
+--- Cell 61 [code] ---
+
+
+--- Cell 62 [markdown] ---
+That’s all for Level 0. Great job!
+

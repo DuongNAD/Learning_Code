@@ -1,17 +1,179 @@
-# OS specific files
+# ==============================================================================
+# BỘ LỌC GIT SIÊU CHUẨN (SUPER GITIGNORE) DÀNH CHO Ổ SSD HỌC TẬP & DỰ ÁN
+# ==============================================================================
+
+# 1. TỆP HỆ ĐIỀU HÀNH & RÁC HỆ THỐNG
+# ------------------------------------------------------------------------------
 .DS_Store
 .DS_Store?
+**/.DS_Store
 ._*
+**/._*
+.AppleDouble
+**/.AppleDouble
 .Spotlight-V100
+**/.Spotlight-V100
 .Trashes
+**/.Trashes
+ehthumbs.db
+**/ehthumbs.db
+Thumbs.db
+**/Thumbs.db
+$RECYCLE.BIN/
+desktop.ini
+**/desktop.ini
 
-# Python caches
+# 2. BẢO MẬT & CẤU HÌNH NHẠY CẢM (CỰC KỲ QUAN TRỌNG)
+# ------------------------------------------------------------------------------
+.env
+**/.env
+*.env
+**/*.env
+.env.*
+**/.env.*
+*.pem
+**/*.pem
+*.key
+**/*.key
+*.cert
+**/*.cert
+credentials.json
+**/credentials.json
+client_secret.json
+**/client_secret.json
+secrets.yml
+**/secrets.yml
+aws-secrets.json
+**/aws-secrets.json
+firebase_auth.json
+**/firebase_auth.json
+config.properties
+**/config.properties
+
+# 3. NODE.JS & FRONTEND (REACT/UI-UX)
+# ------------------------------------------------------------------------------
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+build/
+**/build/
+.next/
+**/.next/
+.nuxt/
+**/.nuxt/
+coverage/
+**/.coverage/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 4. PYTHON (MACHINE LEARNING, DATA ANALYSIS, PYTHON MASTER)
+# ------------------------------------------------------------------------------
 __pycache__/
+**/__pycache__/
 *.py[cod]
+**/*.py[cod]
 *$py.class
+**/*$py.class
+*.so
 .pytest_cache/
+**/.pytest_cache/
+.coverage
+.tox/
+.venv/
+venv/
+env/
+.env_python/
+jupyter_workspace/
 
-# Large backup bundles & archives
+# 5. PHP & XAMPP (APTECH LEARNING)
+# ------------------------------------------------------------------------------
+vendor/
+**/vendor/
+*.log
+**/*.log
+composer.phar
+
+# 6. JAVA, C, C#, ASSEMBLY
+# ------------------------------------------------------------------------------
+*.class
+**/*.class
+*.war
+**/*.war
+*.jar
+**/*.jar
+target/
+**/target/
+*.exe
+**/*.exe
+*.o
+**/*.o
+*.obj
+**/*.obj
+*.dll
+**/*.dll
+*.pdb
+**/*.pdb
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+bin/
+**/bin/
+obj/
+**/obj/
+Debug/
+**/Debug/
+Release/
+**/Release/
+
+# 7. IDE & EDITOR (VS CODE, VISUAL STUDIO, JETBRAINS)
+# ------------------------------------------------------------------------------
+.idea/
+**/.idea/
+.vscode/
+**/.vscode/
+.vs/
+**/.vs/
+*.ipch
+**/*.ipch
+*.sdf
+**/*.sdf
+*.opensdf
+**/*.opensdf
+*.swp
+*.swo
+
+# 8. DỮ LIỆU LỚN & LƯU TRỮ
+# ------------------------------------------------------------------------------
+*.sqlite
+*.sqlite3
+*.db
+*.mdf
+*.ldf
+*.ndf
+**/*.mdf
+**/*.ldf
+**/*.ndf
+*.mp4
+*.mov
+*.mkv
+*.avi
+*.webm
+*.flv
+*.wmv
+*.mp3
+*.wav
+01_Recordings/
+**/01_Recordings/
+*Recordings*/
+FPT_University/InnoStart_2026/*.pdf
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.iso
 *.bundle
 .git_archive_*
 *.bak

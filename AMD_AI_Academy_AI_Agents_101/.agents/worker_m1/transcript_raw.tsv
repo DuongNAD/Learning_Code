@@ -1,0 +1,695 @@
+start	end	text
+0	5000	Hey everyone, welcome to AI Agent 101.
+5000	11000	Today we're going to take a fun practical look at what makes large language models more than just chatbots,
+11000	16000	and how to turn them into powerful open source agents that can actually do things.
+16000	24000	To warm up, let's look at a real open source example built by a project called WebUI by Browser Use.
+24000	27000	Here's a scenario. Say I want to cook chili for dinner.
+27000	31000	So I'm going to prompt the agent, I want to cook chili for dinner tonight.
+31000	35000	Can you find the ingredients and put them in my shopping cart?
+35000	38000	This open source agent plans the workflow for me.
+38000	43000	It finds the recipe, extracts the ingredients, and adds them to the cart automatically.
+43000	51000	Watch how it alternates between thinking and doing, reasoning about the recipe, then browsing online, then taking action to fill the basket.
+51000	56000	That's the React agent pattern in motion, combining reasoning with real-world action.
+56000	63000	Instead of just answering questions, the model becomes a practical assistant that helps you actually accomplish things.
+63000	65000	Here's an important distinction.
+65000	69000	An LLM on its own, it's like a really smart book.
+69000	73000	It can answer questions, but it can't actually do anything.
+73000	77000	An agent takes that same LLM and treats it as the brain.
+77000	81000	The brain can reason, plan, and make decisions.
+81000	83000	But to act, it needs tools.
+83000	89000	What an agent is capable of depends entirely on what tools and capabilities we give it.
+89000	96000	If the agent only has a calculator tool, it can only act and perform for math-related actions.
+96000	99000	If you add a browser tool, now it can search online.
+99000	103000	And if you add shopping APIs, suddenly it can buy groceries for you.
+103000	105000	Let's look at an example.
+105000	108000	Agent A has only a calendar tool.
+108000	111000	It can help you schedule meetings, but it can't check the weather.
+111000	116000	Now, Agent B has a calendar tool, the weather tool, and a browser tool.
+116000	124000	Now, not only you can schedule your meetings, but also check the weather and even find the best cafes nearby.
+124000	126000	Same brain, different tools.
+126000	129000	The difference is not in the LLM itself.
+129000	131000	It's the toolbox we provide it to.
+131000	133000	That's the magic of agents.
+133000	137000	LLMs provide the reasoning, but the tools define the actions.
+137000	141000	The more useful the tools, the more capable the agents become.
+141000	147000	The React paradigm is what turns an LLM from a passive Q&A system into an active agent.
+147000	149000	And here's how it works.
+149000	152000	For the reasoning part, the LLM thinks about the problem.
+152000	159000	For example, for the Chile example, it knows that it needs to find the ingredients for Chile.
+159000	161000	The action part is based on that reasoning.
+161000	168000	It calls a tool, searching online, grabbing a list of ingredients, or maybe even calling a shopping API.
+168000	173000	And for the loop, the agent alternates between reasoning and acting.
+173000	177000	It checks the progress and continues until the goal is achieved.
+177000	183000	This React, which is Reason plus Act cycle, is simple, but powerful.
+183000	186000	It's the foundation of almost every modern agent framework.
+186000	191000	It lets us move from static answers to real-world actions.
+191000	197000	To build agents around the React loop, we rely on frameworks that handle orchestration.
+197000	202000	Pydantic AI is a choice that we made for this course, but there is more than Pydantic AI.
+202000	207000	Pydantic AI is a simple and easy for developers to build reliable agents.
+207000	212000	There is more frameworks such as LandGraph, which is specialized in chaining and orchestration.
+212000	217000	There is OpenAI SDK, Crew AI, and more.
+217000	221000	Each framework fits a different level of complexity. The choice depends on your need.
+221000	227000	With AMD GPU, as long as you power the LLM, you can choose any of these open source frameworks.
+227000	233000	Another key piece of this puzzle is MCP, the model context protocol.
+233000	239000	Think of MCP as the standardized wiring between your agent and the outside world.
+239000	247000	Instead of hard coding every integration, MCP provides a common language so LLMs can discover and use tools in a consistent way.
+247000	258000	That means you can connect your agent to external APIs like calendars, weather services, or databases, without writing a custom adapter for each.
+258000	268000	You can reuse pre-built MCP servers. For example, if someone already built a weather MCP server, you can just plug it in and your agent instantly has weather capabilities.
+268000	275000	In short, MCP lowers the friction. It makes it much easier to expand what your agents can do.
+275000	278000	Finally, the model, the brain, or LLM.
+278000	283000	If you're running agents at scale, you don't want to be locked into expensive cloud endpoints.
+283000	292000	With open source inference engines like VLLM and SGLANG, you can serve the model of your choice with an OpenAI compatible API.
+292000	299000	That gives you flexibility to run open source models like Quint3, GPT-OSS, or DeepSeq.
+299000	305000	You can deploy them on AMD GPUs and then connect them to your AI agentic framework of your choice.
+305000	314000	Let's get hands on. We'll walk through this notebook, starting with spinning a VLLM server on an AMD GPU,
+314000	324000	then connecting to our Pedantic AI agent, and finally wiring an NCP to give it real-world capabilities.
+324000	329000	VLLM is an open source inference engine that's fully OpenAI compatible.
+329000	338000	It allows you to run the model on GPUs such as AMD and SGLANG MI300X, and serve models like Quint3.
+338000	344000	This creates a local API, so you can connect it to your agentic framework of choice.
+344000	352000	Once you've started your VLLM server, and you have the endpoint ready, now we can define our agent.
+352000	356000	Pydantic AI wraps our model and connects it to an agent instance.
+356000	360000	At this point, the agent can reason, but can't take any actions.
+360000	363000	It's a pure LLM brain with no tools.
+363000	366000	So, let's say if you ask, what's the date today?
+366000	369000	It'll fail because it has no access to real-time data.
+369000	372000	Let's fix that by giving it a tool.
+372000	375000	The ability to check the current date.
+375000	381000	We define a simple function, decorate it with tool, and add it to our agent.
+381000	387000	Now, when the model encounters a time-related question, it can decide to call the function.
+387000	390000	This is the essence of tool calling.
+390000	395000	The model decides when and why to use the tool, based on its reasoning.
+395000	397000	Let's test it out.
+397000	400000	When we ask, what's the date today?
+400000	405000	The agent uses the tool, gets the current time, and continues the conversation.
+405000	409000	So now, we've officially built our first reasoning acting loop.
+409000	413000	Now it's time to scale this idea with MCP, the model context protocol.
+413000	419000	As we said before, MCP standardizes how agents discover and use tools.
+419000	423000	You can think of it like a package manager for agent tool.
+423000	433000	Instead of manually writing Python functions, you can connect a ready-made MCP server that exposes multiple tools through one unified interface.
+433000	436000	Here's what happens under the hood.
+436000	441000	The agent framework, like Pydantic AI, acts as MCP client.
+441000	446000	It connects to one or more MCP servers, each of which provides a tool set.
+446000	455000	For example, one server might offer get current time, another Airbnb search, another weather forecast.
+455000	464000	These servers expose the standard JSON schemas describing what each tool does, and what parameters it needs, and what output to expect.
+464000	475000	The agent dynamically queries these schemas, decides which tool to use, sends a request, and processes the response, all in the same reasoning loop.
+475000	478000	This makes MCP incredibly powerful.
+478000	486000	Instead of hard coding tool logic, you can plug in a pack of tools, and your agent instantly gains new abilities.
+486000	492000	In our notebook, we'll replace our local get current date tool with an MCP server.
+492000	500000	Then we'll plug in another MCP server, the Airbnb MCP, to let the agent browse listings.
+500000	506000	Once you go through the notebook and add Airbnb and time MCPs, you can test out the agent.
+506000	510000	Now our agent can browse real Airbnb listings.
+510000	516000	When we ask, find a place to stay in Vancouver next Sunday for three nights for two adults.
+516000	519000	The agent goes through the loop of reasoning.
+519000	524000	It first gets the current date from the time server that we define.
+524000	527000	Then it calculates when next Sunday is going to be.
+527000	531000	Then it uses the Airbnb search to find listings.
+531000	534000	It gets the details from the Airbnb listing details.
+534000	538000	And all dynamically happening within the loop.
+538000	541000	So you can get the final answers from your agent.
+541000	545000	Now that you've built the foundation, the challenge is to expand the agent.
+545000	553000	For example, you can integrate the weather MCP server so your agent can check the weather forecast to suggest traveling dates.
+553000	555000	The pattern stays the same.
+555000	559000	Spin up a new MCP server, just like what we did before, and add it to the toolset.
+559000	562000	And let the agent decide when to call it.
+562000	568000	Because MCP is a shared protocol, you can discover thousands of compatible servers online.
+568000	574000	This modular design means your agent can grow over time, gaining new skills without rewriting code.
+574000	579000	So to recap, LLMs become agents when they can reason and act.
+579000	583000	Frameworks like Pedantic AI manage this reasoning action loop.
+583000	588000	MCP provides a universal interface to connect any tool or API.
+588000	595000	And AMD GPUs give you the open, high-performance backbone to run it all efficiently.
+595000	602000	With these tools, you can go from static chatbots to dynamic AI systems that truly interact with the real world.
+602000	608000	You can plug in hundreds of tools, host your own inference, and control the entire agentic stack.
+608000	610000	All open, all yours.
+610000	613000	Thank you for watching, and now let's start building.
+613000	614000	Let's go to the next video.
+614000	615000	Let's go to the next video.
+615000	616000	Let's go to the next video.
+616000	617000	Let's go to the next video.
+617000	618000	Let's go to the next video.
+618000	619000	Let's go to the next video.
+619000	620000	Let's go to the next video.
+620000	621000	Let's go to the next video.
+621000	622000	Let's go to the next video.
+622000	623000	Let's go to the next video.
+623000	624000	Let's go to the next video.
+624000	625000	Let's go to the next video.
+625000	626000	Let's go to the next video.
+626000	627000	Let's go to the next video.
+627000	628000	Let's go to the next video.
+628000	629000	Let's go to the next video.
+629000	630000	Let's go to the next video.
+630000	631000	Let's go to the next video.
+631000	632000	Let's go to the next video.
+632000	633000	Let's go to the next video.
+633000	634000	Let's go to the next video.
+634000	635000	Let's go to the next video.
+635000	636000	Let's go to the next video.
+636000	637000	Let's go to the next video.
+637000	638000	Let's go to the next video.
+638000	639000	Let's go to the next video.
+639000	640000	Let's go to the next video.
+640000	641000	Let's go to the next video.
+641000	642000	Let's go to the next video.
+642000	643000	Let's go to the next video.
+643000	644000	Let's go to the next video.
+644000	645000	Let's go to the next video.
+645000	646000	Let's go to the next video.
+646000	647000	Let's go to the next video.
+647000	648000	Let's go to the next video.
+648000	649000	Let's go to the next video.
+649000	650000	Let's go to the next video.
+650000	651000	Let's go to the next video.
+651000	652000	Let's go to the next video.
+652000	653000	Let's go to the next video.
+653000	654000	Let's go to the next video.
+654000	655000	Let's go to the next video.
+655000	656000	Let's go to the next video.
+656000	657000	Let's go to the next video.
+657000	658000	Let's go to the next video.
+658000	659000	Let's go to the next video.
+659000	660000	Let's go to the next video.
+660000	661000	Let's go to the next video.
+661000	662000	Let's go to the next video.
+662000	663000	Let's go to the next video.
+663000	664000	Let's go to the next video.
+664000	665000	Let's go to the next video.
+665000	666000	Let's go to the next video.
+666000	667000	Let's go to the next video.
+667000	668000	Let's go to the next video.
+668000	669000	Let's go to the next video.
+669000	670000	Let's go to the next video.
+670000	671000	Let's go to the next video.
+671000	672000	Let's go to the next video.
+672000	673000	Let's go to the next video.
+673000	674000	Let's go to the next video.
+674000	675000	Let's go to the next video.
+675000	676000	Let's go to the next video.
+676000	677000	Let's go to the next video.
+677000	678000	Let's go to the next video.
+678000	679000	Let's go to the next video.
+679000	680000	Let's go to the next video.
+680000	681000	Let's go to the next video.
+681000	682000	Let's go to the next video.
+682000	683000	Let's go to the next video.
+683000	684000	Let's go to the next video.
+684000	685000	Let's go to the next video.
+685000	686000	Let's go to the next video.
+686000	687000	Let's go to the next video.
+687000	688000	Let's go to the next video.
+688000	689000	Let's go to the next video.
+689000	690000	Let's go to the next video.
+690000	691000	Let's go to the next video.
+691000	692000	Let's go to the next video.
+692000	693000	Let's go to the next video.
+693000	694000	Let's go to the next video.
+694000	695000	Let's go to the next video.
+695000	696000	Let's go to the next video.
+696000	697000	Let's go to the next video.
+697000	698000	Let's go to the next video.
+698000	699000	Let's go to the next video.
+699000	700000	Let's go to the next video.
+700000	701000	Let's go to the next video.
+701000	702000	Let's go to the next video.
+702000	703000	Let's go to the next video.
+703000	704000	Let's go to the next video.
+704000	705000	Let's go to the next video.
+705000	706000	Let's go to the next video.
+706000	707000	Let's go to the next video.
+707000	708000	Let's go to the next video.
+708000	709000	Let's go to the next video.
+709000	710000	Let's go to the next video.
+710000	711000	Let's go to the next video.
+711000	712000	Let's go to the next video.
+712000	713000	Let's go to the next video.
+713000	714000	Let's go to the next video.
+714000	715000	Let's go to the next video.
+715000	716000	Let's go to the next video.
+716000	717000	Let's go to the next video.
+717000	718000	Let's go to the next video.
+718000	719000	Let's go to the next video.
+719000	720000	Let's go to the next video.
+720000	721000	Let's go to the next video.
+721000	722000	Let's go to the next video.
+722000	723000	Let's go to the next video.
+723000	724000	Let's go to the next video.
+724000	725000	Let's go to the next video.
+725000	726000	Let's go to the next video.
+726000	727000	Let's go to the next video.
+727000	728000	Let's go to the next video.
+728000	729000	Let's go to the next video.
+729000	730000	Let's go to the next video.
+730000	731000	Let's go to the next video.
+731000	732000	Let's go to the next video.
+732000	733000	Let's go to the next video.
+733000	734000	Let's go to the next video.
+734000	735000	Let's go to the next video.
+735000	736000	Let's go to the next video.
+736000	737000	Let's go to the next video.
+737000	738000	Let's go to the next video.
+738000	739000	Let's go to the next video.
+739000	740000	Let's go to the next video.
+740000	741000	Let's go to the next video.
+741000	742000	Let's go to the next video.
+742000	743000	Let's go to the next video.
+743000	744000	Let's go to the next video.
+744000	745000	Let's go to the next video.
+745000	746000	Let's go to the next video.
+746000	747000	Let's go to the next video.
+747000	748000	Let's go to the next video.
+748000	749000	Let's go to the next video.
+749000	750000	Let's go to the next video.
+750000	751000	Let's go to the next video.
+751000	752000	Let's go to the next video.
+752000	753000	Let's go to the next video.
+753000	754000	Let's go to the next video.
+754000	755000	Let's go to the next video.
+755000	756000	Let's go to the next video.
+756000	757000	Let's go to the next video.
+757000	758000	Let's go to the next video.
+758000	759000	Let's go to the next video.
+759000	760000	Let's go to the next video.
+760000	761000	Let's go to the next video.
+761000	762000	Let's go to the next video.
+762000	763000	Let's go to the next video.
+763000	764000	Let's go to the next video.
+764000	765000	Let's go to the next video.
+765000	766000	Let's go to the next video.
+766000	767000	Let's go to the next video.
+767000	768000	Let's go to the next video.
+768000	769000	Let's go to the next video.
+769000	770000	Let's go to the next video.
+770000	771000	Let's go to the next video.
+771000	772000	Let's go to the next video.
+772000	773000	Let's go to the next video.
+773000	774000	Let's go to the next video.
+774000	775000	Let's go to the next video.
+775000	776000	Let's go to the next video.
+776000	777000	Let's go to the next video.
+777000	778000	Let's go to the next video.
+778000	779000	Let's go to the next video.
+779000	780000	Let's go to the next video.
+780000	781000	Let's go to the next video.
+781000	782000	Let's go to the next video.
+782000	783000	Let's go to the next video.
+783000	784000	Let's go to the next video.
+784000	785000	Let's go to the next video.
+785000	786000	Let's go to the next video.
+786000	787000	Let's go to the next video.
+787000	788000	Let's go to the next video.
+788000	789000	Let's go to the next video.
+789000	790000	Let's go to the next video.
+790000	791000	Let's go to the next video.
+791000	792000	Let's go to the next video.
+792000	793000	Let's go to the next video.
+793000	794000	Let's go to the next video.
+794000	795000	Let's go to the next video.
+795000	796000	Let's go to the next video.
+796000	797000	Let's go to the next video.
+797000	798000	Let's go to the next video.
+798000	799000	Let's go to the next video.
+799000	800000	Let's go to the next video.
+800000	801000	Let's go to the next video.
+801000	802000	Let's go to the next video.
+802000	803000	Let's go to the next video.
+803000	804000	Let's go to the next video.
+804000	805000	Let's go to the next video.
+805000	806000	Let's go to the next video.
+806000	807000	Let's go to the next video.
+807000	808000	Let's go to the next video.
+808000	809000	Let's go to the next video.
+809000	810000	Let's go to the next video.
+810000	811000	Let's go to the next video.
+811000	812000	Let's go to the next video.
+812000	813000	Let's go to the next video.
+813000	814000	Let's go to the next video.
+814000	815000	Let's go to the next video.
+815000	816000	Let's go to the next video.
+816000	817000	Let's go to the next video.
+817000	818000	Let's go to the next video.
+818000	819000	Let's go to the next video.
+819000	820000	Let's go to the next video.
+820000	821000	Let's go to the next video.
+821000	822000	Let's go to the next video.
+822000	823000	Let's go to the next video.
+823000	824000	Let's go to the next video.
+824000	825000	Let's go to the next video.
+825000	826000	Let's go to the next video.
+826000	827000	Let's go to the next video.
+827000	828000	Let's go to the next video.
+828000	829000	Let's go to the next video.
+829000	830000	Let's go to the next video.
+830000	831000	Let's go to the next video.
+831000	832000	Let's go to the next video.
+832000	833000	Let's go to the next video.
+833000	834000	Let's go to the next video.
+834000	835000	Let's go to the next video.
+835000	836000	Let's go to the next video.
+836000	837000	Let's go to the next video.
+837000	838000	Let's go to the next video.
+838000	839000	Let's go to the next video.
+839000	840000	Let's go to the next video.
+840000	841000	Let's go to the next video.
+841000	842000	Let's go to the next video.
+842000	843000	Let's go to the next video.
+843000	844000	Let's go to the next video.
+844000	845000	Let's go to the next video.
+845000	846000	Let's go to the next video.
+846000	847000	Let's go to the next video.
+847000	848000	Let's go to the next video.
+848000	849000	Let's go to the next video.
+849000	850000	Let's go to the next video.
+850000	851000	Let's go to the next video.
+851000	852000	Let's go to the next video.
+852000	853000	Let's go to the next video.
+853000	854000	Let's go to the next video.
+854000	855000	Let's go to the next video.
+855000	856000	Let's go to the next video.
+856000	857000	Let's go to the next video.
+857000	858000	Let's go to the next video.
+858000	859000	Let's go to the next video.
+859000	860000	Let's go to the next video.
+860000	861000	Let's go to the next video.
+861000	862000	Let's go to the next video.
+862000	863000	Let's go to the next video.
+863000	864000	Let's go to the next video.
+864000	865000	Let's go to the next video.
+865000	866000	Let's go to the next video.
+866000	867000	Let's go to the next video.
+867000	868000	Let's go to the next video.
+868000	869000	Let's go to the next video.
+869000	870000	Let's go to the next video.
+870000	871000	Let's go to the next video.
+871000	872000	Let's go to the next video.
+872000	873000	Let's go to the next video.
+873000	874000	Let's go to the next video.
+874000	875000	Let's go to the next video.
+875000	876000	Let's go to the next video.
+876000	877000	Let's go to the next video.
+877000	878000	Let's go to the next video.
+878000	879000	Let's go to the next video.
+879000	880000	Let's go to the next video.
+880000	881000	Let's go to the next video.
+881000	882000	Let's go to the next video.
+882000	883000	Let's go to the next video.
+883000	884000	Let's go to the next video.
+884000	885000	Let's go to the next video.
+885000	886000	Let's go to the next video.
+886000	887000	Let's go to the next video.
+887000	888000	Let's go to the next video.
+888000	889000	Let's go to the next video.
+889000	890000	Let's go to the next video.
+890000	891000	Let's go to the next video.
+891000	892000	Let's go to the next video.
+892000	893000	Let's go to the next video.
+893000	894000	Let's go to the next video.
+894000	895000	Let's go to the next video.
+895000	896000	Let's go to the next video.
+896000	897000	Let's go to the next video.
+897000	898000	Let's go to the next video.
+898000	899000	Let's go to the next video.
+899000	900000	Let's go to the next video.
+900000	901000	Let's go to the next video.
+901000	902000	Let's go to the next video.
+902000	903000	Let's go to the next video.
+903000	904000	Let's go to the next video.
+904000	905000	Let's go to the next video.
+905000	906000	Let's go to the next video.
+906000	907000	Let's go to the next video.
+907000	908000	Let's go to the next video.
+908000	909000	Let's go to the next video.
+909000	910000	Let's go to the next video.
+910000	911000	Let's go to the next video.
+911000	912000	Let's go to the next video.
+912000	913000	Let's go to the next video.
+913000	914000	Let's go to the next video.
+914000	915000	Let's go to the next video.
+915000	916000	Let's go to the next video.
+916000	917000	Let's go to the next video.
+917000	918000	Let's go to the next video.
+918000	919000	Let's go to the next video.
+919000	920000	Let's go to the next video.
+920000	921000	Let's go to the next video.
+921000	922000	Let's go to the next video.
+922000	923000	Let's go to the next video.
+923000	924000	Let's go to the next video.
+924000	925000	Let's go to the next video.
+925000	926000	Let's go to the next video.
+926000	927000	Let's go to the next video.
+927000	928000	Let's go to the next video.
+928000	929000	Let's go to the next video.
+929000	930000	Let's go to the next video.
+930000	931000	Let's go to the next video.
+931000	932000	Let's go to the next video.
+932000	933000	Let's go to the next video.
+933000	934000	Let's go to the next video.
+934000	935000	Let's go to the next video.
+935000	936000	Let's go to the next video.
+936000	937000	Let's go to the next video.
+937000	938000	Let's go to the next video.
+938000	939000	Let's go to the next video.
+939000	940000	Let's go to the next video.
+940000	941000	Let's go to the next video.
+941000	942000	Let's go to the next video.
+942000	943000	Let's go to the next video.
+943000	944000	Let's go to the next video.
+944000	945000	Let's go to the next video.
+945000	946000	Let's go to the next video.
+946000	947000	Let's go to the next video.
+947000	948000	Let's go to the next video.
+948000	949000	Let's go to the next video.
+949000	950000	Let's go to the next video.
+950000	951000	Let's go to the next video.
+951000	952000	Let's go to the next video.
+952000	953000	Let's go to the next video.
+953000	954000	Let's go to the next video.
+954000	955000	Let's go to the next video.
+955000	956000	Let's go to the next video.
+956000	957000	Let's go to the next video.
+957000	958000	Let's go to the next video.
+958000	959000	Let's go to the next video.
+959000	960000	Let's go to the next video.
+960000	961000	Let's go to the next video.
+961000	962000	Let's go to the next video.
+962000	963000	Let's go to the next video.
+963000	964000	Let's go to the next video.
+964000	965000	Let's go to the next video.
+965000	966000	Let's go to the next video.
+966000	967000	Let's go to the next video.
+967000	968000	Let's go to the next video.
+968000	969000	Let's go to the next video.
+969000	970000	Let's go to the next video.
+970000	971000	Let's go to the next video.
+971000	972000	Let's go to the next video.
+972000	973000	Let's go to the next video.
+973000	974000	Let's go to the next video.
+974000	975000	Let's go to the next video.
+975000	976000	Let's go to the next video.
+976000	977000	Let's go to the next video.
+977000	978000	Let's go to the next video.
+978000	979000	Let's go to the next video.
+979000	980000	Let's go to the next video.
+980000	981000	Let's go to the next video.
+981000	982000	Let's go to the next video.
+982000	983000	Let's go to the next video.
+983000	984000	Let's go to the next video.
+984000	985000	Let's go to the next video.
+985000	986000	Let's go to the next video.
+986000	987000	Let's go to the next video.
+987000	988000	Let's go to the next video.
+988000	989000	Let's go to the next video.
+989000	990000	Let's go to the next video.
+990000	991000	Let's go to the next video.
+991000	992000	Let's go to the next video.
+992000	993000	Let's go to the next video.
+993000	994000	Let's go to the next video.
+994000	995000	Let's go to the next video.
+995000	996000	Let's go to the next video.
+996000	997000	Let's go to the next video.
+997000	998000	Let's go to the next video.
+998000	999000	Let's go to the next video.
+999000	1000000	Let's go to the next video.
+1000000	1001000	Let's go to the next video.
+1001000	1002000	Let's go to the next video.
+1002000	1003000	Let's go to the next video.
+1003000	1004000	Let's go to the next video.
+1004000	1005000	Let's go to the next video.
+1005000	1006000	Let's go to the next video.
+1006000	1007000	Let's go to the next video.
+1007000	1008000	Let's go to the next video.
+1008000	1009000	Let's go to the next video.
+1009000	1010000	Let's go to the next video.
+1010000	1011000	Let's go to the next video.
+1011000	1012000	Let's go to the next video.
+1012000	1013000	Let's go to the next video.
+1013000	1014000	Let's go to the next video.
+1014000	1015000	Let's go to the next video.
+1015000	1016000	Let's go to the next video.
+1016000	1017000	Let's go to the next video.
+1017000	1018000	Let's go to the next video.
+1018000	1019000	Let's go to the next video.
+1019000	1020000	Let's go to the next video.
+1020000	1021000	Let's go to the next video.
+1021000	1022000	Let's go to the next video.
+1022000	1023000	Let's go to the next video.
+1023000	1024000	Let's go to the next video.
+1024000	1025000	Let's go to the next video.
+1025000	1026000	Let's go to the next video.
+1026000	1027000	Let's go to the next video.
+1027000	1028000	Let's go to the next video.
+1028000	1029000	Let's go to the next video.
+1029000	1030000	Let's go to the next video.
+1030000	1031000	Let's go to the next video.
+1031000	1032000	Let's go to the next video.
+1032000	1033000	Let's go to the next video.
+1033000	1034000	Let's go to the next video.
+1034000	1035000	Let's go to the next video.
+1035000	1036000	Let's go to the next video.
+1036000	1037000	Let's go to the next video.
+1037000	1038000	Let's go to the next video.
+1038000	1039000	Let's go to the next video.
+1039000	1040000	Let's go to the next video.
+1040000	1041000	Let's go to the next video.
+1041000	1042000	Let's go to the next video.
+1042000	1043000	Let's go to the next video.
+1043000	1044000	Let's go to the next video.
+1044000	1045000	Let's go to the next video.
+1045000	1046000	Let's go to the next video.
+1046000	1047000	Let's go to the next video.
+1047000	1048000	Let's go to the next video.
+1048000	1049000	Let's go to the next video.
+1049000	1050000	Let's go to the next video.
+1050000	1051000	Let's go to the next video.
+1051000	1052000	Let's go to the next video.
+1052000	1053000	Let's go to the next video.
+1053000	1054000	Let's go to the next video.
+1054000	1055000	Let's go to the next video.
+1055000	1056000	Let's go to the next video.
+1056000	1057000	Let's go to the next video.
+1057000	1058000	Let's go to the next video.
+1058000	1059000	Let's go to the next video.
+1059000	1060000	Let's go to the next video.
+1060000	1061000	Let's go to the next video.
+1061000	1062000	Let's go to the next video.
+1062000	1063000	Let's go to the next video.
+1063000	1064000	Let's go to the next video.
+1064000	1065000	Let's go to the next video.
+1065000	1066000	Let's go to the next video.
+1066000	1067000	Let's go to the next video.
+1067000	1068000	Let's go to the next video.
+1068000	1069000	Let's go to the next video.
+1069000	1070000	Let's go to the next video.
+1070000	1071000	Let's go to the next video.
+1071000	1072000	Let's go to the next video.
+1072000	1073000	Let's go to the next video.
+1073000	1074000	Let's go to the next video.
+1074000	1075000	Let's go to the next video.
+1075000	1076000	Let's go to the next video.
+1076000	1077000	Let's go to the next video.
+1077000	1078000	Let's go to the next video.
+1078000	1079000	Let's go to the next video.
+1079000	1080000	Let's go to the next video.
+1080000	1081000	Let's go to the next video.
+1081000	1082000	Let's go to the next video.
+1082000	1083000	Let's go to the next video.
+1083000	1084000	Let's go to the next video.
+1084000	1085000	Let's go to the next video.
+1085000	1086000	Let's go to the next video.
+1086000	1087000	Let's go to the next video.
+1087000	1088000	Let's go to the next video.
+1088000	1089000	Let's go to the next video.
+1089000	1090000	Let's go to the next video.
+1090000	1091000	Let's go to the next video.
+1091000	1092000	Let's go to the next video.
+1092000	1093000	Let's go to the next video.
+1093000	1094000	Let's go to the next video.
+1094000	1095000	Let's go to the next video.
+1095000	1096000	Let's go to the next video.
+1096000	1097000	Let's go to the next video.
+1097000	1098000	Let's go to the next video.
+1098000	1099000	Let's go to the next video.
+1099000	1100000	Let's go to the next video.
+1100000	1101000	Let's go to the next video.
+1101000	1102000	Let's go to the next video.
+1102000	1103000	Let's go to the next video.
+1103000	1104000	Let's go to the next video.
+1104000	1105000	Let's go to the next video.
+1105000	1106000	Let's go to the next video.
+1106000	1107000	Let's go to the next video.
+1107000	1108000	Let's go to the next video.
+1108000	1109000	Let's go to the next video.
+1109000	1110000	Let's go to the next video.
+1110000	1111000	Let's go to the next video.
+1111000	1112000	Let's go to the next video.
+1112000	1113000	Let's go to the next video.
+1113000	1114000	Let's go to the next video.
+1114000	1115000	Let's go to the next video.
+1115000	1116000	Let's go to the next video.
+1116000	1117000	Let's go to the next video.
+1117000	1118000	Let's go to the next video.
+1118000	1119000	Let's go to the next video.
+1119000	1120000	Let's go to the next video.
+1120000	1121000	Let's go to the next video.
+1121000	1122000	Let's go to the next video.
+1122000	1123000	Let's go to the next video.
+1123000	1124000	Let's go to the next video.
+1124000	1125000	Let's go to the next video.
+1125000	1126000	Let's go to the next video.
+1126000	1127000	Let's go to the next video.
+1127000	1128000	Let's go to the next video.
+1128000	1129000	Let's go to the next video.
+1129000	1130000	Let's go to the next video.
+1130000	1131000	Let's go to the next video.
+1131000	1132000	Let's go to the next video.
+1132000	1133000	Let's go to the next video.
+1133000	1134000	Let's go to the next video.
+1134000	1135000	Let's go to the next video.
+1135000	1136000	Let's go to the next video.
+1136000	1137000	Let's go to the next video.
+1137000	1138000	Let's go to the next video.
+1138000	1139000	Let's go to the next video.
+1139000	1140000	Let's go to the next video.
+1140000	1141000	Let's go to the next video.
+1141000	1142000	Let's go to the next video.
+1142000	1143000	Let's go to the next video.
+1143000	1144000	Let's go to the next video.
+1144000	1145000	Let's go to the next video.
+1145000	1146000	Let's go to the next video.
+1146000	1147000	Let's go to the next video.
+1147000	1148000	Let's go to the next video.
+1148000	1149000	Let's go to the next video.
+1149000	1150000	Let's go to the next video.
+1150000	1151000	Let's go to the next video.
+1151000	1152000	Let's go to the next video.
+1152000	1153000	Let's go to the next video.
+1153000	1154000	Let's go to the next video.
+1154000	1155000	Let's go to the next video.
+1155000	1156000	Let's go to the next video.
+1156000	1157000	Let's go to the next video.
+1157000	1158000	Let's go to the next video.
+1158000	1159000	Let's go to the next video.
+1159000	1160000	Let's go to the next video.
+1160000	1161000	Let's go to the next video.
+1161000	1162000	Let's go to the next video.
+1162000	1163000	Let's go to the next video.
+1163000	1164000	Let's go to the next video.
+1164000	1165000	Let's go to the next video.
+1165000	1166000	Let's go to the next video.
+1166000	1167000	Let's go to the next video.
+1167000	1168000	Let's go to the next video.
+1168000	1169000	Let's go to the next video.
+1169000	1170000	Let's go to the next video.
+1170000	1171000	Let's go to the next video.
+1171000	1172000	Let's go to the next video.
+1172000	1173000	Let's go to the next video.
+1173000	1174000	Let's go to the next video.
+1174000	1175000	Let's go to the next video.
+1175000	1176000	Let's go to the next video.
+1176000	1177000	Let's go to the next video.
+1177000	1178000	Let's go to the next video.
+1178000	1179000	Let's go to the next video.
+1179000	1180000	Let's go to the next video.
+1180000	1181000	Let's go to the next video.
+1181000	1182000	Let's go to the next video.
+1182000	1183000	Let's go to the next video.
+1183000	1184000	Let's go to the next video.
+1184000	1185000	Let's go to the next video.

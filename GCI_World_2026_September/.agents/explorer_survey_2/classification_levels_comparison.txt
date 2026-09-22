@@ -1,0 +1,161 @@
+=================== Comparison for 7. Exercise_ Classification ===================
+
+--------------------------------------------------
+Level 0: Exercise_Classification_Level_0.ipynb
+Total cells: 56 (Markdown: 36, Code: 20)
+
+  Cell 0 [MD]: # **Classification Course**
+  Cell 1 [MD]: #Level 0（☆☆☆）; In Level 0, you will learn about decision trees. You will also learn about data characteristics and basic preprocessing methods.
+  Cell 2 [MD]: ##0.1. Decision Tree
+  Cell 6 [MD]: ##0.2. Understanding the Data
+  Cell 9 [MD]: ##0.3. Processing Data
+  Cell 12 [Code, 1 lines]: import pandas as pd
+  Cell 14 [Code, 2 lines]: df = pd.DataFrame([['Y', 'N'],['N','Y'],['Y', 'Y'], ['N', 'Y']])
+  Cell 16 [Code, 2 lines]: df = pd.DataFrame([['Y', 'N'],['N','Y'],['Y', 'Y'], ['N', 'Y']], columns=['bruis
+  Cell 18 [Code, 2 lines]: df2 = pd.get_dummies(df)
+  Cell 20 [Code, 2 lines]: df2 = pd.get_dummies(df, drop_first = True, dtype = int)
+  Cell 22 [Code, 2 lines]: df2.columns = ['bruises', 'odor']
+  Cell 24 [Code, 1 lines]: df2.to_csv('Mushroom_Appearence_Data.csv', index = False)
+  Cell 27 [Code, 2 lines]: df3 = pd.read_csv('Mushroom_Appearence_Data.csv')
+  Cell 28 [MD]: ##0.4. Model Building and Evaluation
+  Cell 30 [Code, 2 lines]: from sklearn.tree import DecisionTreeClassifier
+  Cell 32 [Code, 3 lines]: import pandas as pd
+  Cell 34 [Code, 2 lines]: x = test_data[['height', 'width']]
+  Cell 36 [Code, 2 lines]: t = test_data['poison']
+  Cell 38 [Code, 2 lines]: print(type(x))
+  Cell 40 [Code, 1 lines]: print(type(test_data[['poison']]))
+  Cell 42 [Code, 1 lines]: model.fit(x,t)
+  Cell 44 [Code, 1 lines]: model.score(x,t)
+  Cell 46 [Code, 2 lines]: from sklearn.tree import plot_tree
+  Cell 47 [MD]: This is the end of the Level 0 content. To wrap up, let’s try the following practical exercises as a review.
+  Cell 48 [MD]: ##0.5. Practice Problems
+  Cell 49 [MD]: In Level 0, you learned about data features, preprocessing methods, and decision trees. Based on the content of Level 0, please try solving the following practice problems. For answers and explanations, please refer to the video.
+  Cell 51 [Code, 0 lines]: <EMPTY>
+  Cell 53 [Code, 0 lines]: <EMPTY>
+  Cell 55 [Code, 0 lines]: <EMPTY>
+
+--------------------------------------------------
+Level 1: Exercise_Classification_Level_1.ipynb
+Total cells: 76 (Markdown: 48, Code: 28)
+
+  Cell 0 [MD]: # **Classification Course**
+  Cell 1 [MD]: # Level 1 (★☆☆); Level 1 builds on the methods introduced in Level 0 and applies them to more practical datasets, with a focus on processing data and model building.
+  Cell 2 [MD]: ##1.1. Understanding the Data (Part 1)
+  Cell 3 [MD]: After downloading, drag and drop the CSV file into the same location you used in Level 0. (Click and hold the left mouse button on the file, then move it to the desired location). Once uploaded, use the following code to read the CSV file and display it as a DataFrame.
+  Cell 5 [Code, 5 lines]: # Import pandas
+  Cell 7 [Code, 2 lines]: # Check the number of rows in the DataFrame
+  Cell 9 [Code, 2 lines]: # Display the specified number of rows (10) from the beginning
+  Cell 12 [MD]: Let's start by looking at the types of cap colors. First, we will extract the `cap_color` column from the `DataFrame` object using the method introduced in Level 0 and assign it as variable `cap_color_se`. We learned in Level 0 that extracting a single column from a `DataFrame` object creates a `Series` object. By calling the `unique()` method on `cap_color_se`, which is a `Series` object, we can determine the different types present in that column. (See method 1 below)
+  Cell 13 [Code, 7 lines]: # Check colors (method 1)
+  Cell 15 [Code, 3 lines]: # Check for missing values
+  Cell 17 [Code, 2 lines]: # Check the number of missing values in each column
+  Cell 20 [Code, 1 lines]: df.isnull().sum()
+  Cell 21 [MD]: ## 1.2. Processing Data (Part 1)
+  Cell 22 [MD]: There are two methods for handling missing values: deletion and replacing. In Level 1, we will focus on deleting missing values, and in Level 2, we will cover replacing.; - Deleting Missing Values (Level 1★☆☆); - Replacing Missing Values (Level 2★★☆)
+  Cell 23 [Code, 2 lines]: df_dummy = pd.get_dummies(df['cap_color'], drop_first = True, dtype = int)
+  Cell 24 [MD]: The dummy variable encoding in Level 0 returned only one column because the `bruises` column had only 2 values (Yes or No). This time there are 10 categories, resulting in 9 columns. Each column is converted to False (0) or True (1), which increases the number of columns. While it is possible to assign color types to 0, 1, 2...9, machine learning models may also learn the numerical order as a feature. Since the color types in this case are symbols without an inherent order, they are divided into each column and represented as 0 or 1.
+  Cell 25 [MD]: In Level 1, we will also build a classification model using a decision tree just like in Level 0. The processes for model building and evaluation will be very similar to the previous level. In Level 0, we trained the model on all the data and evaluated the model's predictive accuracy on the same data. However, this method does not allow us to evaluate if the model can predict unknown data. The primary goal of machine learning is to **build a model and then use it to make predictions on unknown data**. One way to evaluate the predictive accuracy on unknown data is through a technique called **holdout method**.
+  Cell 30 [Code, 12 lines]: # Importing train_test_split function from scikit-learn's model_selection
+  Cell 32 [MD]: ## 1.3. Model Building and Evaluation (Part 1)
+  Cell 33 [Code, 5 lines]: # Building the model
+  Cell 34 [MD]: The model training is now complete. Let's evaluate the model using the `score()` method that was introduced in Level 0.
+  Cell 35 [Code, 4 lines]: train_score = model.score(x_train, y_train)
+  Cell 37 [Code, 2 lines]: se_poison = df['poison']
+  Cell 39 [MD]: ## 1.4. Understanding the Data (Part 2)
+  Cell 41 [Code, 2 lines]: se_b_p_counts = df[['bruises','poison']].value_counts()
+  Cell 43 [Code, 1 lines]: se_b_p_counts.index
+  Cell 45 [Code, 3 lines]: # Sort the index of a Series object
+  Cell 47 [Code, 1 lines]: se_b_p_counts['N']
+  Cell 49 [Code, 1 lines]: se_b_p_counts['N'].index
+  Cell 51 [Code, 1 lines]: import matplotlib.pyplot as plt
+  Cell 53 [Code, 4 lines]: # bar graph for mushrooms with no bruises
+  Cell 55 [MD]: ## 1.5. Processing Data (Part 2)
+  Cell 57 [Code, 5 lines]: # Drop rows with missing values
+  Cell 59 [Code, 2 lines]: # Check for missing values in the original data frame
+  Cell 60 [Code, 2 lines]: print('Number of data before deletion', len(df))
+  Cell 62 [Code, 4 lines]: x = pd.get_dummies(df_drop[['cap_color', 'bruises']], drop_first= True)
+  Cell 63 [MD]: ## 1.6. Model Building and Evaluation (Part 2)
+  Cell 65 [Code, 4 lines]: model = DecisionTreeClassifier()
+  Cell 66 [MD]: In Level 2, we will learn about how to fill in missing values rather than deleting them.
+  Cell 67 [MD]: ## 1.7. Practice Problems
+  Cell 69 [Code, 0 lines]: <EMPTY>
+  Cell 71 [Code, 0 lines]: <EMPTY>
+  Cell 73 [Code, 0 lines]: <EMPTY>
+  Cell 75 [Code, 0 lines]: <EMPTY>
+
+--------------------------------------------------
+Level 2: Exercise_Classification_Level_2.ipynb
+Total cells: 67 (Markdown: 43, Code: 24)
+
+  Cell 0 [MD]: # **Classification Course**
+  Cell 1 [MD]: # Level 2 (★★☆); In Level 2, we’ll build a predictive model using data where the missing values have been assign with some data. What kinds of values work best when you fill in missing data?
+  Cell 2 [MD]: ## 2.1. Understanding the Data (Part 1)
+  Cell 3 [MD]: In Level 2, we’ll continue using the "poisonous mushroom appearance data" from Level 1. As a review of Level 1, please download the CSV file from the link below and upload it to the specified location. Then, let's try to read the data into a DataFrame with the following code.
+  Cell 4 [Code, 5 lines]: # Import pandas
+  Cell 6 [Code, 1 lines]: df['bruises'].describe()
+  Cell 9 [Code, 2 lines]: top = df['bruises'].describe()['top']
+  Cell 10 [MD]: ## 2.2. Preprocessing Data (Part 1)
+  Cell 11 [MD]: In Level 2, instead of dropping missing data as we did before, we’ll fill them using representative values like the mode. You can either replace each missing entry with that column’s most frequent value or infer it by looking at related columns.
+  Cell 12 [MD]: *   **Deleting Missing Values (Level 1★☆☆)**; *   **Replacing Missing Values (Level 2★★☆)**
+  Cell 14 [Code, 4 lines]: # Fill missing values with the mode
+  Cell 16 [Code, 2 lines]: # Check the number of missing values in the original df
+  Cell 18 [Code, 8 lines]: df_dummy = pd.get_dummies(df_fill[['cap_color', 'bruises']], drop_first= True)
+  Cell 20 [MD]: ## 2.3. Model Building and Evaluation (Part 1)
+  Cell 22 [Code, 6 lines]: from sklearn.tree import  DecisionTreeClassifier
+  Cell 24 [MD]: ## 2.4. Understanding the Data (Part 2)
+  Cell 28 [Code, 2 lines]: tops = df.groupby(['cap_color'])['bruises'].describe()['top']
+  Cell 30 [MD]: ## 2.5. Preprocessing Data (Part 2)
+  Cell 31 [MD]: To do this, pass a Boolean Series indicating missing values inside the square brackets of `loc[]` attribute. You can create this Boolean Series using the `isnull()` method, which was introduced in Level 1.
+  Cell 32 [Code, 2 lines]: is_null = df['bruises'].isnull()
+  Cell 33 [Code, 1 lines]: df.loc[is_null].head()
+  Cell 35 [Code, 1 lines]: df['cap_color'].head()
+  Cell 38 [Code, 2 lines]: is_white = df['cap_color'] == 'w'
+  Cell 40 [Code, 1 lines]: df.loc[is_white].head()
+  Cell 42 [Code, 1 lines]: df.loc[is_null & is_white].head()
+  Cell 45 [Code, 1 lines]: df.loc[is_white & is_null,'bruises'].head()
+  Cell 47 [Code, 10 lines]: df.loc[(df['cap_color'] == 'b') & (is_null),'bruises'] = tops['b']
+  Cell 49 [Code, 6 lines]: df_dummy = pd.get_dummies(df[['cap_color', 'bruises']], drop_first= True)
+  Cell 50 [MD]: ## 2.6. Model Building and Evaluation (Part 2)
+  Cell 52 [Code, 5 lines]: model = DecisionTreeClassifier()
+  Cell 54 [MD]: ## 2.7. Practice Problems
+  Cell 56 [Code, 0 lines]: <EMPTY>
+  Cell 58 [Code, 0 lines]: <EMPTY>
+  Cell 60 [Code, 0 lines]: <EMPTY>
+  Cell 62 [Code, 0 lines]: <EMPTY>
+  Cell 64 [Code, 0 lines]: <EMPTY>
+  Cell 66 [Code, 0 lines]: <EMPTY>
+
+--------------------------------------------------
+Level 3: Exercise_Classification_Level_3.ipynb
+Total cells: 52 (Markdown: 31, Code: 21)
+
+  Cell 0 [MD]: # **Classification Course**
+  Cell 1 [MD]: # Level 3 (★★★); In Level 3, we will discuss merging data. So far, we have processed a single table and built a model, but this time, we will learn about how to merge two tables. Merging data is necessary when extracting data from different databases or when data is stored separately to avoid overlapping of the data.
+  Cell 2 [MD]: ## 3.1. Understanding Data
+  Cell 4 [Code, 6 lines]: import pandas as pd
+  Cell 6 [Code, 2 lines]: print('Number of appearence data', len(df1))
+  Cell 8 [MD]: Let's use the `unique()` method that we learned in Level 1 to check the different types of odors.
+  Cell 9 [Code, 2 lines]: # Check the types of odors
+  Cell 12 [MD]: ## 3.2. Processing Data
+  Cell 14 [Code, 3 lines]: # Inner join (appearance data df1 + odor data df2)
+  Cell 15 [Code, 1 lines]: len(df)
+  Cell 20 [Code, 3 lines]: # Check if each data in the ID column of df1 is included in the data of the ID c
+  Cell 22 [Code, 2 lines]: se_id1_is_not_in_id2 = ~se_id1_is_in_id2
+  Cell 23 [Code, 1 lines]: se_id1_is_not_in_id2.sum()
+  Cell 24 [Code, 7 lines]: # Get the number of IDs not included in df1
+  Cell 26 [MD]: Next, we want to identify which IDs in `df1` are not included in `df2`. Since we already have a Series of boolean for the data that are not included, let's use the `loc[]` attribute learned in Level 2 to extract this information.
+  Cell 27 [Code, 1 lines]: df1.loc[se_id1_is_not_in_id2, 'ID']
+  Cell 29 [Code, 2 lines]: df_left = pd.merge(df1, df2, how='left')
+  Cell 30 [Code, 1 lines]: len(df_left)
+  Cell 32 [Code, 1 lines]: df_left.isnull().sum()
+  Cell 34 [Code, 2 lines]: df_drop = df.dropna()
+  Cell 36 [Code, 1 lines]: df_dummy = pd.get_dummies(df_drop[['bruises', 'cap_color', 'odor']], drop_first=
+  Cell 38 [Code, 7 lines]: from sklearn.model_selection import train_test_split
+  Cell 39 [MD]: ## 3.3. Model Building and Evaluation
+  Cell 41 [Code, 6 lines]: from sklearn.tree import  DecisionTreeClassifier
+  Cell 42 [MD]: The accuracy rate has exceeded 90%. By using a dataset combining appearance data with odor data, the accuracy of the predictions improved. This concludes the content of Level 3. In the final exercise problems, you will practice combining two tabular datasets using different merging methods to observe how the merged data changes and deepen your understanding of merging techniques.
+  Cell 43 [MD]: ## 3.4. Practice Problems
+  Cell 45 [Code, 0 lines]: <EMPTY>
+  Cell 47 [Code, 0 lines]: <EMPTY>
+  Cell 49 [Code, 0 lines]: <EMPTY>
+  Cell 51 [Code, 0 lines]: <EMPTY>

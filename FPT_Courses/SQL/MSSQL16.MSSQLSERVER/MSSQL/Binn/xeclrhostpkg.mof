@@ -1,0 +1,296 @@
+
+//*********************************************************************
+//              Copyright (c) Microsoft Corporation.
+//
+//*********************************************************************
+
+#pragma classflags("forceupdate")
+#pragma AUTORECOVER
+#pragma namespace("\\\\.\\root\\wmi")
+
+[dynamic: ToInstance, Description("sqlclr"),
+    Guid("{1E99FE90-A4FE-45E6-9DFD-A45041F02314}"), locale("MS\\0x409")]
+class XeClrHostPkg: EventTrace
+{
+	
+	[Description ("Enable flags") : amended,
+	ValueDescriptions{
+		"Events related to garbage collection.",
+		"Events related to CLR memory managment.",
+		"Events related to CLR initialization.",
+		"Events related to CLR unloading.",
+		"Events related to CLR appdomain."
+	} : amended,
+	DefineValues{
+		"ETW_XECLRHOSTPKG_GARBAGE_COLLECTION"
+		,
+		"ETW_XECLRHOSTPKG_MEMORY"
+		,
+		"ETW_XECLRHOSTPKG_INIT"
+		,
+		"ETW_XECLRHOSTPKG_UNLOAD"
+		,
+		"ETW_XECLRHOSTPKG_APPDOMAIN"
+		},
+	Values{
+		"garbage_collection",
+		"memory",
+		"init",
+		"unload",
+		"appdomain"
+		},
+	ValueMap{
+		"1",
+		"2",
+		"4",
+		"8",
+		"16"
+		}
+	]
+	uint32 Flags;
+
+};
+
+	
+[dynamic: ToInstance, Description("Threads are being suspended for a garbage collection"): Amended,
+    Guid("{941A0FC3-4C6D-4149-A64D-C09DE8675086}"), locale("MS\\0x409"),
+    DisplayName("gc_suspension"): Amended]
+class XeClrHostPkg_gc_suspension: XeClrHostPkg
+{
+};
+
+[dynamic: ToInstance, EventType(0), EventVersion(1)]
+class gc_suspension: XeClrHostPkg_gc_suspension
+{
+	[WmiDataId(1), Description("FragmentId"): Amended,read] uint32 FragmentId;
+	[WmiDataId(2), Description("RemainingLength"): Amended,read] uint32 RemainingLength;
+	[WmiDataId(3), Description("ActivityId"): Amended,ActivityID, read, Extension("Guid")] guid ActivityId;
+	[WmiDataId(4), Description("SequenceNumber"): Amended,read] uint32 SequenceNumber;
+	[WmiDataId(5), read, 
+				XEMapId(1),
+				ValueMap { 
+					"0", 
+					"1" },
+				Values { 
+					"Begin", 
+					"End" }
+			] uint32 opcode;
+};
+		
+[dynamic: ToInstance, Description("A memory allocation failed."): Amended,
+    Guid("{EBAB8A18-5795-4F1D-9466-7AE9FC9F54C2}"), locale("MS\\0x409"),
+    DisplayName("clr_allocation_failure"): Amended]
+class XeClrHostPkg_clr_allocation_failure: XeClrHostPkg
+{
+};
+
+[dynamic: ToInstance, EventType(0), EventVersion(1)]
+class clr_allocation_failure: XeClrHostPkg_clr_allocation_failure
+{
+	[WmiDataId(1), Description("FragmentId"): Amended,read] uint32 FragmentId;
+	[WmiDataId(2), Description("RemainingLength"): Amended,read] uint32 RemainingLength;
+	[WmiDataId(3), Description("ActivityId"): Amended,ActivityID, read, Extension("Guid")] guid ActivityId;
+	[WmiDataId(4), Description("SequenceNumber"): Amended,read] uint32 SequenceNumber;
+	[WmiDataId(5), read] uint64 allocation_size;
+	[WmiDataId(6), read, 
+				XEMapId(2),
+				ValueMap { 
+					"0", 
+					"1", 
+					"2" },
+				Values { 
+					"Task Critical", 
+					"Appdomain Critical", 
+					"Process Critical" }
+			] uint32 critical_level;
+};
+		
+[dynamic: ToInstance, Description("A virtual memory allocation failed"): Amended,
+    Guid("{7C352842-511F-4B8A-8A42-7AD2B4E4F668}"), locale("MS\\0x409"),
+    DisplayName("clr_virtual_alloc_failure"): Amended]
+class XeClrHostPkg_clr_virtual_alloc_failure: XeClrHostPkg
+{
+};
+
+[dynamic: ToInstance, EventType(0), EventVersion(1)]
+class clr_virtual_alloc_failure: XeClrHostPkg_clr_virtual_alloc_failure
+{
+	[WmiDataId(1), Description("FragmentId"): Amended,read] uint32 FragmentId;
+	[WmiDataId(2), Description("RemainingLength"): Amended,read] uint32 RemainingLength;
+	[WmiDataId(3), Description("ActivityId"): Amended,ActivityID, read, Extension("Guid")] guid ActivityId;
+	[WmiDataId(4), Description("SequenceNumber"): Amended,read] uint32 SequenceNumber;
+	[WmiDataId(5), read, Pointer] object  starting_address;
+	[WmiDataId(6), read] uint64 allocation_size;
+	[WmiDataId(7), read, 
+				XEMapId(3),
+				ValueMap { 
+					"8192", 
+					"4096" },
+				Values { 
+					"Virtual Reserve", 
+					"Virtual Commit" }
+			] uint32 allocation_type;
+	[WmiDataId(8), read, 
+				XEMapId(2),
+				ValueMap { 
+					"0", 
+					"1", 
+					"2" },
+				Values { 
+					"Task Critical", 
+					"Appdomain Critical", 
+					"Process Critical" }
+			] uint32 critical_level;
+};
+		
+[dynamic: ToInstance, Description("CLR initialization failed"): Amended,
+    Guid("{97691C4F-044D-4205-A235-4EB4A5A66EBF}"), locale("MS\\0x409"),
+    DisplayName("clr_init_failure"): Amended]
+class XeClrHostPkg_clr_init_failure: XeClrHostPkg
+{
+};
+
+[dynamic: ToInstance, EventType(0), EventVersion(1)]
+class clr_init_failure: XeClrHostPkg_clr_init_failure
+{
+	[WmiDataId(1), Description("FragmentId"): Amended,read] uint32 FragmentId;
+	[WmiDataId(2), Description("RemainingLength"): Amended,read] uint32 RemainingLength;
+	[WmiDataId(3), Description("ActivityId"): Amended,ActivityID, read, Extension("Guid")] guid ActivityId;
+	[WmiDataId(4), Description("SequenceNumber"): Amended,read] uint32 SequenceNumber;
+	[WmiDataId(5), read, 
+				XEMapId(4),
+				ValueMap { 
+					"0", 
+					"1", 
+					"2", 
+					"3" },
+				Values { 
+					"None", 
+					"Bad Installation", 
+					"Recoverable", 
+					"NonRecoverable" }
+			] uint32 failure_type;
+	[WmiDataId(6), read] uint32 failure_hresult;
+	[WmiDataId(7), read] uint32 error_state;
+};
+		
+[dynamic: ToInstance, Description("Event_ClrDisabled has been triggered in ClrHost."): Amended,
+    Guid("{5B6E885E-B8EF-4B76-A79A-4DB9CD43B9F6}"), locale("MS\\0x409"),
+    DisplayName("notify_on_clr_disabled"): Amended]
+class XeClrHostPkg_notify_on_clr_disabled: XeClrHostPkg
+{
+};
+
+[dynamic: ToInstance, EventType(0), EventVersion(1)]
+class notify_on_clr_disabled: XeClrHostPkg_notify_on_clr_disabled
+{
+	[WmiDataId(1), Description("FragmentId"): Amended,read] uint32 FragmentId;
+	[WmiDataId(2), Description("RemainingLength"): Amended,read] uint32 RemainingLength;
+	[WmiDataId(3), Description("ActivityId"): Amended,ActivityID, read, Extension("Guid")] guid ActivityId;
+	[WmiDataId(4), Description("SequenceNumber"): Amended,read] uint32 SequenceNumber;
+};
+		
+[dynamic: ToInstance, Description("AppDomain is unloading."): Amended,
+    Guid("{5FFE8EF5-C68D-4221-B627-8A5E1E281685}"), locale("MS\\0x409"),
+    DisplayName("on_app_domain_unloading"): Amended]
+class XeClrHostPkg_on_app_domain_unloading: XeClrHostPkg
+{
+};
+
+[dynamic: ToInstance, EventType(0), EventVersion(1)]
+class on_app_domain_unloading: XeClrHostPkg_on_app_domain_unloading
+{
+	[WmiDataId(1), Description("FragmentId"): Amended,read] uint32 FragmentId;
+	[WmiDataId(2), Description("RemainingLength"): Amended,read] uint32 RemainingLength;
+	[WmiDataId(3), Description("ActivityId"): Amended,ActivityID, read, Extension("Guid")] guid ActivityId;
+	[WmiDataId(4), Description("SequenceNumber"): Amended,read] uint32 SequenceNumber;
+};
+		
+[dynamic: ToInstance, Description("AppDomain hit a failure."): Amended,
+    Guid("{F0B29BF2-7F7C-4634-B27A-7434F09BE5B6}"), locale("MS\\0x409"),
+    DisplayName("on_app_domain_failure"): Amended]
+class XeClrHostPkg_on_app_domain_failure: XeClrHostPkg
+{
+};
+
+[dynamic: ToInstance, EventType(0), EventVersion(1)]
+class on_app_domain_failure: XeClrHostPkg_on_app_domain_failure
+{
+	[WmiDataId(1), Description("FragmentId"): Amended,read] uint32 FragmentId;
+	[WmiDataId(2), Description("RemainingLength"): Amended,read] uint32 RemainingLength;
+	[WmiDataId(3), Description("ActivityId"): Amended,ActivityID, read, Extension("Guid")] guid ActivityId;
+	[WmiDataId(4), Description("SequenceNumber"): Amended,read] uint32 SequenceNumber;
+};
+		
+[dynamic: ToInstance, Description("IHostPolicyManager received an event."): Amended,
+    Guid("{ECE74D55-DB79-474D-A453-AE51E507F06C}"), locale("MS\\0x409"),
+    DisplayName("on_host_policy_callback"): Amended]
+class XeClrHostPkg_on_host_policy_callback: XeClrHostPkg
+{
+};
+
+[dynamic: ToInstance, EventType(0), EventVersion(1)]
+class on_host_policy_callback: XeClrHostPkg_on_host_policy_callback
+{
+	[WmiDataId(1), Description("FragmentId"): Amended,read] uint32 FragmentId;
+	[WmiDataId(2), Description("RemainingLength"): Amended,read] uint32 RemainingLength;
+	[WmiDataId(3), Description("ActivityId"): Amended,ActivityID, read, Extension("Guid")] guid ActivityId;
+	[WmiDataId(4), Description("SequenceNumber"): Amended,read] uint32 SequenceNumber;
+	[WmiDataId(5), read] uint32 hoperation;
+	[WmiDataId(6), read] uint32 haction;
+};
+		
+[dynamic: ToInstance, Description("IHostPolicyManager received an event."): Amended,
+    Guid("{779C75CA-26B5-4230-A083-4BF25B50D819}"), locale("MS\\0x409"),
+    DisplayName("on_host_policy_failure"): Amended]
+class XeClrHostPkg_on_host_policy_failure: XeClrHostPkg
+{
+};
+
+[dynamic: ToInstance, EventType(0), EventVersion(1)]
+class on_host_policy_failure: XeClrHostPkg_on_host_policy_failure
+{
+	[WmiDataId(1), Description("FragmentId"): Amended,read] uint32 FragmentId;
+	[WmiDataId(2), Description("RemainingLength"): Amended,read] uint32 RemainingLength;
+	[WmiDataId(3), Description("ActivityId"): Amended,ActivityID, read, Extension("Guid")] guid ActivityId;
+	[WmiDataId(4), Description("SequenceNumber"): Amended,read] uint32 SequenceNumber;
+	[WmiDataId(5), read] uint32 hoperation;
+	[WmiDataId(6), read] uint32 haction;
+};
+		
+[dynamic: ToInstance, Description("ClrContextDump triggered."): Amended,
+    Guid("{757EE3B2-0C7D-4B81-AD08-5A5F4680A7CF}"), locale("MS\\0x409"),
+    DisplayName("clr_context_dump"): Amended]
+class XeClrHostPkg_clr_context_dump: XeClrHostPkg
+{
+};
+
+[dynamic: ToInstance, EventType(0), EventVersion(1)]
+class clr_context_dump: XeClrHostPkg_clr_context_dump
+{
+	[WmiDataId(1), Description("FragmentId"): Amended,read] uint32 FragmentId;
+	[WmiDataId(2), Description("RemainingLength"): Amended,read] uint32 RemainingLength;
+	[WmiDataId(3), Description("ActivityId"): Amended,ActivityID, read, Extension("Guid")] guid ActivityId;
+	[WmiDataId(4), Description("SequenceNumber"): Amended,read] uint32 SequenceNumber;
+};
+		
+[dynamic: ToInstance, Description("SQL CLR quantum punishment ocurred."): Amended,
+    Guid("{4fab05ab-7f5a-41b7-89d9-152f80c315b8}"), locale("MS\\0x409"),
+    DisplayName("clr_forced_yield"): Amended]
+class XeClrHostPkg_clr_forced_yield: XeClrHostPkg
+{
+};
+
+[dynamic: ToInstance, EventType(0), EventVersion(1)]
+class clr_forced_yield: XeClrHostPkg_clr_forced_yield
+{
+	[WmiDataId(1), Description("FragmentId"): Amended,read] uint32 FragmentId;
+	[WmiDataId(2), Description("RemainingLength"): Amended,read] uint32 RemainingLength;
+	[WmiDataId(3), Description("ActivityId"): Amended,ActivityID, read, Extension("Guid")] guid ActivityId;
+	[WmiDataId(4), Description("SequenceNumber"): Amended,read] uint32 SequenceNumber;
+	[WmiDataId(5), read] uint32 scheduler_id;
+	[WmiDataId(6), read, Pointer] object  sos_task_address;
+	[WmiDataId(7), read, Pointer] object  appdomain_address;
+	[WmiDataId(8), read] uint32 forced_yield_count;
+};
+		

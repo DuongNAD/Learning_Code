@@ -1,0 +1,35 @@
+\contentsline {section}{\numberline {1}Problem A: Machine Learning Lifecycle \& Acoustic Concept Drift}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}System Specification \& Problem Description}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Formal Lifecycle Classification (Part a)}{2}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Statistical Learning Theory of ``Learning'' (Part b)}{2}{subsection.1.3}%
+\contentsline {subsubsection}{\numberline {1.3.1}Formal Theoretical Formulation}{4}{subsubsection.1.3.1}%
+\contentsline {subsubsection}{\numberline {1.3.2}Analytical Contrast: Step 5 vs. Steps 2 and 6}{4}{subsubsection.1.3.2}%
+\contentsline {subsection}{\numberline {1.4}Non-Stationary Distribution Dynamics: Covariate vs. Concept Drift}{4}{subsection.1.4}%
+\contentsline {section}{\numberline {2}Problem B: The Greenhouse Tree (Impurity Minimization \& Optimal Induction)}{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Problem Statement \& Baseline Architecture}{5}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Query Evaluation (Part a)}{5}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Discrepancy Analysis on Historical Telemetry Log}{5}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Information-Theoretic Induction of Optimal Continuous Split}{5}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Visual Structure: Induced TikZ Decision Tree}{6}{subsection.2.5}%
+\contentsline {section}{\numberline {3}Problem C: To Fit or Not to Fit ($L_2$ Ridge Regularization \& Spectral Shrinkage)}{6}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Problem Statement \& Data Specification}{6}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Exact Numerical Derivation of Scores (Part a)}{7}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Evaluation of Model $M_1(x)$ (Cubic Polynomial)}{7}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Evaluation of Model $M_2(x)$ (Linear Model)}{8}{subsubsection.3.2.2}%
+\contentsline {subsubsection}{\numberline {3.2.3}Selection Decision}{8}{subsubsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.3}Theoretical Rationale: Bias-Variance Tradeoff \& Occam's Razor (Part b)}{8}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Senior Mathematical Foundations: SVD Spectral Shrinkage Analysis}{9}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Problem D: The Price of Drift (RLHF Policy Drift, Asymptotics \& Safety Bounds)}{9}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Problem Statement \& Alignment Objective}{9}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Optimal Shift Derivation \& Convexity (Part a)}{9}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Asymptotic Limiting Analysis \& Operational Semantics (Part b)}{10}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}The Safe Boundary Theorem \& Rigorous Proof (Part c)}{10}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Conceptual Synthesis with Problem C (Part d)}{11}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}Frontier Extension: Functional Derivation of DPO via Calculus of Variations}{11}{subsection.4.6}%
+\contentsline {subsection}{\numberline {4.7}Numerical Verification Algorithm}{12}{subsection.4.7}%
+\contentsline {section}{\numberline {5}Problem E: Agronomic Language Models \& Trustworthy AI Governance}{12}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Socio-Technical Context \& Problem Specification}{12}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Three Transformative Opportunities for Smallholder Farming}{12}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Three Critical Systemic Failure Modes \& Risks}{13}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Trustworthy AI Architecture: Grounded RAG \& Human Escalation}{13}{subsection.5.4}%
+\contentsline {section}{\numberline {6}Comparative Synthesis: Ridge Regularization (C) vs. RLHF Policy Drift (D)}{13}{section.6}%

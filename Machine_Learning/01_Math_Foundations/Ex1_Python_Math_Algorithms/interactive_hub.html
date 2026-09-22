@@ -715,7 +715,10 @@
       </div>
     </div>
     <div class="header-actions">
-      <button class="btn" onclick="openAllAccordions()">📖 Mở toàn bộ gợi ý</button>
+      <a href="../../00_Curriculum_and_Materials/AI_ML_Mastery_Slides.html" class="btn" style="text-decoration: none; background: linear-gradient(135deg, #1f6feb, #06b6d4); color: white; border: none; font-weight: 700; box-shadow: 0 0 12px rgba(31, 111, 235, 0.4);">
+        📖 Slide Lý Thuyết (33 Bài)
+      </a>
+      <button class="btn" onclick="openAllAccordions()">💡 Mở toàn bộ gợi ý</button>
       <button class="btn btn-primary" onclick="switchTab('tab-arena')">⚡ Đấu Trường Thực Hành (16 Bài)</button>
     </div>
   </header>
@@ -2636,6 +2639,13 @@
       inspectNumberEx7();
       runEx8WordChain();
       loadArenaExercise();
+
+      // Kiểm tra tham số ?tab= từ URL để tự động nhảy sang đúng bài
+      const urlParams = new URLSearchParams(window.location.search);
+      const tabParam = urlParams.get('tab');
+      if (tabParam && document.getElementById(tabParam)) {
+        switchTab(tabParam);
+      }
     });
   </script>
 </body>

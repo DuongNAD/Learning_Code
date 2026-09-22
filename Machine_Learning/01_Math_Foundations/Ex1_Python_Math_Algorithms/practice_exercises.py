@@ -55,10 +55,21 @@ def practice_1_1_sign_and_zero_classifier(numbers: List[float]) -> Dict[str, Any
     Gợi ý:
     - Duyệt qua từng số x trong numbers, kiểm tra x > 0, x < 0, và x == 0.
     """
-    if USE_SOLUTIONS_FOR_TESTING:
-        return sol.solution_1_1_sign_and_zero_classifier(numbers)
-        
-    # TODO: Viết code thực hành của bạn tại đây
+    
+    pos_vals = []
+    neg_vals = []
+    zero_count = 0
+
+    for i in numbers:
+        if i <0:
+            neg_vals.append(i)
+        elif i>0:
+            pos_vals.append(i)
+        else:
+            zero_count = zero_count+1
+    pos_count = len(pos_vals)
+    pos_sum = sum(pos_vals) if pos_sum >0 else 0
+
     raise NotImplementedError("Hãy tự viết code cho bài 1.1!")
 
 

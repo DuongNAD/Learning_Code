@@ -1,0 +1,533 @@
+{
+  "extracted_gci_world/GCI World_202609/02. Preparatory Materials/6. Exercise_ Regression/Exercise_Regression_Level_0.ipynb": {
+    "filename": "Exercise_Regression_Level_0.ipynb",
+    "total_cells": 63,
+    "md_cells": 48,
+    "code_cells": 15,
+    "headers": [
+      "#**Regression Course**",
+      "#Level 0（☆☆☆☆）",
+      "##0.1. Liner Regression",
+      "##0.2. Understanding the Data",
+      "##0.3. Preprocessing Data",
+      "##0.4. Model Building and Evaluation",
+      "##0.5. Practice Problems"
+    ],
+    "imports": [
+      "import pandas as pd",
+      "from sklearn.linear_model import LinearRegression"
+    ],
+    "datasets": [
+      "'car_test_data.csv'"
+    ],
+    "functions_defined": [],
+    "detected_ml": [
+      "LinearRegression"
+    ],
+    "detected_pd_np": [
+      "read_csv"
+    ],
+    "intro_preview": "#**Regression Course**\n\n\n\n\n\n---\n\n\nIn this course, you will learn how to apply ***the supervised learning workflow (explained in Section 4 of the lecture) to regression problems***. We will use **\"linear regression\" model** throughout the exercises and look at each step of the workflow: ***understanding the data, processing data, model building, and model evaluation***.The goal is to practice the knowledge required for each step depending on the level.\n#Level 0（☆☆☆☆）\n\n\n---\nIn Level 0, you will learn about linear regression. You will also learn about data characteristics and basic preprocessing methods.\n##0.1. Liner Regression\n"
+  },
+  "extracted_gci_world/GCI World_202609/02. Preparatory Materials/6. Exercise_ Regression/Exercise_Regression_Level_1.ipynb": {
+    "filename": "Exercise_Regression_Level_1.ipynb",
+    "total_cells": 61,
+    "md_cells": 38,
+    "code_cells": 23,
+    "headers": [
+      "#**Regression Course**",
+      "#Level 1 (★☆☆☆)",
+      "##1.1. Understanding the Data",
+      "##1.2. Processing Data",
+      "##1.3. Model Building and Evaluation",
+      "##1.4.Practice Problems"
+    ],
+    "imports": [
+      "import pandas as pd",
+      "import matplotlib.pyplot as plt",
+      "from sklearn.linear_model import LinearRegression",
+      "from sklearn.model_selection import KFold, cross_val_score"
+    ],
+    "datasets": [
+      "'Car_Price_Data.csv'"
+    ],
+    "functions_defined": [],
+    "detected_ml": [
+      "LinearRegression",
+      "cross_val_score"
+    ],
+    "detected_pd_np": [
+      "read_csv",
+      "head",
+      "describe",
+      "isnull",
+      "dropna",
+      "plot",
+      "scatter"
+    ],
+    "intro_preview": "#**Regression Course**\n\n\n---\n\n\nIn this course, you will learn how to apply ***the supervised learning workflow (explained in Section 4 of the lecture) to regression problems***. We will use **\"linear regression\" model** throughout the exercises and look at each step of the workflow: ***understanding the data, processing data, model building, and model evaluation***.The goal is to practice the knowledge required for each step depending on the level.\n#Level 1 (★☆☆☆)\n\n\n\n---\n\n\nLevel 1 builds on the methods introduced in Level 0 and applies them to more practical datasets, with a focus on processing data and model building.\n##1.1. Understanding the Data\n"
+  },
+  "extracted_gci_world/GCI World_202609/02. Preparatory Materials/6. Exercise_ Regression/Exercise_Regression_Level_2.ipynb": {
+    "filename": "Exercise_Regression_Level_2.ipynb",
+    "total_cells": 49,
+    "md_cells": 33,
+    "code_cells": 16,
+    "headers": [
+      "#**Regression Course**",
+      "# Level 2 (★★☆☆)",
+      "## 2.1. Preprocessing Data",
+      "## 2.2. Model Building and Evaluation",
+      "## 2.3. Practice Problems"
+    ],
+    "imports": [
+      "import pandas as pd",
+      "import matplotlib.pyplot as plt",
+      "import seaborn as sns",
+      "from sklearn.linear_model import LinearRegression",
+      "from sklearn.model_selection import KFold, cross_val_score"
+    ],
+    "datasets": [
+      "'Car_Price_Data.csv'"
+    ],
+    "functions_defined": [],
+    "detected_ml": [
+      "LinearRegression",
+      "cross_val_score"
+    ],
+    "detected_pd_np": [
+      "read_csv",
+      "describe",
+      "dropna",
+      "plot",
+      "loc"
+    ],
+    "intro_preview": "#**Regression Course**\n\n---\n\nIn this course, you will learn how to apply ***the supervised learning workflow (explained in Section 4 of the lecture) to regression problems***. We will use **\"linear regression\" model** throughout the exercises and look at each step of the workflow: ***understanding the data, processing data, model building, and model evaluation***.The goal is to practice the knowledge required for each step depending on the level.\n# Level 2 (★★☆☆)\n\n---\n\nIn Level 2, we will first remove outliers from the data. Then, we will train a model using the preprocessed data and make predictions.\n\nThe question is, how can we determine which values are outliers?  \nWe will explore two different methods for identifying outliers — one in Level 2 and another in Level 3.\n\n## 2.1. Preprocess"
+  },
+  "extracted_gci_world/GCI World_202609/02. Preparatory Materials/6. Exercise_ Regression/Exercise_Regression_Level_3.ipynb": {
+    "filename": "Exercise_Regression_Level_3.ipynb",
+    "total_cells": 42,
+    "md_cells": 29,
+    "code_cells": 13,
+    "headers": [
+      "#**Regression Course**",
+      "#Level３（★★★☆）",
+      "##3.1. Preprocessing Data",
+      "##3.2. Model Building and Evaluation",
+      "##3.3. Practice Problems"
+    ],
+    "imports": [
+      "import pandas as pd",
+      "import matplotlib.pyplot as plt",
+      "from sklearn.linear_model import LinearRegression",
+      "from sklearn.model_selection import KFold, cross_val_score"
+    ],
+    "datasets": [
+      "'Car_Price_Data.csv'"
+    ],
+    "functions_defined": [],
+    "detected_ml": [
+      "LinearRegression",
+      "cross_val_score"
+    ],
+    "detected_pd_np": [
+      "read_csv",
+      "dropna",
+      "plot",
+      "scatter"
+    ],
+    "intro_preview": "#**Regression Course**\n\n\n---\n\nIn this course, you will learn how to apply ***the supervised learning workflow (explained in Section 4 of the lecture) to regression problems***. We will use **linear regression model** throughout the exercises and look at each step of the workflow: ***understanding the data, processing data, model building, and model evaluation***.The goal is to practice the knowledge required for each step depending on the level.\n#Level３（★★★☆）\n\n\n---\nIn Level 3, you will train a model and make predictions using the data with outliers removed, based on the scatter plot.\n##3.1. Preprocessing Data\n\n"
+  },
+  "extracted_gci_world/GCI World_202609/02. Preparatory Materials/6. Exercise_ Regression/Exercise_Regression_Level_4.ipynb": {
+    "filename": "Exercise_Regression_Level_4.ipynb",
+    "total_cells": 29,
+    "md_cells": 20,
+    "code_cells": 9,
+    "headers": [
+      "#**Regression Course**",
+      "#Level 4（★★★★）",
+      "##4.1. Preprocessing Data",
+      "##4.2. Model Building",
+      "##4.3. Practice Problems"
+    ],
+    "imports": [
+      "import pandas as pd",
+      "from sklearn.preprocessing import StandardScaler",
+      "from sklearn.model_selection import train_test_split",
+      "from sklearn.linear_model import LinearRegression"
+    ],
+    "datasets": [
+      "'Car_Price_Data.csv'"
+    ],
+    "functions_defined": [],
+    "detected_ml": [
+      "LinearRegression",
+      "train_test_split",
+      "StandardScaler"
+    ],
+    "detected_pd_np": [
+      "read_csv",
+      "describe",
+      "dropna",
+      "loc"
+    ],
+    "intro_preview": "#**Regression Course**\n\n\n---\n\nIn this course, you will learn how to apply ***the supervised learning workflow (explained in Section 4 of the lecture) to regression problems***. We will use **linear regression model** throughout the exercises and look at each step of the workflow: ***understanding the data, processing data, model building, and model evaluation***.The goal is to practice the knowledge required for each step depending on the level.\n#Level 4（★★★★）\n\n\n\n\n\n---\nIn Level 4, we’ll learn how to train a model and make predictions using standardized data.\n##4.1. Preprocessing Data\n\nAs before, download the `Car_Price_Data.csv` using the link below, upload it to the designated location, read it into a DataFrame, and remove any missing values.\n\n[Car_Price_Data.csv](https://drive.google.com"
+  },
+  "extracted_gci_world/GCI World_202609/02. Preparatory Materials/7. Exercise_ Classification/Exercise_Classification_Level_0.ipynb": {
+    "filename": "Exercise_Classification_Level_0.ipynb",
+    "total_cells": 56,
+    "md_cells": 36,
+    "code_cells": 20,
+    "headers": [
+      "# **Classification Course**",
+      "#Level 0（☆☆☆）",
+      "##0.1. Decision Tree",
+      "##0.2. Understanding the Data",
+      "##0.3. Processing Data",
+      "##0.4. Model Building and Evaluation",
+      "##0.5. Practice Problems"
+    ],
+    "imports": [
+      "import pandas as pd",
+      "from sklearn.tree import DecisionTreeClassifier",
+      "from sklearn.tree import plot_tree"
+    ],
+    "datasets": [
+      "'Mushroom_Appearence_Data.csv'"
+    ],
+    "functions_defined": [],
+    "detected_ml": [
+      "DecisionTreeClassifier"
+    ],
+    "detected_pd_np": [
+      "read_csv",
+      "get_dummies",
+      "plot"
+    ],
+    "intro_preview": "# **Classification Course**\n\n\n---\n\nIn this course, you will learn how to apply ***the supervised learning workflow (explained in Section 4 of the lecture) to classification problems***. We will use **\"decision tree\" model** throughout the exercises and look at each step of the workflow: ***understanding the data, processing data, model building, and model evaluation***. The goal is to practice the knowledge required for each step depending on the level.\n\n#Level 0（☆☆☆）\n\n\n---\n\n\nIn Level 0, you will learn about decision trees. You will also learn about data characteristics and basic preprocessing methods.\n##0.1. Decision Tree\n"
+  },
+  "extracted_gci_world/GCI World_202609/02. Preparatory Materials/7. Exercise_ Classification/Exercise_Classification_Level_1.ipynb": {
+    "filename": "Exercise_Classification_Level_1.ipynb",
+    "total_cells": 76,
+    "md_cells": 48,
+    "code_cells": 28,
+    "headers": [
+      "# **Classification Course**",
+      "# Level 1 (★☆☆)",
+      "##1.1. Understanding the Data (Part 1)",
+      "## 1.2. Processing Data (Part 1)",
+      "## 1.3. Model Building and Evaluation (Part 1)",
+      "## 1.4. Understanding the Data (Part 2)",
+      "## 1.5. Processing Data (Part 2)",
+      "## 1.6. Model Building and Evaluation (Part 2)",
+      "## 1.7. Practice Problems"
+    ],
+    "imports": [
+      "import pandas as pd",
+      "from sklearn.model_selection import train_test_split",
+      "from sklearn.tree import DecisionTreeClassifier",
+      "import matplotlib.pyplot as plt"
+    ],
+    "datasets": [
+      "'Mushroom_Appearence_Data.csv'"
+    ],
+    "functions_defined": [],
+    "detected_ml": [
+      "DecisionTreeClassifier",
+      "train_test_split"
+    ],
+    "detected_pd_np": [
+      "read_csv",
+      "head",
+      "isnull",
+      "dropna",
+      "get_dummies",
+      "plot"
+    ],
+    "intro_preview": "# **Classification Course**\n\n\n---\n\nIn this course, you will learn how to apply ***the supervised learning workflow (explained in Section 4 of the lecture) to classification problems***. We will use **\"decision tree\" model** throughout the exercises and look at each step of the workflow: ***understanding the data, processing data, model building, and model evaluation***. The goal is to practice the knowledge required for each step depending on the level.\n# Level 1 (★☆☆)\n\n\n---\n\nLevel 1 builds on the methods introduced in Level 0 and applies them to more practical datasets, with a focus on processing data and model building.\n##1.1. Understanding the Data (Part 1)\n"
+  },
+  "extracted_gci_world/GCI World_202609/02. Preparatory Materials/7. Exercise_ Classification/Exercise_Classification_Level_2.ipynb": {
+    "filename": "Exercise_Classification_Level_2.ipynb",
+    "total_cells": 67,
+    "md_cells": 43,
+    "code_cells": 24,
+    "headers": [
+      "# **Classification Course**",
+      "# Level 2 (★★☆)",
+      "## 2.1. Understanding the Data (Part 1)",
+      "## 2.2. Preprocessing Data (Part 1)",
+      "## 2.3. Model Building and Evaluation (Part 1)",
+      "## 2.4. Understanding the Data (Part 2)",
+      "## 2.5. Preprocessing Data (Part 2)",
+      "## 2.6. Model Building and Evaluation (Part 2)",
+      "## 2.7. Practice Problems"
+    ],
+    "imports": [
+      "import pandas as pd",
+      "from sklearn.model_selection import train_test_split",
+      "from sklearn.tree import  DecisionTreeClassifier"
+    ],
+    "datasets": [
+      "'Mushroom_Appearence_Data.csv'"
+    ],
+    "functions_defined": [],
+    "detected_ml": [
+      "DecisionTreeClassifier",
+      "train_test_split"
+    ],
+    "detected_pd_np": [
+      "read_csv",
+      "head",
+      "describe",
+      "isnull",
+      "fillna",
+      "get_dummies",
+      "groupby",
+      "loc"
+    ],
+    "intro_preview": "# **Classification Course**\n\n---\n\nIn this course, you will learn how to apply ***the supervised learning workflow (explained in Section 4 of the lecture) to classification problems***. We will use **\"decision tree\" model** throughout the exercises and look at each step of the workflow: ***understanding the data, processing data, model building, and model evaluation***.The goal is to practice the knowledge required for each step depending on the level.\n# Level 2 (★★☆)\n---\nIn Level 2, we’ll build a predictive model using data where the missing values have been assign with some data. What kinds of values work best when you fill in missing data?\n## 2.1. Understanding the Data (Part 1)\n"
+  },
+  "extracted_gci_world/GCI World_202609/02. Preparatory Materials/7. Exercise_ Classification/Exercise_Classification_Level_3.ipynb": {
+    "filename": "Exercise_Classification_Level_3.ipynb",
+    "total_cells": 52,
+    "md_cells": 31,
+    "code_cells": 21,
+    "headers": [
+      "# **Classification Course**",
+      "# Level 3 (★★★)",
+      "## 3.1. Understanding Data",
+      "## 3.2. Processing Data",
+      "## 3.3. Model Building and Evaluation",
+      "## 3.4. Practice Problems"
+    ],
+    "imports": [
+      "import pandas as pd",
+      "from sklearn.model_selection import train_test_split",
+      "from sklearn.tree import  DecisionTreeClassifier"
+    ],
+    "datasets": [
+      "'Mushroom_Appearence_Data.csv'",
+      "'Mushroom_Odor_Data.csv'"
+    ],
+    "functions_defined": [],
+    "detected_ml": [
+      "DecisionTreeClassifier",
+      "train_test_split"
+    ],
+    "detected_pd_np": [
+      "read_csv",
+      "head",
+      "isnull",
+      "dropna",
+      "get_dummies",
+      "merge",
+      "loc"
+    ],
+    "intro_preview": "# **Classification Course**\n\n\n---\n\nIn this course, you will learn how to apply ***the supervised learning workflow (explained in Section 4 of the lecture) to classification problems***. We will use **\"decision tree\" model** throughout the exercises and look at each step of the workflow: ***understanding the data, processing data, model building, and model evaluation***. The goal is to practice the knowledge required for each step depending on the level.\n\n# Level 3 (★★★)\n\n---\nIn Level 3, we will discuss merging data. So far, we have processed a single table and built a model, but this time, we will learn about how to merge two tables. Merging data is necessary when extracting data from different databases or when data is stored separately to avoid overlapping of the data.\n\n## 3.1. Understan"
+  },
+  "extracted_gci_world/GCI World_202609/03. Lecture Materials & Homework/PreLecture_Python1&2/prelecture_notebook.ipynb": {
+    "filename": "prelecture_notebook.ipynb",
+    "total_cells": 259,
+    "md_cells": 129,
+    "code_cells": 130,
+    "headers": [
+      "# Basics of Python",
+      "## 1.1. Approach to Programming",
+      "## 1.2. Comments",
+      "## 1.3. Dealing with Errors",
+      "#1. Python Grammar I",
+      "## 1.4. Operators",
+      "### 1.4.1. Arithmetic Operators",
+      "### 1.4.2. Operator Precedence in Arithmetic",
+      "## 1.5. Variables",
+      "## 1.6. Data Types",
+      "### 1.6.1. Numeric Values : int Type (Integer) and float Type (Decimal)",
+      "### 1.6.2. Text Data : str Type (String)",
+      "### 1.6.3. bool Type (Boolean)",
+      "### 1.6.4. Type Conversion",
+      "## 1.7. Practice Questions",
+      "# Additional Information: Naming Variables",
+      "#2. Python Grammar II",
+      "## 2.1. Collections",
+      "## 2.2. Lists",
+      "## 2.3. Tuples",
+      "## 2.4. Dictionaries",
+      "## 2.5 Practice Questions",
+      "# 3. Python Grammar III",
+      "## 3.1. Conditional Branching (if Statement)",
+      "## 3.2. Loops (for Loop)",
+      "### 3.2.1 for Loops and range()",
+      "### 3.2.2. for Loops and Lists",
+      "### 3.2.3. for Loops and enumerate()",
+      "## 3.3. Practice Questions",
+      "# 4. Python Grammar IV",
+      "## 4.1. Functions",
+      "## 4.2. Practice Problems",
+      "## 4.3 Modules and Libraries"
+    ],
+    "imports": [
+      "import keyword",
+      "import math",
+      "from math import sin",
+      "from math import cos",
+      "from math import tan",
+      "from math import pi"
+    ],
+    "datasets": [],
+    "functions_defined": [
+      "power",
+      "print_my_age",
+      "absolute"
+    ],
+    "detected_ml": [],
+    "detected_pd_np": [],
+    "intro_preview": "# Basics of Python\n**Programming** refers to the process of designing and constructing a program (a set of instructions for the computer) for a specific purpose. To put it simply, programming is about describing the steps to perform a certain calculation.\n\nFor example, when you want to find the sum of `2` and `3`, you can write and execute the following program to obtain the answer. This is a simple example, but still a valid program.\nAs a more complex example, here is a program to calculate the sum of numbers from `1` to `10`. (We will learn more details in the following sections).\n"
+  },
+  "extracted_gci_world/GCI World_202609/03. Lecture Materials & Homework/PreLecture_Python1&2/prelecture_notebook_answer.ipynb": {
+    "filename": "prelecture_notebook_answer.ipynb",
+    "total_cells": 44,
+    "md_cells": 21,
+    "code_cells": 23,
+    "headers": [
+      "# Practice Questions Solutions",
+      "## 1.7. Practice Questions",
+      "## 2.5 Practice Questions",
+      "## 3.3. Practice Questions",
+      "## 4.2. Practice Questions"
+    ],
+    "imports": [],
+    "datasets": [],
+    "functions_defined": [
+      "last_char",
+      "print_my_age",
+      "num_keys",
+      "f"
+    ],
+    "detected_ml": [],
+    "detected_pd_np": [],
+    "intro_preview": "# Practice Questions Solutions\n## 1.7. Practice Questions\n(1-1) Write a program that outputs the string \"Hello, World!\"\n"
+  },
+  "extracted_gci_world/GCI World_202609/03. Lecture Materials & Homework/Session2/HW1 for Session2.ipynb": {
+    "filename": "HW1 for Session2.ipynb",
+    "total_cells": 25,
+    "md_cells": 19,
+    "code_cells": 6,
+    "headers": [
+      "# Homework 1: Efficient Data Manipulation Using Numpy",
+      "## Deadline",
+      "## Recommended workflow",
+      "## Question",
+      "## 1. Preparation",
+      "## 2. Your Answer",
+      "## 3. Test Your Answer",
+      "### Test Case 1: Example from the question",
+      "### Test Case 2: A different array",
+      "### Test Case 3: No matching elements",
+      "### Final checklist",
+      "## 4. How to Submit Your Answer to Omnicampus",
+      "### Step 1: Copy the complete `homework()` function",
+      "### Step 2: Paste it into Omnicampus and submit",
+      "### Step 3: Wait for and check the grading result",
+      "### Important Notes About Grading"
+    ],
+    "imports": [
+      "import numpy as np"
+    ],
+    "datasets": [],
+    "functions_defined": [
+      "homework"
+    ],
+    "detected_ml": [],
+    "detected_pd_np": [
+      "np.array"
+    ],
+    "intro_preview": "# Homework 1: Efficient Data Manipulation Using Numpy\n\nWelcome! This notebook will guide you from reading the question to submitting\nyour answer. You do not need to finish everything at once. Work from the top of\nthe notebook to the bottom, and run each code cell in order.\n\n## Deadline\n\nThu, Oct 8, 2026 (11:00 UTC)\n\n## Recommended workflow\n\n1. Read the question and the expected input/output carefully.\n2. Run the cells in **1. Preparation**.\n3. Complete only the `homework()` function in **2. Your Answer**.\n4. Run the cases in **3. Test Your Answer** and compare the results.\n5. Copy the complete `homework()` function and submit it in Omnicampus.\n\nIf you change your function, run its cell again before running the later cells.\n\n## Question\n\nImplement a function that takes a 1D NumPy array of i"
+  },
+  "extracted_gci_world/GCI World_202609/03. Lecture Materials & Homework/Session2/lec2_notebook.ipynb": {
+    "filename": "lec2_notebook.ipynb",
+    "total_cells": 233,
+    "md_cells": 136,
+    "code_cells": 97,
+    "headers": [
+      "# 2 Efficient Data Manipulation Using NumPy",
+      "### Table of Contents",
+      "## 2.1 Overview of NumPy",
+      "### 2.1.1 Loading Libraries",
+      "## 2.2 Introduction to NumPy",
+      "### 2.2.1 Basic Operations",
+      "#### Downloading the Dataset",
+      "#### Math Operations",
+      "##### Note: Division by zero",
+      "#### Other Functions",
+      "#### Conditional Operations",
+      "#### Broadcasting",
+      "### 2.2.2 Python Lists vs. NumPy Arrays",
+      "#### Why Use NumPy?",
+      "#### NumPy's Strengths (1): Convenience",
+      "##### Example 1: Single list/array operation",
+      "##### Example 2: Multiple list/array operation",
+      "#### NumPy's Strengths (2): Performance",
+      "#### Side Note: Concatenation of list vs numpy array",
+      "### <Practice Question 2-1>",
+      "## 2.3 NumPy Indexing 1",
+      "### 2.3.1 Single Element Indexing",
+      "### 2.3.2 Slicing",
+      "# The last \":\" can also be omitted",
+      "### 2.3.3 Boolean Indexing",
+      "# Create a list of boolean values",
+      "# Boolean indexing",
+      "### <Practice Question 2-2>",
+      "## 2.4 NumPy 2D Arrays",
+      "### 2.4.1 Creating 2D Arrays",
+      "### 2.4.2 Math Operations",
+      "### 2.4.3 Axis and Aggregation Functions",
+      "### <Practice Question 2-3>",
+      "## 2.5 NumPy Indexing 2",
+      "### 2.5.1 Indexing",
+      "### 2.5.2 Advanced Indexing",
+      "#### Example 1: Multiple rows, single column",
+      "#### Example 2: Single row, multiple columns",
+      "#### Example 3: Multiple rows, multiple columns",
+      "### 2.5.2 Slicing",
+      "### 2.5.3 Boolean Indexing",
+      "### <Practice Question 2-4>",
+      "## 2.6 NumPy Advanced",
+      "### 2.6.1 Constants",
+      "### 2.6.2 NumPy Arrays with Random Values",
+      "#### Uniform Distribution",
+      "#### Normal Distribution",
+      "#### Random Integers",
+      "#### Seed",
+      "### 2.6.3 Matrix Calculation",
+      "#### Transpose",
+      "#### Dot Product and Matrix Multiplication",
+      "#### Side Note: Broadcasting",
+      "#### Side Note: Row vectors vs. Column vectors",
+      "#### Linear Algebra Computation",
+      "## 2.7 Comprehensive Questions"
+    ],
+    "imports": [
+      "import numpy as np",
+      "from numpy import random",
+      "from numpy import linalg as LA",
+      "import time"
+    ],
+    "datasets": [
+      "\"https://www.ncei.noaa.gov/pub/data/cdo/samples/GHCND_sample_csv.csv\""
+    ],
+    "functions_defined": [
+      "get_temp_zscore",
+      "mean_range",
+      "gen_R_3d",
+      "normalize"
+    ],
+    "detected_ml": [],
+    "detected_pd_np": [
+      "corr",
+      "concat",
+      "np.array",
+      "np.arange",
+      "np.dot"
+    ],
+    "intro_preview": "# 2 Efficient Data Manipulation Using NumPy\nIn data science, the moment you collect numeric measurements, the next question is how to store and manipulate them efficiently so you can clean them, summarize them, and eventually visualize and model them. In this notebook, we will learn about NumPy, a core numerical computation library in Python. The notebook covers what NumPy arrays are, why they are more suitable than standard Python lists for numerical data, and how to perform the various operations that you will need when conducting data analysis.\n\nNumPy also serves as a basis of other Python libraries that are frequently used for data science, so let's make sure you have a good understanding of it here.\nIf you would like to learn NumPy more, please refer to the official documentation ([ht"
+  }
+}

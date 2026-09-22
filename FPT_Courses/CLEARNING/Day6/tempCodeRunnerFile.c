@@ -1,0 +1,2 @@
+
+            giaithua(n);

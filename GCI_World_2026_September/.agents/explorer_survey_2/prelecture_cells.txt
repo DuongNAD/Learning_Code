@@ -1,0 +1,1164 @@
+# Notebook: extracted_gci_world/GCI World_202609/03. Lecture Materials & Homework/PreLecture_Python1&2/prelecture_notebook.ipynb
+
+--- Cell 0 [markdown] ---
+# Basics of Python
+
+--- Cell 1 [markdown] ---
+**Programming** refers to the process of designing and constructing a program (a set of instructions for the computer) for a specific purpose. To put it simply, programming is about describing the steps to perform a certain calculation.
+
+For example, when you want to find the sum of `2` and `3`, you can write and execute the following program to obtain the answer. This is a simple example, but still a valid program.
+
+--- Cell 2 [code] ---
+2 + 3
+
+--- Cell 3 [markdown] ---
+As a more complex example, here is a program to calculate the sum of numbers from `1` to `10`. (We will learn more details in the following sections).
+
+--- Cell 4 [code] ---
+s = 0
+for n in range(1,11):
+    s = s + n
+s
+
+--- Cell 5 [markdown] ---
+When programming, you use some **programming language**. Programming languages have rules like "writing program A executes process B". These rules are called **syntax** or **grammar**, which varies depending on the programming language used. Learning programming starts with understanding this grammar.
+
+In this course, we will use the language Python for programming because there are plenty of tools available for data analysis and machine learning. In fact, many people use Python in that field. Python is also a relatively easy language for programming beginners to understand. Therefore, in this chapter, we will learn the basic grammar of Python.
+
+--- Cell 6 [markdown] ---
+## 1.1. Approach to Programming
+
+--- Cell 7 [markdown] ---
+We will now start programming with Python, so let me briefly explain the process. You are probably using **Google Colaboratory** (or a similar tool) to read this file. Google Colaboratory provides a Python execution environment where you can write Python programs in boxes called **cells** and run them by pressing Shift + Enter.
+
+There are several types of cells, but the one used to execute programs is called a **Code cell**. When you write a program and execute it, the execution result is displayed.
+
+You can also leave notes in the notebook. The cell used for this purpose is called a **Text cell**. By using Markdown syntax, you can create well-formatted text.
+
+--- Cell 8 [markdown] ---
+Now, let's run the program we just wrote. If the correct output is returned, that's OK.
+
+--- Cell 9 [code] ---
+2 + 3
+
+--- Cell 10 [code] ---
+s = 0
+for n in range(1,11):
+    s = s + n
+s
+
+--- Cell 11 [markdown] ---
+## 1.2. Comments
+
+--- Cell 12 [markdown] ---
+In addition to Jupyter Notebook, there are various Python execution environments available. For example, the Python interactive shell returns the execution results for the input program. However, it does not typically save the input program or output results, so the content disappears when the shell is closed. In contrast, Jupyter Notebook allows you to save both the program and its execution results, so there is no issue even when you close the notebook.
+
+However, even if the program is retained, its meaning may become unclear. When writing a program, it is useful to leave moderate notes to refer back to later. In many programming languages, you can add **comments** to the program, and the parts written as comments are ignored during program execution.
+
+In Python, the part to the right of `#` is considered a comment. Let's confirm this with an example.
+
+--- Cell 13 [code] ---
+# Addition
+2 + 3 # Addition
+# Comment...
+
+--- Cell 14 [markdown] ---
+## 1.3. Dealing with Errors
+
+--- Cell 15 [markdown] ---
+In programming, **errors** are inevitable. Errors occur when writing programs that do not follow the syntax or when performing some kind of invalid operation. When an error occurs, the program execution stops at that point, and an error message is displayed indicating where and why the error occurred. You will likely encounter many errors in the future, but the first step is to try to decipher the error message. If you don't understand its meaning, try searching on the internet. There are surely people who have struggled with similar errors.
+
+--- Cell 16 [markdown] ---
+#1. Python Grammar I
+Related explanation video: https://www.youtube.com/playlist?list=PLiEF5y87wtyyc3mVmmRpUcAi_a74w52CI
+
+--- Cell 17 [markdown] ---
+## 1.4. Operators
+
+--- Cell 18 [markdown] ---
+### 1.4.1. Arithmetic Operators
+
+Arithmetic operators are used to perform basic mathematical operations in Python.
+
+--- Cell 19 [markdown] ---
+In programming, **operators** instruct the computer to evaluate new values. Specifically, arithmetic operators such as addition and subtraction perform calculations between numbers, similar to mathematics. In Python, addition and subtraction use symbols common in math, while multiplication, division, and exponentiation have their own unique symbols.
+
+--- Cell 20 [code] ---
+# Addition
+print(2 + 3)
+
+--- Cell 21 [code] ---
+# Subtraction
+print(10 - 2)
+
+--- Cell 22 [code] ---
+# Multiplication
+print(3 * 2)
+
+--- Cell 23 [code] ---
+# Division
+print(3 / 2)
+
+--- Cell 24 [code] ---
+# Integer division
+print(5//2)
+
+--- Cell 25 [code] ---
+# Modulo operation (remainder)
+print(5 % 2)
+
+--- Cell 26 [code] ---
+# Exponential operation
+print(10 ** 3)
+
+--- Cell 27 [markdown] ---
+### 1.4.2. Operator Precedence in Arithmetic
+
+--- Cell 28 [markdown] ---
+When there are multiple operators, they are evaluated in order of higher precedence. The precedence of arithmetic operators is as follows: exponentiation > multiplication and division > addition and subtraction. Just as in mathematics, where multiplication is done before addition, you can use parentheses to change the order of evaluation.
+
+--- Cell 29 [code] ---
+# Priority: Multiplication > Addition
+print(1 + 2 * 3)
+
+--- Cell 30 [code] ---
+# Priority: addition inside parentheses > multiplication
+print((1 + 2) * 3)
+
+--- Cell 31 [code] ---
+# Priority: Exponentiation > Multiplication
+print(2 * 2 ** 3)
+
+--- Cell 32 [markdown] ---
+## 1.5. Variables
+
+--- Cell 33 [markdown] ---
+Next, let's talk about **variables**. Variables are like boxes where you can store the results of calculations.
+
+Assigning a value to a variable is called **assignment**, and using that value is called **referencing**. You can assign values of various data types, not just numbers. (※1.6 Data Types)
+
+In the example below, a variable with the **variable name** `x` is used.
+
+In programming languages, the `=` sign is not used to denote "equality". Instead, it is used to "assign" the value on the right side to the left side.
+
+--- Cell 34 [code] ---
+# Assign 1 to x and print x
+x = 1
+print(x)
+
+--- Cell 35 [markdown] ---
+Once a value is saved, it can be used multiple times and will remain until it is overwritten. Overwriting the value of a variable is called **reassignment**. When reassigning, you can write it in the same way as assigning. It is also possible to reassign using the variable itself.
+
+--- Cell 36 [code] ---
+# Reassigning x+2 to x
+x = x + 2
+print(x)
+
+--- Cell 37 [markdown] ---
+Let's explain the second line of the previous example. Here, we first calculate `x+2` on the right side, and then we perform the operation of assigning the result to `x` on the left side. At the point of calculating the right side, the value of `x` is 1, so the result of the calculation on the right side is 3, and this value 3 is assigned to `x` on the left side. In other words, you can interpret this as adding 2 to itself. This is a common practice to update variable values while progressing with calculations.
+
+--- Cell 38 [markdown] ---
+## 1.6. Data Types
+
+--- Cell 39 [markdown] ---
+The types of values handled in a program are called **data types**. Major data types include int (integer), float (decimal), str (string), bool (boolean), and so on.
+
+|Data Type|Description|Example|
+|:-|:-|:-|
+|`int`|`Integer`|`1`|
+|`float`|`Decimal (Floating Point)`|`3.14`|
+|`str`|`Text Data (String)`|`'Python'`
+|`bool`|`Boolean`|`True`
+|`list`|`List`|`[0, 1, 2]`|
+
+You can examine the data type of a value assigned to a variable using the `type() `function. By inputting the variable in parentheses, the `type()` function will output the data type of the variable.
+
+--- Cell 40 [markdown] ---
+### 1.6.1. Numeric Values : int Type (Integer) and float Type (Decimal)
+
+There are two types for handling numeric values: **int** type and **float** type. When a decimal point is included in a number, it becomes a float type.
+
+When performing operations between int and float types or when dividing two int types, the output will be a float type.
+
+--- Cell 41 [code] ---
+# int type（integer）
+num = 1
+print(type(num))
+
+--- Cell 42 [code] ---
+# float type (decimal)
+num = 1.0
+print(type(num))
+
+--- Cell 43 [code] ---
+# Calculation between int and float -> float type
+num = 1 + 1.0
+print(type(num))
+
+--- Cell 44 [code] ---
+# Divide two int types
+num = 1 / 1
+print(type(num))
+print(num)
+
+--- Cell 45 [markdown] ---
+### 1.6.2. Text Data : str Type (String)
+
+--- Cell 46 [markdown] ---
+The `str` type is a data type that handles strings. When assigning a value to a variable as `str`, you enclose it in either single quotes `''` or double quotes `""`. When the addition operator for numbers is applied to `str` types, it connects the strings. Also, the `len()` function can be used to determine the length of a string.
+
+--- Cell 47 [code] ---
+# Assigning a string
+string = 'Python'
+print(type(string))
+print(string)
+
+--- Cell 48 [code] ---
+str1 = 'Hello'
+str2 = 'World'
+print(str1 + "," + str2)  # Adding a comma between
+
+--- Cell 49 [code] ---
+# Repeat
+text = "Hello "
+repeated = text * 3
+print(repeated)
+
+--- Cell 50 [code] ---
+# Length of the string
+string = 'Python'
+print(len(string))
+
+--- Cell 51 [code] ---
+# Get the first character
+text = "Apple"
+part = text[0]  # 0th index
+print(part)
+
+--- Cell 52 [markdown] ---
+| Element of the string | A | p | p | l | e |
+|----------------------|---|---|---|---|---|
+| Index                | 0 | 1 | 2 | 3 | 4 |
+
+--- Cell 53 [code] ---
+# Extract a substring from a string
+text = "Apple"
+part = text[0:3]  # Characters from index 0 to 2 (index 3 is not included)
+print(part)
+
+--- Cell 54 [markdown] ---
+| Element of string | *A* | *p* | *p* | l | e |
+|--------------|---|---|---|---|---|
+| Index        | *0* | *1* | *2* | 3 | 4 |
+
+--- Cell 55 [code] ---
+# f-string
+name = "Matsuo"
+age = 25
+message = f"My name is {name} and I am {age} years old."   # You can embed variables inside {}.
+print(message)
+
+--- Cell 56 [markdown] ---
+### 1.6.3. bool Type (Boolean)
+
+The boolean data type has two values: True and False, representing true and false, respectively. Boolean data type is useful for conditional statements, similar to using "yes" and "no".
+
+--- Cell 57 [code] ---
+yes = True
+print(type(yes))
+
+no = False
+print(type(no))
+
+--- Cell 58 [markdown] ---
+### 1.6.4. Type Conversion
+
+Changing the data type of a value assigned to a variable is known as **type conversion**. The `int()` function is provided for converting to the int type. Additionally, there are other functions such as `float()`, `str()`, and `bool()`.
+
+When an int type is input into the `float()` function, only the integer part is output. Also, it is important to note that entering characters like 'abc' into int or `float()` functions will result in an error.
+
+--- Cell 59 [code] ---
+# str type
+x = '3.14'  # Not a numerical value but a string
+print(x)
+print(type(x))
+
+--- Cell 60 [code] ---
+# Converting from str type to float type
+y = float(x)
+print(y)
+print(type(y))
+
+--- Cell 61 [code] ---
+# Convert from float to int
+z = int(y)
+print(z)
+print(type(z))
+
+--- Cell 62 [markdown] ---
+A useful feature is that boolean values can be converted to numbers.True becomes 1, and False becomes 0. Conversely, when converting numbers to boolean values, 0 becomes False, while any nonzero number becomes True.
+
+--- Cell 63 [code] ---
+# Converting from bool to int
+# True  ->  int()   -> 1
+x = True
+print(int(x))
+
+--- Cell 64 [code] ---
+# Converting from bool to int
+# False ->  int()   -> 0
+x = False
+print(int(x))
+
+--- Cell 65 [code] ---
+# Converting from int to bool
+# 2 -> bool() -> True
+print(bool(2))
+
+--- Cell 66 [code] ---
+# Convert from int to bool
+# 0.0 ->  bool()  -> False
+print(bool(0.0))
+
+--- Cell 67 [code] ---
+# Variable num: Is it odd (cannot be divided by 2)? -> True for odd, False for even.
+x = 5
+is_odd = bool(x % 2)  # Since the remainder is not 0, it converts to True.
+print(is_odd)
+
+--- Cell 68 [markdown] ---
+## 1.7. Practice Questions
+
+--- Cell 69 [markdown] ---
+(1-1) Write a program that outputs the string "Hello, World!"
+
+--- Cell 70 [code] ---
+# WRITE ME!
+
+--- Cell 71 [markdown] ---
+Example: When x="Hello" and y="Mr. Matsuo", print x+y.
+
+--- Cell 72 [code] ---
+# WRITE ME!
+
+--- Cell 73 [markdown] ---
+
+
+--- Cell 74 [markdown] ---
+(1-2) Write a program that computes and prints the quotient and remainder of 17 // 5 and 17 % 5.
+
+--- Cell 75 [code] ---
+# WRITE ME!
+
+--- Cell 76 [markdown] ---
+Example: Calculate the total price including 10% consumption tax when x = 2000 yen.
+
+--- Cell 77 [code] ---
+# WRITE ME!
+
+--- Cell 78 [markdown] ---
+(1-3) Let's assume that an integer is stored in the variable `x`. Create a program that will display (print) 0 if `x` is even, and 1 if `x` is odd.
+
+--- Cell 79 [code] ---
+x = 1 # Input example
+
+--- Cell 80 [code] ---
+# WRITE ME!
+
+--- Cell 81 [markdown] ---
+(1-4) Create a program to calculate BMI from height and weight. BMI = weight(kg) / (height(m))^2
+
+--- Cell 82 [code] ---
+# Input example
+weight = 50 # kg
+height = 165 # cm
+
+bmi = # write me
+print(bmi)
+
+--- Cell 83 [markdown] ---
+# Additional Information: Naming Variables
+
+--- Cell 84 [markdown] ---
+You are free to choose variable names, but generally they are composed of alphabet letters, numbers and _ (underscore). While you can use single letters like a or b, using meaningful strings will make it easier for yourself and others to understand the contents of the variables. However, you need to be careful as there are some variable names that cannot be used. For example, you cannot use numbers at the beginning of a variable name. Also, words that are reserved in the program (e.g. class, if, for, etc.) cannot be used. The following are examples of variable names that are not allowed. If you try to execute with variable names like the ones below, an error will occur.
+
+--- Cell 85 [code] ---
+'''
+※Variables that cannot be used as variable names※
+'''
+# Variable name starts with a number
+2024_data = 1000
+
+--- Cell 86 [code] ---
+class_name = 'A'
+
+--- Cell 87 [markdown] ---
+You can verify reserved words by executing the following code:
+
+--- Cell 88 [code] ---
+import keyword
+print(keyword.kwlist)
+
+--- Cell 89 [markdown] ---
+#2. Python Grammar II
+Related explanation video: https://www.youtube.com/playlist?list=PLiEF5y87wtyyc3mVmmRpUcAi_a74w52CI
+
+--- Cell 90 [markdown] ---
+## 2.1. Collections
+
+--- Cell 91 [markdown] ---
+In previous examples, we defined variable names and values on a one-to-one basis. On the other hand, Python provides collections that allow you to **store multiple values in a single variable**. Collections include lists and tuples that manage values in order, as well as dictionaries that manage values by keywords.
+
+--- Cell 92 [markdown] ---
+## 2.2. Lists
+
+--- Cell 93 [markdown] ---
+A **list** is a data type that can manage values in order. By using square brackets [ ], values can be assigned to variables by listing them with commas (,). Elements can include data types such as strings and numbers.
+
+--- Cell 94 [code] ---
+menu = ['Salad', 'Soup', 'Steak', 'Cake']
+
+--- Cell 95 [markdown] ---
+Each value in a list is called an **element** , and the order of the elements is referred to as the **index**. The index starts at 0 for the first element, and increases sequentially as 1, 2, 3, and so on. It is also possible to count from the last element, starting with -1, -2, -3, and counting back to the first element. By specifying the index in square brackets after the variable name of the list, it is possible to extract or replace elements.
+
+--- Cell 96 [code] ---
+# Extracting the second element of the list
+print(menu[1])
+
+--- Cell 97 [code] ---
+# Extracting the last element of the list
+print(menu[-1])
+
+--- Cell 98 [code] ---
+# Change the last element of the list
+menu[-1] = 'pudding'
+print(menu)
+
+--- Cell 99 [markdown] ---
+You can extract a portion of a list by specifying an index range which is called **slicing**. Similar to extracting elements, you can use square brackets after the list variable name, with the starting index on the left side of the colon (:) and the ending index on the right side. In this case, the starting point is included in the slice, but the ending point is not. For example, the slice notation [x:y] represents indices greater than or equal to x, but less than y. If x or y is omitted, the selection continues to the remaining range.  
+A good way to learn how to use slicing is to consider indices pointing between elements, with the leftmost element starting at 0, as described in the Python tutorial.  
+You can imagine it as shown in the diagram below.
+
+--- Cell 100 [markdown] ---
+![スクリーンショット 2024-12-25 160211.png](data:image/png;base64,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)
+
+--- Cell 101 [markdown] ---
+(Reference)(Python Tutorial): https://docs.python.org/3/tutorial/introduction.html#strings
+
+--- Cell 102 [code] ---
+# Assigning a list of numbers
+numbers = [10, 20, 30, 40, 50]
+
+--- Cell 103 [markdown] ---
+| Element in the list | 10 | 20 | 30 | 40 | 50 |
+|------------------|----|----|----|----|----|
+| Index            | 0  | 1  | 2  | 3  | 4  |
+
+--- Cell 104 [code] ---
+# Example of slicing
+print(numbers[0:2])
+
+--- Cell 105 [code] ---
+# Specify a start and end point for a slice
+print(numbers[1:3])
+
+--- Cell 106 [code] ---
+# When only the end point is specified in the slice
+print(numbers[:-1])
+
+--- Cell 107 [code] ---
+# Slice without specifying indices (all elements)
+print(numbers[:])
+
+--- Cell 108 [markdown] ---
+When you want to add or remove elements in a list, you can use the dot `.` following the variable name of the list, followed by **append (to add elements at the end)** or **remove (to delete elements)**. When using remove and there are duplicate elements in the list, the first occurrence of the element will be removed.
+
+--- Cell 109 [code] ---
+menu = ['salad', 'soup', 'steak', 'cake']
+
+--- Cell 110 [code] ---
+# Add an element
+menu.append('pudding')
+print(menu)
+
+--- Cell 111 [code] ---
+# Remove element
+menu.remove('soup')
+print(menu)
+
+--- Cell 112 [markdown] ---
+In Python, convenient functions for numerical calculations with lists are provided. In Python's built-in functions, you can perform calculations by inserting values inside the parentheses after the function name. The "len" in `len()` is an abbreviation for "length" and is commonly used with other data types as well.
+
+--- Cell 113 [code] ---
+# List of numerical values
+score = [40, 60, 80]
+
+--- Cell 114 [code] ---
+# Output the number of elements in the list
+print(len(score))
+
+--- Cell 115 [code] ---
+# Print the sum of the list of numbers
+print(sum(score))
+
+--- Cell 116 [code] ---
+# Calculate the average of a list of numbers
+print(sum(score)/len(score))
+
+--- Cell 117 [code] ---
+# Output the maximum value of a numerical list
+print(max(score))
+
+--- Cell 118 [code] ---
+# Output the minimum value of a list of numbers
+print(min(score))
+
+--- Cell 119 [markdown] ---
+Lists can manage two-dimensional tabular data using double square brackets. You can extract elements or lists by specifying row and column numbers. It is also possible to create lists of three or more dimensions.
+
+--- Cell 120 [code] ---
+# Assigning a 2D list
+table = [['3/24', '4/24', '5/24'], [80, 100, 90]]
+
+--- Cell 121 [markdown] ---
+|        |       |(**Column 0**)|**(Column 1)**|**(Column 2)**|
+|--------|--------|------|------|------|
+|**(Row 0)** | Date   | 3/24 | 4/24 | 5/24 |
+|**(Row 1)** | Score  | 80   | 100  | 90   |
+
+--- Cell 122 [code] ---
+# Extracting element at row 0, column 2
+print(table[0][2])
+
+--- Cell 123 [code] ---
+# Extracting element at row 1 column 1
+print(table[1][1])
+
+--- Cell 124 [markdown] ---
+## 2.3. Tuples
+
+--- Cell 125 [markdown] ---
+A tuple, like a list, is a collection of multiple elements and is called a **tuple** in other programming languages.
+
+In Python, data is stored in the form of `(element, element, ...)` for tuples.
+
+--- Cell 126 [code] ---
+# Double
+x = (1, 2, 3)
+print(x)
+
+--- Cell 127 [markdown] ---
+When it comes to grouping the same type of data together, lists are commonly used, while tuples are often used to group different types of data. Although tuples have a similar data structure to lists and can perform similar operations, there are subtle differences between the two. In the following sections, we will learn about tuples by comparing their similarities and differences with lists.
+
+--- Cell 128 [markdown] ---
+In tuples, like in lists, you can access elements using indices.
+
+| Tuple Element | 1   | 2.0 | '3' |
+|---------------|-----|-----|-----|
+| Index         | 0   | 1   | 2   |
+
+--- Cell 129 [code] ---
+# Get the reference of elements
+x = (1, 2.0, '3')
+print(x[0])
+
+--- Cell 130 [code] ---
+# Slice (reference)
+x = (1, 2.0, '3')
+print(x[0:2])
+
+--- Cell 131 [markdown] ---
+However, you cannot assign elements to a tuple. Unlike lists, once defined, tuples do not allow modifications such as adding or removing elements. While lists are mutable, meaning they can be changed, it is important to note that tuples are immutable, meaning they cannot be changed.
+
+--- Cell 132 [code] ---
+x = (1, 2.0, '3')
+x[1] = 3.0
+
+--- Cell 133 [markdown] ---
+Actually, you can omit the parentheses when creating a tuple. Therefore, the following two examples can be considered the same code.
+
+--- Cell 134 [code] ---
+# Example 1 using parentheses
+x = (1, 2.0, '3')
+print(x)
+
+--- Cell 135 [code] ---
+# Example 2: Omitting parentheses
+x = 1, 2.0, '3'
+print(x)
+
+--- Cell 136 [markdown] ---
+Example 2 can also be thought of as assigning multiple values to a single variable. This is called **multiple assignment**. There are related terms such as **packing** and **unpacking**, but we will leave the introduction of these terms here for now. If you are interested in learning more advanced content, it would be good to look up these terms.
+
+--- Cell 137 [markdown] ---
+## 2.4. Dictionaries
+
+--- Cell 138 [markdown] ---
+A dictionary is a collection that associates a label called a **key** with each element of a list, known as an **associative array** in other programming languages.
+
+In Python, data is stored in the format `{<key>: <value>, ...}`.
+
+--- Cell 139 [code] ---
+# Dictionary
+menu = {'apple':100, 'banana':80, 'orange':120}
+print(menu)
+
+--- Cell 140 [markdown] ---
+In lists, we access each element by index, while in dictionaries, we access values using keys. Similar to lists, we can reference and assign values.
+
+--- Cell 141 [code] ---
+# Accessing elements
+print(menu['apple'])
+
+--- Cell 142 [markdown] ---
+If you assign a value to a key that is not in the dictionary, it will be added as a new element.
+
+--- Cell 143 [code] ---
+# Add a key and value
+menu['grape'] = 150
+print(menu)
+
+--- Cell 144 [markdown] ---
+And to get rid of an item, we use the `del` statement with the key we want to remove.
+
+--- Cell 145 [code] ---
+# Remove a key and value
+del menu['apple']
+print(menu)
+
+--- Cell 146 [markdown] ---
+There are also ways to retrieve keys, values, and entire elements from a dictionary.
+
+We can use the dictionary's `keys()` method, `values()` method, and `items()` method.
+
+--- Cell 147 [code] ---
+# Get keys
+x = {'a': 1, 'b': 2, 'c': 3}
+print(x.keys())
+
+--- Cell 148 [code] ---
+# Get elements
+x = {'a': 1, 'b': 2, 'c': 3}
+print(x.values())
+
+--- Cell 149 [code] ---
+x = {'a': 1, 'b': 2, 'c': 3}
+print(x.items())
+
+--- Cell 150 [markdown] ---
+## 2.5 Practice Questions
+
+--- Cell 151 [markdown] ---
+(2-1) Write a list that includes all prime numbers less than 10.
+
+--- Cell 152 [code] ---
+
+
+--- Cell 153 [markdown] ---
+(2-2) Write a tuple that includes all prime numbers less than 10.
+
+--- Cell 154 [code] ---
+
+
+--- Cell 155 [markdown] ---
+(2-3) Write a dictionary whose key is the string `'name'` and whose value is a string containing your own name.
+
+--- Cell 156 [code] ---
+
+
+--- Cell 157 [markdown] ---
+# 3. Python Grammar III
+Related explanation video: https://www.youtube.com/playlist?list=PLiEF5y87wtyyc3mVmmRpUcAi_a74w52CI
+
+--- Cell 158 [markdown] ---
+## 3.1. Conditional Branching (if Statement)
+
+--- Cell 159 [markdown] ---
+Conditional branching is a feature in a program where the flow of processing is altered based on certain conditions. If a particular condition is true, certain actions are taken, and if false, alternate actions are executed.
+
+In Python, this is expressed using `if`, `elif`, and `else`. The format is shown below:
+
+```python
+if <condition0>:
+    <(actions to be performed when condition0 is True)>
+elif <condition1>:
+    <(actions to be performed when condition0 is False and condition1 is True)>
+else:
+    <(actions to be performed when all conditions are False)>
+```
+
+The `if` statement executes actions if the condition is `True`. You can add an `else` clause to specify code that runs when the condition is `False`. Furthermore, if you want to specify multiple conditions, you can use `elif` clauses in conjunction. You can have multiple `elif` clauses as needed.
+
+It is important to note that **you must indent four spaces before the actions (to be performed when the condition is True/False)**. In Python, this is referred to as **indentation**. Incorrect indentation leads to an error.
+
+--- Cell 160 [markdown] ---
+Let's take a look at an example. In the example below, we calculate the absolute value of the variable `x` and store the result in `y`.
+
+--- Cell 161 [code] ---
+# Calculate the absolute value
+x = -1
+if x < 0:
+    y = -x
+else:
+    y = x
+
+print(y)
+
+--- Cell 162 [markdown] ---
+While not explicitly stated above, it is also possible to execute multiple consecutive processes. In this case, you need to insert an indent before each of those processes. In programming, a grouping of processes is generally referred to as a **block**, and in Python, any section with an inserted indent is considered a block and processed as such.
+
+The following two examples may appear similar, but they are actually completely different codes. Pay attention to the indentation and see how it affects the code.
+
+--- Cell 163 [code] ---
+# Example 1 *Note the indentation level
+x = 1
+if x < 0:
+    x = - x
+    x = - x
+print(x)
+
+--- Cell 164 [code] ---
+# Example 2
+x = 1
+if x < 0:
+    x = - x
+x = - x
+print(x)
+
+--- Cell 165 [markdown] ---
+Let's take a look at an example using the `elif` statement. In the following code snippet, since `x` is not less than 0, the first `if` statement is not executed, and the program moves to the `elif` statement. As `x` is less than 10, the `elif` statement is executed, resulting in `y` being assigned a value of -1.
+
+--- Cell 166 [code] ---
+# Example of elif
+x = 1
+if x < 0:
+    y = 0
+elif x < 10:
+	y = -x
+else:
+    y = x
+print(y)
+
+--- Cell 167 [markdown] ---
+Next, let's take a look at comparison operators used in conditional branching. Comparison operators include the following:
+
+--- Cell 168 [markdown] ---
+|Comparison Operator|Description|
+|:-|:-|
+|x == y| x is equal to y|
+|x != y| x is not equal to y|
+|x > y| x is greater than y|
+|x < y| x is less than y|
+|x >= y| x is greater than or equal to y|
+|x <= y| x is less than or equal to y|
+
+--- Cell 169 [code] ---
+x = 10
+y = 20
+
+if x < y:
+    print(f"{x} is less than {y}")
+elif x == y:
+    print(f"{x} is equal to {y}")
+else:
+    print(f"{x} is greater than {y}")
+
+--- Cell 170 [markdown] ---
+The **f** in `f-string` stands for **format**. It is convenient for embedding variables within the arguments of `print`.
+
+Now, let's take a look at logical operators that are used for conditional branching, in addition to comparison operators. Here are some of the logical operators:
+
+--- Cell 171 [markdown] ---
+|Logical Operator|Explanation|
+|:-|:-|
+|x and y|True if both x and y are true|
+|x or y|True if either x or y is true|
+|not x|True if x is false|
+
+--- Cell 172 [code] ---
+# Example of the 'and' operator
+age = 25
+income = 2000
+
+# Combining multiple conditions using the 'and' operator
+if age > 18 and income >= 700:
+    print("This person is eligible to apply for a loan")
+else:
+    print("This person is not eligible to apply for a loan")
+
+--- Cell 173 [code] ---
+# Example of the OR operator
+is_student = False
+income = 100
+
+if is_student or income < 250:
+    print("You can get a discount")
+else:
+    print("You cannot get a discount")
+
+--- Cell 174 [code] ---
+# Example of the not operator
+is_active = False
+
+if not is_active:  # Reverses the boolean value
+    print("The account is inactive")
+else:
+    print("The account is active")
+
+--- Cell 175 [markdown] ---
+## 3.2. Loops (for Loop)
+
+--- Cell 176 [markdown] ---
+### 3.2.1 for Loops and range()
+
+--- Cell 177 [markdown] ---
+The `for` loop is used when you want to repeat the same process without writing it multiple times. You can specify the number of times you want to repeat using `range()`. Here is how you write a `for` loop using `range()`.
+
+--- Cell 178 [markdown] ---
+```python
+for <variable> in range(number of repetitions):
+    <process>
+```
+
+--- Cell 179 [markdown] ---
+Colons (:) and the initial indentation (4 spaces or a tab) are required, so be sure not to omit them. The processing will be repeated until the number of times specified in the `range` is completed. A variable is assigned values starting at 0, increasing by 1 with each iteration. If the variable does not have any special meaning assigned to it, common variable names like `i` (short for index or iterator), `j`, or `k` (alphabetical order after `i`) are often used for naming variables.
+
+--- Cell 180 [markdown] ---
+Next, we will show a code example that repeats an operation following the same structure, and then demonstrate how to simplify it using a `for` loop.
+
+--- Cell 181 [code] ---
+print('Python', 0)
+print('Python', 1)
+print('Python', 2)
+print('Python', 3)
+print('Python', 4)
+
+--- Cell 182 [code] ---
+# Loop using for statement
+for i in range(5):
+    print('Python syntax', i)
+
+--- Cell 183 [code] ---
+# Using a for loop for iteration with specified start and end
+s = 0
+for n in range(1,11): # integers from 1 to (11-1)
+    s = s + n
+print(s)
+
+--- Cell 184 [markdown] ---
+### 3.2.2. for Loops and Lists
+
+--- Cell 185 [markdown] ---
+The `for` loop can be combined with lists as discussed in Python Grammar II. You can iterate through the elements of a list using `range()`, but placing a list after `in` allows you to iterate through each element of the list sequentially. Here is how to write a `for` loop that iterates over a list.
+
+--- Cell 186 [markdown] ---
+```python
+for <variable> in <list>:
+    <process>
+```
+
+--- Cell 187 [markdown] ---
+The elements of the list are assigned to variables one by one, and the process is repeated for the number of elements.
+
+--- Cell 188 [markdown] ---
+Next, I will show examples combining `for` loops with lists and using `range()`.
+
+--- Cell 189 [code] ---
+# Loop and List
+number = [1, 2, 3, 4, 5]
+for n in number:
+    print(n)
+
+--- Cell 190 [code] ---
+# Loop and List
+number = [1, 2, 3, 4, 5]
+s = 0
+for n in number:
+    s = s + n # Add elements of the list to s
+print(s)
+
+--- Cell 191 [code] ---
+# Loop through a list using a for loop and range()
+number = [1, 2, 3, 4, 5]
+s = 0
+for i in range(len(number)):
+    s = s + number[i]
+print(s)
+
+--- Cell 192 [markdown] ---
+### 3.2.3. for Loops and enumerate()
+
+--- Cell 193 [markdown] ---
+Sometimes, you may want to use both the index and the element when combining lists and for loops. In that case, `enumerate()` comes in handy. Here is how you can use `enumerate()` with a `for` loop on a list.
+
+--- Cell 194 [markdown] ---
+```python
+for <variable1>, <variable2> in enumerate(<list>):
+    <process>
+```
+
+--- Cell 195 [markdown] ---
+Note that `enumerate` is an English word that means to list items one by one.
+
+--- Cell 196 [markdown] ---
+Variable 1 stores the index of the list, variable 2 stores the elements of the list, and the process is repeated. Below are examples of code that extracts the index and elements of a list sequentially using `enumerate` and `range`.
+
+--- Cell 197 [code] ---
+menu = ['salad', 'soup', 'steak', 'cake']
+for i, food in enumerate(menu):
+    print(i, food)  # Using enumerate() to extract index and element in order
+
+--- Cell 198 [code] ---
+menu = ['salad', 'soup','steak', 'cake']
+for i in range(len(menu)):
+    print(i, menu[i])
+
+--- Cell 199 [markdown] ---
+## 3.3. Practice Questions
+
+--- Cell 200 [markdown] ---
+(3-1) Let's assume a variable x contains an integer score from 0 to 100. Write a program using the if statement that prints "pass" if x is 60 or above, and "fail" otherwise.
+
+--- Cell 201 [code] ---
+
+
+--- Cell 202 [markdown] ---
+(3-2) Write a program that uses a for loop to print the numbers from 1 to 5, one per line.
+
+--- Cell 203 [code] ---
+
+
+--- Cell 204 [markdown] ---
+(3-3) Let's assume that a variable `x` contains a list of integers with a length of 1 or more. Create a program that returns the largest element in `x`. Achieve this without using functions like `max()`, and instead use loops (repetition with `for` statement).
+
+--- Cell 205 [code] ---
+x = [1, 2, 3]  # Input example
+
+--- Cell 206 [code] ---
+# WRITE ME!
+
+--- Cell 207 [markdown] ---
+(3-4) Let $a_1$ a positive integer. Consider a series:
+$$
+a_{n+1} = \begin{cases} a_n/2 & \text{if } a_n \text{ is even,} \\ 3a_n+1 &\text{if } a_n \text{ is odd.} \end{cases}
+$$
+The Collatz conjecture tells for every positive integer $a_1$, this series at some points comes to $1$, but it is unsolved till now (an computer experiment showed that the proposition is true for all integers less than as large as $2^{68}$). Write a program that, with an given integer input, returns the minimal number of the steps one has to take until the series gets to $1$. Try $a_1=7$ and $a_1=31$ to see how many steps to converge (these steps may take more than you would expect).
+
+> Hint: to get out of the for loop under a given condition, use `break`.
+
+--- Cell 208 [code] ---
+a = 7
+# WRITE ME!
+
+--- Cell 209 [code] ---
+
+
+--- Cell 210 [markdown] ---
+# 4. Python Grammar IV
+Related explanation video: https://www.youtube.com/playlist?list=PLiEF5y87wtyyc3mVmmRpUcAi_a74w52CI
+
+--- Cell 211 [markdown] ---
+## 4.1. Functions
+
+--- Cell 212 [markdown] ---
+There may be times when you want to reuse something you created earlier while creating a program. By using a **function**, you can name and save the flow of that process, allowing you to call it when needed. Such predefined processes to execute code are called functions.
+
+The format is as follows:
+
+- Function definition
+
+```python
+def <function_name>(<arguments>, ...):
+    <function_body>
+```
+
+- Function call
+
+```python
+<function_name>(<arguments>, ...)
+```
+
+When calling a function, you pass 0 or more **arguments**. These argument values can be used in the processing within the function. To make this clearer, let us explain specifically using a program to find the absolute value as an example.
+
+When given a value `x`, you can find its absolute value `y` using the program below.
+
+--- Cell 213 [code] ---
+# Program to find the absolute value
+x = -1
+if (x < 0):
+    y = - x
+else:
+    y = x
+print(y)
+
+--- Cell 214 [markdown] ---
+Let's turn this process into a function. To use a function, you first need to **define** the function. Function definition is done as follows:
+
+--- Cell 215 [code] ---
+# Definition of a function to find the absolute value
+def absolute(x):
+    if (x < 0):
+        y = - x
+    else:
+        y = x
+    return y
+
+--- Cell 216 [code] ---
+# Calling the function to find the absolute value
+print(absolute(-1))
+
+--- Cell 217 [markdown] ---
+Here, the function name is defined as `absolute`, which means absolute value. When calling (using) this function, we use this name.
+
+Let's call the `absolute` function. When you call a function, you must provide arguments, and their number has to match the number specified in the function's definition.
+
+--- Cell 218 [markdown] ---
+Earlier we mentioned that the code inside a function can use the values of its arguments. In the example above, when calling the function, we provide -1 as an argument, and this gets copied to the argument `x` that was specified in the function definition.
+
+In programming terminology, the arguments provided during the function definition are called **formal parameters**, and the arguments provided during the function call are called **actual parameters**.
+
+The value returned by the `return` statement within the function is known as the **return value**. In the example above, `y` becomes the return value, and you can confirm that it is the absolute value of `x`.
+
+--- Cell 219 [markdown] ---
+You can also define functions with multiple arguments. Just make sure that the order of the actual arguments corresponds to that of the formal parameters.
+
+--- Cell 220 [code] ---
+# WRITE ME!
+
+--- Cell 221 [code] ---
+# Answer: A function to calculate the power
+def power(x, y):
+    return x ** y
+
+--- Cell 222 [code] ---
+power(2, 3)
+
+--- Cell 223 [code] ---
+power(3, 2)
+
+--- Cell 224 [markdown] ---
+When explicitly specifying the correspondence between formal parameters and actual arguments, you specify it in the form `<formal parameter>=<actual argument>`. Arguments passed in this format are called **keyword arguments**. In contrast, arguments for which the correspondence is not explicitly specified (assuming that the order of the actual arguments corresponds to that of the formal parameters) are sometimes referred to as **positional arguments**.
+
+--- Cell 225 [code] ---
+power(y=2, x=3)
+
+--- Cell 226 [markdown] ---
+Furthermore, you can assign default values to some arguments, making those arguments optional. This is called **default arguments**. If an argument is omitted during a function call, the default value will be used.
+
+--- Cell 227 [code] ---
+def power(x=1, y=1):
+    return x ** y
+
+--- Cell 228 [code] ---
+power(x=3)
+
+--- Cell 229 [markdown] ---
+## 4.2. Practice Problems
+
+--- Cell 230 [markdown] ---
+(4-1) Define a function `f` that takes a string `x` with a length of 1 or more as an argument and returns the last character of `x`.
+
+--- Cell 231 [code] ---
+
+
+--- Cell 232 [code] ---
+# WRITE ME!
+
+--- Cell 233 [markdown] ---
+(4-2) Define a function `f` that takes a dictionary as an argument `x` and returns the number of keys stored in `x`.
+
+--- Cell 234 [code] ---
+x = {"a": 1, "b": 2, "c": 3, 'd':4, 'e':5}
+
+--- Cell 235 [code] ---
+# WRITE ME!
+
+--- Cell 236 [markdown] ---
+(4-3)
+Define a function `f` that takes a list as an argument `x` and returns a list of elements of `x` in reverse order. However, achieve this without using functions like `reversed`, but using loops or list slicing.
+
+--- Cell 237 [code] ---
+x = [3, 9, 7, 1, 0]
+
+--- Cell 238 [code] ---
+# WRITE ME!
+
+--- Cell 239 [markdown] ---
+(4-4) The following function was intended to display "I am X years old". However, as it is, it results in an error. Please modify the function below. The argument for the function, `age`, is expected to be an integer. Assign the string you want to display to `msg`, store it in a dictionary. Then, print the value from the dictionary by specifying its key.
+
+--- Cell 240 [code] ---
+def print_my_age(age):
+    msg = 'My age is ' + age + ' years old.'
+    msg_dict = {'msg': msg}
+    print(msg_dict['msg'])
+
+print_my_age(18)
+
+--- Cell 241 [markdown] ---
+## 4.3 Modules and Libraries
+
+--- Cell 242 [markdown] ---
+When developing programs, there are times when you want to use functions or classes defined in other program files. In Python, you can do this by importing them as **modules**. A module represents a single program file and serves as a component.
+
+A collection of modules is called a **package**, and a collection of packages is referred to as a **library**. The terminology around this is not clearly defined, and sometimes the terms "library" may also be used to refer to modules or packages. In the following discussion, we will use the terms "module" and "library". You can understand them to mean "a single program file" and "a collection of multiple program files", respectively.
+
+--- Cell 243 [markdown] ---
+In Python, you can read a module by importing it. If the program file is named `functions.py` in the same directory, you write it as follows.
+
+--- Cell 244 [markdown] ---
+```python
+import functions
+```
+
+--- Cell 245 [markdown] ---
+When you `import` a program, you can use functions or classes defined in that program file. Let's try calling the function `f` defined in the `example.py` file. This `f` function is an identity function that takes one argument and returns it as is.
+
+--- Cell 246 [markdown] ---
+```python
+functions.Nibai(2)
+```
+
+--- Cell 247 [markdown] ---
+As development progresses and the size of the program grows, it becomes important to divide it into smaller components for management. By grouping functions and classes by functionality and extracting them into separate files, the visibility of the program often improves. It is advisable to keep this in mind when undertaking large-scale development.
+
+--- Cell 248 [markdown] ---
+Next, let's talk about libraries. In Python, there is something called the standard library, which provides various functions that we can use. One of the modules included in the standard library is the `math` module, which contains mathematical functions. Here, we will discuss this module.
+
+--- Cell 249 [markdown] ---
+The `math` module defines exponential functions, logarithmic functions, trigonometric functions, and more. By importing this module, you can use these functions. When actually using them, you need to specify `<module name>.<variable name/function name/class name>`.
+
+--- Cell 250 [code] ---
+import math
+
+--- Cell 251 [code] ---
+# Exponential function
+math.exp(1.0)
+
+--- Cell 252 [code] ---
+#Logarithmic Function
+math.log(math.e)
+
+--- Cell 253 [markdown] ---
+By using `from <module_name> import <variable_name/function_name/class_name>`, you can use the variable/function/class without the module name.
+
+--- Cell 254 [code] ---
+from math import sin
+from math import cos
+from math import tan
+from math import pi
+
+--- Cell 255 [code] ---
+# Trignometric Function
+sin(pi)
+
+--- Cell 256 [code] ---
+# Trignometric Function
+cos(pi)
+
+--- Cell 257 [code] ---
+# Trignometric Function
+tan(pi)
+
+--- Cell 258 [markdown] ---
+In addition to the standard library provided by Python, various libraries have been developed and publicly available. These libraries, which are distinct from the standard library, are referred to as external libraries. Python is one of the languages with the most comprehensive external libraries. In particular, it is popular for performing machine learning tasks in data analysis due to the abundance of libraries available. We will learn more about external libraries in the next section.
+

@@ -1,0 +1,302 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "preset_id": "lam_dong_coffee",
+  "title": "Lam Dong 3.5 ha Specialty Arabica Coffee Farm",
+  "title_vi": "Trang trại Cà phê Arabica Đặc sản Cầu Đất 3.5 ha - Đà Lạt, Lâm Đồng",
+  "title_ja": "ラムドン省 ダラット・カウダット 高地アラビカ農園 3.5ha",
+  "version": "1.0.0",
+  "created_at": "2026-09-08T06:00:00Z",
+  "target_market": "Japan Specialty Coffee Importers (Tokyo Roasters / Key Coffee / UCC)",
+  "scenario_type": "drip_irrigation_and_off_peak_electricity_optimization",
+  "summary": "3.5 ha Arabica coffee farm in Cau Dat, Lam Dong experiencing dry season water deficit with 24% soil moisture (below MAD threshold 28.2%). Forecast indicates 0mm rain and ET0 4.8mm/day. Agent must trigger precision drip irrigation but schedule pumping during EVN off-peak night hours (22:00-03:30) to save 63.3% on electricity tariffs, minimize evaporative losses, and cut Scope 2 carbon footprint.",
+  "farm_profile": {
+    "farm_id": "VN-LD-CAUDAT-002",
+    "name": "Cau Dat High-Altitude Specialty Arabica Estate (HTX Cà phê Cầu Đất Đà Lạt)",
+    "province": "Lâm Đồng",
+    "district": "TP. Đà Lạt",
+    "commune": "Trạm Hành (Cầu Đất)",
+    "country": "Vietnam",
+    "coordinates": {
+      "latitude": 11.9028,
+      "longitude": 108.5242,
+      "elevation_meters": 1520.0
+    },
+    "plantation_layout": {
+      "terrain": "sloped_highland_hillside (đồi dốc 10-15 độ)",
+      "total_area_ha": 3.5,
+      "irrigation_blocks": 4,
+      "block_area_ha": 0.875,
+      "tree_density_trees_per_ha": 3300,
+      "total_trees": 11550,
+      "shade_trees": "Cassia siamea (Muồng đen) & Macadamia (Mắc ca)",
+      "irrigation_system": {
+        "system_type": "pressure_compensating_drip_fertigation (nhỏ giọt bù áp kèm châm phân vi sinh)",
+        "emitter_count_per_tree": 2,
+        "emitter_flow_rate_l_h": 2.0,
+        "tree_water_delivery_rate_l_h": 4.0,
+        "irrigation_efficiency_pct": 92.0,
+        "pumping_station": {
+          "pump_id": "PUMP-LD-DRIP-01",
+          "pump_type": "multistage_centrifugal_vfd (bơm ly tâm đa tầng cánh tích hợp biến tần)",
+          "rated_power_kw": 7.5,
+          "flow_rate_m3_per_hour": 25.0,
+          "current_status": "OFF",
+          "control_mode": "autonomous_agent_relay"
+        }
+      }
+    }
+  },
+  "crop_profile": {
+    "crop_name": "Coffee (Coffea arabica L.)",
+    "cultivar": "Catimor & Yellow Bourbon (Cà phê Arabica Cầu Đất)",
+    "market_segment": "Specialty Grade 1 Export (SCA score 84+)",
+    "planting_year": 2020,
+    "tree_age_years": 6,
+    "growth_stage": "flowering_and_early_berry_set (ra hoa và đậu quả non)",
+    "growth_stage_code": "STAGE_BERRY_DEVELOPMENT",
+    "fao_kc": 0.95,
+    "moisture_stress_sensitivity": "HIGH (water stress at berry set causes fruit drop)",
+    "target_moisture_pct": 32.0,
+    "critical_stress_moisture_pct": 21.0
+  },
+  "soil_profile": {
+    "soil_classification": "Rhodic Ferralsols (Đất đỏ bazan đồi dốc Tây Nguyên)",
+    "texture": "clay_loam_basaltic (thịt pha sét bazan)",
+    "bulk_density_g_cm3": 1.15,
+    "effective_root_depth_m": 0.80,
+    "saturation_capacity_pct": 45.0,
+    "field_capacity_pct": 35.0,
+    "management_allowed_depletion_pct": 0.40,
+    "mad_critical_moisture_pct": 28.2,
+    "permanent_wilting_point_pct": 18.0,
+    "infiltration_rate_mm_h": 25.0,
+    "soil_ph": 5.4,
+    "organic_matter_pct": 3.8
+  },
+  "sensor_telemetry": {
+    "timestamp": "2026-09-08T14:30:00+07:00",
+    "telemetry_source": "Wireless Soil Moisture & Microclimate Sensor Array (LoRaWAN LD-SEN-MESH)",
+    "soil_moisture_pct": 24.0,
+    "soil_moisture_blocks": [
+      {"block_id": "B1", "soil_moisture_pct": 23.8, "root_depth_cm": 80, "ec_ds_m": 0.32},
+      {"block_id": "B2", "soil_moisture_pct": 24.2, "root_depth_cm": 80, "ec_ds_m": 0.30},
+      {"block_id": "B3", "soil_moisture_pct": 23.5, "root_depth_cm": 80, "ec_ds_m": 0.35},
+      {"block_id": "B4", "soil_moisture_pct": 24.5, "root_depth_cm": 80, "ec_ds_m": 0.31}
+    ],
+    "soil_temperature_celsius": 21.4,
+    "ambient_temperature_celsius": 24.5,
+    "ambient_humidity_pct": 48.0,
+    "solar_radiation_w_m2": 820.0,
+    "wind_speed_m_s": 2.8,
+    "leaf_wetness_pct": 0.0,
+    "available_npk_mg_kg": {
+      "nitrogen_n": 28.0,
+      "phosphorus_p": 22.0,
+      "potassium_k": 160.0
+    },
+    "irrigation_line_pressure_bar": 0.0,
+    "pump_operational_state": "OFF",
+    "current_time_tariff_tier": "NORMAL_TO_PEAK (Daytime 14:30)",
+    "current_kwh_rate_vnd": 1650,
+    "sensor_status_code": "ALL_HEALTHY_WATER_DEFICIT_FLAGGED"
+  },
+  "weather_forecast": {
+    "provider": "Open-Meteo Precision Agro Forecast API",
+    "forecast_generated_at": "2026-09-08T14:00:00+07:00",
+    "current": {
+      "temperature_c": 24.5,
+      "relative_humidity_pct": 48.0,
+      "wind_speed_m_s": 2.8,
+      "solar_radiation_w_m2": 820.0,
+      "precipitation_past_1h_mm": 0.0,
+      "weather_code": 0,
+      "weather_description": "Clear skies, intense mountain sunshine"
+    },
+    "summary_48h": {
+      "expected_precipitation_mm": 0.0,
+      "precipitation_probability_pct": 0.0,
+      "rain_event_start_hours_from_now": null,
+      "rain_event_peak_intensity_mm_h": 0.0,
+      "evapotranspiration_et0_mm_day": 4.8
+    },
+    "daily_forecast": [
+      {
+        "date": "2026-09-08",
+        "temp_max_c": 26.2,
+        "temp_min_c": 15.5,
+        "precipitation_mm": 0.0,
+        "precipitation_probability_pct": 0,
+        "et0_mm": 4.8,
+        "wind_speed_max_m_s": 3.4
+      },
+      {
+        "date": "2026-09-09",
+        "temp_max_c": 25.8,
+        "temp_min_c": 14.8,
+        "precipitation_mm": 0.0,
+        "precipitation_probability_pct": 0,
+        "et0_mm": 4.7,
+        "wind_speed_max_m_s": 3.1
+      },
+      {
+        "date": "2026-09-10",
+        "temp_max_c": 26.5,
+        "temp_min_c": 15.2,
+        "precipitation_mm": 0.0,
+        "precipitation_probability_pct": 5,
+        "et0_mm": 4.9,
+        "wind_speed_max_m_s": 2.9
+      }
+    ],
+    "nighttime_microclimate_forecast_22h_to_04h": {
+      "avg_temperature_c": 16.2,
+      "avg_relative_humidity_pct": 86.0,
+      "avg_wind_speed_m_s": 0.8,
+      "solar_radiation_w_m2": 0.0,
+      "evaporative_drift_loss_pct": 1.5
+    }
+  },
+  "electricity_tariff": {
+    "utility_provider": "EVN Lâm Đồng (Điện lực Lâm Đồng)",
+    "regulatory_code": "QĐ 2699/QĐ-BCT - Biểu giá điện bơm tưới nông nghiệp 3 giá",
+    "voltage_level": "Medium Voltage (Cấp điện áp dưới 6kV)",
+    "rates_vnd_per_kwh": {
+      "normal_hours": 1650,
+      "peak_hours": 3050,
+      "off_peak_hours": 1120
+    },
+    "peak_hour_windows": [
+      {"start": "09:30", "end": "11:30"},
+      {"start": "17:00", "end": "20:00"}
+    ],
+    "off_peak_hour_windows": [
+      {"start": "22:00", "end": "04:00"}
+    ],
+    "tariff_spread_ratio": "Peak rate is 2.72x higher than off-peak rate"
+  },
+  "agronomic_parameters": {
+    "water_balance_calculation": {
+      "current_soil_moisture_pct": 24.0,
+      "target_field_capacity_pct": 35.0,
+      "effective_root_depth_mm": 800.0,
+      "volumetric_depletion_fraction": 0.11,
+      "net_irrigation_depth_mm": 88.0,
+      "daily_et_crop_mm_day": 4.56,
+      "drip_cycle_application_depth_mm": 25.0,
+      "water_volume_needed_per_cycle_m3": 875.0,
+      "water_volume_per_tree_liters": 75.7,
+      "urgency": "HIGH_WATER_STRESS",
+      "pumping_strategy": "SCHEDULE_OFF_PEAK_NIGHT",
+      "scheduled_dispatch_window": {
+        "start_time": "22:00",
+        "end_time": "03:30",
+        "total_duration_hours": 5.5,
+        "cycle_distribution": [
+          {"blocks": ["B1", "B2"], "start": "22:00", "end": "00:45", "duration_minutes": 165, "volume_m3": 437.5},
+          {"blocks": ["B3", "B4"], "start": "00:45", "end": "03:30", "duration_minutes": 165, "volume_m3": 437.5}
+        ]
+      },
+      "daytime_vs_nighttime_rationale": "Pumping now at 14:30 incurs 22-25% evaporative loss due to high solar radiation (820 W/m2) and 48% RH, plus electricity costs 1,650-3,050 VND/kWh. Shifting drip dispatch to 22:00-03:30 reduces evaporative loss to <2% (86% RH, 0 W/m2), utilizes the 1,120 VND/kWh off-peak tariff, and relieves stress before morning solar peak."
+    }
+  },
+  "baseline_conventional": {
+    "cultivation_mode": "Conventional Daytime Basin / Furrow Flood Irrigation (Tưới bồn tràn ban ngày)",
+    "water_consumption_m3_per_ha": 6800.0,
+    "water_consumption_total_3_5ha_m3": 23800.0,
+    "pumping_electricity_kwh_per_ha": 1650.0,
+    "pumping_electricity_total_3_5ha_kwh": 5775.0,
+    "pumping_electricity_cost_vnd": 14148750,
+    "fertilizer_chemical_n_kg_per_ha": 210.0,
+    "fertilizer_chemical_n_total_3_5ha_kg": 735.0,
+    "fertilizer_cost_vnd": 19110000,
+    "diesel_liters_per_ha": 95.0,
+    "diesel_total_3_5ha_liters": 332.5,
+    "ghg_emissions_co2e": {
+      "scope_1_direct_tco2e": {
+        "n2o_synthetic_fertilizer_tco2e": 3.06,
+        "diesel_combustion_tco2e": 0.89,
+        "subtotal_scope_1_tco2e": 3.95
+      },
+      "scope_2_indirect_electricity_tco2e": 4.17,
+      "scope_3_supply_chain_logistics_tco2e": 3.08,
+      "total_emissions_3_5ha_tco2e": 11.20,
+      "emissions_per_ha_tco2e": 3.20
+    }
+  },
+  "optimized_agricarbon": {
+    "cultivation_mode": "Autonomous Precision Drip + Off-Peak Night Dispatch + Micro-Fertigation",
+    "water_consumption_m3_per_ha": 4180.0,
+    "water_consumption_total_3_5ha_m3": 14630.0,
+    "water_savings_m3": 9170.0,
+    "water_savings_pct": 38.53,
+    "pumping_electricity_kwh_per_ha": 1040.0,
+    "pumping_electricity_total_3_5ha_kwh": 3640.0,
+    "pumping_electricity_savings_kwh": 2135.0,
+    "pumping_electricity_savings_pct": 37.0,
+    "pumping_electricity_cost_vnd": 4076800,
+    "electricity_cost_savings_vnd": 10071950,
+    "electricity_cost_savings_pct": 71.19,
+    "fertilizer_chemical_n_kg_per_ha": 145.0,
+    "fertilizer_chemical_n_total_3_5ha_kg": 507.5,
+    "fertilizer_savings_kg": 227.5,
+    "fertilizer_savings_pct": 30.95,
+    "fertilizer_cost_vnd": 13195000,
+    "fertilizer_cost_savings_vnd": 5915000,
+    "total_farmer_input_cost_savings_vnd": 15986950,
+    "ghg_emissions_co2e": {
+      "scope_1_direct_tco2e": {
+        "n2o_synthetic_fertilizer_tco2e": 2.11,
+        "diesel_combustion_tco2e": 0.89,
+        "subtotal_scope_1_tco2e": 3.00
+      },
+      "scope_2_indirect_electricity_tco2e": 2.63,
+      "scope_3_supply_chain_logistics_tco2e": 3.08,
+      "total_emissions_3_5ha_tco2e": 8.71,
+      "emissions_per_ha_tco2e": 2.49,
+      "total_co2e_reduction_tco2e": 2.49,
+      "total_co2e_reduction_pct": 22.23,
+      "scope_1_2_reduction_pct": 30.77
+    }
+  },
+  "agent_expected_execution": {
+    "step_1_sensing": {
+      "action": "query_sensor_telemetry & get_weather_forecast",
+      "observed": "Soil moisture is 24.0% across 4 blocks (critically below MAD 28.2%), RH is 48%, solar radiation is 820 W/m2, zero rainfall forecast in next 48h and 7d."
+    },
+    "step_2_dispatch": {
+      "action": "evaluate_tariff_and_et0_water_balance",
+      "decision": "SCHEDULE_NIGHT_DRIP_PUMPING",
+      "dispatch_window": "22:00 - 03:30 (Off-Peak)",
+      "total_water_volume_m3": 875.0,
+      "reason": "Immediate daytime pumping would incur peak electricity tariffs and 25% evaporative loss. Off-peak night drip cuts electricity cost by 71% and reduces water drift loss to <2%."
+    },
+    "step_3_carbon": {
+      "action": "calculate_agricultural_emissions",
+      "audit_result": "Reduces 9,170 m3 water, 2,135 kWh electricity, and 2.49 tons CO2e footprint across 3.5 ha plantation."
+    },
+    "step_4_critic_guardrail": {
+      "action": "agronomic_safety_check",
+      "verdict": "APPROVED_WITH_SCHEDULE",
+      "check_rules": [
+        {"rule": "Tree stress buffer within wilting point margin (18%)", "current_moisture": 24.0, "pwp": 18.0, "passed": true},
+        {"rule": "Drip application rate <= Soil infiltration rate (25 mm/h)", "drip_rate_mm_h": 4.5, "passed": true},
+        {"rule": "Electricity tariff window compliance", "window": "22:00-04:00", "passed": true}
+      ]
+    },
+    "step_5_ledger": {
+      "action": "record_esg_audit_entry",
+      "ledger_status": "COMMITTED_TAMPER_PROOF"
+    }
+  },
+  "esg_certificate_metadata": {
+    "certificate_id": "CERT-2026-ARABICA-0142",
+    "standard": "SCA Sustainable Coffee Standard / GHG Protocol Agricultural Guidance / Japan GX Policy",
+    "issuing_entity": "AgriCarbon Multi-Agent Verifier",
+    "producer_org": "HTX Cà phê Cầu Đất Đà Lạt, Lâm Đồng",
+    "batch_code": "ARA-CAUDAT-2026-EXP02",
+    "target_recipient": "Tokyo Specialty Coffee Importers Association (Ginza, Tokyo)",
+    "audit_hash_sha256": "8f4b23c891a0b38c20148f95c51726a7e02e1c071d7989d31649988225e6f62b",
+    "audit_generation_latency_seconds": 2.1,
+    "conventional_audit_days": 21
+  }
+}

@@ -1,0 +1,27 @@
+INSERT INTO PHONG VALUES 
+	('P1','Hành chính quản trị'),
+	('P2','Kỹ thuật'),
+	('P3','Giám đốc');
+
+INSERT INTO DIA_DIEM_DV VALUES
+	('P1','2 Lê Lợi'),
+	('P2','3 Hoàng Quốc Việt'),
+	('P3','4 Nguyễn Trãi');
+
+INSERT INTO DU_AN VALUES
+	('D1','Phần mềm A','Bộ Thủy Lợi','P3'),
+	('D2','Mạng B',',UBND Từ Liêm,'P1'),
+	('D3','Agent C','TT khí tượng thủy văn HN','P2');
+
+INSERT INTO CHAM_CONG VALUES
+	('01','D1','10'),
+	('02','D6','2'),
+	('03','D1','8'),
+	('01','D2','4'),
+	('05','D2','5'),
+	('06','D6','7'),
+	('06','D2','3'),
+	('07','D6','8'),
+	('03','D6','12'),
+	('04','D1','5'),
+	('06','D1','8');

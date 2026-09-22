@@ -1,0 +1,15 @@
+\subsection{Regularized Policy Optimization \& Bounded Divergence Dynamics}
+In frontier alignment, policy optimization balances expected preference reward $\mathcal{R}(\pi)$ against an anchor divergence penalty $\mathcal{D}(\pi \,\|\, \pi_{\mathrm{ref}})$:
+\begin{equation}
+\min_{\pi} \mathcal{L}_{\mathrm{drift}}(\pi; \beta) = -\mathbb{E}_{x \sim \mathcal{D}, y \sim \pi}[r(x, y)] + \beta \, \mathcal{D}(\pi \,\|\, \pi_{\mathrm{ref}})
+\end{equation}
+where $\beta > 0$ acts as a Lagrange multiplier governing the exchange rate on the Pareto frontier:
+\begin{itemize}[noitemsep]
+    \item \textbf{Under-Regularized Regime ($\beta \to 0^+$)}: $\pi^* \to \arg\max_y r(x, y)$. Without divergence anchoring, the policy degenerates into reward hacking and exploitation of proxy model artifacts (Goodhart's Law).
+    \item \textbf{Over-Regularized Regime ($\beta \to \infty$)}: $\pi^* \to \pi_{\mathrm{ref}}$. Divergence penalty dominates, freezing the policy at the reference anchor with zero adaptation.
+    \item \textbf{Safe Operational Governance}: To prevent catastrophic distribution drift, deployment standards enforce bounded divergence $\mathcal{D}(\pi \,\|\, \pi_{\mathrm{ref}}) \le T_{\mathrm{drift}}$ across worst-case disturbance envelopes.
+\end{itemize}
+
+\begin{remark}[Self-Study Keywords]
+Bradley-Terry Model, Goodhart's Law, Reward Hacking, PPO Surrogate Objective, Reverse KL Divergence, Gibbs Policy, Direct Preference Optimization (DPO), Fisher Information Metric, Policy Divergence Bounds, Alignment Tax.
+\end{remark}

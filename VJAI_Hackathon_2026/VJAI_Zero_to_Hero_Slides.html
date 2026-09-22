@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VJAI Hackathon 2026 | Agentic AI for Sustainable Goals - Zero to Hero Masterclass</title>
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- KaTeX for Beautiful Math Formula Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --bg-base: #060913;
+            --bg-surface: #0c1222;
+            --bg-card: rgba(18, 26, 47, 0.75);
+            --border-light: rgba(255, 255, 255, 0.08);
+            --border-active: rgba(99, 102, 241, 0.5);
+            
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.35);
+            --cyan: #06b6d4;
+            --emerald: #10b981;
+            --amber: #f59e0b;
+            --rose: #f43f5e;
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            
+            --font-display: 'Be Vietnam Pro', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* HEADER */
+        .global-header {
+            background: rgba(12, 18, 34, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-light);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            z-index: 50;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--primary), var(--cyan));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 0 18px var(--primary-glow);
+        }
+
+        .brand-text h1 {
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.3px;
+        }
+
+        .brand-text span {
+            font-size: 11px;
+            color: var(--cyan);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .player-bar {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(30, 41, 59, 0.5);
+            padding: 6px 14px;
+            border-radius: 99px;
+            border: 1px solid var(--border-light);
+        }
+
+        .rank-tag {
+            font-family: var(--font-display);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--amber);
+        }
+
+        .xp-pill {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: #fff;
+            background: rgba(99, 102, 241, 0.25);
+            padding: 2px 10px;
+            border-radius: 99px;
+            border: 1px solid rgba(99, 102, 241, 0.4);
+        }
+
+        .progress-pill {
+            font-size: 11px;
+            color: var(--emerald);
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 600;
+            font-family: var(--font-display);
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            outline: none;
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border-light);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #4f46e5);
+            box-shadow: 0 4px 14px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+
+        /* PARTS NAVIGATION BAR */
+        .parts-nav-bar {
+            background: rgba(9, 14, 27, 0.98);
+            border-bottom: 1px solid var(--border-light);
+            padding: 6px 20px;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            flex-shrink: 0;
+            z-index: 40;
+        }
+
+        .part-tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            background: rgba(255, 255, 255, 0.02);
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .part-tab:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .part-tab.active {
+            background: rgba(99, 102, 241, 0.18);
+            border-color: var(--primary);
+            box-shadow: 0 0 12px rgba(99, 102, 241, 0.25);
+        }
+
+        .part-tab-num {
+            font-family: var(--font-display);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--cyan);
+        }
+
+        .part-tab.active .part-tab-num {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .part-tab-title {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .part-tab.active .part-tab-title {
+            color: #fff;
+        }
+
+        /* APP BODY & SIDEBAR */
+        .app-body {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .slides-sidebar {
+            width: 290px;
+            background: rgba(12, 18, 34, 0.7);
+            border-right: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            flex-shrink: 0;
+            padding: 16px 12px;
+        }
+
+        .part-banner {
+            padding: 12px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(6, 182, 212, 0.08));
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .part-banner-title {
+            font-family: var(--font-display);
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .part-banner-sub {
+            font-size: 11px;
+            color: var(--cyan);
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .slide-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            margin-bottom: 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12.5px;
+            color: var(--text-muted);
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .slide-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
+
+        .slide-item.active {
+            background: rgba(99, 102, 241, 0.18);
+            border-color: var(--primary);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .slide-num-badge {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-family: var(--font-mono);
+            flex-shrink: 0;
+        }
+
+        .slide-item.completed .slide-num-badge {
+            background: var(--emerald);
+            color: #fff;
+        }
+
+        .slide-title-text {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* STAGE & SLIDE CARD */
+        .stage {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px 48px 90px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.08), transparent 50%),
+                        radial-gradient(circle at bottom left, rgba(6, 182, 212, 0.05), transparent 50%);
+        }
+
+        .slide-card {
+            max-width: 960px;
+            width: 100%;
+        }
+
+        .slide-header {
+            margin-bottom: 24px;
+        }
+
+        .slide-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--cyan);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 8px;
+        }
+
+        .slide-title-hero {
+            font-family: var(--font-display);
+            font-size: 26px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+            line-height: 1.35;
+        }
+
+        /* ANALOGY BOX */
+        .analogy-box {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(99, 102, 241, 0.06));
+            border: 1px solid rgba(6, 182, 212, 0.35);
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        .analogy-header {
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--cyan);
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .analogy-text {
+            font-size: 14.5px;
+            color: #e2e8f0;
+            line-height: 1.65;
+        }
+
+        /* POINTS BOX */
+        .points-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 24px 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(12px);
+        }
+
+        .points-box h3 {
+            font-family: var(--font-display);
+            font-size: 14px;
+            color: #fff;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .point-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+            font-size: 14.5px;
+            color: #cbd5e1;
+            line-height: 1.65;
+        }
+
+        .point-bullet {
+            width: 7px;
+            height: 7px;
+            border-radius: 99px;
+            background: var(--primary);
+            margin-top: 8px;
+            flex-shrink: 0;
+            box-shadow: 0 0 8px var(--primary);
+        }
+
+        /* MATH & FORMULA CARD */
+        .math-box {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 14px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            text-align: center;
+            overflow-x: auto;
+        }
+
+        /* CODE / ARCHITECTURE CARD */
+        .code-box {
+            background: #090d16;
+            border: 1px solid var(--border-light);
+            border-radius: 14px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 12px;
+            font-family: var(--font-mono);
+            color: var(--text-dim);
+        }
+
+        .code-content {
+            padding: 16px 20px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: #a5b4fc;
+            line-height: 1.65;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        /* TIP CARD */
+        .tip-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(245, 158, 11, 0.03));
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .tip-icon {
+            font-size: 20px;
+            color: var(--amber);
+            line-height: 1;
+        }
+
+        .tip-text {
+            font-size: 13.5px;
+            color: #fef3c7;
+            line-height: 1.6;
+        }
+
+        /* QUIZ CARD */
+        .quiz-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 2px solid rgba(99, 102, 241, 0.4);
+            border-radius: 16px;
+            padding: 24px 28px;
+            margin-bottom: 30px;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+        }
+
+        .quiz-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: #fff;
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 99px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            letter-spacing: 0.6px;
+        }
+
+        .quiz-question {
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .quiz-option:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .quiz-option.correct {
+            background: rgba(16, 185, 129, 0.2) !important;
+            border-color: var(--emerald) !important;
+            color: #34d399 !important;
+            font-weight: 600;
+        }
+
+        .quiz-option.incorrect {
+            background: rgba(244, 63, 94, 0.2) !important;
+            border-color: var(--rose) !important;
+            color: #fb7185 !important;
+        }
+
+        .quiz-feedback {
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            line-height: 1.5;
+            display: none;
+        }
+
+        /* BOTTOM DOCK FOOTER */
+        .bottom-dock {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(12, 18, 34, 0.95);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid var(--border-light);
+            padding: 12px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 50;
+        }
+
+        .dock-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-dim);
+            font-family: var(--font-mono);
+        }
+
+        .dock-center {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dock-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- HEADER -->
+    <header class="global-header">
+        <div class="brand">
+            <div class="brand-icon">🤖</div>
+            <div class="brand-text">
+                <h1>VIETNAM JAPAN AI HACKATHON 2026</h1>
+                <span>Agentic AI for Sustainable Goals · Zero to Hero</span>
+            </div>
+        </div>
+
+        <div class="player-bar">
+            <span class="rank-tag" id="player-rank">🏆 Novice Hacker</span>
+            <span class="xp-pill" id="player-xp">0 XP</span>
+            <span class="progress-pill" id="player-progress">0% Hoàn Thành</span>
+        </div>
+
+        <div class="header-actions">
+            <button class="btn btn-outline" onclick="togglePresentationMode()" title="Chế độ thuyết trình phóng to [P]">📺 Thuyết Trình</button>
+            <button class="btn btn-outline" onclick="toggleFullscreen()" title="Toàn màn hình [F]">⛶ Toàn Màn Hình</button>
+            <button class="btn btn-primary" onclick="window.print()" title="In ra tài liệu PDF">🖨️ Xuất PDF</button>
+        </div>
+    </header>
+
+    <!-- PARTS TABS -->
+    <nav class="parts-nav-bar" id="parts-nav-bar">
+        <!-- Rendered by JS -->
+    </nav>
+
+    <!-- MAIN BODY -->
+    <div class="app-body">
+        <!-- SIDEBAR -->
+        <aside class="slides-sidebar">
+            <div class="part-banner">
+                <div class="part-banner-title" id="cur-part-title">PHẦN 1: Tổng quan Cuộc thi</div>
+                <div class="part-banner-sub" id="cur-part-lessons">Timeline · Thể lệ · Offline Tokyo</div>
+            </div>
+            <div id="slides-list">
+                <!-- Rendered by JS -->
+            </div>
+        </aside>
+
+        <!-- STAGE -->
+        <main class="stage" id="stage">
+            <div class="slide-card">
+                <div class="slide-header">
+                    <div class="slide-breadcrumb">
+                        <span id="sc-part">PHẦN 1: TỔNG QUAN</span> &bull; <span id="sc-slide">SLIDE 1 / 32</span>
+                    </div>
+                    <h2 class="slide-title-hero" id="slide-title">Tiêu đề slide</h2>
+                </div>
+
+                <!-- ANALOGY BOX -->
+                <div class="analogy-box">
+                    <div class="analogy-header">💡 Điểm Chạm Trọng Tâm (Key Intuition)</div>
+                    <div class="analogy-text" id="slide-analogy">Mô tả trực giác...</div>
+                </div>
+
+                <!-- POINTS BOX -->
+                <div class="points-box">
+                    <h3>⚡ Nội Dung Cốt Lõi & Hướng Dẫn Thực Chiến</h3>
+                    <div id="slide-points">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- MATH BOX -->
+                <div class="math-box" id="math-card">
+                    <div id="slide-math"></div>
+                </div>
+
+                <!-- CODE / ARCHITECTURE BOX -->
+                <div class="code-box">
+                    <div class="code-header">
+                        <span>SƠ ĐỒ KIẾN TRÚC & CODE MẪU</span>
+                        <button class="btn btn-outline" style="padding: 3px 8px; font-size: 11px;" onclick="copyCode()">Sao chép</button>
+                    </div>
+                    <div class="code-content" id="slide-code"># Code snippet</div>
+                </div>
+
+                <!-- TIP BOX -->
+                <div class="tip-box">
+                    <div class="tip-icon">💡</div>
+                    <div class="tip-text" id="slide-tip">Bí kíp thực chiến từ Ban Tổ Chức & Giám Khảo.</div>
+                </div>
+
+                <!-- QUIZ CARD -->
+                <div class="quiz-card" id="quiz-box" style="display: none;">
+                    <div class="quiz-badge">Ktra Kiến Thức & Mở Khóa XP</div>
+                    <div class="quiz-question" id="quiz-question">Câu hỏi?</div>
+                    <div class="quiz-options" id="quiz-options">
+                        <!-- Options -->
+                    </div>
+                    <div class="quiz-feedback" id="quiz-feedback"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- BOTTOM DOCK -->
+    <footer class="bottom-dock">
+        <div class="dock-left">
+            <span>Phím tắt: [←] Trước | [→] Tiếp | [Space] Hoàn thành | [F] Fullscreen</span>
+        </div>
+
+        <div class="dock-center">
+            <button class="btn btn-outline" onclick="prevSlide()" id="btn-prev">← Slide Trước</button>
+            <button class="btn btn-outline" onclick="markCompleted()" id="btn-complete">✓ Đánh Dấu Đã Học (+50 XP)</button>
+            <button class="btn btn-primary" onclick="nextSlide()" id="btn-next">Slide Tiếp →</button>
+        </div>
+
+        <div class="dock-right">
+            <span style="font-size: 12px; color: var(--text-muted); font-family: var(--font-mono);" id="dock-counter">1 / 32</span>
+        </div>
+    </footer>
+
+    <script>
+        const PARTS = [{"id": "part1", "part_num": "PHẦN 1", "title": "Tổng quan Cuộc thi & Thể lệ Sống còn", "description": "Bức tranh toàn cảnh Vietnam Japan AI Hackathon 2026, các mốc timeline, quy định đội thi, điều kiện offline tại Tokyo và quyền sở hữu trí tuệ.", "lessons_covered": "Timeline · Điều kiện Thí sinh · TiB Tokyo · Bản quyền IP", "slides": [{"id": "s1_1", "partId": "part1", "partNum": "PHẦN 1", "partTitle": "Tổng quan Cuộc thi & Thể lệ Sống còn", "title": "Bức tranh Tổng quan: VJAI Hackathon 2026", "analogy": "Vietnam Japan AI Hackathon 2026 là đấu trường đổi mới sáng tạo AI quy mô quốc tế, kết nối hệ sinh thái công nghệ hai nước Việt Nam và Nhật Bản. Với chủ đề 'Agentic AI for Sustainable Goals' và khẩu hiệu 'AI for Goals — Builders for Growth', cuộc thi tìm kiếm những giải pháp AI tự chủ giải quyết bài toán thực tế và tạo ra tác động xã hội lâu dài.", "points": ["<strong>Đơn vị tổ chức:</strong> Brandchie, Cộng đồng AI Việt - Nhật (VJAI), và VADX Japan.", "<strong>Đối tác địa điểm (Venue Partner):</strong> TiB (Tokyo Innovation Base, Yurakucho, Tokyo, Nhật Bản) — trung tâm đổi mới sáng tạo hàng đầu Tokyo.", "<strong>Nền tảng thi đấu chính thức:</strong> Hackathon4u (https://hackathon4u.space) phục vụ quản lý hồ sơ, ghép đội và nộp bài thi.", "<strong>Hình thức tổ chức Hybrid:</strong> Giai đoạn đầu (Đăng ký, Team Matching, Sơ khảo Proposal) diễn ra Online; 2 ngày thi lớn (Pitch Day và Demo Day & Grand Finale) diễn ra TRỰC TIẾP tại Tokyo.", "<strong>Cơ hội vàng:</strong> Được nhận cố vấn từ chuyên gia đầu ngành, nhận tài trợ hạ tầng điện toán đám mây (AWS Cloud credits), kết nối nhà đầu tư và doanh nghiệp hai nước."], "math": "$$\\text{Giá Trị Hackathon} = \\text{Agentic AI First} \\times \\text{Real Problem} \\times \\text{Measurable Impact}$$", "code": "/* CẤU TRÚC CUỘC THI VIETNAM JAPAN AI HACKATHON 2026 */\nOrganizers       : Brandchie x VJAI x VADX Japan\nVenue Partner    : TiB (Tokyo Innovation Base, Tokyo, Japan)\nCompetition Theme: Agentic AI for Sustainable Goals\nFormat           : Hybrid (Online Workspace + Offline Finals in Tokyo)\nPlatform         : Hackathon4u (hackathon4u.space)", "tip": "Đừng coi Hackathon chỉ là một cuộc thi viết code trong 24 giờ. VJAI Hackathon là một hành trình ươm tạo giải pháp từ ý tưởng, proposal, kiến trúc đa tác nhân đến bảo vệ sản phẩm trước Ban Giám khảo tại Tokyo!", "isLastInPart": false}, {"id": "s1_2", "partId": "part1", "partNum": "PHẦN 1", "partTitle": "Tổng quan Cuộc thi & Thể lệ Sống còn", "title": "Dòng Thời gian Sống còn (Timeline 4 Giai đoạn)", "analogy": "Nắm vững timeline là điều kiện tiên quyết để không bị loại oan uổng. Mọi cột mốc deadline đều được tính theo giờ hệ thống của nền tảng Hackathon4u và thông báo trên Discord.", "points": ["<strong>Giai đoạn 1 (20/08 - 21h59 ngày 19/09/2026):</strong> Mở đăng ký thí sinh, cá nhân hoàn thiện profile và tìm kiếm đồng đội qua Team Matching.", "<strong>Giai đoạn 2 (Cuối tháng 9 - Đầu tháng 10/2026):</strong> Vòng Sơ khảo (Proposal Review). Các đội hoàn thiện tài liệu ý tưởng trên Hackathon4u. Ban Giám khảo chấm và công bố <strong>TOP 16 ĐỘI XUẤT SẮC</strong>.", "<strong>Giai đoạn 3 (24/10/2026 - PITCH DAY):</strong> Tổ chức trực tiếp tại <strong>TiB Tokyo</strong>. Công bố bảng điểm chi tiết của Top 16. Các đội pitching trực tiếp để chọn ra <strong>TOP 8 ĐỘI CHUNG CUỘC</strong>.", "<strong>Giai đoạn 4 (07/11/2026 - DEMO DAY & GRAND FINALE):</strong> Tổ chức trực tiếp tại <strong>TiB Tokyo</strong>. Top 8 trình diễn Live Demo sản phẩm thực tế, trả lời chất vấn của BGK và tham dự Lễ Trao giải vinh danh <strong>TOP 3 CHUNG CUỘC</strong>.", "<strong>Chính sách cập nhật bài nộp:</strong> Thí sinh được phép nộp và cập nhật tài liệu nhiều lần; BTC sẽ luôn sử dụng file nộp mới nhất trước giờ đóng hạn."], "math": "$$\\text{Lộ trình:} \\quad \\text{Đăng ký (19/9)} \\longrightarrow \\text{Top 16 (Proposal)} \\longrightarrow \\text{Top 8 (Pitch 24/10)} \\longrightarrow \\text{Top 3 (Demo 7/11)}$$", "code": "TIMELINE QUAN TRỌNG CỦA VJAI HACKATHON 2026:\n+ 20/08/2026          : Mở đăng ký dự thi trên Hackathon4u\n+ 19/09/2026 21:59 GMT: ĐÓNG ĐĂNG KÝ CÁ NHÂN & ĐỘI THI\n+ Đầu 10/2026         : Công bố kết quả Sơ khảo -> TOP 16\n+ 24/10/2026          : PITCH DAY tại Tokyo Innovation Base (TiB) -> TOP 8\n+ 07/11/2026          : DEMO DAY & FINALE tại TiB Tokyo -> TOP 3 CHUNG CUỘC", "tip": "Đặc biệt chú ý mốc 21h59 ngày 19/09/2026! Cổng đăng ký sẽ đóng tự động trên nền tảng Hackathon4u. Hãy hoàn thiện hồ sơ và tạo team trước thời hạn ít nhất 24 giờ để phòng sự cố đường truyền.", "isLastInPart": false}, {"id": "s1_3", "partId": "part1", "partNum": "PHẦN 1", "partTitle": "Tổng quan Cuộc thi & Thể lệ Sống còn", "title": "Điều kiện Thí sinh, Đội thi & Yêu cầu Offline Tokyo", "analogy": "Một đội hình hackathon chuẩn cần sự phối hợp nhịp nhàng giữa kỹ thuật AI, phát triển sản phẩm và tư duy kinh doanh, đồng thời phải đảm bảo điều kiện có mặt trực tiếp tại hội trường Tokyo.", "points": ["<strong>Độ tuổi & Quốc tịch:</strong> Thí sinh từ 18 tuổi trở lên, không giới hạn quốc tịch.", "<strong>Quy mô Đội thi:</strong> Mỗi đội gồm từ <strong>2 đến 5 thành viên</strong>. Không chấp nhận đội 1 người hoặc quá 5 người khi nộp submission chính thức.", "<strong>Đa dạng hóa kỹ năng:</strong> BTC không bắt buộc tất cả thành viên đều phải là lập trình viên. Đội hình mạnh nên có sự kết hợp: <em>AI/Tech Engineer, Fullstack Dev, Product Manager, UI/UX Designer, Domain Specialist/Business</em>.", "<strong>Yêu cầu ngôn ngữ:</strong> Ngôn ngữ chính là <strong>Tiếng Việt</strong> (Tài liệu Proposal, Slide thuyết trình, Pitching và Q&A). Tiếng Anh được sử dụng cho mã nguồn, sơ đồ kỹ thuật và thuật ngữ chuyên môn.", "<strong>YÊU CẦU OFFLINE TẠI TOKYO (SỐNG CÒN):</strong> Nếu đội lọt vào Top 16, <strong>bắt buộc phải có ít nhất 01 thành viên có mặt trực tiếp tại hội trường TiB Tokyo</strong> trong 2 ngày Pitch Day (24/10) và Demo Day (07/11) để trình bày bằng tiếng Việt!", "<strong>Chi phí:</strong> Thí sinh và đội thi tự túc 100% chi phí di chuyển, visa, ăn ở và lưu trú tại Tokyo."], "math": "$$\\text{Đội hình chuẩn} = \\underbrace{\\text{AI/Agent Eng}}_{40\\%} + \\underbrace{\\text{Fullstack/UI}}_{30\\%} + \\underbrace{\\text{Product/Domain/Pitch}}_{30\\%} \\quad (2 \\le N \\le 5)$$", "code": "CHECKLIST ĐIỀU KIỆN HỢP LỆ CỦA ĐỘI THI:\n[x] Tuổi: Tất cả thành viên >= 18 tuổi\n[x] Số lượng thành viên: Từ 2 đến 5 người\n[x] Đã hoàn thành hồ sơ Profile & Join Discord sự kiện\n[x] Có kế hoạch nhân sự: Ít nhất 1 thành viên có mặt tại TiB Tokyo (24/10 & 07/11)\n[x] Khả năng thuyết trình và bảo vệ giải pháp bằng TIẾNG VIỆT", "tip": "Nếu bạn đang ở Việt Nam hoặc nước ngoài, hãy chủ động kết nối với các bạn sinh viên hoặc kỹ sư đang sinh sống/làm việc tại Nhật Bản thông qua kênh #find-teammates trên Discord để lập đội hybrid!", "isLastInPart": false}, {"id": "s1_4", "partId": "part1", "partNum": "PHẦN 1", "partTitle": "Tổng quan Cuộc thi & Thể lệ Sống còn", "title": "Bản quyền Sở hữu Trí tuệ (IP) & Luật Sử dụng Code", "analogy": "BTC tôn trọng tối đa quyền tác giả của thí sinh. Những gì bạn làm ra là tài sản của bạn, nhưng cần trung thực về nguồn gốc mã nguồn và thư viện bổ trợ.", "points": ["<strong>Quyền sở hữu trí tuệ (IP):</strong> Toàn bộ ý tưởng, mã nguồn, kiến trúc và sản phẩm nguyên mẫu (prototype) hoàn toàn thuộc về <strong>Đội thi</strong>.", "<strong>Quyền của BTC:</strong> BTC có quyền sử dụng tên đội, tên dự án, video demo, hình ảnh và tài liệu thuyết trình để phục vụ mục đích truyền thông, báo cáo và lưu trữ.", "<strong>Sử dụng Mã nguồn Mở & Thư viện bên thứ ba:</strong> Đội thi HOÀN TOÀN ĐƯỢC PHÉP sử dụng mã nguồn mở, thư viện (LangChain, LangGraph, CrewAI, LlamaIndex), pre-trained models (Claude, Gemini, Llama, GPT) và các API dịch vụ.", "<strong>Điều kiện bắt buộc:</strong> Đội thi phải có quyền sử dụng hợp pháp, tuân thủ giấy phép (License, ToS), và phải giải thích được <strong>giá trị thực chất mà đội tự xây dựng trong cuộc thi</strong> (không được copy nguyên si sản phẩm có sẵn).", "<strong>Phát triển trong Hackathon:</strong> Git repository phải thể hiện lịch sử commit minh bạch trong suốt thời gian diễn ra cuộc thi."], "math": "$$\\text{Được Phép} = \\text{Open Source} + \\text{Cloud APIs} + \\text{Pretrained LLM} + \\mathbf{\\text{Agent Workflow do Đội tự viết}}$$ ", "code": "# NGUYÊN TẮC MINH BẠCH KỸ THUẬT (TRANSPARENCY)\n# 1. Khai báo rõ các thư viện sử dụng trong requirements.txt / package.json\n# 2. Ghi chú rõ các nguồn tham khảo (Attribution / License)\n# 3. Làm nổi bật phần lõi mà đội tự phát triển:\n#    - Custom Agent Prompts & Planning Logic\n#    - Tool Calling Functions & Business Workflows\n#    - Custom Evaluation / Verification Metrics", "tip": "Đừng ngần ngại sử dụng thư viện mạnh như LangGraph hay CrewAI. Giám khảo không chấm điểm việc bạn tự viết lại bánh xe từ đầu, mà chấm cách bạn tích hợp các công cụ để giải quyết bài toán thực tế một cách tự chủ!", "isLastInPart": true, "partQuiz": {"question": "Điều kiện nào sau đây là BẮT BUỘC đối với các đội thi lọt vào vòng Pitch Day (24/10) và Demo Day (07/11) tại Tokyo?", "options": ["Toàn bộ 100% thành viên trong đội phải có mặt tại Tokyo và trình bày bằng tiếng Nhật.", "Bắt buộc có ít nhất 01 thành viên đại diện có mặt trực tiếp tại TiB Tokyo và thuyết trình bằng tiếng Việt.", "Chỉ cần gửi video quay sẵn qua Google Drive, không cần có người đến hội trường.", "Đội thi được BTC chi trả toàn bộ vé máy bay và khách sạn 5 sao tại Tokyo."], "answer": 1, "explanation": "Chính xác! Theo thể lệ và FAQs chính thức, các đội lọt vào vòng thi offline bắt buộc phải có ít nhất 01 thành viên có mặt trực tiếp tại hội trường TiB Tokyo để thuyết trình và trả lời Q&A bằng tiếng Việt. Chi phí di chuyển và ăn ở do thí sinh tự túc."}}]}, {"id": "part2", "part_num": "PHẦN 2", "title": "Nền tảng Hackathon4u & Quy trình 9 Bước Tối Thượng", "description": "Hướng dẫn chi tiết từ đăng ký tài khoản, cập nhật hồ sơ, tham gia Discord, ghép đội, tạo project đến nộp bài thi trên nền tảng Hackathon4u.", "lessons_covered": "Hackathon4u Manual · 5 Kênh Discord · Giới hạn 300 ký tự · Submissions", "slides": [{"id": "s2_1", "partId": "part2", "partNum": "PHẦN 2", "partTitle": "Nền tảng Hackathon4u & Quy trình 9 Bước Tối Thượng", "title": "Bước 01 - 03: Đăng ký Tài khoản, Profile & Discord", "analogy": "Profile trên Hackathon4u chính là tấm danh thiếp kỹ thuật của bạn. Team Lead và các thành viên khác sẽ dựa vào các kỹ năng và sở thích này để tìm kiếm và mời bạn vào đội thi.", "points": ["<strong>Bước 01 (Account):</strong> Truy cập https://hackathon4u.space -> Chọn Register -> Đăng ký bằng Email hoặc liên kết nhanh Google / GitHub -> Xác thực email đăng ký.", "<strong>Bước 02 (My Profile):</strong> Vào <em>My Profile</em> -> <em>Edit Profile</em>. Cập nhật Title (Developer, AI Engineer, Designer,...), Bio tóm tắt định hướng.", "<strong>Khai báo Technical Skills:</strong> Điền chính xác các từ khóa: Python, Vue.js, React, LangChain, LangGraph, FastAPI, Docker, PyTorch,... để xuất hiện trong bộ lọc tìm kiếm.", "<strong>Khai báo Interests & Domains:</strong> Chọn lĩnh vực quan tâm: AI, Agentic AI, Climate Tech, Healthcare, Fintech, Smart City,...", "<strong>Bước 03 (BẮT BUỘC - Join Discord):</strong> Vào mục <em>Event Chat</em> -> Bấm <em>Join Discord</em>. Đây là kênh liên lạc chính thức 24/7 giữa BTC và các đội thi."], "math": "$$\\text{Profile Chuẩn SEO Hackathon} = \\text{Title Rõ Ràng} + \\text{Technical Skills Cụ Thể} + \\text{Interests Phù Hợp Track}$$", "code": "# CHECKLIST HOÀN THIỆN PROFILE HACKATHON4U:\nFull Name        : Nguyen Van A\nTitle            : AI Engineer / LangGraph Specialist\nTechnical Skills : Python, LangGraph, FastAPI, AWS Bedrock, Vector DB\nInterests/Domains: Agentic AI, Sustainable Development, Smart Healthcare\nBio              : Đam mê phát triển Agent tự chủ tối ưu hóa vận hành", "tip": "Team lead thường dùng chức năng tìm kiếm theo Technical Skills để 'săn' nhân tài. Đừng để trống phần này nếu bạn muốn được mời vào những team mạnh nhất!", "isLastInPart": false}, {"id": "s2_2", "partId": "part2", "partNum": "PHẦN 2", "partTitle": "Nền tảng Hackathon4u & Quy trình 9 Bước Tối Thượng", "title": "Bản đồ 5 Kênh Discord & Kênh Riêng của Team", "analogy": "Discord của VJAI Hackathon 2026 được cấu trúc khoa học để bạn không bị ngập trong tin nhắn rác mà luôn nắm được thông tin sống còn từ Ban Tổ Chức.", "points": ["<strong>#announcement (Kênh Thông báo):</strong> Kênh quan trọng nhất. Cập nhật deadline, tài liệu template, lịch workshop, thông báo kết quả Sơ khảo Top 16, Top 8.", "<strong>#general (Sảnh chung):</strong> Trao đổi tổng quan, giới thiệu bản thân và giao lưu giữa các thí sinh trong cộng đồng.", "<strong>#find-teammates (Tìm đồng đội):</strong> Đăng bài tìm kiếm thành viên hoặc tìm đội theo mẫu: [Skill của bạn] + [Vị trí tìm kiếm] + [Track quan tâm].", "<strong>#questions-and-answers (Hỏi đáp):</strong> Đặt câu hỏi trực tiếp cho BTC về thể lệ, API, tài nguyên AWS hoặc thắc mắc kỹ thuật.", "<strong>#free-talk (Thảo luận tự do):</strong> Chia sẻ kinh nghiệm công nghệ, tài nguyên học tập bên lề.", "<strong>KÊNH RIÊNG CỦA TEAM (Private Channel):</strong> Khi team được tạo và duyệt thành viên hợp lệ trên Hackathon4u, hệ thống tự động đồng bộ và cấp 1 kênh kín trên Discord cho team bạn làm việc!"], "math": "$$\\text{Kênh Discord} = \\underbrace{\\text{#announcement (Theo dõi 100\\%)}}_{\\text{Tin chính thức}} + \\underbrace{\\text{#find-teammates}}_{\\text{Ghép đội}} + \\underbrace{\\text{Private Channel}}_{\\text{Làm project}}$$ ", "code": "MẪU BÀI ĐĂNG TÌM ĐỒNG ĐỘI TRÊN #find-teammates:\n- Họ tên/Nick: duonganh8155\n- Vai trò: AI Engineer / Agentic Developer\n- Thế mạnh: LangGraph, Python, Prompting, Multi-agent Architecture\n- Track quan tâm: Track 3 (Môi trường) hoặc Track 1 (Y tế / Giáo dục)\n- Mục tiêu: Tìm đồng đội có Product Sense, Frontend (React/Streamlit) hoặc bạn ở Tokyo!", "tip": "Hãy bật thông báo (Notifications: All Messages) riêng cho kênh #announcement để không bỏ lỡ bất kỳ đợt cập nhật tài nguyên hay thay đổi lịch thi nào!", "isLastInPart": false}, {"id": "s2_3", "partId": "part2", "partNum": "PHẦN 2", "partTitle": "Nền tảng Hackathon4u & Quy trình 9 Bước Tối Thượng", "title": "Bước 04 - 06: Đăng ký Event & Tạo / Ghép Đội", "analogy": "Bạn có thể khởi xướng một ý tưởng với tư cách Team Leader hoặc tham gia vào một đội có cùng tầm nhìn để tạo nên sức mạnh cộng hưởng.", "points": ["<strong>Bước 04 (Đăng ký Event):</strong> Vào Dashboard -> Nhấn <em>Find events to join</em> -> Chọn <em>Vietnam Japan AI Hackathon 2026</em> -> Đọc kỹ mô tả -> Nhấn <em>Register</em>.", "<strong>Bước 05 (Nếu bạn đã có ý tưởng — Tạo Team mới):</strong> Vào <em>My Team</em> -> <em>Create Team</em> -> Nhập Tên team, mô tả ý tưởng ban đầu -> Bạn sẽ trở thành Team Leader.", "<strong>Tìm kiếm thành viên:</strong> Vào mục <em>Participants</em>, lọc theo tag <em>Not in a team</em> hoặc <em>Looking for a team</em> -> Bấm <em>Invite</em> gửi lời mời.", "<strong>Bước 06 (Nếu bạn chưa có ý tưởng — Tìm Team):</strong> Xem danh sách dự án tại <em>Project Showcase</em> hoặc danh sách thành viên tại <em>Participants</em> -> Chọn team phù hợp -> Bấm <em>Ask to Join</em>.", "<strong>Duyệt thành viên:</strong> Team leader sẽ nhận được thông báo tại mục Notifications và duyệt vào đội. Đảm bảo đội có từ <strong>2 đến 5 thành viên</strong> để đủ điều kiện thi đấu."], "math": "$$\\text{Đội Hợp Lệ} \\iff 2 \\le \\text{Số lượng thành viên} \\le 5 \\quad \\& \\quad \\text{Hoàn tất Registration Form}$$", "code": "QUY TRÌNH GHÉP ĐỘI (TEAM MATCHING):\n[Cá nhân có ý tưởng] ---> [Tạo Team] ---> [Project Showcase] ---> [Mời thành viên qua Filter]\n                                                                           ^\n[Cá nhân chưa có team] ---> [Bật Looking for Team] ---> [Duyệt Team] ------+", "tip": "Đừng bấm 'Ask to Join' hàng loạt một cách vô tội vạ! Hãy nhắn tin trao đổi ngắn trước với Team Leader trên Discord để xem định hướng và văn hóa làm việc có phù hợp không.", "isLastInPart": false}, {"id": "s2_4", "partId": "part2", "partNum": "PHẦN 2", "partTitle": "Nền tảng Hackathon4u & Quy trình 9 Bước Tối Thượng", "title": "Bước 07 - 09: Tạo Project & Nộp Bài (Submissions)", "analogy": "Dự án trên Hackathon4u là nơi thể hiện hồ sơ năng lực của giải pháp. Việc nắm rõ giới hạn hiển thị và quy tắc nộp bài sẽ giúp bạn ghi điểm tuyệt đối trước Ban Giám khảo.", "points": ["<strong>Bước 07 (Tạo Project - Dành cho Team Leader):</strong> Vào mục <em>Submissions</em> -> Chọn <em>New project</em> -> Nhập Project Title, Tech Stack Tags, và <strong>chọn duy nhất 01 Track chính</strong> phù hợp nhất.", "<strong>QUY TẮC SỐNG CÒN VỀ MÔ TẢ (300 KÝ TỰ ĐẦU):</strong> Chỉ thành viên trong team mới xem được toàn bộ mô tả; người ngoài và BGK xem lướt sẽ <strong>chỉ thấy 300 ký tự đầu tiên</strong>! Hãy tóm tắt: Vấn đề cốt lõi + Giải pháp Agentic AI + Tác động đo lường được ngay trong 2 câu đầu.", "<strong>Giới hạn ý tưởng:</strong> Mỗi team được tạo tối đa <strong>02 ý tưởng project</strong>.", "<strong>Bước 08 (Theo dõi Dashboard):</strong> Thường xuyên kiểm tra Announcement Feed để tải các template proposal, slide mẫu do BTC chia sẻ.", "<strong>Bước 09 (Nộp Submission):</strong> Vào <em>Submissions</em> -> Chọn project -> Kéo xuống dưới cùng để upload file tài liệu (Proposal, Slide PDF, Video Demo link).", "<strong>Quy định chấm điểm:</strong> Thí sinh được upload nhiều lần, BTC sẽ lấy file cập nhật cuối cùng trước deadline để chấm."], "math": "$$\\text{Mô tả 300 Ký tự} = \\underbrace{\\text{Nỗi đau thực tế}}_{100\\text{ ký tự}} + \\underbrace{\\text{Agentic AI First}}_{100\\text{ ký tự}} + \\underbrace{\\text{Tác động bền vững}}_{100\\text{ ký tự}}$$", "code": "VÍ DỤ MÔ TẢ 300 KÝ TỰ ĐẦU TIÊN HOÀN HẢO:\n\"GreenLogistics Agent giải quyết lãng phí 40% chi phí chạy rỗng của xe tải liên tỉnh Việt - Nhật. Hệ thống ứng dụng Multi-Agent tự chủ (Planner, Matcher, Dispatcher) tối ưu hóa lộ trình và tự ghép đơn hàng thời gian thực, giúp giảm 35% phát thải CO2 và tiết kiệm 1.200 giờ công/tháng cho các SMEs.\"", "tip": "Nếu thấy chữ 'Incomplete' màu vàng xuất hiện ngay dưới tên project, hãy bấm vào kiểm tra ngay xem thiếu Track, Tech Stack hay Description để sửa kịp thời trước giờ chốt sổ!", "isLastInPart": true, "partQuiz": {"question": "Theo tài liệu hướng dẫn Hackathon4u Manual, khi tạo Project, phần mô tả (Project Description) hiển thị cho người dùng bên ngoài bị giới hạn bao nhiêu ký tự đầu tiên?", "options": ["Hiển thị đầy đủ toàn bộ không giới hạn ký tự.", "Chỉ hiển thị 100 ký tự đầu tiên.", "Chỉ hiển thị 300 ký tự đầu tiên, chỉ thành viên trong team mới xem được toàn bộ.", "Chỉ hiển thị tiêu đề, không hiển thị mô tả."], "answer": 2, "explanation": "Chính xác! Theo trang 8 tài liệu Hackathon4u Manual v2.0, phần Project Description hiển thị bên ngoài chỉ giới hạn 300 ký tự đầu tiên. Bạn cần đưa những thông tin đắt giá nhất (vấn đề, giải pháp Agentic AI, tác động) vào đoạn đầu này!"}}]}, {"id": "part3", "part_num": "PHẦN 3", "title": "Giải mã Chủ đề & 6 Tiêu chí Challenge Cốt lõi", "description": "Thấu hiểu định nghĩa mở về Sustainable Goals và bộ 6 tiêu chuẩn đánh giá khắt khe của Ban Giám khảo VJAI Hackathon 2026.", "lessons_covered": "Sustainable Goals Definition · 6 Challenge Requirements · Rubric Đánh giá", "slides": [{"id": "s3_1", "partId": "part3", "partNum": "PHẦN 3", "partTitle": "Giải mã Chủ đề & 6 Tiêu chí Challenge Cốt lõi", "title": "Định nghĩa Mở: Thế nào là 'Sustainable Goals'?", "analogy": "Rất nhiều thí sinh nghĩ 'bền vững' chỉ là bảo vệ môi trường hay 17 mục tiêu SDGs của Liên Hợp Quốc. Tại VJAI Hackathon 2026, BTC đã đưa ra một định nghĩa mở rộng và thực tiễn hơn rất nhiều.", "points": ["<strong>Không giới hạn trong 17 SDGs của LHQ:</strong> Bạn không bị bó hẹp trong các danh mục truyền thống như xóa đói giảm nghèo hay bình đẳng giới.", "<strong>Bản chất cốt lõi:</strong> Mục tiêu hướng tới việc tạo ra <strong>giá trị thiết thực</strong> và <strong>tác động tích cực, lâu dài</strong> cho con người, cộng đồng, doanh nghiệp và xã hội.", "<strong>Bền vững cho Con người:</strong> Cải thiện sức khỏe thể chất/tinh thần, cá nhân hóa giáo dục, trao quyền cho người già và người yếu thế.", "<strong>Bền vững cho Doanh nghiệp:</strong> Tự động hóa quy trình, giảm chi phí vận hành, bảo vệ dòng tiền, giúp SMEs tồn tại và tăng trưởng bền vững.", "<strong>Bền vững cho Xã hội & Hạ tầng:</strong> Giảm ách tắc giao thông, tối ưu năng lượng, phòng chống rủi ro thiên tai, minh bạch hóa dịch vụ công."], "math": "$$\\text{Sustainable Goal} = \\text{Thực Tiễn (Practical)} + \\text{Tác Động Lâu Dài (Long-term Impact)} + \\text{Có Thể Đo Lường (Measurable)}$$", "code": "# MA TRẬN ĐỐI CHIẾU SUSTAINABLE GOALS TẠI VJAI 2026:\n1. Con người   : Sức khỏe tinh thần, nâng cao kỹ năng, trợ lý người già\n2. Doanh nghiệp: Chuyển đổi số SMEs, tối ưu hóa nguồn lực, quản trị rủi ro\n3. Môi trường  : Giảm phát thải carbon, nông nghiệp chính xác, tái chế\n4. Đô thị      : Giao thông thông minh, bảo trì cầu đường, tiết kiệm năng lượng\n5. Cộng đồng   : Tiếp cận dịch vụ y tế/pháp lý bình đẳng, ứng phó thiên tai", "tip": "Đừng cố gượng ép dự án của mình vào một mục tiêu viển vông. Hãy bắt đầu từ một nỗi đau rất cụ thể mà bạn hoặc người xung quanh đang gặp phải, rồi chứng minh giải pháp của bạn tạo ra giá trị bền vững ra sao!", "isLastInPart": false}, {"id": "s3_2", "partId": "part3", "partNum": "PHẦN 3", "partTitle": "Giải mã Chủ đề & 6 Tiêu chí Challenge Cốt lõi", "title": "3 Tiêu chí Đầu: Real Problem, Agentic First & Alignment", "analogy": "Đây là 3 trụ cột định hình tính đúng đắn của dự án ngay từ vòng chấm Proposal đầu tiên.", "points": ["<strong>1. Vấn đề Thực tế (Real Problem):</strong> Bài toán phải có thật, nhức nhối, không phải bài toán tự tưởng tượng. Chứng minh được có đối tượng người dùng cụ thể đang chịu thiệt hại về thời gian, tiền bạc hoặc sức khỏe.", "<strong>2. Agentic AI là Trọng tâm (Agentic AI First):</strong> ĐÂY LÀ TIÊU CHÍ SỐNG CÒN. Giải pháp phải sử dụng AI tự chủ làm hạt nhân điều khiển. Không chấp nhận chatbot hỏi đáp văn bản thông thường gắn mác AI. Hệ thống phải biết lập kế hoạch (Planning), gọi công cụ (Tool Calling), tự kiểm tra kết quả (Self-Reflection) và xử lý quy trình phức tạp.", "<strong>3. Gắn kết Mục tiêu Bền vững (Sustainable Goals Alignment):</strong> Giải pháp phải thể hiện rõ giá trị mang lại cho con người, cộng đồng, môi trường hoặc doanh nghiệp trong trung và dài hạn."], "math": "$$\\text{Điểm Sơ Khảo} \\propto \\text{Nỗi Đau Thực Tế} \\times \\text{Mức Độ Tự Chủ của Agent (Autonomy)} \\times \\text{Tính Bền Vững}$$", "code": "# BÀI TEST \"AGENTIC AI FIRST\":\nif system.is_just_chat_interface and not system.uses_tools and not system.has_planning:\n    rating = \"LOẠI SỚM (Chỉ là Chatbot thông thường)\"\nelif system.has_multi_agents and system.calls_apis and system.has_reflection_loop:\n    rating = \"ĐẠT CHUẨN AGENTIC AI FIRST (Tiềm năng Top 16)\"", "tip": "Hãy tự hỏi: 'Nếu bỏ phần Agentic AI đi mà chỉ dùng phần mềm quản lý thông thường hoặc một con chatbot ChatGPT thì có giải quyết được vấn đề không?' Nếu câu trả lời là có, bạn cần thiết kế lại bài toán để vai trò của Agentic AI trở nên không thể thay thế!", "isLastInPart": false}, {"id": "s3_3", "partId": "part3", "partNum": "PHẦN 3", "partTitle": "Giải mã Chủ đề & 6 Tiêu chí Challenge Cốt lõi", "title": "3 Tiêu chí Tiếp: Impact, Prototype & Hackathon Build", "analogy": "Ý tưởng hay đến đâu cũng vô nghĩa nếu không đo lường được kết quả và không có sản phẩm chạy được thực tế.", "points": ["<strong>4. Tác động có thể đo lường (Measurable Impact):</strong> Không nói chung chung như 'giúp cuộc sống tốt hơn'. Phải đưa ra các chỉ số KPI định lượng: Giảm 45% thời gian xử lý thủ tục, tiết kiệm 5.000 USD chi phí vận hành/tháng, giảm 30% lượng rác thải hữu cơ, độ chính xác tăng từ 72% lên 94%.", "<strong>5. Prototype Khả thi (Feasible Prototype):</strong> Phải có sản phẩm nguyên mẫu hoạt động được trong buổi Demo Day. Giao diện mượt mà, API phản hồi tốt, xử lý được luồng dữ liệu mẫu thực tế, chứng minh tính khả thi kỹ thuật.", "<strong>6. Phát triển trong Hackathon (Developed During Hackathon):</strong> Giải pháp phải được thiết kế và hiện thực hóa trong khuôn khổ thời gian cuộc thi. Đội thi minh bạch lịch sử Git commits, không mang nguyên si sản phẩm đã kinh doanh từ trước vào thi."], "math": "$$\\text{Measurable Impact} = \\frac{\\text{Hiệu Quả Thực Tế (Cost, Time, Quality)}}{\\text{Chi Phí Vận Hành (Tokens, Infra)}}$$", "code": "# BẢNG CHỈ SỐ KPI ĐO LƯỜNG MẪU:\nMetric 1: Thời gian xử lý 1 hồ sơ khai thuế (Giảm từ 120 phút -> 8 phút)\nMetric 2: Tỷ lệ phát hiện sai sót số liệu (Đạt 96.8% so với chuyên viên 92%)\nMetric 3: Chi phí token cho mỗi lượt Agent thực thi (~0.04 USD / workflow)\nMetric 4: Khả năng scale: Xử lý đồng thời 500 yêu cầu qua hàng đợi Celery/Redis", "tip": "Trong slide Pitching và bài thuyết trình Demo Day, hãy dành riêng một slide lớn cho 'Measurable Impact' với các biểu đồ so sánh Trước (Before) và Sau khi dùng Agentic AI (After) để gây ấn tượng mạnh với BGK!", "isLastInPart": true, "partQuiz": {"question": "Yếu tố nào sau đây quyết định một giải pháp đạt tiêu chuẩn 'Agentic AI First' thay vì một Chatbot thông thường?", "options": ["Giao diện người dùng có màu sắc cyberpunk đẹp mắt và có avatar 3D.", "Hệ thống có tính tự chủ (Autonomy), khả năng lập kế hoạch (Planning), gọi công cụ thực thi (Tool Calling) và vòng lặp tự phản ánh/sửa lỗi (Reflection).", "Sử dụng prompt dài hơn 5.000 từ trên giao diện web ChatGPT.", "Ứng dụng được cài đặt trên điện thoại di động iOS và Android."], "answer": 1, "explanation": "Chính xác! Agentic AI vượt xa Chatbot thông thường ở tính tự chủ (Autonomy), khả năng phân tách bài toán và lập kế hoạch (Planning), chủ động gọi API/Tools bên ngoài và tự kiểm tra kết quả (Self-Reflection) để hoàn thành mục tiêu."}}]}, {"id": "part4", "part_num": "PHẦN 4", "title": "Khám phá 6 Tracks & Ngân hàng Đề tài (Ideation Bank)", "description": "Phân tích chiều sâu 6 Track thi đấu và bộ gợi ý đề tài đột phá sẵn sàng triển khai thành đồ án hackathon.", "lessons_covered": "6 Tracks Định hướng · Đề tài Mẫu · Phân tích Nỗi đau & Kiến trúc", "slides": [{"id": "s4_1", "partId": "part4", "partNum": "PHẦN 4", "partTitle": "Khám phá 6 Tracks & Ngân hàng Đề tài (Ideation Bank)", "title": "Track 1: Giáo dục & Chăm sóc Con người", "analogy": "Hướng tới việc nâng tầm chất lượng cuộc sống, học tập và sức khỏe của từng cá nhân thông qua những Agent thấu hiểu và cá nhân hóa.", "points": ["<strong>Lĩnh vực gợi ý:</strong> Cá nhân hóa học tập, chăm sóc sức khỏe, sức khỏe tinh thần (mental health), phát triển kỹ năng cho người lao động, hỗ trợ người cao tuổi và người khuyết tật.", "<strong>Đề tài 1 — NeuroAgent (Trợ lý Phục hồi Tâm lý & Cảm xúc):</strong> Đội ngũ Agent theo dõi hội thoại/nhật ký của người dùng, phân tích xu hướng stress, tự động đề xuất bài tập chánh niệm, và kích hoạt quy trình cảnh báo khẩn cấp khi phát hiện dấu hiệu trầm cảm nặng.", "<strong>Đề tài 2 — SilverCompanion (Agent Đồng hành cho Người Cao tuổi):</strong> Agent đàm thoại bằng giọng nói tự nhiên, nhắc lịch uống thuốc dựa trên đơn thuốc hình ảnh, kiểm tra tình trạng vận động hằng ngày và thông báo cho người thân tại Việt Nam/Nhật.", "<strong>Đề tài 3 — CodeCraft Adaptive Tutor:</strong> Agent tự động phân tích code lỗi của sinh viên, không đưa code giải sẵn mà gợi ý câu hỏi dẫn dắt (Socratic method), tự sinh bài tập bổ trợ lấp lỗ hổng kiến thức."], "math": "$$\\text{Cá Nhân Hóa} = f(\\text{Trạng Thái Người Dùng}, \\text{Dữ Liệu Lịch Sử}) \\longrightarrow \\text{Kế Hoạch Can Thiệp Riêng Biệt}$$", "code": "# SƠ ĐỒ WORKFLOW: SILVERCOMPANION AGENT\n[Giọng nói người cao tuổi] -> [Speech-to-Text] -> [Supervisor Agent]\n                                                        |\n      +--------------------+----------------------------+\n      | (Tra cứu thuốc)    | (Nhật ký sức khỏe)         | (Cảnh báo khẩn)\n      v                    v                            v\n[Medical OCR Tool]   [Vector DB Memory]        [SMS/Call Twilio API]", "tip": "Với các đề tài về y tế và tâm lý, luôn cài đặt các 'Guardrails' (hàng rào bảo vệ an toàn). Phải có tuyên bố miễn trừ trách nhiệm y khoa và chỉ đóng vai trò hỗ trợ kết nối chuyên gia!", "isLastInPart": false}, {"id": "s4_2", "partId": "part4", "partNum": "PHẦN 4", "partTitle": "Khám phá 6 Tracks & Ngân hàng Đề tài (Ideation Bank)", "title": "Track 2: Doanh nghiệp & Dịch vụ Tài chính", "analogy": "Các doanh nghiệp nhỏ và vừa (SMEs) tại Việt Nam và Nhật Bản đang thiếu hụt trầm trọng nhân sự chuyên môn. Agentic AI chính là lực lượng lao động số tự chủ giải phóng sức lao động.", "points": ["<strong>Lĩnh vực gợi ý:</strong> AI Agent cho doanh nghiệp, tự động hóa quy trình nghiệp vụ (RPA 2.0), hỗ trợ SMEs, quản trị doanh nghiệp, phân tích tài chính và quản lý rủi ro.", "<strong>Đề tài 1 — Autonomous SME CFO:</strong> Đội Agent tự động đọc hóa đơn điện tử (PDF/ảnh), đối chiếu công nợ ngân hàng, phân loại chi phí, dự báo dòng tiền 30 ngày tới và soạn thảo cảnh báo thiếu hụt thanh khoản.", "<strong>Đề tài 2 — Cross-Border Trade Compliance Agent:</strong> Hỗ trợ doanh nghiệp Việt Nam xuất khẩu sang Nhật: Tự tra cứu mã HS Code, kiểm tra biểu thuế EPA/CPTPP, kiểm tra hàm lượng tồn dư thuốc BVTV theo tiêu chuẩn Nhật và soạn bộ hồ sơ xuất khẩu.", "<strong>Đề tài 3 — FraudShield Multi-Agent System:</strong> Hệ thống giám sát giao dịch tài chính đa tác nhân: 1 Agent phân tích hành vi bất thường, 1 Agent truy vấn lịch sử tín dụng, 1 Agent tổng hợp báo cáo giải trình cho kiểm soát viên."], "math": "$$\\text{ROI Doanh Nghiệp} = \\frac{\\text{Chi Phí Nhân Lực Tiết Kiệm} - \\text{Chi Phí API LLM}}{\\text{Thời Gian Thu Hồi Vốn}} > 5x$$", "code": "# CẤU TRÚC ĐỘI AGENT BÁN HÀNG & THẨM ĐỊNH SME:\nAgent 1: OCR & Document Parser (Trích xuất hóa đơn PDF/Excel)\nAgent 2: Cashflow Forecaster (Chạy mô hình chuỗi thời gian ARIMA/Prophet)\nAgent 3: Tax & Legal Compliance (Rà soát quy định thuế Việt - Nhật)\nAgent 4: Executive Reporter (Xuất dashboard Streamlit & gửi báo cáo Telegram)", "tip": "Doanh nghiệp quan tâm nhất đến ROI (hiệu quả đầu tư) và tính chính xác của số liệu. Hãy bổ sung tính năng 'Human-in-the-loop': Agent chuẩn bị sẵn chứng từ và chỉ thực thi lệnh chuyển tiền khi người quản lý bấm phê duyệt!", "isLastInPart": false}, {"id": "s4_3", "partId": "part4", "partNum": "PHẦN 4", "partTitle": "Khám phá 6 Tracks & Ngân hàng Đề tài (Ideation Bank)", "title": "Track 3: Môi trường & Phát triển Bền vững", "analogy": "Bảo vệ môi trường không còn là khẩu hiệu, mà là bài toán tối ưu hóa tài nguyên dựa trên dữ liệu và tác nhân hành động tức thời.", "points": ["<strong>Lĩnh vực gợi ý:</strong> Giảm rác thải, quản lý tài nguyên nước/đất, tiết kiệm năng lượng, kinh tế tuần hoàn (circular economy) và nông nghiệp bền vững.", "<strong>Đề tài 1 — AgriSense Autonomous Farm Dispatcher:</strong> Hệ thống Agent kết hợp cảm biến IoT đất và dự báo thời tiết: Tự động phân tích độ ẩm, dự báo mưa trong 48 giờ để điều khiển van tưới nhỏ giọt và lập lịch bón phân vi sinh tự động, tiết kiệm 40% nước tưới.", "<strong>Đề tài 2 — CarbonTrace Multi-Agent:</strong> Tự động tính toán phát thải khí nhà kính (Scope 1, 2, 3) cho các xưởng may mặc/chế biến, đề xuất vật liệu xanh thay thế và lập báo cáo ESG chuẩn quốc tế.", "<strong>Đề tài 3 — FoodRescue Circular Network:</strong> Agent giám sát hạn sử dụng thực phẩm tại các siêu thị, tự động hạ giá theo bậc thang giờ vàng, kết nối tổ chức từ thiện và điều phối tài xế lấy hàng thừa trước giờ hủy."], "math": "$$\\text{CO}_2\\text{ Saved} = \\sum_{i} (\\text{Lượng Tiêu Thụ Cũ}_i - \\text{Lượng Tối Ưu Mới}_i) \\times \\text{Emission Factor}_i$$", "code": "# LOGIC ĐIỀU PHỐI NÔNG NGHIỆP THÔNG MINH:\nclass FarmDispatcherAgent:\n    def evaluate_irrigation(self, soil_moisture, weather_forecast):\n        if soil_moisture < 30 and weather_forecast['rain_prob_24h'] < 0.2:\n            return self.call_tool('turn_on_irrigation_valve', duration_min=20)\n        elif weather_forecast['rain_prob_24h'] >= 0.7:\n            return self.log('Hoãn tưới: Dự báo có mưa lớn trong 24h tới.')", "tip": "Các dự án về môi trường rất dễ giành thiện cảm nếu bạn đưa ra được công thức tính toán lượng khí thải hoặc lượng nước/điện tiết kiệm được một cách khoa học và có cơ sở trích dẫn!", "isLastInPart": false}, {"id": "s4_4", "partId": "part4", "partNum": "PHẦN 4", "partTitle": "Khám phá 6 Tracks & Ngân hàng Đề tài (Ideation Bank)", "title": "Track 4: Đô thị, Công nghiệp & Hạ tầng", "analogy": "Đô thị hiện đại và các nhà máy thông minh đòi hỏi những hệ thống tự hành có khả năng dự đoán trước sự cố và điều phối nguồn lực phức tạp.", "points": ["<strong>Lĩnh vực gợi ý:</strong> Giao thông thông minh, quản lý đô thị, sản xuất thông minh (Smart Manufacturing), logistics & chuỗi cung ứng, bảo trì dự đoán hạ tầng.", "<strong>Đề tài 1 — GreenRoute Fleet Orchestrator:</strong> Đội Agent tối ưu hóa tuyến đường xe giao hàng đô thị dựa trên mật độ kẹt xe thời gian thực và trạm sạc xe điện, ghép đơn 2 chiều tránh xe chạy rỗng.", "<strong>Đề tài 2 — InfraInspect Predictive Agent:</strong> Phân tích hình ảnh vết nứt cầu đường từ camera hành trình/drone, tự động phân loại mức độ nguy hiểm kết cấu (A, B, C), lập phiếu bảo trì và phân bổ đội kỹ sư gần nhất.", "<strong>Đề tài 3 — SmartFactory Energy Balancer:</strong> Agent tự động điều phối lịch vận hành máy móc công suất lớn vào các khung giờ giá điện thấp (off-peak hours), giảm chi phí điện sản xuất 20% mà không giảm sản lượng."], "math": "$$\\min \\text{Total Cost} = \\sum_{e \\in E} c_e x_e + \\lambda \\cdot \\text{CarbonEmission}(x)$$", "code": "# BẢO TRÌ DỰ ĐOÁN HẠ TẦNG (INFRA PREDICTIVE AGENT):\nAgent A (Vision Auditor)  : Phát hiện vết nứt bê tông qua mô hình YOLOv8\nAgent B (Civil Evaluator) : Đánh giá rủi ro sụt lún theo tiêu chuẩn kỹ thuật\nAgent C (Resource Planner): Tra cứu tồn kho vật liệu & lập lịch đội thi công", "tip": "Đề tài Track 4 rất phù hợp với thế mạnh công nghiệp của Nhật Bản. Nếu giải pháp của bạn liên quan đến logistics hoặc bảo trì hạ tầng Nhật - Việt, hãy nhấn mạnh tính ứng dụng thực tế tại hai thị trường!", "isLastInPart": false}, {"id": "s4_5", "partId": "part4", "partNum": "PHẦN 4", "partTitle": "Khám phá 6 Tracks & Ngân hàng Đề tài (Ideation Bank)", "title": "Track 5 & 6: Dịch vụ Công & Open Track", "analogy": "Công nghệ sinh ra là để phụng sự cộng đồng, đặc biệt là những người dễ bị tổn thương nhất trong xã hội.", "points": ["<strong>Track 5 (Cộng đồng & Dịch vụ công):</strong> Chính phủ số, an toàn cộng đồng, phòng chống thiên tai, tăng khả năng tiếp cận công nghệ và dịch vụ thiết yếu.", "<strong>Đề tài — VietNippon Public Service Navigator:</strong> Trợ lý hành chính đa ngữ tự chủ dành cho 500.000+ người Việt tại Nhật: Tự động hướng dẫn thủ tục gia hạn visa, đăng ký địa chỉ thường trú (Juminhyo), đóng bảo hiểm nenkin, tự điền biểu mẫu PDF tiếng Nhật chính xác.", "<strong>Đề tài — DisasterResponse Swarm:</strong> Mạng lưới Agent tự động cào tin tức mạng xã hội khi xảy ra động đất/bão lũ, vẽ bản đồ nhiệt khu vực cần cứu trợ, lọc tin giả và điều phối nhu yếu phẩm theo thứ tự ưu tiên.", "<strong>Track 6 (Lĩnh vực khác & Mini Challenges):</strong> Bất kỳ ý tưởng nào ứng dụng Agentic AI mang lại giá trị thiết thực đều được chào đón!", "<strong>Sẵn sàng cho Mini Challenges:</strong> Trong cuộc thi, các nhà tài trợ có thể đưa ra đề bài nhánh với giải thưởng hấp dẫn. Hãy giữ cấu trúc code dạng module để dễ dàng tích hợp thêm tính năng mới."], "math": "$$\\text{Chỉ Số Tiếp Cận} = \\frac{\\text{Số Người Hoàn Thành Thủ Tục Thành Công}}{\\text{Tổng Thời Gian Chờ Đợi}} \\uparrow 300\\%$$", "code": "# DỊCH VỤ CÔNG TỰ CHỦ CHO CỘNG ĐỒNG VIỆT - NHẬT:\nInput: \"Tôi muốn chuyển nhà từ Shinjuku sang Yokohama, cần làm thủ tục gì?\"\nAgent Workflow:\n1. Tra cứu quy định chuyển hộ khẩu tại Shinjuku Ward Office\n2. Lập Checklist giấy tờ cần chuẩn bị (Tenshutsu Todoke, My Number)\n3. Tải và điền mẫu đơn PDF tự động bằng tiếng Nhật dựa trên thông tin người dùng\n4. Hướng dẫn đặt lịch hẹn trực tuyến tại Yokohama City Hall", "tip": "Đề tài hỗ trợ cộng đồng người Việt tại Nhật hoặc doanh nghiệp hợp tác Việt - Nhật luôn nhận được sự đồng cảm và ủng hộ rất lớn từ Ban Giám khảo hai nước!", "isLastInPart": true, "partQuiz": {"question": "Trong các đề tài sau, đề tài nào thể hiện rõ nét nhất bản chất của một hệ thống 'Agentic AI' phục vụ cộng đồng?", "options": ["Một trang web tĩnh liệt kê danh bạ số điện thoại các cơ quan hành chính tại Tokyo.", "Một ứng dụng tra cứu luật tự động đọc câu hỏi, tự phân tích văn bản pháp lý, tự gọi API cơ quan công quyền, điền form PDF và theo dõi trạng thái hồ sơ cho người dân.", "Một kênh chatbot hỏi gì đáp nấy nhưng không thể gọi API và không có hành động cụ thể.", "Một trang fanpage Facebook đăng tin bài cảnh báo động đất bằng tay."], "answer": 1, "explanation": "Chính xác! Ứng dụng tự động phân tích văn bản, gọi API cơ quan công quyền, điền biểu mẫu PDF và theo dõi trạng thái hồ sơ thể hiện trọn vẹn chu trình Tự chủ: Nhận thức -> Suy luận -> Hành động -> Quan sát."}}]}, {"id": "part5", "part_num": "PHẦN 5", "title": "Nhập môn Agentic AI (Zero to Hero Concept)", "description": "Nắm vững lý thuyết nền tảng về AI Agent, phân biệt bản chất với Chatbot và giải mã vòng lặp tự chủ Autonomous Loop.", "lessons_covered": "Sự Tiến Hóa AI · Chatbot vs Agent · 5 Trụ Cột Tác Nhân · Autonomous Loop", "slides": [{"id": "s5_1", "partId": "part5", "partNum": "PHẦN 5", "partTitle": "Nhập môn Agentic AI (Zero to Hero Concept)", "title": "Sự Tiến hóa của AI: Từ Rule-based đến Agentic AI", "analogy": "Hành trình phát triển của trí tuệ nhân tạo đi từ những cỗ máy tuân thủ luật lệ cứng nhắc đến những thực thể số có khả năng tự chủ ra quyết định và hành động trong môi trường phức tạp.", "points": ["<strong>Giai đoạn 1 (Rule-based & Expert Systems):</strong> Lập trình viên viết hàng nghìn câu lệnh `if-else`. Cứng nhắc, không thể mở rộng khi gặp tình huống mới.", "<strong>Giai đoạn 2 (Traditional Machine Learning):</strong> Học từ dữ liệu (Hồi quy, Cây quyết định, SVM, Random Forest). Giải quyết bài toán phân loại và dự báo có cấu trúc.", "<strong>Giai đoạn 3 (Deep Learning & GenAI Chatbot):</strong> Mạng nơ-ron sâu và LLM (ChatGPT, Claude, Gemini). Tạo sinh văn bản, hình ảnh, mã nguồn mượt mà nhưng mang tính <em>bị động (Passive)</em> — chỉ trả lời khi người dùng ra lệnh.", "<strong>Giai đoạn 4 (HIỆN TẠI — AGENTIC AI):</strong> AI có mục tiêu (Goal-driven), chủ động hành động, lập kế hoạch, sử dụng công cụ và tự sửa sai để hoàn thành nhiệm vụ mà không cần người dùng can thiệp từng bước."], "math": "$$\\text{Tiến Hóa: } \\text{If-Else} \\longrightarrow \\text{Machine Learning} \\longrightarrow \\text{Passive GenAI} \\longrightarrow \\mathbf{\\text{Autonomous Agentic AI}}$$", "code": "# SO SÁNH CÁCH THỰC THI:\n# 1. Passive LLM (Chatbot):\nresponse = llm.generate(\"Lập danh sách các khách hàng nợ thuế.\")\n# Kết quả: Chỉ in ra văn bản tư vấn chung chung.\n\n# 2. Agentic AI:\nagent.run(goal=\"Thu hồi nợ thuế quý 3\")\n# Tự động: Đọc database -> Lọc nợ xấu -> Tra cứu biểu thuế -> Gọi API gửi email nhắc nợ -> Báo cáo", "tip": "Đừng bao giờ nói với Giám khảo 'Tôi dùng ChatGPT để làm dự án'. Hãy nói: 'Tôi xây dựng một hệ thống Agentic AI có khả năng tự chủ phân tách mục tiêu và tương tác với môi trường bên ngoài'!", "isLastInPart": false}, {"id": "s5_2", "partId": "part5", "partNum": "PHẦN 5", "partTitle": "Nhập môn Agentic AI (Zero to Hero Concept)", "title": "Bảng So sánh Bản chất: Chatbot vs. Agentic AI", "analogy": "Chatbot giống như một nhà thông thái bị nhốt trong phòng kín chỉ biết nói chuyện; còn Agentic AI là người trợ lý đắc lực được trao chìa khóa, máy tính và quyền thực thi công việc ngoài đời thực.", "points": ["<strong>Tính Tự chủ (Autonomy):</strong> Chatbot trả lời câu hỏi đơn lẻ (1-turn); Agent tự đặt ra chuỗi hành động để đạt mục tiêu cuối cùng.", "<strong>Lập kế hoạch (Planning):</strong> Chatbot không có kế hoạch; Agent tự chia bài toán lớn thành các bước con (Sub-tasks) và sắp xếp thứ tự thực thi.", "<strong>Gọi công cụ (Tool Use):</strong> Chatbot bị cô lập; Agent kết nối API, chạy mã Python, đọc ghi Database, gọi dịch vụ đám mây.", "<strong>Cơ chế Phản tỉnh (Reflection):</strong> Chatbot không biết mình nói sai trừ khi người dùng nhắc; Agent tự chạy code kiểm thử, thấy lỗi tự quay lại sửa prompt.", "<strong>Khả năng Phối hợp (Multi-Agent):</strong> Agent có thể chia việc cho các Agent chuyên trách khác trong một hệ sinh thái phối hợp nhịp nhàng."], "math": "$$\\text{Agent} = \\text{LLM Core} + \\text{Planning} + \\text{Tools} + \\text{Memory} + \\text{Execution Loop}$$", "code": "+----------------------+---------------------------------+---------------------------------+\n| Tiêu Chí             | Chatbot Thông Thường (RAG)      | Agentic AI Tự Chủ               |\n+----------------------+---------------------------------+---------------------------------+\n| Mục tiêu             | Trả lời câu hỏi                 | Hoàn thành mục tiêu phức tạp    |\n| Hành động            | Xuất văn bản / Markdown         | Gọi API, ghi DB, chạy Code      |\n| Kiểm soát lỗi        | Phụ thuộc người dùng            | Tự phản ánh (Self-Correction)   |\n| Cấu trúc tương tác   | Tuyến tính (Linear)             | Đồ thị trạng thái (State Graph) |\n+----------------------+---------------------------------+---------------------------------+", "tip": "Khi trình bày slide dự thi, bảng so sánh này sẽ giúp Giám khảo lập tức nhận ra sản phẩm của bạn vượt trội thế nào so với các ứng dụng AI thông thường trên thị trường!", "isLastInPart": false}, {"id": "s5_3", "partId": "part5", "partNum": "PHẦN 5", "partTitle": "Nhập môn Agentic AI (Zero to Hero Concept)", "title": "Vòng lặp Tự chủ (The Autonomous Loop)", "analogy": "Mọi Agent thông minh đều hoạt động dựa trên một vòng lặp khép kín liên tục tương tác với môi trường bên ngoài: Nhận thức -> Suy luận -> Hành động -> Quan sát -> Phản tỉnh.", "points": ["<strong>1. Perceive (Nhận thức):</strong> Tiếp nhận trạng thái hiện tại của thế giới thông qua dữ liệu đầu vào (Prompt người dùng, kết quả API, cảm biến, file tài liệu).", "<strong>2. Reason & Plan (Suy luận & Lập kế hoạch):</strong> Phân tích mục tiêu, tra cứu trí nhớ, quyết định bước tiếp theo cần làm gì và cần dùng công cụ nào.", "<strong>3. Act (Hành động):</strong> Phát lệnh gọi công cụ (Function Calling) như gửi yêu cầu HTTP, truy vấn SQL, tính toán toán học.", "<strong>4. Observe (Quan sát):</strong> Đọc kết quả trả về từ công cụ vừa gọi (Observation).", "<strong>5. Reflect & Terminate (Phản ánh & Hoàn tất):</strong> Đánh giá xem kết quả đã thỏa mãn mục tiêu chưa. Nếu chưa hoặc bị lỗi -> lặp lại bước 2; Nếu xong -> xuất kết quả cho người dùng."], "math": "$$\\text{Loop: } S_t \\xrightarrow{\\text{Perceive}} A_t \\xrightarrow{\\text{Act (Tool)}} O_{t+1} \\xrightarrow{\\text{Reflect}} S_{t+1}$$", "code": "WHILE mục_tiêu_chưa_hoàn_thành:\n    1. Nhận thức trạng thái hiện tại (State)\n    2. Suy luận (Thought) & Chọn công cụ (Action)\n    3. Thực thi công cụ -> Thu nhận kết quả (Observation)\n    4. Đánh giá (Self-Reflect):\n       - Nếu thành công -> Cập nhật Memory\n       - Nếu gặp lỗi -> Điều chỉnh kế hoạch và thử lại\nTRẢ VỀ KẾT QUẢ CUỐI CÙNG (Final Answer)", "tip": "Luôn đặt ra 'Max Iterations' (số vòng lặp tối đa, ví dụ 10 lần) trong code của bạn. Nếu Agent bị kẹt trong vòng lặp vô tận do tool bị lỗi, hệ thống phải biết dừng lại an toàn và báo lỗi cho người dùng!", "isLastInPart": false}, {"id": "s5_4", "partId": "part5", "partNum": "PHẦN 5", "partTitle": "Nhập môn Agentic AI (Zero to Hero Concept)", "title": "5 Trụ cột Kỹ thuật của một AI Agent Hoàn chỉnh", "analogy": "Giống như con người có ngũ giác, não bộ, trí nhớ, đôi bàn tay và khả năng nói, một AI Agent hoàn chỉnh được cấu thành từ 5 khối kiến trúc không thể thiếu.", "points": ["<strong>1. Perception (Giác quan tiếp nhận):</strong> Khả năng đọc đa phương thức (Văn bản, File Excel/PDF, Hình ảnh y tế, Dữ liệu IoT).", "<strong>2. Brain / LLM (Bộ não suy luận):</strong> Mô hình ngôn ngữ lớn đóng vai trò hạt nhân điều khiển (Reasoning Engine), đưa ra quyết định dựa trên ngữ cảnh.", "<strong>3. Memory (Bộ nhớ đa tầng):</strong> Short-term memory (Cửa sổ ngữ cảnh hội thoại) + Long-term memory (Vector Database lưu trữ kiến thức chuyên sâu và lịch sử bài học).", "<strong>4. Toolset (Đôi bàn tay thực thi):</strong> Danh mục các API, hàm Python, công cụ tra cứu web được định nghĩa bằng chuẩn OpenAPI hoặc JSON Schema.", "<strong>5. Communication & Action (Giao tiếp & Hành động):</strong> Khả năng xuất kết quả, vẽ biểu đồ, gửi thông báo hoặc bàn giao nhiệm vụ cho Agent khác."], "math": "$$\\text{Architecture} = \\langle \\text{Perception}, \\text{Brain}, \\text{Memory}, \\text{Tools}, \\text{Action} \\rangle$$", "code": "# KHUNG ĐỊNH NGHĨA 1 AGENT CHUẨN PYTHON:\nclass AIAgent:\n    def __init__(self, name, role, tools, memory, llm):\n        self.name = name          # Danh tính\n        self.role = role          # Vai trò chuyên môn\n        self.tools = tools        # Danh sách công cụ được phép dùng\n        self.memory = memory      # Bộ nhớ Vector Store + Buffer\n        self.llm = llm            # Bộ não suy luận (Claude / Gemini)", "tip": "Đừng nhồi nhét quá nhiều công cụ cho 1 Agent duy nhất (Tool Overload). Nếu có hơn 10 công cụ, hãy chia nhỏ thành nhiều Agent chuyên biệt và dùng mô hình Supervisor để điều phối!", "isLastInPart": true, "partQuiz": {"question": "Trong vòng lặp tự chủ (Autonomous Loop) của Agentic AI, sau khi Agent gọi công cụ (Act) và nhận kết quả (Observe), bước tiếp theo Agent sẽ làm gì?", "options": ["Ngay lập tức tắt chương trình và xóa toàn bộ dữ liệu.", "Tự phản ánh (Self-Reflect) và đánh giá xem kết quả đã thỏa mãn mục tiêu chưa để quyết định tiếp tục hay dừng lại.", "Hỏi người dùng xem có muốn chạy tiếp hay không ở mỗi mili-giây.", "Chuyển đổi toàn bộ code sang ngôn ngữ C++."], "answer": 1, "explanation": "Chính xác! Bước Self-Reflection giúp Agent tự đánh giá kết quả từ Observation. Nếu đã đạt mục tiêu thì hoàn tất; nếu phát hiện sai sót thì tự điều chỉnh kế hoạch để chạy tiếp."}}]}, {"id": "part6", "part_num": "PHẦN 6", "title": "Kiến trúc Kỹ thuật Agentic AI Toàn diện", "description": "Đi sâu vào các kỹ thuật lập trình Agent nâng cao: ReAct pattern, Tool Calling, Quản lý bộ nhớ và Cơ chế tự phản ánh.", "lessons_covered": "ReAct Pattern · Tool Calling & Schema · Memory Architecture · Self-Reflection", "slides": [{"id": "s6_1", "partId": "part6", "partNum": "PHẦN 6", "partTitle": "Kiến trúc Kỹ thuật Agentic AI Toàn diện", "title": "Mẫu Thiết kế Suy luận ReAct (Reasoning + Acting)", "analogy": "Mẫu thiết kế ReAct kết hợp sức mạnh suy luận logic (Reasoning) và hành vi thực thi (Acting). Thay vì đoán mò, Agent sẽ 'nghĩ thành tiếng' trước khi quyết định làm bất cứ điều gì.", "points": ["<strong>Khái niệm ReAct (Yao et al., 2022):</strong> Kỹ thuật kết hợp đan xen giữa chuỗi suy nghĩ (Thought), hành động (Action) và quan sát kết quả (Observation).", "<strong>Thought (Suy nghĩ):</strong> Agent tự phân tích: 'Tôi cần tìm doanh thu quý 2 của công ty X. Tôi chưa có dữ liệu này trong trí nhớ, vậy tôi cần gọi tool tìm kiếm báo cáo tài chính.'", "<strong>Action (Hành động):</strong> Agent phát sinh lệnh gọi hàm: `search_financial_report(company='X', quarter='Q2')`.", "<strong>Observation (Quan sát):</strong> Hệ thống thực thi hàm và trả về kết quả: 'Doanh thu Q2 đạt 50 triệu USD.'", "<strong>Thought tiếp theo:</strong> 'Đã có doanh thu Q2. Bây giờ tôi cần gọi tool tính tỷ lệ tăng trưởng so với Q1.'", "<strong>Ưu điểm vượt trội:</strong> Giảm thiểu ảo giác (Hallucination), tăng khả năng giải thích được (Explainability) cho Ban Giám khảo."], "math": "$$\\text{ReAct Cycle:} \\quad \\text{Thought}_t \\longrightarrow \\text{Action}_t \\longrightarrow \\text{Observation}_t \\longrightarrow \\text{Thought}_{t+1}$$", "code": "PROMPT TEMPLATE REACT CHUẨN:\nTrả lời câu hỏi theo cấu trúc sau:\nQuestion: [Câu hỏi của người dùng]\nThought: Bạn nên nghĩ về việc cần làm gì\nAction: [Tên công cụ cần gọi, phải là một trong các công cụ: search, calculator, sql]\nAction Input: [Tham số truyền vào cho công cụ]\nObservation: [Kết quả công cụ trả về]\n... (Lặp lại Thought/Action/Observation N lần)\nThought: Tôi đã biết câu trả lời cuối cùng\nFinal Answer: [Câu trả lời hoàn chỉnh]", "tip": "Khi demo cho Ban Giám khảo, hãy để giao diện hiển thị hộp 'Thinking Process' (các bước Thought -> Action -> Observation). Giám khảo công nghệ sẽ đánh giá rất cao việc bạn cho họ thấy được tư duy nội tại của Agent!", "isLastInPart": false}, {"id": "s6_2", "partId": "part6", "partNum": "PHẦN 6", "partTitle": "Kiến trúc Kỹ thuật Agentic AI Toàn diện", "title": "Cơ chế Gọi Công cụ (Tool Calling & Function Calling)", "analogy": "Tool Calling là cầu nối giữa trí tuệ nhân tạo và thế giới thực. Thông qua việc khai báo chuẩn JSON Schema, LLM có thể gọi bất kỳ hàm Python hoặc API RESTful nào với tham số chính xác tuyệt đối.", "points": ["<strong>Khai báo Tool bằng Decorator:</strong> Các framework hiện đại như LangChain/LangGraph cho phép biến hàm Python thông thường thành Tool của Agent chỉ với một cú pháp đơn giản.", "<strong>Docstring là System Prompt của Tool:</strong> LLM đọc phần mô tả (Docstring) và kiểu dữ liệu (Type hints) của hàm để biết KHI NÀO NÊN DÙNG CÔNG CỤ NÀY.", "<strong>Xử lý lỗi Tool an toàn:</strong> Mọi Tool gọi ra ngoài phải được bọc trong khối `try-except`. Nếu API bên ngoài bị lỗi (500, Timeout), hàm phải trả về thông báo lỗi dạng chuỗi để Agent biết đường chuyển sang giải pháp dự phòng.", "<strong>Xu hướng mới - Model Context Protocol (MCP):</strong> Giao thức chuẩn hóa của Anthropic giúp kết nối Agent với các server dữ liệu và công cụ dùng chung một cách bảo mật."], "math": "$$\\text{Tool Schema} = \\{\\text{name}: \\text{string}, \\text{description}: \\text{string}, \\text{parameters}: \\text{JSON Schema}\\}$$", "code": "from langchain_core.tools import tool\n\n@tool\ndef get_weather_forecast(city: str) -> str:\n    \"\"\"Tra cứu dự báo thời tiết thời gian thực cho một thành phố cụ thể.\n    Sử dụng công cụ này khi cần biết nhiệt độ, khả năng mưa để tưới tiêu.\"\"\"\n    try:\n        # Gọi API OpenWeatherMap hoặc dịch vụ nội bộ\n        data = call_weather_api(city)\n        return f\"Nhiệt độ tại {city}: {data['temp']}°C, Mưa: {data['rain_prob']}%\"\n    except Exception as e:\n        return f\"Lỗi khi tra cứu thời tiết: {str(e)}\"", "tip": "Hãy viết Docstring của Tool thật chi tiết và nêu rõ ví dụ input hợp lệ! 80% lỗi Agent gọi sai công cụ bắt nguồn từ việc lập trình viên viết mô tả công cụ quá sơ sài hoặc mơ hồ.", "isLastInPart": false}, {"id": "s6_3", "partId": "part6", "partNum": "PHẦN 6", "partTitle": "Kiến trúc Kỹ thuật Agentic AI Toàn diện", "title": "Kiến trúc Trí nhớ Đa tầng (Memory Architecture)", "analogy": "Nếu không có trí nhớ, Agent sẽ trở thành một 'kẻ mất trí' quên sạch những gì vừa làm sau mỗi lượt gọi API. Bộ nhớ đa tầng giúp Agent tích lũy kinh nghiệm và duy trì ngữ cảnh dài hạn.", "points": ["<strong>1. Short-term Memory (Bộ nhớ ngắn hạn):</strong> Lưu trữ chuỗi các tin nhắn (User, AI, Tool Output) trong phiên làm việc hiện tại. Dùng kỹ thuật Buffer Window hoặc tóm tắt (Summarization) để không bị tràn cửa sổ ngữ cảnh (Context Window).", "<strong>2. Long-term Episodic Memory (Bộ nhớ tình huống):</strong> Lưu trữ các sự kiện, hành động thành công hoặc thất bại trong quá khứ vào Vector Database (Milvus, Pinecone, FAISS, PGVector).", "<strong>3. Semantic Memory (Bộ nhớ ngữ nghĩa / RAG):</strong> Kho tri thức nghiệp vụ chuyên ngành (Luật pháp, tài liệu hướng dẫn y tế, sổ tay kỹ thuật). Khi cần, Agent dùng kỹ thuật Hybrid Search (Dense + Sparse/BM25) để truy xuất.", "<strong>4. Procedural Memory (Bộ nhớ quy trình):</strong> Lưu các mẫu quy trình công việc chuẩn (SOPs) vào System Prompt hoặc file cấu hình để Agent tuân thủ nghiêm ngặt."], "math": "$$\\text{Total Memory} = \\underbrace{\\text{Context Buffer}}_{\\text{Short-term}} + \\underbrace{\\text{Vector DB (RAG)}}_{\\text{Semantic}} + \\underbrace{\\text{Past Experiences}}_{\\text{Episodic}}$$", "code": "# MÔ HÌNH TRUY XUẤT BỘ NHỚ VECTOR (LANGGRAPH + CHROMA):\nfrom langchain_chroma import Chroma\nfrom langchain_openai import OpenAIEmbeddings\n\nvector_store = Chroma(\n    collection_name=\"hackathon_memory\",\n    embedding_function=OpenAIEmbeddings(),\n    persist_directory=\"./chroma_db\"\n)\n# Khi Agent gặp tình huống mới, truy vấn các bài học tương tự trong quá khứ\npast_solutions = vector_store.similarity_search(\"Sự cố rò rỉ van tưới\", k=2)", "tip": "Trong môi trường Hackathon, đừng dùng các dịch vụ Vector Cloud phức tạp cần trả phí. Hãy dùng SQLite-VSS, ChromaDB hoặc FAISS lưu cục bộ trong máy/container Docker để khởi động nhanh và không phụ thuộc mạng!", "isLastInPart": false}, {"id": "s6_4", "partId": "part6", "partNum": "PHẦN 6", "partTitle": "Kiến trúc Kỹ thuật Agentic AI Toàn diện", "title": "Cơ chế Tự Phản tỉnh & Kiểm soát An toàn (Self-Reflection)", "analogy": "Một kỹ sư giỏi là người biết tự viết Unit Test để kiểm tra code của chính mình. Agentic AI cũng cần một cơ chế tự soi chiếu (Critic / Evaluator) để bắt lỗi trước khi gửi kết quả cho người dùng.", "points": ["<strong>Cơ chế Reflection (Shinn et al., Reflexion):</strong> Agent tạo ra bản nháp (Draft) -> Một Agent phản biện (Critic) kiểm tra đối chiếu với tiêu chí an toàn -> Nếu chưa đạt, trả về phản hồi để Agent chính viết lại.", "<strong>Kiểm soát Ảo giác (Hallucination Guardrails):</strong> Bắt buộc Agent phải trích dẫn nguồn (Citations) từ các tài liệu RAG hoặc output của Tool, không được tự bịa số liệu.", "<strong>Human-in-the-Loop (Con người giám sát):</strong> Đối với các hành động nhạy cảm (Xóa dữ liệu, gửi email chính thức, chuyển tiền), hệ thống phải tạm dừng (Interrupt) để con người bấm phê duyệt trước khi thực thi.", "<strong>Circuit Breakers:</strong> Giới hạn số lần thử lại (Retry count <= 3), giới hạn tổng số token tiêu thụ cho 1 nhiệm vụ để tránh phát sinh chi phí ngoài ý muốn."], "math": "$$\\text{Output Final} = \\text{Reflect}(\\text{Draft}, \\text{Critique Rules}) \\implies \\text{Pass} \\ge 95\\%$$", "code": "# VÒNG LẶP REFLECTION TRONG LANGGRAPH:\ndef evaluator_node(state):\n    draft = state[\"draft_report\"]\n    # Kiểm tra xem báo cáo có chứa số liệu nguồn không\n    if \"Nguồn:\" not in draft or len(draft) < 100:\n        return {\"is_approved\": False, \"feedback\": \"Thiếu trích dẫn nguồn số liệu!\"}\n    return {\"is_approved\": True, \"feedback\": \"Đạt chuẩn.\"}\n\n# Điều hướng có điều kiện (Conditional Edge)\ndef route_after_eval(state):\n    return \"export_pdf\" if state[\"is_approved\"] else \"research_agent\"", "tip": "Đây chính là 'vũ khí bí mật' giúp dự án của bạn đè bẹp các đối thủ chỉ làm Chatbot thông thường. Ban Giám khảo sẽ cực kỳ ấn tượng nếu bạn trình diễn được cơ chế Agent tự phát hiện lỗi và tự sửa sai trên màn hình demo!", "isLastInPart": true, "partQuiz": {"question": "Trong mẫu thiết kế ReAct, từ viết tắt 'ReAct' đại diện cho sự kết hợp của hai thành tố cốt lõi nào?", "options": ["ReactJS và Active Server Pages.", "Reasoning (Suy luận logic) và Acting (Hành động gọi công cụ).", "Reactive Programming và Action Script.", "Re-training và Activation Function."], "answer": 1, "explanation": "Chính xác! ReAct là viết tắt của Reasoning + Acting, một kỹ thuật cho phép mô hình ngôn ngữ vừa suy luận từng bước (Thought) vừa thực thi hành động gọi công cụ bên ngoài (Action) để quan sát kết quả (Observation)."}}]}, {"id": "part7", "part_num": "PHẦN 7", "title": "Mô hình Đa Tác nhân (Multi-Agent Swarms & Supervisor)", "description": "Làm chủ kiến trúc nhiều Agent phối hợp: Supervisor Pattern, Mạng lưới phân tán và so sánh các Framework hàng đầu.", "lessons_covered": "Supervisor Pattern · Multi-Agent Swarms · LangGraph vs CrewAI · State Management", "slides": [{"id": "s7_1", "partId": "part7", "partNum": "PHẦN 7", "partTitle": "Mô hình Đa Tác nhân (Multi-Agent Swarms & Supervisor)", "title": "Vì sao 1 Agent Đơn lẻ là Chưa Đủ? (Sức mạnh Đa Tác nhân)", "analogy": "Một công ty không thể chỉ có một người vừa làm Giám đốc, vừa viết code, vừa kế toán, vừa bán hàng. Việc chia nhỏ thành các phòng ban chuyên môn hóa là chìa khóa để xử lý bài toán lớn.", "points": ["<strong>Vấn đề của Single Agent (Quá tải ngữ cảnh):</strong> Khi một Agent phải gánh quá nhiều mục tiêu và quá nhiều công cụ, prompt sẽ bị loãng, tỷ lệ chọn sai công cụ và sinh ảo giác tăng vọt.", "<strong>Nguyên lý Chuyên môn hóa (Specialization):</strong> Mỗi Agent chỉ đảm nhận một vai trò cụ thể với bộ công cụ thu gọn (Ví dụ: Researcher Agent chỉ tìm kiếm; Coder Agent chỉ viết mã; Reviewer Agent chỉ kiểm tra lỗi).", "<strong>Tách biệt Trạng thái (State Isolation):</strong> Mỗi Agent có thể sử dụng mô hình LLM khác nhau để tối ưu chi phí (Agent phân tích dùng Claude 3.5 Sonnet, Agent dịch thuật dùng Gemini Flash hoặc Haiku).", "<strong>Dễ dàng kiểm thử & mở rộng:</strong> Bạn có thể kiểm thử riêng từng Agent trước khi tích hợp vào đồ thị luồng chung."], "math": "$$\\text{Hiệu Quả Multi-Agent} > \\sum_{i=1}^N \\text{Hiệu Quả Single Agent} \\quad (\\text{Nhờ giảm thiểu Tool Interference})$$", "code": "# PHÂN CHIA VAI TRÒ ĐỘI HÌNH ĐA TÁC NHÂN (SPECIALIZED AGENTS):\n[Orchestrator Agent]  : Nhận mục tiêu lớn, lập lộ trình và giao việc\n  ├── [Data Agent]     : Gọi API SQL, cào dữ liệu web, làm sạch số liệu\n  ├── [Analytics Agent]: Chạy phân tích thống kê, vẽ biểu đồ qua Python\n  └── [Writer Agent]   : Tổng hợp kết quả, viết báo cáo executive summary", "tip": "Tại Hackathon, mô hình 3 - 4 Agent chuyên biệt là tỷ lệ vàng lý tưởng. Đừng thiết kế hệ thống 20 Agent quá cồng kềnh; việc quản lý giao tiếp giữa chúng sẽ khiến độ trễ (latency) tăng cao và dễ lỗi!", "isLastInPart": false}, {"id": "s7_2", "partId": "part7", "partNum": "PHẦN 7", "partTitle": "Mô hình Đa Tác nhân (Multi-Agent Swarms & Supervisor)", "title": "Mô hình Điều phối Giám sát (Supervisor Pattern)", "analogy": "Mô hình Supervisor giống như một người Quản lý Dự án (Project Manager) giàu kinh nghiệm. Người này không trực tiếp làm việc chi tiết mà lắng nghe yêu cầu, phân công cho cấp dưới và nghiệm thu sản phẩm.", "points": ["<strong>Cấu trúc Phân cấp (Hierarchical Structure):</strong> Supervisor Agent đứng ở đỉnh, có quyền quyết định Agent chuyên môn nào sẽ thực thi bước tiếp theo.", "<strong>Luồng truyền trạng thái (State Passing):</strong> Các Agent chia sẻ chung một cấu trúc trạng thái (State). Khi một Agent hoàn thành, nó cập nhật kết quả vào State và trả quyền kiểm soát về cho Supervisor.", "<strong>Điều kiện Dừng (Termination):</strong> Khi tất cả các nhiệm vụ con đã hoàn thành và đạt chất lượng, Supervisor sẽ phát tín hiệu kết thúc (ví dụ: chuyển sang trạng thái `FINISH`).", "<strong>Khả năng linh hoạt:</strong> Nếu Agent A làm sai, Supervisor có thể điều hướng lại để Agent B sửa chữa hoặc yêu cầu Agent A làm lại với chỉ dẫn cụ thể hơn."], "math": "$$\\text{Supervisor}(\\text{Current State}) \\longrightarrow \\text{Next Node} \\in \\{\\text{Agent}_1, \\text{Agent}_2, \\dots, \\text{FINISH}\\}$$", "code": "# CODE MÔ HÌNH SUPERVISOR VỚI LANGGRAPH:\nfrom typing import Literal\nfrom pydantic import BaseModel\n\nclass RouterOutput(BaseModel):\n    next_agent: Literal[\"researcher\", \"coder\", \"FINISH\"]\n    instruction: str\n\ndef supervisor_node(state):\n    prompt = f\"Trạng thái công việc hiện tại: {state['messages']}. Chọn người tiếp theo:\"\n    decision = llm_with_structured_output(RouterOutput).invoke(prompt)\n    return {\"next\": decision.next_agent, \"task\": decision.instruction}", "tip": "Mô hình Supervisor là kiến trúc dễ kiểm soát và đáng tin cậy nhất để đem đi thi hackathon. Luồng chạy rất trực quan, dễ vẽ sơ đồ kiến trúc đưa vào slide pitch deck!", "isLastInPart": false}, {"id": "s7_3", "partId": "part7", "partNum": "PHẦN 7", "partTitle": "Mô hình Đa Tác nhân (Multi-Agent Swarms & Supervisor)", "title": "So sánh Các Frameworks: LangGraph vs. CrewAI vs. AutoGen", "analogy": "Việc chọn đúng 'vũ khí' lập trình sẽ giúp đội thi tiết kiệm được 50% thời gian phát triển và tránh được những đêm thức trắng vô ích vì lỗi thư viện.", "points": ["<strong>LangGraph (Khuyên dùng số 1 cho Hackathon):</strong> Xây dựng trên nền tảng LangChain nhưng mô hình hóa luồng dưới dạng Đồ thị có trạng thái (State Graph). Cực kỳ mạnh về kiểm soát rẽ nhánh, hỗ trợ Human-in-the-loop, lưu vết trạng thái và tích hợp production.", "<strong>CrewAI:</strong> Cực kỳ dễ học và thiết lập nhanh. Dựa trên tư duy phân vai (Role-playing: Role, Goal, Backstory). Rất thích hợp cho các bài toán mô phỏng đội ngũ văn phòng, nghiên cứu tài liệu.", "<strong>AutoGen (Microsoft):</strong> Tập trung vào hội thoại đa tác nhân (Conversational Agents). Mạnh về khả năng tương tác tự do và giải quyết bài toán cần tranh luận nhiều góc nhìn.", "<strong>LlamaIndex Workflows:</strong> Sự lựa chọn số 1 nếu bài toán của bạn xoay quanh việc cào tài liệu, phân tích PDF phức tạp và trích xuất tri thức."], "math": "$$\\text{Độ Linh Hoạt: } \\text{LangGraph} > \\text{LlamaIndex} > \\text{CrewAI} > \\text{AutoGen}$$", "code": "+---------------+---------------------+--------------------+---------------------+\n| Tiêu Chí      | LangGraph           | CrewAI             | AutoGen             |\n+---------------+---------------------+--------------------+---------------------+\n| Đường cong học| Trung bình (Đồ thị) | Rất dễ (Role-play) | Trung bình          |\n| Kiểm soát luồng| Cực kỳ chặt chẽ     | Tuyến tính / Hier  | Tự do (Hội thoại)   |\n| Production    | Rất cao (LangServe) | Trung bình         | Trung bình          |\n| Phù hợp nhất  | Hệ thống phức tạp   | Prototype 24-48h   | Thảo luận chuyên sâu|\n+---------------+---------------------+--------------------+---------------------+", "tip": "Nếu bạn muốn làm nhanh trong 1 ngày: Chọn CrewAI. Nếu bạn muốn hệ thống vận hành chắc chắn, không bị chạy lung tung và dễ tích hợp API vào backend FastAPI: Hãy chọn LangGraph!", "isLastInPart": true, "partQuiz": {"question": "Trong kiến trúc Multi-Agent theo mô hình Supervisor Pattern, nhiệm vụ cốt lõi của Supervisor Agent là gì?", "options": ["Trực tiếp cào dữ liệu từ 100 website cùng một lúc.", "Nhận mục tiêu tổng thể, đánh giá trạng thái hiện tại và phân bổ nhiệm vụ tiếp theo cho các Worker Agent chuyên môn hoặc ra lệnh kết thúc.", "Tự động xóa database sau mỗi 5 phút để dọn dẹp bộ nhớ.", "Đóng vai trò làm giao diện người dùng hiển thị màu sắc."], "answer": 1, "explanation": "Chính xác! Supervisor đóng vai trò người quản lý điều phối: nó đọc trạng thái hiện tại của hệ thống, suy luận xem bước tiếp theo cần giao cho Worker Agent nào hoặc nếu công việc đã hoàn thành thì ra lệnh kết thúc (FINISH)."}}]}, {"id": "part8", "part_num": "PHẦN 8", "title": "Tech Stack Thực chiến & Starter Kit (AWS Cloud + Code)", "description": "Bộ khung mã nguồn hoàn chỉnh, cấu hình AWS Bedrock / Groq và hướng dẫn đóng gói Docker sẵn sàng chiến đấu.", "lessons_covered": "Fullstack Architecture · AWS Cloud Credits · Starter Kit Python · Dockerization", "slides": [{"id": "s8_1", "partId": "part8", "partNum": "PHẦN 8", "partTitle": "Tech Stack Thực chiến & Starter Kit (AWS Cloud + Code)", "title": "Kiến trúc Fullstack Hoàn chỉnh của một Dự án Hackathon", "analogy": "Một sản phẩm dự thi chuyên nghiệp cần có giao diện trực quan cho người dùng, API trung gian ổn định và hạt nhân AI mạnh mẽ phía sau.", "points": ["<strong>Tầng Giao diện (Frontend Layer):</strong> Dùng <em>Streamlit</em> (nếu đội mạnh Python, muốn dựng UI trong 2 giờ) hoặc <em>Next.js / React + Tailwind CSS</em> (nếu muốn giao diện bóng bẩy, hiện đại, trải nghiệm như sản phẩm SaaS thương mại).", "<strong>Tầng Dịch vụ (Backend API Layer):</strong> <em>FastAPI</em> (Python) là sự lựa chọn số 1 nhờ tốc độ cao, hỗ trợ bất đồng bộ (Asynchronous `async/await`), tài liệu tự động Swagger UI `/docs` và dễ dàng stream token về client.", "<strong>Tầng Hạt nhân Tác nhân (Agentic Orchestration):</strong> <em>LangGraph / CrewAI</em> quản lý logic điều phối các Agent, kết nối công cụ và quản lý bộ nhớ.", "<strong>Tầng Dữ liệu & Vector DB:</strong> <em>ChromaDB</em> hoặc <em>PGVector</em> lưu trữ embeddings; <em>SQLite / PostgreSQL</em> lưu trữ thông tin người dùng và lịch sử tác vụ.", "<strong>Tầng Hạ tầng Đám mây:</strong> AWS Bedrock (Claude 3.5 Sonnet / Llama 3.3) hoặc API Groq / OpenAI."], "math": "$$\\text{Fullstack} = \\text{React / Streamlit} \\xleftrightarrow{\\text{REST / SSE}} \\text{FastAPI} \\xleftrightarrow{\\text{State Graph}} \\text{LangGraph Core} \\xleftrightarrow{\\text{API}} \\text{AWS Bedrock}$$", "code": "CẤU TRÚC THƯ MỤC DỰ ÁN MẪU (PROJECT STRUCTURE):\nmy_vjai_project/\n├── backend/\n│   ├── agents/            # Các Agent chuyên môn (Supervisor, Researcher, Coder)\n│   ├── tools/             # Các công cụ Python (Search, DB, Calculator, API)\n│   ├── core/config.py     # Cấu hình API keys, AWS Bedrock credentials\n│   ├── main.py            # FastAPI entrypoint & REST endpoints\n│   └── requirements.txt   # Danh sách thư viện Python\n├── frontend/              # Mã nguồn React / Next.js hoặc Streamlit app.py\n├── docker-compose.yml     # Khởi chạy toàn bộ hệ thống bằng 1 lệnh\n└── README.md              # Hướng dẫn cài đặt & kịch bản demo", "tip": "Luôn triển khai tính năng Server-Sent Events (SSE) hoặc WebSocket để truyền luồng token (Streaming text) từ Agent về UI. Đừng để người dùng nhìn màn hình trắng xóa chờ đợi 30 giây!", "isLastInPart": false}, {"id": "s8_2", "partId": "part8", "partNum": "PHẦN 8", "partTitle": "Tech Stack Thực chiến & Starter Kit (AWS Cloud + Code)", "title": "Tận dụng Tài nguyên AWS Cloud & Lựa chọn Mô hình", "analogy": "Ban Tổ chức và Đối tác Công nghệ hỗ trợ hạ tầng AWS. Việc biết cách khai thác đúng dịch vụ sẽ giúp giải pháp của bạn vừa nhanh, vừa rẻ, vừa đạt chuẩn doanh nghiệp.", "points": ["<strong>Chính sách của BTC:</strong> Hỗ trợ tài nguyên điện toán đám mây AWS (AWS Bedrock, EC2, Lambda, S3, ECS) và mentor kỹ thuật.", "<strong>Không ép buộc sử dụng AWS:</strong> Theo FAQs chính thức, bạn hoàn toàn có thể dùng thêm OpenAI, Gemini, Groq hoặc Open Source nếu phù hợp bài toán.", "<strong>AWS Bedrock (Vũ khí tối thượng):</strong> Cho phép gọi các mô hình hàng đầu thế giới thông qua một API thống nhất an toàn: Claude 3.5 Sonnet (Tư duy siêu việt), Llama 3.3 70B (Mạnh mẽ, giá rẻ), Amazon Titan (Embeddings).", "<strong>Tối ưu hóa Chi phí Token (Token Economics):</strong> Áp dụng chiến thuật 'Model Tiering' — Dùng model lớn (Claude 3.5 Sonnet) cho Supervisor Agent lập kế hoạch; dùng model nhỏ siêu tốc (Claude 3.5 Haiku / Groq Llama 3.1 8B) cho các Worker Agent gọi tool phụ trợ.", "<strong>AWS Lambda & S3:</strong> Lưu trữ tài liệu người dùng tải lên vào S3; chạy các tác vụ trích xuất PDF qua Lambda serverless."], "math": "$$\\text{Chi Phí Tối Ưu} = (N_{\\text{Plan}} \\times \\text{Cost}_{\\text{Sonnet}}) + (N_{\\text{Workers}} \\times \\text{Cost}_{\\text{Haiku}}) \\ll \\text{Pure Sonnet}$$", "code": "# GỌI CLAUDE 3.5 SONNET QUA AWS BEDROCK VỚI PYTHON:\nfrom langchain_aws import ChatBedrock\nimport boto3\n\nbedrock_client = boto3.client(\n    service_name=\"bedrock-runtime\",\n    region_name=\"us-east-1\"\n)\n\nllm = ChatBedrock(\n    model_id=\"anthropic.claude-3-5-sonnet-20240620-v1:0\",\n    client=bedrock_client,\n    model_kwargs={\"temperature\": 0.2, \"max_tokens\": 2000}\n)", "tip": "Hãy nhắc đến việc bạn đã tối ưu hóa chi phí token và độ trễ như thế nào khi thuyết trình kỹ thuật. Ban Giám khảo là các chuyên gia kiến trúc đám mây sẽ đánh giá cực kỳ cao sự trưởng thành trong tư duy kỹ thuật này!", "isLastInPart": false}, {"id": "s8_3", "partId": "part8", "partNum": "PHẦN 8", "partTitle": "Tech Stack Thực chiến & Starter Kit (AWS Cloud + Code)", "title": "Starter Kit: Mẫu Code LangGraph Multi-Agent Chạy Ngay", "analogy": "Dưới đây là khung sườn code hoàn chỉnh thiết lập một hệ thống 2 tác nhân có Supervisor điều phối bằng LangGraph mà bạn có thể mang vào dự án ngay lập tức.", "points": ["<strong>Định nghĩa State:</strong> Sử dụng `MessagesState` để lưu trữ lịch sử hội thoại và danh sách các thông điệp giữa các Agent.", "<strong>Tạo Worker Nodes:</strong> Mỗi Node là một hàm Python nhận vào State và trả về thông điệp cập nhật.", "<strong>Xây dựng Graph:</strong> Thêm các Node vào `StateGraph`, thiết lập các cạnh điều kiện (Conditional Edges) và chỉ định điểm bắt đầu (Entry Point).", "<strong>Biên dịch (Compile):</strong> `graph = workflow.compile()` tạo ra một đồ thị có thể chạy độc lập hoặc tích hợp vào API endpoint của FastAPI."], "math": "$$\\text{Graph} = \\langle V = \\{\\text{Supervisor}, \\text{WorkerA}, \\text{WorkerB}\\}, E = \\{\\text{Conditional Edges}\\} \\rangle$$", "code": "from langgraph.graph import StateGraph, MessagesState, START, END\nfrom langchain_core.messages import HumanMessage, SystemMessage\n\n# 1. Định nghĩa các Node tác nhân\ndef researcher_agent(state: MessagesState):\n    # Giả lập nghiên cứu dữ liệu\n    return {\"messages\": [SystemMessage(content=\"Đã thu thập số liệu phát thải từ 5 nhà máy.\")]}\n\ndef analyst_agent(state: MessagesState):\n    # Giả lập phân tích và đề xuất\n    return {\"messages\": [SystemMessage(content=\"Khuyến nghị: Thay đổi lịch vận hành tiết kiệm 25% điện.\")]}\n\n# 2. Xây dựng đồ thị làm việc\nworkflow = StateGraph(MessagesState)\nworkflow.add_node(\"researcher\", researcher_agent)\nworkflow.add_node(\"analyst\", analyst_agent)\n\nworkflow.add_edge(START, \"researcher\")\nworkflow.add_edge(\"researcher\", \"analyst\")\nworkflow.add_edge(\"analyst\", END)\n\napp = workflow.compile()\n# 3. Chạy thử nghiệm\nresult = app.invoke({\"messages\": [HumanMessage(content=\"Tối ưu năng lượng cho nhà máy A\")]})", "tip": "Sao chép khung sườn này và phát triển thêm các Tool thực tế (gọi API thời tiết, đọc database, xuất PDF) là bạn đã có một bộ khung Agentic AI chuẩn chỉnh cho Hackathon!", "isLastInPart": true, "partQuiz": {"question": "Chiến thuật 'Model Tiering' trong xây dựng hệ thống Agentic AI nhằm mục đích chính là gì?", "options": ["Bắt buộc toàn bộ hệ thống chỉ được dùng một model duy nhất của một hãng.", "Phân tầng: Sử dụng mô hình lớn, thông minh (như Claude 3.5 Sonnet) cho việc lập kế hoạch, và mô hình nhỏ, tốc độ cao (như Haiku / Flash) cho các tác vụ phụ trợ để tối ưu chi phí và độ trễ.", "Tăng kích thước font chữ trên giao diện người dùng theo từng cấp bậc.", "Xóa toàn bộ mã nguồn cũ để viết lại từ đầu."], "answer": 1, "explanation": "Chính xác! Model Tiering giúp cân bằng hoàn hảo giữa trí thông minh của hệ thống và chi phí vận hành: dùng model mạnh nhất cho khâu suy luận/lập kế hoạch, và model nhỏ nhẹ hơn cho các tác vụ thực thi đơn giản."}}]}, {"id": "part9", "part_num": "PHẦN 9", "title": "Cẩm nang Pitching & Demo 5 Phút Thuyết phục Giám Khảo", "description": "Nghệ thuật trình bày dự án tại Tokyo Innovation Base (TiB): Cấu trúc 10 Slide triệu đô, quy tắc demo mượt mà và kỹ năng đối đáp Q&A.", "lessons_covered": "Tâm lý BGK · Cấu trúc Pitch Deck 10 Slide · Chiến thuật Demo · Xử lý Q&A", "slides": [{"id": "s9_1", "partId": "part9", "partNum": "PHẦN 9", "partTitle": "Cẩm nang Pitching & Demo 5 Phút Thuyết phục Giám Khảo", "title": "Tâm lý Ban Giám khảo tại Tokyo Innovation Base (TiB)", "analogy": "Ban Giám khảo phải chấm hàng chục đội thi trong nhiều giờ liền. Họ rất mệt mỏi và không có kiên nhẫn nghe những lời giới thiệu dài dòng. Bạn chỉ có 60 giây đầu tiên để đánh thức sự chú ý của họ!", "points": ["<strong>BGK là ai?:</strong> Các chuyên gia AI hàng đầu từ Việt Nam và Nhật Bản, lãnh đạo doanh nghiệp công nghệ, nhà đầu tư mạo hiểm (VC) và đại diện đối tác đám mây.", "<strong>3 Câu hỏi lớn trong đầu Giám khảo:</strong>", "1. <em>'Bài toán này có thật và đáng giải quyết không?'</em> (Real Problem & Sustainable Goals).", "2. <em>'Tại sao bắt buộc phải dùng Agentic AI mới giải quyết được?'</em> (Agentic AI First).", "3. <em>'Sản phẩm này có chạy thật không hay chỉ là bánh vẽ slide?'</em> (Feasible Prototype & Live Demo).", "<strong>Ngôn ngữ & Phong thái:</strong> Trình bày bằng <strong>Tiếng Việt</strong> tự tin, dứt khoát, phân chia vai trò rõ ràng giữa các thành viên có mặt tại hội trường TiB Tokyo."], "math": "$$\\text{Độ Chú Ý Của BGK} = \\frac{\\text{Nỗi Đau Gây Sốc (Hook)} + \\text{Live Demo Thực Tế}}{\\text{Thời Gian Trình Bày (Càng ngắn gọn càng tốt)}}$$", "code": "QUY TẮC PHÂN BỔ THỜI GIAN 5 PHÚT VÀNG TẠI TOKYO:\n[00:00 - 01:00] : Mở đầu ấn tượng, con số nỗi đau thị trường & sứ mệnh dự án\n[01:00 - 02:00] : Giải pháp Agentic AI & Kiến trúc đa tác nhân độc đáo\n[02:00 - 03:30] : LIVE DEMO SẢN PHẨM TRỰC TIẾP (Quan trọng nhất!)\n[03:30 - 04:30] : Tác động định lượng (Measurable Impact) & Mô hình khả thi\n[04:30 - 05:00] : Đội ngũ thực thi (Team) & Kêu gọi hành động (Call to Action)", "tip": "Đừng bao giờ đọc từng chữ trên slide! Slide chỉ dùng để chiếu hình ảnh, sơ đồ và biểu đồ trực quan; lời nói của bạn phải truyền tải cảm xúc, câu chuyện và năng lượng thực chiến.", "isLastInPart": false}, {"id": "s9_2", "partId": "part9", "partNum": "PHẦN 9", "partTitle": "Cẩm nang Pitching & Demo 5 Phút Thuyết phục Giám Khảo", "title": "Cấu trúc 10 Slides Pitch Deck Chuẩn Quốc tế", "analogy": "Bộ khung 10 slide tiêu chuẩn giúp bạn kể một câu chuyện thuyết phục từ nỗi đau, giải pháp đến tương lai của sản phẩm một cách logic và gãy gọn.", "points": ["<strong>Slide 1 (Cover):</strong> Tên dự án, Slogan ngắn gọn, Track dự thi, Tên đội và logo nhận diện.", "<strong>Slide 2 (The Real Problem):</strong> Nỗi đau thực tế, đối tượng chịu thiệt hại, con số thống kê xác thực.", "<strong>Slide 3 (Existing Flaws):</strong> Vì sao giải pháp hiện tại thất bại (Quá thủ công, tốn nhân lực, chatbot thông thường không thể hành động).", "<strong>Slide 4 (Our Agentic Solution):</strong> Tuyên ngôn giá trị độc đáo của hệ sinh thái Agentic AI.", "<strong>Slide 5 (System Architecture):</strong> Sơ đồ khối kiến trúc Multi-Agent (Input -> Supervisor -> Worker Agents & Tools -> Memory -> Verification -> Output).", "<strong>Slide 6 (Live Demo / Product Showcase):</strong> Trình diễn sản phẩm thực tế giải quyết một kịch bản người dùng điển hình.", "<strong>Slide 7 (Measurable Sustainable Impact):</strong> Bảng số liệu định lượng (Tiết kiệm thời gian, chi phí, tài nguyên, tác động xã hội).", "<strong>Slide 8 (Feasibility & Tech Viability):</strong> Chi phí token, khả năng mở rộng (Scalability), tính khả thi triển khai.", "<strong>Slide 9 (Roadmap):</strong> Kế hoạch 1 tháng (Hoàn thiện MVP), 3 tháng (Thử nghiệm diện hẹp), 6 tháng (Thương mại hóa).", "<strong>Slide 10 (The Team):</strong> Giới thiệu thành viên, thế mạnh chuyên môn và thông tin liên hệ."], "math": "$$\\text{Slide Thắng Cuộc} = \\text{Ít Chữ} + \\text{Nhiều Sơ Đồ/Ảnh} + \\text{Số Liệu Đo Lường Xác Thực}$$", "code": "DANH SÁCH 10 SLIDES PITCH DECK CHUẨN:\nSlide 01: [Cover] Dự án EcoRoute AI\nSlide 02: [Problem] 40% xe tải chạy rỗng làm lãng phí 2.4 tỷ USD/năm\nSlide 03: [Why Current Fails] Hệ thống cũ cần 5 nhân viên điều phối thủ công\nSlide 04: [Solution] Đội Agent tự chủ ghép đơn và tối ưu lộ trình\nSlide 05: [Architecture] Kiến trúc Supervisor + LangGraph + AWS Bedrock\nSlide 06: [Live Demo] Quy trình Agent nhận đơn và tự ghép xe trong 3 giây\nSlide 07: [Impact] Giảm 35% CO2, tiết kiệm 120 giờ công/tháng cho mỗi doanh nghiệp\nSlide 08: [Economics] Chi phí chỉ 0.03$ / đơn ghép thành công\nSlide 09: [Roadmap] Pilot với 5 công ty vận tải Việt - Nhật\nSlide 10: [Team] 4 thành viên (2 Kỹ sư AI, 1 Fullstack, 1 Logistics PM)", "tip": "Hãy xuất slide ra định dạng PDF chất lượng cao. Khi thi đấu tại hội trường TiB Tokyo, file PDF đảm bảo font chữ không bị lỗi và tương thích 100% với máy chiếu của sự kiện!", "isLastInPart": false}, {"id": "s9_3", "partId": "part9", "partNum": "PHẦN 9", "partTitle": "Cẩm nang Pitching & Demo 5 Phút Thuyết phục Giám Khảo", "title": "Chiến thuật Demo 'Bất Tử' (The Bulletproof Demo)", "analogy": "Định luật Murphy trong Hackathon: 'Bất cứ thứ gì có thể hỏng trong buổi demo, nó chắc chắn sẽ hỏng!' Chuẩn bị kịch bản dự phòng là điều phân biệt đội vô địch với phần còn lại.", "points": ["<strong>1. Chuẩn bị Kịch bản Demo Vàng (Happy Path):</strong> Chọn một kịch bản dữ liệu mẫu hoàn hảo nhất, thể hiện được đầy đủ các tính năng: Nhận lệnh -> Agent suy nghĩ -> Gọi tool -> Tự kiểm tra -> Xuất kết quả đẹp mắt.", "<strong>2. Video Demo 60 Giây Dự phòng (BẮT BUỘC PHẢI CÓ):</strong> Luôn quay sẵn một video màn hình có độ nét cao, ghi lại toàn bộ quy trình hoạt động mượt mà và nhúng trực tiếp vào slide. Nếu wifi hội trường bị nghẽn hoặc API bên thứ ba bị timeout, lập tức bật video thuyết minh trôi chảy mà không bị gián đoạn!", "<strong>3. Dữ liệu Cache Cục bộ:</strong> Cài đặt cơ chế lưu tạm kết quả (Local caching / Mock response) cho những API hay bị chậm, đảm bảo tốc độ phản hồi trên sân khấu dưới 3 giây.", "<strong>4. Không thao tác gõ phím quá nhiều:</strong> Hãy chuẩn bị sẵn các nút bấm 'Ví dụ mẫu 1', 'Ví dụ mẫu 2' trên giao diện để chỉ cần 1 click là chạy dữ liệu demo, tránh gõ nhầm chính tả trên sân khấu."], "math": "$$\\text{Độ An Toàn Demo} = \\text{Live App} + \\mathbf{\\text{Video Backup 60s (Local)}} + \\text{Dữ Liệu Mẫu Đặt Sẵn}$$", "code": "# KỊCH BẢN PHÒNG THỦ KHI DEMO BỊ LỖI MẠNG:\nMC: \"Xin mời đội bắt đầu phần Demo.\"\n(Nếu mạng wifi chập chờn, API quay tròn quá 5 giây)\nPresenter: \"Để không làm mất thời gian quý báu của Ban Giám khảo trong khi chờ API đám mây phản hồi đường truyền quốc tế, xin mời quý vị cùng theo dõi video ghi lại luồng xử lý thực tế của Agent mà chúng tôi đã quay lại sáng nay...\"\n-> Bấm phát video ngay lập tức! BGK sẽ đánh giá rất cao sự chuyên nghiệp!", "tip": "Đừng bao giờ xin lỗi Giám khảo vì lỗi mạng hay nói 'Hôm qua ở nhà chạy rất ngon mà hôm nay lại lỗi'. Hãy bình tĩnh chuyển sang video dự phòng với nụ cười tự tin!", "isLastInPart": false}, {"id": "s9_4", "partId": "part9", "partNum": "PHẦN 9", "partTitle": "Cẩm nang Pitching & Demo 5 Phút Thuyết phục Giám Khảo", "title": "Bí kíp Xử lý Vòng Chất vấn (Q&A 3 Phút)", "analogy": "Phần Q&A không phải là cuộc tra khảo, mà là cơ hội để bạn chứng minh cho Giám khảo thấy sự hiểu biết sâu sắc và tính khả thi của giải pháp.", "points": ["<strong>4 Câu hỏi 'Kinh điển' Giám khảo luôn hỏi:</strong>", "1. <em>'Hệ thống này xử lý ảo giác (Hallucination) thế nào nếu Agent gọi sai tool hoặc trả lời sai?'</em> -> Trả lời: Nêu cơ chế Self-Reflection, Guardrails và Human-in-the-loop.", "2. <em>'Chi phí token và hạ tầng cho mỗi lượt chạy là bao nhiêu, có đắt quá không?'</em> -> Trả lời: Nêu chiến thuật Model Tiering (dùng Haiku/Flash cho worker, Sonnet cho planning), chỉ tốn ~0.03 USD/lượt.", "3. <em>'Dữ liệu người dùng được bảo mật thế nào khi gửi lên LLM?'</em> -> Trả lời: Nêu việc mã hóa dữ liệu nhạy cảm (PII masking) trước khi gửi qua API và sử dụng VPC trên AWS Bedrock.", "4. <em>'Ai là người chịu trách nhiệm pháp lý nếu Agent ra quyết định sai?'</em> -> Trả lời: Khẳng định Agent chỉ đóng vai trò trợ lý đề xuất (Co-pilot), quyền phê duyệt cuối cùng luôn thuộc về con người.", "<strong>Quy tắc trả lời:</strong> Lắng nghe hết câu hỏi -> Cảm ơn Giám khảo -> Trả lời trực tiếp vào trọng tâm trong 30 giây -> Dẫn chứng số liệu."], "math": "$$\\text{Công thức Q&A} = \\text{Lắng Nghe} + \\text{Thừa Nhận Góc Nhìn Của BGK} + \\text{Giải Pháp Kỹ Thuật Đã Cài Đặt} + \\text{Số Liệu}$$", "code": "# MẪU CÂU TRẢ LỜI ĐIỂM 10:\n\"Cảm ơn câu hỏi rất thực tế của Giám khảo về vấn đề chi phí token.\nTrong quá trình phát triển, chúng tôi cũng đã nhận diện được thách thức này.\nĐể giải quyết, đội đã không dùng model lớn cho toàn bộ chu trình, mà thiết kế mô hình phân tầng:\nAgent điều phối dùng Claude 3.5 Sonnet để lập kế hoạch, còn 3 Agent trích xuất dữ liệu dùng Claude 3.5 Haiku.\nNhờ đó, tổng chi phí cho mỗi hồ sơ hoàn chỉnh chỉ vỏn vẹn 0.03 USD, hoàn toàn khả thi để thương mại hóa cho các SMEs!\"", "tip": "Nếu gặp câu hỏi quá khó mà bạn chưa kịp làm, đừng nói dối! Hãy trả lời: 'Đây là một góc nhìn rất sâu sắc của Giám khảo mà đội đã đưa vào Roadmap giai đoạn 2 sau cuộc thi, cụ thể kế hoạch triển khai của chúng tôi là...'!", "isLastInPart": true, "partQuiz": {"question": "Khi chuẩn bị cho phần Demo trực tiếp tại Tokyo Innovation Base, biện pháp dự phòng quan trọng nhất mà đội thi BẮT BUỘC phải chuẩn bị là gì?", "options": ["Mang theo 10 chiếc máy tính xách tay khác nhau.", "Luôn có sẵn một video demo chất lượng cao 60 giây ghi hình trước lưu cục bộ trên máy để chiếu ngay nếu gặp sự cố mạng hoặc lỗi API.", "Học thuộc lòng mã nguồn Python để đọc cho Giám khảo nghe.", "Không cần chuẩn bị gì vì wifi sự kiện chắc chắn 100% không bao giờ gặp sự cố."], "answer": 1, "explanation": "Chính xác! Video demo chất lượng cao 60 giây lưu sẵn trên máy (offline) là chiếc phao cứu sinh quan trọng nhất. Nếu wifi hội trường bị chập chờn hoặc API bên thứ ba bị nghẽn, bạn vẫn có thể trình diễn trọn vẹn sản phẩm mà không bị trừ điểm."}}]}, {"id": "part10", "part_num": "PHẦN 10", "title": "Sổ tay Chiến thuật Giành Giải & Bứt phá Top 3", "description": "Chiến lược 4 tuần chinh phục VJAI Hackathon 2026, checklist từng ngày và kích hoạt danh hiệu Nhà Vô Địch.", "lessons_covered": "Chiến lược 4 Tuần · Checklist Hằng Ngày · Cạm bẫy Bị loại · Chinh phục TiB Tokyo", "slides": [{"id": "s10_1", "partId": "part10", "partNum": "PHẦN 10", "partTitle": "Sổ tay Chiến thuật Giành Giải & Bứt phá Top 3", "title": "Chiến lược 4 Tuần từ Ý tưởng đến Grand Finale", "analogy": "Hackathon không phải là cuộc đua nước rút trong một đêm, mà là một chiến dịch có kế hoạch tác chiến rõ ràng qua từng tuần.", "points": ["<strong>Tuần 1 (Định hình Ý tưởng & Viết Proposal):</strong> Chọn Track -> Xác định Real Problem và đối tượng thụ hưởng -> Thiết kế sơ bộ kiến trúc Agentic AI -> Hoàn thành bản Proposal và tạo Project trên Hackathon4u trước hạn 19/09.", "<strong>Tuần 2 (Xây dựng Lõi Kỹ thuật - Agent Core):</strong> Sau khi lọt vào Top 16 -> Xây dựng các Tool Python -> Thiết lập đồ thị trạng thái LangGraph -> Kết nối mô hình LLM qua AWS Bedrock / Groq -> Kiểm thử các vòng lặp ReAct.", "<strong>Tuần 3 (Hoàn thiện Fullstack & Prototype):</strong> Dựng giao diện UI (Streamlit hoặc React) -> Kết nối API FastAPI -> Cài đặt cơ chế kiểm soát lỗi (Guardrails & Reflection) -> Đóng gói toàn bộ ứng dụng bằng Docker Compose.", "<strong>Tuần 4 (Pitch Deck & Tổng duyệt Rehearsal):</strong> Thiết kế slide Pitch Deck 10 trang -> Quay video demo 60s backup -> Luyện tập thuyết trình 5 phút đúng giờ -> Chuẩn bị nhân sự có mặt trực tiếp tại TiB Tokyo!"], "math": "$$\\text{Công Thức Vô Địch} = \\underbrace{\\text{Proposal Sắc Bén}}_{\\text{Tuần 1}} + \\underbrace{\\text{Agent Core Chạy Ngon}}_{\\text{Tuần 2}} + \\underbrace{\\text{UI Mượt Mà}}_{\\text{Tuần 3}} + \\underbrace{\\text{Pitch Thần Thái}}_{\\text{Tuần 4}}$$", "code": "CHECKLIST 4 TUẦN THỰC CHIẾN:\n[x] Tuần 1: Chốt Team (2-5 ng), nộp Proposal Hackathon4u, tham gia Discord\n[x] Tuần 2: Viết mã nguồn lõi LangGraph, tích hợp Tool calling & RAG\n[x] Tuần 3: Dựng UI, kết nối API, test luồng người dùng mượt mà\n[x] Tuần 4: Hoàn thành Slide Pitch Deck, video demo backup, diễn tập Q&A", "tip": "Hãy đặt ra deadline nội bộ của team sớm hơn deadline chính thức của BTC ít nhất 48 giờ. Điều này giúp đội có thời gian xử lý các trục trặc kỹ thuật bất ngờ mà không bị cuống cà kê!", "isLastInPart": false}, {"id": "s10_2", "partId": "part10", "partNum": "PHẦN 10", "partTitle": "Sổ tay Chiến thuật Giành Giải & Bứt phá Top 3", "title": "5 Cạm bẫy 'Tử Thần' Khiến Các Đội Bị Loại Sớm", "analogy": "Biết trước những cạm bẫy mà các đội thi mùa trước từng vấp ngã sẽ giúp bạn tránh được những vết xe đổ đáng tiếc.", "points": ["<strong>Cạm bẫy 1 — 'Bình mới rượu cũ':</strong> Mang một con chatbot hỏi-đáp văn bản thông thường đi thi và tự nhận là Agentic AI. Giám khảo chỉ cần hỏi 'Hệ thống tự động thực hiện hành động gì?' là bị trừ điểm lập tức.", "<strong>Cạm bẫy 2 — Ôm đồm bài toán vĩ mô:</strong> Cố gắng giải quyết toàn bộ bài toán biến đổi khí hậu toàn cầu thay vì tập trung giải quyết bài toán cụ thể: 'Tối ưu lộ trình giảm phát thải cho 50 xe chở hàng tại một khu công nghiệp'.", "<strong>Cạm bẫy 3 — Số liệu cảm tính:</strong> Không đưa ra được chỉ số đo lường (Measurable Impact), chỉ nói những từ mơ hồ như 'rất nhanh', 'rất tiết kiệm', 'vô cùng tiện lợi'.", "<strong>Cạm bẫy 4 — Trễ giờ thuyết trình:</strong> Nói quá 5 phút bị MC ngắt mic khi chưa kịp chiếu Live Demo. Mất toàn bộ điểm phần thực hành!", "<strong>Cạm bẫy 5 — Không có người đại diện tại Tokyo:</strong> Đội lọt vào vòng trong nhưng không có thành viên nào có mặt tại hội trường TiB Tokyo để thuyết trình bằng tiếng Việt -> Bị hủy tư cách thi đấu theo quy chế."], "math": "$$\\text{Điểm Trừ Lớn Nhất} = \\text{Chatbot Giả Danh Agent} + \\text{Quá Giờ 5 Phút} + \\text{Vắng Mặt Tại Tokyo}$$", "code": "# NGUYÊN TẮC '3 KHÔNG' KHI THI ĐẤU:\n1. KHÔNG nói chung chung -> Luôn dẫn chứng bằng số liệu và biểu đồ.\n2. KHÔNG để chết màn hình khi demo -> Luôn có video 60s dự phòng.\n3. KHÔNG tranh cãi tay đôi với BGK -> Luôn lắng nghe, ghi nhận và giải trình khoa học.", "tip": "Hãy bấm giờ đồng hồ khi diễn tập thuyết trình. Mục tiêu lý tưởng là trình bày xong toàn bộ trong 4 phút 30 giây để dư ra 30 giây dự phòng cho các khoảng dừng và chuyển slide!", "isLastInPart": false}, {"id": "s10_3", "partId": "part10", "partNum": "PHẦN 10", "partTitle": "Sổ tay Chiến thuật Giành Giải & Bứt phá Top 3", "title": "Tuyên ngôn Chiến thắng: Chinh phục TiB Tokyo!", "analogy": "Bạn đã nắm vững toàn bộ thể lệ, quy trình 9 bước trên Hackathon4u, 6 tiêu chí cốt lõi, kiến trúc kỹ thuật đa tác nhân và nghệ thuật pitching đỉnh cao. Giờ là lúc bước ra sân khấu lớn!", "points": ["<strong>Hành trình từ Zero đến Hero:</strong> Từ một cá nhân tìm hiểu thể lệ, bạn đã sẵn sàng trở thành một kiến trúc sư Agentic AI thực thụ.", "<strong>Giá trị vượt lên trên giải thưởng:</strong> Cơ hội kết nối với mạng lưới chuyên gia AI hàng đầu Việt - Nhật, đưa giải pháp tiếp cận các quỹ đầu tư mạo hiểm và mở ra cơ hội nghề nghiệp quốc tế.", "<strong>Hành động ngay hôm nay:</strong>", "1. Hoàn thiện Profile kỹ năng và tham gia Discord sự kiện.", "2. Kết nối đồng đội, chốt đề tài thuộc 1 trong 6 Tracks.", "3. Khởi tạo Project trên Hackathon4u và viết mô hình 300 ký tự đầu thật sắc sảo.", "4. Dựng prototype với bộ khung LangGraph + AWS Cloud.", "<strong>Hẹn gặp lại bạn tại Tokyo Innovation Base (TiB) ngày 24/10 và 07/11/2026!</strong>"], "math": "$$\\text{Chiến Thắng} = \\text{Đam Mê} + \\text{Kiến Thức Thực Chiến} + \\text{Kỷ Luật Đội Ngũ} + \\text{Hành Động Ngay}$$", "code": "/* VJAI HACKATHON 2026 - AGENTIC AI FOR SUSTAINABLE GOALS */\nStatus: FULLY PREPARED\nKnowledge Level: HERO\nDestination: Tokyo Innovation Base (TiB), Yurakucho, Tokyo, Japan\nNext Step: EXECUTE & BUILD THE FUTURE!", "tip": "Chúc bạn và đội thi có một mùa giải bùng nổ, tạo ra những giải pháp AI tự chủ có tác động bền vững và ghi danh trên bảng vàng VJAI Hackathon 2026!", "isLastInPart": true, "partQuiz": {"question": "Công thức cốt lõi để một bài thuyết trình Hackathon tại TiB Tokyo chinh phục hoàn toàn Ban Giám khảo là gì?", "options": ["Đọc thuộc lòng toàn bộ tài liệu kỹ thuật dài 50 trang.", "Kết hợp chặt chẽ: Nỗi đau thực tế (Real Problem) + Kiến trúc Agentic AI tự chủ thực sự + Live Demo mượt mà + Số liệu tác động định lượng (Measurable Impact).", "Chỉ chiếu slide hoạt hình và không cần có sản phẩm chạy thử.", "Nói thật nhanh để kể được 20 tính năng trong vòng 1 phút."], "answer": 1, "explanation": "Tuyệt vời! Bạn đã hoàn thành toàn bộ khóa học Zero to Hero! Sự kết hợp giữa Vấn đề thực tế, Hạt nhân Agentic AI, Live Demo chạy thật và Số liệu đo lường chính là công thức bách chiến bách thắng của các đội vô địch!"}}]}];
+
+        let ALL_SLIDES = [];
+        PARTS.forEach(p => {
+            p.slides.forEach(s => {
+                ALL_SLIDES.push(s);
+            });
+        });
+
+        let currentSlideGlobalIndex = 0;
+        let currentPartIndex = 0;
+        let completedSlides = new Set();
+        let xp = 0;
+
+        function updatePlayerBar() {
+            document.getElementById('player-xp').textContent = `${xp} XP`;
+            const percent = Math.round((completedSlides.size / ALL_SLIDES.length) * 100);
+            document.getElementById('player-progress').textContent = `${percent}% Hoàn Thành`;
+
+            let rank = '🌱 Novice Hacker';
+            if (xp >= 1500) rank = '👑 VJAI Grand Champion';
+            else if (xp >= 1000) rank = '🗼 Tokyo Innovation Finalist';
+            else if (xp >= 600) rank = '⚡ Senior Agentic Engineer';
+            else if (xp >= 300) rank = '🛠️ AI Agent Builder';
+            document.getElementById('player-rank').textContent = rank;
+        }
+
+        function renderPartTabs() {
+            const bar = document.getElementById('parts-nav-bar');
+            bar.innerHTML = '';
+            PARTS.forEach((p, idx) => {
+                const tab = document.createElement('div');
+                tab.className = `part-tab ${idx === currentPartIndex ? 'active' : ''}`;
+                tab.innerHTML = `
+                    <span class="part-tab-num">${p.part_num}</span>
+                    <span class="part-tab-title">${p.title}</span>
+                `;
+                tab.onclick = () => selectPart(idx);
+                bar.appendChild(tab);
+            });
+        }
+
+        function renderSlidesSidebar() {
+            const curPart = PARTS[currentPartIndex];
+            document.getElementById('cur-part-title').textContent = `${curPart.part_num}: ${curPart.title}`;
+            document.getElementById('cur-part-lessons').textContent = curPart.lessons_covered;
+
+            const list = document.getElementById('slides-list');
+            list.innerHTML = '';
+
+            curPart.slides.forEach(s => {
+                const gIdx = ALL_SLIDES.findIndex(item => item.id === s.id);
+                const item = document.createElement('div');
+                item.className = `slide-item ${gIdx === currentSlideGlobalIndex ? 'active' : ''} ${completedSlides.has(s.id) ? 'completed' : ''}`;
+                item.innerHTML = `
+                    <div class="slide-num-badge">${completedSlides.has(s.id) ? '✓' : (gIdx + 1)}</div>
+                    <div class="slide-title-text">${s.title}</div>
+                `;
+                item.onclick = () => selectSlide(gIdx);
+                list.appendChild(item);
+            });
+        }
+
+        function renderMathSafely(container) {
+            if (!container) return;
+            if (window.renderMathInElement) {
+                try {
+                    renderMathInElement(container, {
+                        delimiters: [
+                            { left: '$$', right: '$$', display: true },
+                            { left: '$', right: '$', display: false },
+                            { left: '\(', right: '\)', display: false },
+                            { left: '\[', right: '\]', display: true }
+                        ],
+                        throwOnError: false,
+                        strict: false,
+                        ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                    });
+                } catch (e) {
+                    console.warn('KaTeX auto-render error:', e);
+                }
+            }
+        }
+
+        function renderMathFormula(mathStr, targetEl) {
+            if (!targetEl) return;
+            const cardEl = document.getElementById('math-card');
+            if (!mathStr || !mathStr.trim()) {
+                if (cardEl) cardEl.style.display = 'none';
+                targetEl.innerHTML = '';
+                return;
+            }
+            if (cardEl) cardEl.style.display = 'block';
+            targetEl.innerHTML = '';
+
+            if (mathStr.includes('$$') || mathStr.includes('$')) {
+                targetEl.innerHTML = mathStr;
+                renderMathSafely(targetEl);
+            } else if (window.katex) {
+                try {
+                    katex.render(mathStr, targetEl, {
+                        displayMode: true,
+                        throwOnError: false
+                    });
+                } catch (e) {
+                    targetEl.textContent = mathStr;
+                }
+            } else {
+                targetEl.textContent = mathStr;
+            }
+        }
+
+        function renderSlide(gIndex) {
+            currentSlideGlobalIndex = gIndex;
+            const s = ALL_SLIDES[gIndex];
+            currentPartIndex = PARTS.findIndex(p => p.id === s.partId);
+
+            renderPartTabs();
+            renderSlidesSidebar();
+
+            document.getElementById('sc-part').textContent = `${s.partNum}: ${s.partTitle}`;
+            document.getElementById('sc-slide').textContent = `Slide ${gIndex + 1} / ${ALL_SLIDES.length}`;
+            document.getElementById('dock-counter').textContent = `${gIndex + 1} / ${ALL_SLIDES.length}`;
+            document.getElementById('slide-title').textContent = s.title;
+            document.getElementById('slide-analogy').innerHTML = s.analogy;
+
+            const pointsContainer = document.getElementById('slide-points');
+            pointsContainer.innerHTML = '';
+            s.points.forEach(pt => {
+                const pDiv = document.createElement('div');
+                pDiv.className = 'point-item';
+                pDiv.innerHTML = `<div class="point-bullet"></div><div>${pt}</div>`;
+                pointsContainer.appendChild(pDiv);
+            });
+
+            renderMathFormula(s.math, document.getElementById('slide-math'));
+            document.getElementById('slide-code').textContent = s.code.trim();
+            document.getElementById('slide-tip').innerHTML = s.tip;
+
+            renderMathSafely(pointsContainer);
+            renderMathSafely(document.getElementById('slide-analogy'));
+
+            // Quiz logic
+            const quizCard = document.getElementById('quiz-box');
+            if (s.isLastInPart && s.partQuiz) {
+                quizCard.style.display = 'block';
+                const q = s.partQuiz;
+                document.getElementById('quiz-question').textContent = q.question;
+                const optContainer = document.getElementById('quiz-options');
+                optContainer.innerHTML = '';
+                const fb = document.getElementById('quiz-feedback');
+                fb.style.display = 'none';
+
+                q.options.forEach((opt, oIdx) => {
+                    const optDiv = document.createElement('div');
+                    optDiv.className = 'quiz-option';
+                    optDiv.innerHTML = `<span style="font-weight:700;">${String.fromCharCode(65 + oIdx)}.</span> <span>${opt}</span>`;
+                    optDiv.onclick = () => handleAnswer(oIdx, q.answer, q.explanation, optDiv);
+                    optContainer.appendChild(optDiv);
+                });
+            } else {
+                quizCard.style.display = 'none';
+            }
+
+            // Scroll stage to top
+            document.getElementById('stage').scrollTop = 0;
+
+            // Update prev/next button states
+            document.getElementById('btn-prev').disabled = (gIndex === 0);
+            document.getElementById('btn-next').disabled = (gIndex === ALL_SLIDES.length - 1);
+        }
+
+        function handleAnswer(chosenIdx, correctIdx, explanation, optElement) {
+            const allOpts = document.querySelectorAll('.quiz-option');
+            allOpts.forEach(el => el.onclick = null);
+
+            const fb = document.getElementById('quiz-feedback');
+            fb.style.display = 'block';
+
+            if (chosenIdx === correctIdx) {
+                optElement.classList.add('correct');
+                fb.style.background = 'rgba(16, 185, 129, 0.15)';
+                fb.style.border = '1px solid var(--emerald)';
+                fb.style.color = '#34d399';
+                fb.innerHTML = `<strong>Chính xác! (+100 XP)</strong><br>${explanation}`;
+                xp += 100;
+                updatePlayerBar();
+                triggerConfetti();
+            } else {
+                optElement.classList.add('incorrect');
+                allOpts[correctIdx].classList.add('correct');
+                fb.style.background = 'rgba(244, 63, 94, 0.15)';
+                fb.style.border = '1px solid var(--rose)';
+                fb.style.color = '#fb7185';
+                fb.innerHTML = `<strong>Chưa chính xác!</strong> Đáp án đúng là <strong>${String.fromCharCode(65 + correctIdx)}</strong>.<br>${explanation}`;
+            }
+        }
+
+        function triggerConfetti() {
+            if (window.confetti) {
+                confetti({
+                    particleCount: 80,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+
+        function markCompleted() {
+            const curSlide = ALL_SLIDES[currentSlideGlobalIndex];
+            if (!completedSlides.has(curSlide.id)) {
+                completedSlides.add(curSlide.id);
+                xp += 50;
+                updatePlayerBar();
+                renderSlidesSidebar();
+                triggerConfetti();
+            }
+            if (currentSlideGlobalIndex < ALL_SLIDES.length - 1) {
+                nextSlide();
+            }
+        }
+
+        function selectSlide(gIndex) {
+            renderSlide(gIndex);
+        }
+
+        function selectPart(pIdx) {
+            const targetPart = PARTS[pIdx];
+            const firstSlideIdx = ALL_SLIDES.findIndex(s => s.partId === targetPart.id);
+            if (firstSlideIdx !== -1) {
+                renderSlide(firstSlideIdx);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlideGlobalIndex > 0) {
+                renderSlide(currentSlideGlobalIndex - 1);
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlideGlobalIndex < ALL_SLIDES.length - 1) {
+                renderSlide(currentSlideGlobalIndex + 1);
+            }
+        }
+
+        function copyCode() {
+            const code = document.getElementById('slide-code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('Đã sao chép code vào clipboard!');
+            });
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+
+        let isPresentation = false;
+        function togglePresentationMode() {
+            isPresentation = !isPresentation;
+            const sidebar = document.querySelector('.slides-sidebar');
+            const nav = document.getElementById('parts-nav-bar');
+            if (isPresentation) {
+                sidebar.style.display = 'none';
+                nav.style.display = 'none';
+                document.querySelector('.slide-title-hero').style.fontSize = '34px';
+            } else {
+                sidebar.style.display = 'flex';
+                nav.style.display = 'flex';
+                document.querySelector('.slide-title-hero').style.fontSize = '26px';
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            else if (e.key === 'ArrowLeft') prevSlide();
+            else if (e.key === ' ' || e.code === 'Space') {
+                e.preventDefault();
+                markCompleted();
+            } else if (e.key.toLowerCase() === 'f') {
+                toggleFullscreen();
+            } else if (e.key.toLowerCase() === 'p') {
+                togglePresentationMode();
+            }
+        });
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderSlide(0);
+            updatePlayerBar();
+        });
+    </script>
+</body>
+</html>

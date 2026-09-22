@@ -1,0 +1,180 @@
+===========================================================
+Deep Analysis: extracted_gci_world/GCI World_202609/03. Lecture Materials & Homework/Session2/lec2_notebook.ipynb
+===========================================================
+
+[Cell 000 MD] # 2 Efficient Data Manipulation Using NumPy
+[Cell 002 MD] ### Table of Contents
+[Cell 002 MD] - **2.7 Comprehensive Question**
+[Cell 003 MD] ## 2.1 Overview of NumPy
+[Cell 004 MD] ### 2.1.1 Loading Libraries
+[Cell 004 MD] (1) `import` library_name `as` alias
+[Cell 004 MD] (2) `from` library_name `import` module/function_name
+[Cell 004 MD] (1) is used to load the entire library.
+[Cell 004 MD] (2) can be used to load modules or functions in a hierarchical library.
+  [Cell 006 Code (1 lines)] | Code: import numpy as np
+  [Cell 008 Code (2 lines)] | Code: from numpy import random
+[Cell 010 MD] ## 2.2 Introduction to NumPy
+  [Cell 011 Code (13 lines)] Comment: # Python list | Code: a = [1, 2, 3, 4, 5]
+  [Cell 013 Code (4 lines)] | Code: a_list = a.tolist()  # Convert np.ndarray back to list
+[Cell 015 MD] ### 2.2.1 Basic Operations
+[Cell 016 MD] #### Downloading the Dataset
+  [Cell 017 Code (3 lines)] | Code: URL = "https://www.ncei.noaa.gov/pub/data/cdo/samples/GHCND_sample_csv.csv"
+  [Cell 019 Code (7 lines)] | Code: week_one_tmax = raw[0:7, 0]
+  [Cell 021 Code (5 lines)] Comment: # Check the size of the arrays | Code: print("Size of Week 1 TMAX:", len(week_one_tmax))
+[Cell 022 MD] #### Math Operations
+  [Cell 023 Code (6 lines)] | Code: week_one_tmax = week_one_tmax / 10
+  [Cell 025 Code (2 lines)] | Code: week_one_trange = week_one_tmax - week_one_tmin
+  [Cell 027 Code (4 lines)] | Code: print("Hottest day in Week 1:", np.max(week_one_tmax))
+[Cell 028 MD] ##### Note: Division by zero
+  [Cell 029 Code (1 lines)] | Code: 2 / 0
+  [Cell 031 Code (3 lines)] | Code: a = np.array([1, 2, 3])
+[Cell 033 MD] #### Other Functions
+  [Cell 034 Code (2 lines)] | Code: log_prcp = np.log1p(week_one_prcp)  # log1p to avoid log(0)
+  [Cell 036 Code (2 lines)] | Code: inv_prcp = np.expm1(log_prcp)  # expm1 to reverse log1p
+[Cell 038 MD] #### Conditional Operations
+  [Cell 039 Code (2 lines)] | Code: print("Week 1 precipitation is zero:", week_one_prcp == 0)
+  [Cell 041 Code (1 lines)] | Code: print("Week 1 TMIN less than -10°C:", week_one_tmin < -10)
+[Cell 042 MD] #### Broadcasting
+  [Cell 044 Code (3 lines)] | Code: a = np.array([1, 2, 3])
+  [Cell 049 Code (3 lines)] | Code: twos = np.array([2, 2, 2])
+  [Cell 051 Code (4 lines)] | Code: b = np.array([1, 2, 3, 4, 5])
+[Cell 053 MD] ### 2.2.2 Python Lists vs. NumPy Arrays
+[Cell 053 MD] #### Why Use NumPy?
+  [Cell 054 Code (3 lines)] Comment: # Convert week_one_tmax and week_one_tmin to lists for demon | Code: week_one_tmax_list = week_one_tmax.tolist()
+[Cell 055 MD] #### NumPy's Strengths (1): Convenience
+[Cell 056 MD] ##### Example 1: Single list/array operation
+  [Cell 057 Code (2 lines)] | Code: week_one_tmax_list_mean = sum(week_one_tmax_list) / len(week_one_tmax_list)
+  [Cell 059 Code (2 lines)] | Code: week_one_tmax_mean = np.mean(week_one_tmax)
+[Cell 060 MD] ##### Example 2: Multiple list/array operation
+  [Cell 061 Code (12 lines)] | Code: def mean_range(tmin_list, tmax_list):
+  [Cell 063 Code (1 lines)] | Code: print("Average range of temperature in Week 1:", np.mean(week_one_tmax - week_on
+[Cell 065 MD] #### NumPy's Strengths (2): Performance
+  [Cell 066 Code (18 lines)] Comment: # Create a large Python list and a NumPy array | Code: import time
+[Cell 068 MD] #### Side Note: Concatenation of list vs numpy array
+  [Cell 069 Code (5 lines)] | Code: week_one_tmax_list = week_one_tmax.tolist()
+  [Cell 071 Code (2 lines)] | Code: week_one_two_tmax = np.concatenate((week_one_tmax, week_two_tmax))
+[Cell 072 MD] ### <Practice Question 2-1>
+[Cell 073 MD] (1) Create two one-dimensional `np.ndarray` arrays with a length of three, one with even numbers as elements, and one with odd numbers as elements. Then use the `type()` function to confirm that they are of type `np.ndarray`.
+  [Cell 074 Code (2 lines)] Comment: # (1)
+[Cell 075 MD] (2) Add the two arrays that you created in (1) and confirm that it results in element-wise addition of the two arrays.
+  [Cell 076 Code (2 lines)] Comment: # (2)
+[Cell 077 MD] (3) Create a function `normalize(a)` that takes a one-dimensional array as an argument and outputs a one-dimensional array where the input is normalized.
+  [Cell 078 Code (3 lines)] Comment: # WRITE ME | Code: def normalize(a):
+[Cell 079 MD] ## 2.3 NumPy Indexing 1
+[Cell 079 MD] We will continue working with the NOAA dataset. Using slicing (see Section 2.3.2), we will only use the data from January, 2010 (note: the data starts from January 1st, 2010).
+  [Cell 080 Code (7 lines)] | Code: jan_tmax = raw[0:31, 0]
+[Cell 081 MD] ### 2.3.1 Single Element Indexing
+  [Cell 083 Code (1 lines)] | Code: print("First day of January TMAX:", jan_tmax[0])
+  [Cell 085 Code (3 lines)] | Code: print("Last day of January TMAX:", jan_tmax[-1])
+  [Cell 087 Code (2 lines)] | Code: print("January TMAX every week (in order):", jan_tmax[[0, 7, 14, 21, 28]])
+[Cell 088 MD] ### 2.3.2 Slicing
+[Cell 088 MD] # The last ":" can also be omitted
+  [Cell 090 Code (2 lines)] | Code: tmax_week1 = jan_tmax[0:7] # [:7] also works
+  [Cell 092 Code (2 lines)] | Code: prcp_fri = jan_prcp[0::7] # [::7] also works
+[Cell 093 MD] ### 2.3.3 Boolean Indexing
+[Cell 093 MD] # Create a list of boolean values
+[Cell 093 MD] # Boolean indexing
+  [Cell 094 Code (3 lines)] | Code: no_rain = jan_prcp == 0
+  [Cell 096 Code (1 lines)] | Code: jan_prcp[:7]
+  [Cell 098 Code (5 lines)] Comment: # This will lead to the wrong average | Code: print("Average January PRCP (including missing values):", np.mean(jan_prcp))
+  [Cell 100 Code (2 lines)] | Code: cold_and_not_rainy = (jan_tmax < -10) & (jan_prcp == 0)
+[Cell 101 MD] ### <Practice Question 2-2>
+[Cell 102 MD] (1) Using the array `jan_tmax` that we built, create a new array `tmax_mon` that contains the max temperatures of all Mondays in January. As mentioned previously, January 1st is a Friday.
+  [Cell 103 Code (2 lines)] Comment: # (1)
+[Cell 104 MD] (2) Calculate the average max temperature of all Mondays in January, then calculate the standard deviation of the max temperature of all Mondays in January.
+  [Cell 105 Code (2 lines)] Comment: # (2)
+[Cell 106 MD] ## 2.4 NumPy 2D Arrays
+  [Cell 108 Code (1 lines)] | Code: temp = raw[:, :2]
+[Cell 109 MD] ### 2.4.1 Creating 2D Arrays
+  [Cell 110 Code (8 lines)] Comment: # Create a 3*2 matrix from a 3*2 list | Code: a = np.array([
+  [Cell 112 Code (4 lines)] | Code: a = np.array([1, 2, 3, 4, 5, 6])
+  [Cell 114 Code (2 lines)] | Code: a = np.array([1, 2, 3, 4, 5, 6])
+  [Cell 116 Code (4 lines)] | Code: a = np.array([1, 2, 3, 4, 5, 6])
+  [Cell 117 Code (2 lines)] | Code: a = np.array([1, 2, 3, 4, 5, 6])
+[Cell 118 MD] ### 2.4.2 Math Operations
+[Cell 118 MD] Math operations on 2D arrays is the same as 1D array, so it will be computed per element (**universal!**). Rules of broadcasting from Section 2.2.1 also apply here. As a result, multiplication and division are element-wise calculations, unlike actual matrix operations.
+  [Cell 119 Code (2 lines)] | Code: X = raw / 10
+  [Cell 121 Code (5 lines)] | Code: a = np.array([1, 1, 2, 3, 5, 8])
+[Cell 122 MD] ### 2.4.3 Axis and Aggregation Functions
+  [Cell 124 Code (2 lines)] | Code: print("Shape of X:", X.shape)
+  [Cell 127 Code (1 lines)] | Code: print("Min along axis 0 (columns):", np.min(X, axis=0))
+  [Cell 129 Code (1 lines)] | Code: print("Min along axis 1 (rows):", np.min(X, axis=1))
+[Cell 130 MD] ### <Practice Question 2-3>
+[Cell 131 MD] (1) Using the 2-dimensional array `X` we just built, find the mean value and standard deviation for each column (`TMAX`, `TMIN`, `PRCP`), resulting with 2 1-dimensional arrays of length 3.
+  [Cell 132 Code (2 lines)] Comment: # (1)
+[Cell 133 MD] (2) **Standardize** all elements in `X` with respect to the mean and standard deviation that you calculated in (1), and store the new values in a new array `X_std`. This should result in a 2-dimensional array with a shape of (31,3).
+  [Cell 134 Code (2 lines)] Comment: # (2)
+[Cell 135 MD] ## 2.5 NumPy Indexing 2
+[Cell 136 MD] ### 2.5.1 Indexing
+  [Cell 137 Code (9 lines)] Comment: # Retrieve the 0th row | Code: X_list = X.tolist()
+  [Cell 139 Code (2 lines)] Comment: # [0][1] is the same as [0, 1] for 2D arrays | Code: print("Element at row 0, column 1 of X:", X[0, 1])
+  [Cell 141 Code (3 lines)] Comment: # Retrieve the 0th and 2nd rows along axis 0 | Code: print("0th and 2nd rows of X:", X[[0, 2]])
+  [Cell 142 Code (3 lines)] Comment: # Retrieve the 0th and 2nd columns along axis 1 | Code: print("0th and 2nd columns of X:", X[:, [0, 2]])
+[Cell 143 MD] ### 2.5.2 Advanced Indexing
+  [Cell 144 Code (5 lines)] | Code: a = np.array([
+[Cell 145 MD] #### Example 1: Multiple rows, single column
+  [Cell 148 Code (6 lines)] Comment: # The list or array specified for axis 0 should align with t | Code: print(a[[[0], [2]], 1])
+[Cell 149 MD] #### Example 2: Single row, multiple columns
+  [Cell 152 Code (6 lines)] Comment: # The list or array specified for axis 1 should align with t | Code: print(a[2, [[1, 3]]])
+[Cell 153 MD] #### Example 3: Multiple rows, multiple columns
+  [Cell 156 Code (1 lines)] | Code: print(a[[[0], [2]], [[1, 3]]])
+  [Cell 158 Code (1 lines)] | Code: print(a[[0, 2], [1, 3]]) # By doing this, a[0, 1] and a[2, 3] will be selected.
+  [Cell 160 Code (4 lines)] Comment: # The following two are the same | Code: idx = np.ix_([0, 2], [1, 3])
+[Cell 161 MD] ### 2.5.2 Slicing
+  [Cell 162 Code (1 lines)] | Code: print("First 5 rows of X:", X[:5])
+  [Cell 164 Code (1 lines)] | Code: print("TMAX and TMIN (3-day span):", X[::3, :2])
+  [Cell 166 Code (1 lines)] | Code: print("TMIN and PRCP (last 7 days):", X[:, -2:])
+[Cell 167 MD] ### 2.5.3 Boolean Indexing
+  [Cell 168 Code (4 lines)] | Code: print("X (first 5 rows):", X[:5])
+  [Cell 170 Code (1 lines)] | Code: print("Only TMAX and PRCP:", X[:5, [True, False, True]])
+  [Cell 172 Code (4 lines)] | Code: X_extracted = X[:5]
+[Cell 173 MD] ### <Practice Question 2-4>
+[Cell 174 MD] (1) Implement a function `get_data_zscore(date)` that takes an integer `date` (from 4 to 28) representing a day in January.
+[Cell 174 MD] 2. Calculate and return the z-score (exactly like you did in Practice Question 2-3!) of the target day's `TMAX`,`TMIN`,`PCRP` relative to that 7-day window. This should result in a 1-dimensional array with a length of 3.
+  [Cell 175 Code (4 lines)] Comment: # (1) | Code: def get_temp_zscore(date):
+[Cell 176 MD] (2) Using boolean indexing that you just learned, calculate the average max temperature of all days with no rain, and of all days with rain (make sure to exclude days with a missing value `PCRP` value).
+  [Cell 177 Code (1 lines)] Comment: # (2)
+[Cell 178 MD] ## 2.6 NumPy Advanced
+[Cell 179 MD] ### 2.6.1 Constants
+  [Cell 180 Code (2 lines)] | Code: print("Pi:", np.pi)
+  [Cell 182 Code (2 lines)] | Code: print("Positive infinity:", np.inf)
+  [Cell 184 Code (4 lines)] | Code: print(1 + np.inf)
+  [Cell 186 Code (3 lines)] | Code: a = 10000000
+[Cell 187 MD] ### 2.6.2 NumPy Arrays with Random Values
+[Cell 188 MD] #### Uniform Distribution
+  [Cell 189 Code (6 lines)] Comment: # Generate a uniform random number between [0, 1). 0 is incl | Code: print(random.rand())
+[Cell 190 MD] #### Normal Distribution
+  [Cell 191 Code (6 lines)] Comment: # Generate a random number following the standard normal dis | Code: print(random.randn())
+  [Cell 193 Code (4 lines)] Comment: # A 2-dimensional array with shape (5,5) containing random n | Code: print(random.normal(100, 10)) # A random number from a normal distributionmean 1
+[Cell 194 MD] #### Random Integers
+  [Cell 195 Code (2 lines)] | Code: print(random.randint(4)) # Generate a random integer between 0 and 3
+[Cell 196 MD] #### Seed
+  [Cell 197 Code (6 lines)] Comment: # The values will be the same no matter how many times you e | Code: random.seed(seed=32) # The seed can be any integer
+[Cell 198 MD] ### 2.6.3 Matrix Calculation
+  [Cell 199 Code (9 lines)] | Code: x = np.arange(1, 4)
+[Cell 200 MD] #### Transpose
+  [Cell 201 Code (3 lines)] Comment: # The following two are the same | Code: print(np.transpose(A))
+[Cell 202 MD] #### Dot Product and Matrix Multiplication
+  [Cell 203 Code (9 lines)] | Code: print("Dot product of x and y")
+  [Cell 205 Code (3 lines)] Comment: # Since there are matrices, changing the order of multiplica | Code: print(np.matmul(A, B))
+[Cell 206 MD] #### Side Note: Broadcasting
+  [Cell 207 Code (3 lines)] Comment: # A simple example of broadcasting | Code: print(np.matmul(A, x)) # x is interpreted as a column vector
+[Cell 208 MD] #### Side Note: Row vectors vs. Column vectors
+  [Cell 209 Code (12 lines)] Comment: # The transpose doesn't change anything (since there is only | Code: a = np.array([1, 0, 1, 0, 1]) # A 5-dimensional vector represented as a 1-dimens
+[Cell 210 MD] #### Linear Algebra Computation
+  [Cell 212 Code (6 lines)] Comment: # Calculate the determinant | Code: print(LA.det(A))
+  [Cell 213 Code (8 lines)] Comment: # Calculate the norm | Code: print(LA.norm(x))
+  [Cell 215 Code (14 lines)] | Code: print("A:")
+[Cell 217 MD] ## 2.7 Comprehensive Questions
+  [Cell 222 Code (2 lines)] | Code: A = random.randn(100, 3) # A matrix stacked with 100 3D row vectors
+[Cell 223 MD] (1) Generate a rotation matrix $R$ that rotates 100 vectors, and compute the matrix of rotated vectors stacked vertically into a shape of (100, 3). Here, the 3D rotation matrix $R$ for a random rotation is generated by passing a 1D array of three randomly generated angle parameters to the `gen_R_3d` function.
+  [Cell 224 Code (20 lines)] Comment: # (1) | Code: def gen_R_3d(p):
+[Cell 225 MD] (2) To normalize each vector obtained in (1) so that the L2 norm equals 1 and then stack them vertically to form a (100, 3) matrix, you would follow these steps:
+  [Cell 226 Code (1 lines)] Comment: # (2)
+[Cell 227 MD] (3) For the 100 vectors with a norm of 1 obtained in (2), compute a matrix of shape (100, 6) by stacking the original 100 vectors and their -1 multiplied counterparts **horizontally**, without changing the order of the vectors.
+  [Cell 228 Code (1 lines)] Comment: # (3)
+[Cell 229 MD] (4) (Somewhat Difficult)
+[Cell 229 MD] (Hint: Think about how to assign the vector number using the normalized vectors. You can avoid using the inner product for efficiency. If you're unsure, try considering the case in 2D and then apply the same idea to 3D. You can utilize the normalization step from part (2).)
+  [Cell 230 Code (1 lines)] Comment: # (4)
+[Cell 231 MD] (5) (For those with extra time)
+  [Cell 232 Code (1 lines)] Comment: # (5)

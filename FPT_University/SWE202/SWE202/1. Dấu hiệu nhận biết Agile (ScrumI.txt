@@ -1,0 +1,20 @@
+1. Dấu hiệu nhận biết Agile (Scrum/Iterative)
+Hệ thống CRS của bạn có rất nhiều dấu hiệu của Agile:
+
+
+Yêu cầu thay đổi (Requirement Change): Đề bài nhắc đến "university's change-control process". Trong môi trường đại học, quy chế đăng ký có thể thay đổi bất ngờ. Agile cho phép điều chỉnh sau mỗi chu kỳ (sprint).
+
+
+Phản hồi từ Stakeholders: Hệ thống có tới 4 nhóm người dùng (Student, Lecturer, Staff, Admin) với các nhu cầu khác nhau. Agile giúp bạn lấy phản hồi sớm từ họ thay vì đợi đến cuối dự án mới cho họ xem sản phẩm.
+
+
+Rủi ro kỹ thuật cao (High Risks): Đề bài yêu cầu xử lý 1,000 người dùng cùng lúc và bảo mật khắt khe. Việc phát triển theo từng vòng lặp (Iterative) giúp bạn kiểm tra (test) tải và bảo mật ngay từ những giai đoạn đầu, tránh việc đến cuối mới phát hiện hệ thống bị sập.
+
+2. Dấu hiệu nhận biết Waterfall
+Bạn chỉ nên chọn Waterfall nếu đề bài có các đặc điểm sau (thường không áp dụng cho CRS này):
+
+Yêu cầu cố định 100%: Ngay từ đầu khách hàng đã biết chính xác mọi tính năng và cam kết không thay đổi gì.
+
+Dự án đơn giản, ít rủi ro: Một hệ thống đã quá quen thuộc, không có thách thức mới về công nghệ.
+
+Ngân sách và thời gian cứng nhắc: Thường dùng cho các dự án đấu thầu chính phủ hoặc xây dựng phần cứng, nơi mà việc thay đổi thiết kế giữa chừng là cực kỳ tốn kém.

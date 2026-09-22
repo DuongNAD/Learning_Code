@@ -1,0 +1,61 @@
+//*********************************************************************
+//		Copyright (c) Microsoft Corporation.
+//
+// @File: xepkg0.mof
+// @Owner: gauravbi
+//
+// Purpose:
+//		MOF File for Package0
+//
+// Notes:
+//
+// @EndHeader@
+//*********************************************************************
+
+#PRAGMA AUTORECOVER
+#pragma namespace("\\\\.\\root\\wmi")
+
+[dynamic: ToInstance, Description("XEvent Package 0"),
+ Guid("{60aa9fbf-673b-4553-b7ed-71dca7f5e972}"), locale("MS\\0x409")]
+class XEvent_Package0 : EventTrace
+{
+};
+
+[dynamic: ToInstance, Description("XEvent_Package0_XferEventParent"): Amended,
+ Guid("{b1c5b348-099d-4f62-845f-c1573bac72ac}"), locale("MS\\0x409"),
+ DisplayName("Activity Id Transfer Event") : amended]
+class XEvent_Package0_XferEventParent : XEvent_Package0
+{
+};
+
+
+[dynamic: ToInstance, Description("XEvent_Package0_XferEvent"): Amended,
+ EventType(0)]
+class XEvent_Package0_XferEvent : XEvent_Package0_XferEventParent
+{
+    [WmiDataId(1), Description("FragmentId"): Amended, read] uint32 FragmentId;
+    [WmiDataId(2), Description("RemainingLength"): Amended, read] uint32 RemainingLength;
+    [WmiDataId(3), Description("ActivityId"): Amended, ActivityID, read, Extension("Guid")] guid ActivityId;
+    [WmiDataId(4), Description("SequenceNumber"): Amended, read] uint32 SequenceNumber;    
+
+    [WmiDataId(5), Description("XferActivityId"): Amended, read, Extension("Guid")] guid XferActivityId;
+    [WmiDataId(6), Description("XferSequenceNumber"): Amended, read] uint32 XferSequenceNumber;
+};
+
+[dynamic: ToInstance, Description("XEvent_Package0_FragmentEventParent"): Amended,
+ Guid("{9fbd558c-9713-439c-bccd-68d631b6a135}"), locale("MS\\0x409"),
+ DisplayName("Large Event Fragment") : amended]
+class XEvent_Package0_FragmentEventParent : XEvent_Package0
+{
+};
+
+[dynamic: ToInstance, Description("XEvent_Package0_FragmentEvent"): Amended,
+ EventType(0)]
+class XEvent_Package0_FragmentEvent : XEvent_Package0_FragmentEventParent
+{
+    [WmiDataId(1), Description("FragmentId"): Amended, read] uint32 FragmentId;
+    [WmiDataId(2), Description("RemainingLength"): Amended, read] uint32 RemainingLength;
+    [WmiDataId(3), Description("ActivityId"): Amended, ActivityID, read, Extension("Guid")] guid ActivityId;
+    [WmiDataId(4), Description("SequenceNumber"): Amended, read] uint32 SequenceNumber;
+};
+

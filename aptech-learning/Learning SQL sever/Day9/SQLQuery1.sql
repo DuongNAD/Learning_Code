@@ -1,0 +1,33 @@
+﻿CREATE DATABASE TABLE_SANPHAM
+
+USE TABLE_SANPHAM
+
+CREATE TABLE SANPHAM (
+	MA_SP VARCHAR(5) NOT NULL,
+	TEN_SP NVARCHAR(50) NOT NULL,
+	GIA DECIMAL(18,0) NOT NULL,
+	MOTA NVARCHAR(50)
+)
+
+ALTER TABLE SANPHAM
+ADD CONSTRAINT PK_SANPHAM
+PRIMARY KEY (MA_SP)
+
+ALTER TABLE SANPHAM
+ADD CONSTRAINT CK_GIA
+CHECK (GIA >= 0)
+
+INSERT INTO SANPHAM (MA_SP, TEN_SP, GIA, MOTA)
+VALUES
+('SP001', N'Điện thoại iPhone 13', 20000000, N'Màn hình OLED 6.1 inch'),
+('SP002', N'Laptop Dell XPS 13', 35000000, N'Laptop cao cấp, mỏng nhẹ'),
+('SP003', N'Tai nghe AirPods Pro', 5500000, N'Tai nghe chống ồn chủ động'),
+('SP004', N'Máy ảnh Canon EOS M50', 18000000, N'Máy ảnh mirrorless cho người mới'),
+('SP005', N'Bàn phím cơ Logitech G Pro', 3200000, N'Bàn phím gaming nhỏ gọn'),
+('SP006', N'Màn hình Samsung 32 inch', 7500000, N'Màn hình cong chơi game');
+
+
+CREATE NONCLUSTERED INDEX IX_SANPHAM_GIA
+ON SANPHAM (GIA)
+
+SELECT GIA FROM SANPHAM

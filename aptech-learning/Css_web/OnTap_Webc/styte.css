@@ -1,0 +1,34 @@
+.icon{
+    display: flex;
+    align-items:center;
+    flex-direction: row;
+}
+.shopee{
+    max-width: 50px;
+    max-height: 50px;
+}
+.body{
+    height: none;
+    width: none;
+}
+
+.header{
+    background-color: orange;
+    display: flex;
+    flex-direction: row;
+    gap: 200px;
+}
+
+.search{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.search input {
+    min-width: 900px;
+    min-height: 50px;
+    border: 2px solid cornflowerblue;
+    border-radius: 10px;
+}
+

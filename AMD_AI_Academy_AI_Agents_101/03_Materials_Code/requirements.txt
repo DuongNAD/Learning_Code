@@ -1,0 +1,22 @@
+# =====================================================================
+# AMD AI Academy: AI Agents 101 - Code Labs Requirements
+# =====================================================================
+# All labs are designed to run 100% standalone using Python 3.10+ stdlib.
+# The dependencies below enhance formatting, typing validation, and testing.
+
+# Core Development & Validation
+pydantic>=2.0.0
+rich>=13.0.0
+pytest>=8.0.0
+
+# Optional: Live LLM Integration (for running with real API keys)
+# openai>=1.12.0
+# httpx>=0.25.0
+
+# Optional: Framework Integration (for Lab 4 real LangGraph mode)
+# langgraph>=0.0.30
+# langchain-core>=0.1.30
+
+# Note for AMD ROCm GPU Users:
+# To run local models on AMD Radeon/Instinct GPUs via ROCm PyTorch:
+# pip install torch --index-url https://download.pytorch.org/whl/rocm6.1

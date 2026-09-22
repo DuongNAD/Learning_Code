@@ -1,0 +1,57 @@
+﻿Táº¬P QUY Táº®C VIáº¾T CODE â€“ MÃ”N LAB211
+1. Quy táº¯c Ä‘áº·t tÃªn (Naming convention)
+Class name: Viáº¿t kiá»ƒu PascalCase (má»—i tá»« viáº¿t hoa). VÃ­ dá»¥: StudentManager, Product, LibrarySystem
+Method name: Viáº¿t kiá»ƒu camelCase. VÃ­ dá»¥: calculateGPA(), findById()
+Variable name: camelCase. VÃ­ dá»¥: studentList, totalPrice
+Háº±ng sá»‘ (constant): Viáº¿t in hoa, phÃ¢n tÃ¡ch báº±ng dáº¥u gáº¡ch dÆ°á»›i. VÃ­ dá»¥: MAX_SCORE
+2. Cáº¥u trÃºc chÆ°Æ¡ng trÃ¬nh
+Má»—i class Ä‘áº£m nhiá»‡m má»™t vai trÃ² duy nháº¥t (Single Responsibility):
+Student.java: chá»‰ Ä‘á»‹nh nghÄ©a Ä‘á»‘i tÆ°á»£ng Sinh viÃªn.
+StudentManager.java: xá»­ lÃ½ thao tÃ¡c quáº£n lÃ½ danh sÃ¡ch sinh viÃªn.
+Main.java: chá»©a menu Ä‘iá»u khiá»ƒn vÃ  xá»­ lÃ½ tÆ°Æ¡ng tÃ¡c ngÆ°á»i dÃ¹ng.
+KhÃ´ng Ä‘á»ƒ logic xá»­ lÃ½ láº«n lá»™n giá»¯a cÃ¡c lá»›p. VÃ­ dá»¥: khÃ´ng Ä‘á»ƒ code Scanner nháº­p dá»¯ liá»‡u trong Student class.
+3. Quy táº¯c vá» method
+Má»—i phÆ°Æ¡ng thá»©c chá»‰ nÃªn xá»­ lÃ½ má»™t nhiá»‡m vá»¥ cá»¥ thá»ƒ (Single responsibility).
+TÃªn phÆ°Æ¡ng thá»©c pháº£i thá»ƒ hiá»‡n rÃµ chá»©c nÄƒng (vÃ­ dá»¥: calculateAge() tá»‘t hÆ¡n process1()).
+Äá»‘i vá»›i cÃ¡c hÃ nh Ä‘á»™ng:
+get: láº¥y thÃ´ng tin
+set: gÃ¡n giÃ¡ trá»‹
+add, remove, find, sort, print, input, updateâ€¦ dÃ¹ng rÃµ rÃ ng vÃ  nháº¥t quÃ¡n.
+4. Validation dá»¯ liá»‡u Ä‘áº§u vÃ o
+Báº¯t buá»™c kiá»ƒm tra vÃ  xá»­ lÃ½ ngoáº¡i lá»‡ (exception) cho táº¥t cáº£ cÃ¡c Ä‘áº§u vÃ o tá»« ngÆ°á»i dÃ¹ng:
+Dá»¯ liá»‡u rá»—ng, sai kiá»ƒu, vÆ°á»£t giá»›i háº¡n, Ä‘á»‹nh dáº¡ng sai,...
+CÃ³ thá»ƒ dÃ¹ng phÆ°Æ¡ng thá»©c nhÆ°:
+public static int inputInteger(String msg, int min, int max)
+public static String inputString(String msg, String regex)
+5. Encapsulation
+Táº¥t cáº£ thuá»™c tÃ­nh (attibute) trong class pháº£i private.
+Cung cáº¥p getter vÃ  setter náº¿u cáº§n thiáº¿t.
+KhÃ´ng Ä‘á»ƒ biáº¿n public náº¿u khÃ´ng cÃ³ lÃ½ do rÃµ rÃ ng.
+6. TuÃ¢n thá»§ nguyÃªn táº¯c OOP
+Ãp dá»¥ng Ä‘Ãºng cÃ¡c Ä‘áº·c tÃ­nh hÆ°á»›ng Ä‘á»‘i tÆ°á»£ng: Encapsulation, Abstraction, Inheritance, Polymorphism.
+KhÃ´ng viáº¿t toÃ n bá»™ chÆ°Æ¡ng trÃ¬nh trong main() hoáº·c má»™t class duy nháº¥t (with some explicit exceptions).
+7.  Äá»‹nh dáº¡ng vÃ  bá»‘ cá»¥c
+DÃ¹ng indent = 4 spaces, khÃ´ng dÃ¹ng tab.
+Má»—i file Java nÃªn cÃ³ comment tÃªn lá»›p, mÃ´ táº£ chá»©c nÄƒng ngáº¯n gá»n.
+CÃ³ khoáº£ng tráº¯ng há»£p lÃ½ giá»¯a cÃ¡c phÆ°Æ¡ng thá»©c, khá»‘i lá»‡nh.
+TrÃ¡nh viáº¿t quÃ¡ dÃ i trong má»™t phÆ°Æ¡ng thá»©c (>30 dÃ²ng lÃ  dáº¥u hiá»‡u nÃªn tÃ¡ch nhá»).
+8. Comment & Documentation
+Comment Ä‘Ãºng má»©c, khÃ´ng láº¡m dá»¥ng, Æ°u tiÃªn viáº¿t code dá»… Ä‘á»c hÆ¡n lÃ  giáº£i thÃ­ch báº±ng comment.
+CÃ¡c method nÃªn cÃ³ mÃ´ táº£ Ä‘áº§u dÃ²ng theo chuáº©n:
+/**
+ * TÃ­nh tá»•ng tiá»n cho má»™t sáº£n pháº©m
+ * @return double tá»•ng tiá»n
+ */
+9. Nhá»¯ng Ä‘iá»u khÃ´ng Ä‘Æ°á»£c phÃ©p (DONâ€™T)
+KhÃ´ng dÃ¹ng break vÃ  continue bá»«a bÃ£i trong vÃ²ng láº·p.
+KhÃ´ng Ä‘á»ƒ code láº·p láº¡i logic giá»‘ng nhau nhiá»u nÆ¡i (DRY: Don't Repeat Yourself).
+KhÃ´ng viáº¿t class chá»©a toÃ n biáº¿n static náº¿u khÃ´ng cáº§n thiáº¿t.
+KhÃ´ng chÃ©p code tá»« nguá»“n ngoÃ i náº¿u khÃ´ng hiá»ƒu rÃµ.
+10. Kiá»ƒm tra chÆ°Æ¡ng trÃ¬nh
+Kiá»ƒm tra táº¥t cáº£ cÃ¡c chá»©c nÄƒng Ä‘Æ°á»£c yÃªu cáº§u hoáº¡t Ä‘á»™ng Ä‘Ãºng.
+Kiá»ƒm tra cÃ¡c trÆ°á»ng há»£p biÃªn: dá»¯ liá»‡u trá»‘ng, sai Ä‘á»‹nh dáº¡ng, nháº­p láº¡i, v.v.
+Äáº£m báº£o chÆ°Æ¡ng trÃ¬nh khÃ´ng bá»‹ crash khi nháº­p sai.
+Äáº£m báº£o cÃ¡c thÃ´ng bÃ¡o lá»—i thÃ¢n thiá»‡n vá»›i ngÆ°á»i dÃ¹ng
+Äáº£m báº£o hiá»ƒu háº¿t cÃ¡c control flow vÃ  data flow trong chÆ°Æ¡ng trÃ¬nh
+Äáº£m báº£o hiá»ƒu Ä‘Æ°á»£c vÃ  giáº£i thÃ­ch Ä‘Æ°á»£c cÃ¡ch thá»©c hoáº¡t Ä‘á»™ng cá»§a tá»«ng dÃ²ng lá»‡nh trong chÆ°Æ¡ng trÃ¬nh
+

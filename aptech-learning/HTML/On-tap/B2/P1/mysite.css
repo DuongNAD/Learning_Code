@@ -1,0 +1,131 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Bao quanh slideshow */
+.slideshow {
+    position: relative;
+    /* Để đặt arrow (mũi tên) chồng lên */
+    width: 100%;
+    height: 70vh;
+    /* Chiều cao tùy chỉnh, có thể là 100vh */
+    overflow: hidden;
+    display: flex;
+    /* Nếu muốn, có thể dùng carousel logic thay đổi `display: flex` thành cơ chế khác. */
+}
+
+/* Mỗi slide chiếm toàn bộ không gian slideshow, ẩn/bật bằng class .active */
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    /* Ẩn mặc định */
+    background: #f0f0f0;
+    /* Màu nền tạm thời */
+    align-items: center;
+    justify-content: center;
+    padding: 0 30px;
+    gap: 30px;
+    /* Khoảng cách giữa text-content và image-content */
+}
+
+.slide.active {
+    display: flex;
+    /* Chỉ hiển thị slide có class .active */
+}
+
+/* Khu vực chữ (title, mô tả) */
+.text-content {
+    flex: 1;
+    /* Cho phép chiếm không gian rộng hơn */
+    max-width: 600px;
+    /* Giới hạn độ rộng phần text */
+}
+
+.text-content h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.text-content p {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Khu vực hình ảnh */
+.image-content {
+    flex: 1;
+    /* Để hình và text chia đôi không gian (tùy chỉnh) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-content img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Mũi tên chuyển slide */
+.arrow {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    /* Kích thước icon */
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 8px;
+    border-radius: 50%;
+    user-select: none;
+    transition: background 0.3s;
+}
+
+.arrow:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.arrow-left {
+    left: 20px;
+}
+
+.arrow-right {
+    right: 20px;
+}
+
+/* Thanh chấm tròn chuyển slide (nếu muốn) */
+.dots {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.dot.active {
+    background-color: #333;
+}
+.show{
+    display:flex;
+    align-items: center;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+.text-content{
+    display: flex;
+    flex-direction: column;
+}

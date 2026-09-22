@@ -1,0 +1,59 @@
+\begin{thebibliography}{1}
+
+\bibitem{breiman1984classification}
+Leo Breiman, Jerome Friedman, Charles~J. Stone, and Richard~A. Olshen.
+\newblock {\em Classification and Regression Trees}.
+\newblock CRC Press, Boca Raton, 1984.
+
+\bibitem{lewis2020retrieval}
+Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni, Vladimir
+  Karpukhin, Naman Goyal, Heinrich K{\"u}ttler, Mike Lewis, Wen-tau Yih, Tim
+  Rockt{\"a}schel, et~al.
+\newblock Retrieval-augmented generation for knowledge-intensive {NLP} tasks.
+\newblock In {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  volume~33, pages 9459--9474, 2020.
+
+\bibitem{mitchell1997machine}
+Tom~M. Mitchell.
+\newblock {\em Machine Learning}.
+\newblock McGraw-Hill, New York, 1997.
+
+\bibitem{ouyang2022training}
+Long Ouyang, Jeffrey Wu, Xu~Jiang, Diogo Almeida, Carroll Wainwright, Pamela
+  Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, et~al.
+\newblock Training language models to follow instructions with human feedback.
+\newblock In {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  volume~35, pages 27730--27744, 2022.
+
+\bibitem{quinlan1986induction}
+J.~Ross Quinlan.
+\newblock Induction of decision trees.
+\newblock {\em Machine Learning}, 1(1):81--106, 1986.
+
+\bibitem{rafailov2023direct}
+Rafael Rafailov, Archit Sharma, Eric Mitchell, Stefano Ermon, Christopher~D.
+  Manning, and Chelsea Finn.
+\newblock Direct preference optimization: Your language model is secretly a
+  reward model.
+\newblock In {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  volume~36, 2023.
+
+\bibitem{sculley2015hidden}
+David Sculley, Gary Holt, Daniel Golovin, Eugene Davydov, Todd Phillips,
+  Dietmar Ebner, Vinay Chaudhary, Michael Young, Jean-Francois Crespo, and Dan
+  Dennison.
+\newblock Hidden technical debt in machine learning systems.
+\newblock In {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  volume~28, pages 2503--2511, 2015.
+
+\bibitem{tikhonov1977solutions}
+Andrey~N. Tikhonov and Vasiliy~Y. Arsenin.
+\newblock {\em Solutions of Ill-Posed Problems}.
+\newblock V. H. Winston \& Sons, Washington, D.C., 1977.
+
+\bibitem{vapnik1998statistical}
+Vladimir~N. Vapnik.
+\newblock {\em Statistical Learning Theory}.
+\newblock John Wiley \& Sons, New York, 1998.
+
+\end{thebibliography}

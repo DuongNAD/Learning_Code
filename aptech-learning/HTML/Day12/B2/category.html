@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <form id="productForm">
+            <div>
+                <label for="nameProduct">Tên sản phẩm</label>
+                <input type="text" id="nameProduct" name="nameProduct" placeholder="Tên sản phẩm" required>
+            </div>
+            <div>
+                <label for="priceProduct"></label>
+                <input type="number" id="priceProduct" name="priceProduct" placeholder="Giá sản phẩm" required>
+            </div>
+            <div>
+                <label for="quantityProduct"></label>
+                <input type="number" id="quantityProduct" name="quantityProduct" placeholder="Số lượng" required>
+            </div>
+            <div>
+                <label for="descriptionProduct"></label>
+                <textarea name="descriptionProduct" id="descriptionProduct" placeholder="Mô tả" required></textarea>
+            </div>
+            <div>
+                <button type="button" id="addProduct">Add</button>
+                <button type="button" id="updateProduct" style="display: none;"></button>Update</button>
+
+                <input type="hidden" id="updateIndex">
+            </div>
+        </form>
+        <h3>Danh sách sản phẩm</h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Tên</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Mô tả</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody id="productTableBody"></tbody>
+        </table>
+    </div>
+    <script src="category.js" defer></script>
+</body>
+
+</html>

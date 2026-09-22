@@ -1,0 +1,176 @@
+===========================================================
+Deep Analysis: extracted_gci_world/GCI World_202609/03. Lecture Materials & Homework/PreLecture_Python1&2/prelecture_notebook.ipynb
+===========================================================
+
+[Cell 000 MD] # Basics of Python
+  [Cell 002 Code (1 lines)] | Code: 2 + 3
+  [Cell 004 Code (4 lines)] | Code: s = 0
+[Cell 006 MD] ## 1.1. Approach to Programming
+  [Cell 009 Code (1 lines)] | Code: 2 + 3
+  [Cell 010 Code (4 lines)] | Code: s = 0
+[Cell 011 MD] ## 1.2. Comments
+  [Cell 013 Code (3 lines)] Comment: # Addition | Code: 2 + 3 # Addition
+[Cell 014 MD] ## 1.3. Dealing with Errors
+[Cell 016 MD] #1. Python Grammar I
+[Cell 017 MD] ## 1.4. Operators
+[Cell 018 MD] ### 1.4.1. Arithmetic Operators
+  [Cell 020 Code (2 lines)] Comment: # Addition | Code: print(2 + 3)
+  [Cell 021 Code (2 lines)] Comment: # Subtraction | Code: print(10 - 2)
+  [Cell 022 Code (2 lines)] Comment: # Multiplication | Code: print(3 * 2)
+  [Cell 023 Code (2 lines)] Comment: # Division | Code: print(3 / 2)
+  [Cell 024 Code (2 lines)] Comment: # Integer division | Code: print(5//2)
+  [Cell 025 Code (2 lines)] Comment: # Modulo operation (remainder) | Code: print(5 % 2)
+  [Cell 026 Code (2 lines)] Comment: # Exponential operation | Code: print(10 ** 3)
+[Cell 027 MD] ### 1.4.2. Operator Precedence in Arithmetic
+  [Cell 029 Code (2 lines)] Comment: # Priority: Multiplication > Addition | Code: print(1 + 2 * 3)
+  [Cell 030 Code (2 lines)] Comment: # Priority: addition inside parentheses > multiplication | Code: print((1 + 2) * 3)
+  [Cell 031 Code (2 lines)] Comment: # Priority: Exponentiation > Multiplication | Code: print(2 * 2 ** 3)
+[Cell 032 MD] ## 1.5. Variables
+  [Cell 034 Code (3 lines)] Comment: # Assign 1 to x and print x | Code: x = 1
+  [Cell 036 Code (3 lines)] Comment: # Reassigning x+2 to x | Code: x = x + 2
+[Cell 038 MD] ## 1.6. Data Types
+[Cell 040 MD] ### 1.6.1. Numeric Values : int Type (Integer) and float Type (Decimal)
+  [Cell 041 Code (3 lines)] Comment: # int type（integer） | Code: num = 1
+  [Cell 042 Code (3 lines)] Comment: # float type (decimal) | Code: num = 1.0
+  [Cell 043 Code (3 lines)] Comment: # Calculation between int and float -> float type | Code: num = 1 + 1.0
+  [Cell 044 Code (4 lines)] Comment: # Divide two int types | Code: num = 1 / 1
+[Cell 045 MD] ### 1.6.2. Text Data : str Type (String)
+  [Cell 047 Code (4 lines)] Comment: # Assigning a string | Code: string = 'Python'
+  [Cell 048 Code (3 lines)] | Code: str1 = 'Hello'
+  [Cell 049 Code (4 lines)] Comment: # Repeat | Code: text = "Hello "
+  [Cell 050 Code (3 lines)] Comment: # Length of the string | Code: string = 'Python'
+  [Cell 051 Code (4 lines)] Comment: # Get the first character | Code: text = "Apple"
+  [Cell 053 Code (4 lines)] Comment: # Extract a substring from a string | Code: text = "Apple"
+  [Cell 055 Code (5 lines)] Comment: # f-string | Code: name = "Matsuo"
+[Cell 056 MD] ### 1.6.3. bool Type (Boolean)
+  [Cell 057 Code (5 lines)] | Code: yes = True
+[Cell 058 MD] ### 1.6.4. Type Conversion
+  [Cell 059 Code (4 lines)] Comment: # str type | Code: x = '3.14'  # Not a numerical value but a string
+  [Cell 060 Code (4 lines)] Comment: # Converting from str type to float type | Code: y = float(x)
+  [Cell 061 Code (4 lines)] Comment: # Convert from float to int | Code: z = int(y)
+  [Cell 063 Code (4 lines)] Comment: # Converting from bool to int | Code: x = True
+  [Cell 064 Code (4 lines)] Comment: # Converting from bool to int | Code: x = False
+  [Cell 065 Code (3 lines)] Comment: # Converting from int to bool | Code: print(bool(2))
+  [Cell 066 Code (3 lines)] Comment: # Convert from int to bool | Code: print(bool(0.0))
+  [Cell 067 Code (4 lines)] Comment: # Variable num: Is it odd (cannot be divided by 2)? -> True  | Code: x = 5
+[Cell 068 MD] ## 1.7. Practice Questions
+[Cell 069 MD] (1-1) Write a program that outputs the string "Hello, World!"
+  [Cell 070 Code (1 lines)] Comment: # WRITE ME!
+  [Cell 072 Code (1 lines)] Comment: # WRITE ME!
+[Cell 074 MD] (1-2) Write a program that computes and prints the quotient and remainder of 17 // 5 and 17 % 5.
+  [Cell 075 Code (1 lines)] Comment: # WRITE ME!
+  [Cell 077 Code (1 lines)] Comment: # WRITE ME!
+[Cell 078 MD] (1-3) Let's assume that an integer is stored in the variable `x`. Create a program that will display (print) 0 if `x` is even, and 1 if `x` is odd.
+  [Cell 079 Code (1 lines)] | Code: x = 1 # Input example
+  [Cell 080 Code (1 lines)] Comment: # WRITE ME!
+[Cell 081 MD] (1-4) Create a program to calculate BMI from height and weight. BMI = weight(kg) / (height(m))^2
+  [Cell 082 Code (6 lines)] Comment: # Input example | Code: weight = 50 # kg
+[Cell 083 MD] # Additional Information: Naming Variables
+  [Cell 085 Code (5 lines)] Comment: # Variable name starts with a number | Code: '''
+  [Cell 086 Code (1 lines)] | Code: class_name = 'A'
+  [Cell 088 Code (2 lines)] | Code: import keyword
+[Cell 089 MD] #2. Python Grammar II
+[Cell 090 MD] ## 2.1. Collections
+[Cell 092 MD] ## 2.2. Lists
+  [Cell 094 Code (1 lines)] | Code: menu = ['Salad', 'Soup', 'Steak', 'Cake']
+  [Cell 096 Code (2 lines)] Comment: # Extracting the second element of the list | Code: print(menu[1])
+  [Cell 097 Code (2 lines)] Comment: # Extracting the last element of the list | Code: print(menu[-1])
+  [Cell 098 Code (3 lines)] Comment: # Change the last element of the list | Code: menu[-1] = 'pudding'
+[Cell 101 MD] (Reference)(Python Tutorial): https://docs.python.org/3/tutorial/introduction.html#strings
+  [Cell 102 Code (2 lines)] Comment: # Assigning a list of numbers | Code: numbers = [10, 20, 30, 40, 50]
+  [Cell 104 Code (2 lines)] Comment: # Example of slicing | Code: print(numbers[0:2])
+  [Cell 105 Code (2 lines)] Comment: # Specify a start and end point for a slice | Code: print(numbers[1:3])
+  [Cell 106 Code (2 lines)] Comment: # When only the end point is specified in the slice | Code: print(numbers[:-1])
+  [Cell 107 Code (2 lines)] Comment: # Slice without specifying indices (all elements) | Code: print(numbers[:])
+  [Cell 109 Code (1 lines)] | Code: menu = ['salad', 'soup', 'steak', 'cake']
+  [Cell 110 Code (3 lines)] Comment: # Add an element | Code: menu.append('pudding')
+  [Cell 111 Code (3 lines)] Comment: # Remove element | Code: menu.remove('soup')
+  [Cell 113 Code (2 lines)] Comment: # List of numerical values | Code: score = [40, 60, 80]
+  [Cell 114 Code (2 lines)] Comment: # Output the number of elements in the list | Code: print(len(score))
+  [Cell 115 Code (2 lines)] Comment: # Print the sum of the list of numbers | Code: print(sum(score))
+  [Cell 116 Code (2 lines)] Comment: # Calculate the average of a list of numbers | Code: print(sum(score)/len(score))
+  [Cell 117 Code (2 lines)] Comment: # Output the maximum value of a numerical list | Code: print(max(score))
+  [Cell 118 Code (2 lines)] Comment: # Output the minimum value of a list of numbers | Code: print(min(score))
+  [Cell 120 Code (2 lines)] Comment: # Assigning a 2D list | Code: table = [['3/24', '4/24', '5/24'], [80, 100, 90]]
+  [Cell 122 Code (2 lines)] Comment: # Extracting element at row 0, column 2 | Code: print(table[0][2])
+  [Cell 123 Code (2 lines)] Comment: # Extracting element at row 1 column 1 | Code: print(table[1][1])
+[Cell 124 MD] ## 2.3. Tuples
+  [Cell 126 Code (3 lines)] Comment: # Double | Code: x = (1, 2, 3)
+  [Cell 129 Code (3 lines)] Comment: # Get the reference of elements | Code: x = (1, 2.0, '3')
+  [Cell 130 Code (3 lines)] Comment: # Slice (reference) | Code: x = (1, 2.0, '3')
+  [Cell 132 Code (2 lines)] | Code: x = (1, 2.0, '3')
+  [Cell 134 Code (3 lines)] Comment: # Example 1 using parentheses | Code: x = (1, 2.0, '3')
+  [Cell 135 Code (3 lines)] Comment: # Example 2: Omitting parentheses | Code: x = 1, 2.0, '3'
+[Cell 137 MD] ## 2.4. Dictionaries
+  [Cell 139 Code (3 lines)] Comment: # Dictionary | Code: menu = {'apple':100, 'banana':80, 'orange':120}
+  [Cell 141 Code (2 lines)] Comment: # Accessing elements | Code: print(menu['apple'])
+  [Cell 143 Code (3 lines)] Comment: # Add a key and value | Code: menu['grape'] = 150
+  [Cell 145 Code (3 lines)] Comment: # Remove a key and value | Code: del menu['apple']
+  [Cell 147 Code (3 lines)] Comment: # Get keys | Code: x = {'a': 1, 'b': 2, 'c': 3}
+  [Cell 148 Code (3 lines)] Comment: # Get elements | Code: x = {'a': 1, 'b': 2, 'c': 3}
+  [Cell 149 Code (2 lines)] | Code: x = {'a': 1, 'b': 2, 'c': 3}
+[Cell 150 MD] ## 2.5 Practice Questions
+[Cell 151 MD] (2-1) Write a list that includes all prime numbers less than 10.
+[Cell 153 MD] (2-2) Write a tuple that includes all prime numbers less than 10.
+[Cell 155 MD] (2-3) Write a dictionary whose key is the string `'name'` and whose value is a string containing your own name.
+[Cell 157 MD] # 3. Python Grammar III
+[Cell 158 MD] ## 3.1. Conditional Branching (if Statement)
+  [Cell 161 Code (8 lines)] Comment: # Calculate the absolute value | Code: x = -1
+  [Cell 163 Code (6 lines)] Comment: # Example 1 *Note the indentation level | Code: x = 1
+  [Cell 164 Code (6 lines)] Comment: # Example 2 | Code: x = 1
+  [Cell 166 Code (9 lines)] Comment: # Example of elif | Code: x = 1
+  [Cell 169 Code (9 lines)] | Code: x = 10
+  [Cell 172 Code (9 lines)] Comment: # Example of the 'and' operator | Code: age = 25
+  [Cell 173 Code (8 lines)] Comment: # Example of the OR operator | Code: is_student = False
+  [Cell 174 Code (7 lines)] Comment: # Example of the not operator | Code: is_active = False
+[Cell 175 MD] ## 3.2. Loops (for Loop)
+[Cell 176 MD] ### 3.2.1 for Loops and range()
+  [Cell 181 Code (5 lines)] | Code: print('Python', 0)
+  [Cell 182 Code (3 lines)] Comment: # Loop using for statement | Code: for i in range(5):
+  [Cell 183 Code (5 lines)] Comment: # Using a for loop for iteration with specified start and en | Code: s = 0
+[Cell 184 MD] ### 3.2.2. for Loops and Lists
+  [Cell 189 Code (4 lines)] Comment: # Loop and List | Code: number = [1, 2, 3, 4, 5]
+  [Cell 190 Code (6 lines)] Comment: # Loop and List | Code: number = [1, 2, 3, 4, 5]
+  [Cell 191 Code (6 lines)] Comment: # Loop through a list using a for loop and range() | Code: number = [1, 2, 3, 4, 5]
+[Cell 192 MD] ### 3.2.3. for Loops and enumerate()
+  [Cell 197 Code (3 lines)] | Code: menu = ['salad', 'soup', 'steak', 'cake']
+  [Cell 198 Code (3 lines)] | Code: menu = ['salad', 'soup','steak', 'cake']
+[Cell 199 MD] ## 3.3. Practice Questions
+[Cell 200 MD] (3-1) Let's assume a variable x contains an integer score from 0 to 100. Write a program using the if statement that prints "pass" if x is 60 or above, and "fail" otherwise.
+[Cell 202 MD] (3-2) Write a program that uses a for loop to print the numbers from 1 to 5, one per line.
+[Cell 204 MD] (3-3) Let's assume that a variable `x` contains a list of integers with a length of 1 or more. Create a program that returns the largest element in `x`. Achieve this without using functions like `max()`, and instead use loops (repetition with `for` statement).
+  [Cell 205 Code (1 lines)] | Code: x = [1, 2, 3]  # Input example
+  [Cell 206 Code (1 lines)] Comment: # WRITE ME!
+[Cell 207 MD] (3-4) Let $a_1$ a positive integer. Consider a series:
+  [Cell 208 Code (2 lines)] Comment: # WRITE ME! | Code: a = 7
+[Cell 210 MD] # 4. Python Grammar IV
+[Cell 211 MD] ## 4.1. Functions
+  [Cell 213 Code (7 lines)] Comment: # Program to find the absolute value | Code: x = -1
+  [Cell 215 Code (7 lines)] Comment: # Definition of a function to find the absolute value | Code: def absolute(x):
+  [Cell 216 Code (2 lines)] Comment: # Calling the function to find the absolute value | Code: print(absolute(-1))
+  [Cell 220 Code (1 lines)] Comment: # WRITE ME!
+  [Cell 221 Code (3 lines)] Comment: # Answer: A function to calculate the power | Code: def power(x, y):
+  [Cell 222 Code (1 lines)] | Code: power(2, 3)
+  [Cell 223 Code (1 lines)] | Code: power(3, 2)
+  [Cell 225 Code (1 lines)] | Code: power(y=2, x=3)
+  [Cell 227 Code (2 lines)] | Code: def power(x=1, y=1):
+  [Cell 228 Code (1 lines)] | Code: power(x=3)
+[Cell 229 MD] ## 4.2. Practice Problems
+[Cell 230 MD] (4-1) Define a function `f` that takes a string `x` with a length of 1 or more as an argument and returns the last character of `x`.
+  [Cell 232 Code (1 lines)] Comment: # WRITE ME!
+[Cell 233 MD] (4-2) Define a function `f` that takes a dictionary as an argument `x` and returns the number of keys stored in `x`.
+  [Cell 234 Code (1 lines)] | Code: x = {"a": 1, "b": 2, "c": 3, 'd':4, 'e':5}
+  [Cell 235 Code (1 lines)] Comment: # WRITE ME!
+[Cell 236 MD] (4-3)
+  [Cell 237 Code (1 lines)] | Code: x = [3, 9, 7, 1, 0]
+  [Cell 238 Code (1 lines)] Comment: # WRITE ME!
+[Cell 239 MD] (4-4) The following function was intended to display "I am X years old". However, as it is, it results in an error. Please modify the function below. The argument for the function, `age`, is expected to be an integer. Assign the string you want to display to `msg`, store it in a dictionary. Then, print the value from the dictionary by specifying its key.
+  [Cell 240 Code (6 lines)] | Code: def print_my_age(age):
+[Cell 241 MD] ## 4.3 Modules and Libraries
+  [Cell 250 Code (1 lines)] | Code: import math
+  [Cell 251 Code (2 lines)] Comment: # Exponential function | Code: math.exp(1.0)
+  [Cell 252 Code (2 lines)] Comment: #Logarithmic Function | Code: math.log(math.e)
+  [Cell 254 Code (4 lines)] | Code: from math import sin
+  [Cell 255 Code (2 lines)] Comment: # Trignometric Function | Code: sin(pi)
+  [Cell 256 Code (2 lines)] Comment: # Trignometric Function | Code: cos(pi)
+  [Cell 257 Code (2 lines)] Comment: # Trignometric Function | Code: tan(pi)

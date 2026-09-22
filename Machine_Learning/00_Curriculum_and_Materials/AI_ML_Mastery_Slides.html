@@ -772,6 +772,7 @@
         </div>
 
         <div class="header-actions">
+            <a href="../01_Math_Foundations/Ex1_Python_Math_Algorithms/interactive_hub.html" target="_blank" class="btn btn-primary" style="text-decoration:none; background:linear-gradient(135deg, #a855f7, #6366f1); box-shadow: 0 0 16px rgba(168, 85, 247, 0.4);"><span style="font-size:15px;">🧪</span> Phòng Thí Nghiệm Lab (Ex1 - Ex8)</a>
             <button class="btn btn-outline" id="btn-badges">🏆 Huy Hiệu (<span id="unlocked-count">0</span>/10)</button>
             <button class="btn btn-outline" id="btn-fullscreen">⛶ Toàn màn hình</button>
         </div>
@@ -822,6 +823,22 @@
                         <button class="copy-btn" id="btn-copy-code">📋 Sao chép code</button>
                     </div>
                     <pre class="code-content" id="slide-code"></pre>
+                </div>
+
+                <!-- CỔNG LIÊN KẾT PHÒNG THÍ NGHIỆM LAB TRỰC QUAN -->
+                <div class="lab-portal-box" id="slide-lab-portal" style="display: none; background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(99, 102, 241, 0.15)); border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 12px; padding: 14px 18px; margin-bottom: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span style="font-size: 24px;">🧪</span>
+                            <div>
+                                <div style="font-family: var(--font-display); font-size: 13px; font-weight: 700; color: #d8b4fe; text-transform: uppercase; letter-spacing: 0.5px;" id="lab-portal-title">PHÒNG THÍ NGHIỆM TRỰC QUAN TƯƠNG ỨNG</div>
+                                <div style="font-size: 13px; color: #f3e8ff; margin-top: 2px;" id="lab-portal-desc">Thực hành mô phỏng thuật toán trực quan & tự gõ code trong Đấu trường.</div>
+                            </div>
+                        </div>
+                        <a id="lab-portal-btn" href="#" target="_blank" class="btn" style="background: linear-gradient(135deg, #a855f7, #6366f1); color: #fff; text-decoration: none; font-weight: 700; border: none; padding: 8px 18px; border-radius: 8px; box-shadow: 0 0 14px rgba(168, 85, 247, 0.5); white-space: nowrap; font-size: 13px;">
+                            ⚡ Mở Bài Mô Phỏng Này →
+                        </a>
+                    </div>
                 </div>
 
                 <div class="tip-box">
@@ -1070,6 +1087,34 @@
             renderMathFormula(s.math, document.getElementById('slide-math'));
             document.getElementById('slide-code').textContent = s.code.trim();
             document.getElementById('slide-tip').textContent = s.tip;
+
+            // Cập nhật Cổng liên kết Phòng Thí Nghiệm Thực Hành
+            const LAB_MAPPING = {
+                's1': { tab: 'tab-ex1', title: 'Lab Ex1: Phân Loại Số & Hàm Kích Hoạt ReLU', desc: 'Xem mô phỏng thanh trượt gạt phẳng số âm về 0 của hàm ReLU và code bài tập Ex1.' },
+                's2': { tab: 'tab-ex1', title: 'Lab Ex1: Phân Loại Dữ Liệu Âm/Dương', desc: 'Thực hành logic lọc số và kiểm tra điều kiện biên.' },
+                's3': { tab: 'tab-ex7', title: 'Lab Ex7: Số Chẵn Lẻ & Feature Hashing Bitwise', desc: 'Mô phỏng kiểm tra số chẵn và trực giác tạo đặc trưng nhị phân.' },
+                's4': { tab: 'tab-ex6', title: 'Lab Ex6: Lọc Tính Chất Chia Hết & K-Fold Split', desc: 'Trực quan hóa cơ chế phân chia tập dữ liệu thành K fold độc lập.' },
+                's10': { tab: 'tab-ex5', title: 'Lab Ex5: Gộp Danh Sách & Khử Trùng (Set Deduplication)', desc: 'Xử lý dữ liệu trùng lặp và làm sạch bộ nhớ đặc trưng Feature Store.' },
+                's13': { tab: 'tab-ex3', title: 'Lab Ex3: Cặp Liền Kề & 1D Pooling / Moving Average', desc: 'Trực quan hóa cửa sổ trượt (Sliding Window) qua chuỗi số liệu.' },
+                's16': { tab: 'tab-arena', title: 'Đấu Trường Thực Hành: 16 Bài Code Nền Tảng', desc: 'Luyện tập các thuật toán cơ sở chuẩn bị cho K-NN & K-Means.' },
+                's20': { tab: 'tab-ex4', title: 'Lab Ex4: Hoán Vị 3 Phần Tử & Grid Search', desc: 'Mô phỏng không gian duyệt toàn bộ tổ hợp siêu tham số Hyperparameters.' },
+                's24': { tab: 'tab-ex2', title: 'Lab Ex2: Đếm Tần Suất & Lọc Từ Vựng NLP Pruning', desc: 'Mô phỏng Counter thống kê từ và kỹ thuật cắt bỏ stopwords/nhiễu.' },
+                's25': { tab: 'tab-ex2', title: 'Lab Ex2: Đếm Tần Suất & Lọc Từ Vựng NLP Pruning', desc: 'Trực quan hóa túi từ vựng Bag-of-Words trước khi tính TF-IDF.' },
+                's29': { tab: 'tab-ex8', title: 'Lab Ex8: Word Chain BFS & Knowledge Graph', desc: 'Mô phỏng thuật toán duyệt đồ thị tri thức (Graph Traversal) tìm đường đi ngắn nhất.' }
+            };
+
+            const labPortal = document.getElementById('slide-lab-portal');
+            if (labPortal && LAB_MAPPING[s.id]) {
+                const info = LAB_MAPPING[s.id];
+                labPortal.style.display = 'block';
+                document.getElementById('lab-portal-title').textContent = info.title;
+                document.getElementById('lab-portal-desc').textContent = info.desc;
+                const labBtn = document.getElementById('lab-portal-btn');
+                labBtn.href = `../01_Math_Foundations/Ex1_Python_Math_Algorithms/interactive_hub.html?tab=${info.tab}`;
+            } else if (labPortal) {
+                labPortal.style.display = 'none';
+            }
+
             renderMathSafely(pointsContainer);
             renderMathSafely(document.getElementById('slide-analogy'));
             renderMathSafely(document.getElementById('slide-tip'));

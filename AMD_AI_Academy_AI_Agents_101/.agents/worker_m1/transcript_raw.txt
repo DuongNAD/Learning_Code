@@ -1,0 +1,694 @@
+Hey everyone, welcome to AI Agent 101.
+Today we're going to take a fun practical look at what makes large language models more than just chatbots,
+and how to turn them into powerful open source agents that can actually do things.
+To warm up, let's look at a real open source example built by a project called WebUI by Browser Use.
+Here's a scenario. Say I want to cook chili for dinner.
+So I'm going to prompt the agent, I want to cook chili for dinner tonight.
+Can you find the ingredients and put them in my shopping cart?
+This open source agent plans the workflow for me.
+It finds the recipe, extracts the ingredients, and adds them to the cart automatically.
+Watch how it alternates between thinking and doing, reasoning about the recipe, then browsing online, then taking action to fill the basket.
+That's the React agent pattern in motion, combining reasoning with real-world action.
+Instead of just answering questions, the model becomes a practical assistant that helps you actually accomplish things.
+Here's an important distinction.
+An LLM on its own, it's like a really smart book.
+It can answer questions, but it can't actually do anything.
+An agent takes that same LLM and treats it as the brain.
+The brain can reason, plan, and make decisions.
+But to act, it needs tools.
+What an agent is capable of depends entirely on what tools and capabilities we give it.
+If the agent only has a calculator tool, it can only act and perform for math-related actions.
+If you add a browser tool, now it can search online.
+And if you add shopping APIs, suddenly it can buy groceries for you.
+Let's look at an example.
+Agent A has only a calendar tool.
+It can help you schedule meetings, but it can't check the weather.
+Now, Agent B has a calendar tool, the weather tool, and a browser tool.
+Now, not only you can schedule your meetings, but also check the weather and even find the best cafes nearby.
+Same brain, different tools.
+The difference is not in the LLM itself.
+It's the toolbox we provide it to.
+That's the magic of agents.
+LLMs provide the reasoning, but the tools define the actions.
+The more useful the tools, the more capable the agents become.
+The React paradigm is what turns an LLM from a passive Q&A system into an active agent.
+And here's how it works.
+For the reasoning part, the LLM thinks about the problem.
+For example, for the Chile example, it knows that it needs to find the ingredients for Chile.
+The action part is based on that reasoning.
+It calls a tool, searching online, grabbing a list of ingredients, or maybe even calling a shopping API.
+And for the loop, the agent alternates between reasoning and acting.
+It checks the progress and continues until the goal is achieved.
+This React, which is Reason plus Act cycle, is simple, but powerful.
+It's the foundation of almost every modern agent framework.
+It lets us move from static answers to real-world actions.
+To build agents around the React loop, we rely on frameworks that handle orchestration.
+Pydantic AI is a choice that we made for this course, but there is more than Pydantic AI.
+Pydantic AI is a simple and easy for developers to build reliable agents.
+There is more frameworks such as LandGraph, which is specialized in chaining and orchestration.
+There is OpenAI SDK, Crew AI, and more.
+Each framework fits a different level of complexity. The choice depends on your need.
+With AMD GPU, as long as you power the LLM, you can choose any of these open source frameworks.
+Another key piece of this puzzle is MCP, the model context protocol.
+Think of MCP as the standardized wiring between your agent and the outside world.
+Instead of hard coding every integration, MCP provides a common language so LLMs can discover and use tools in a consistent way.
+That means you can connect your agent to external APIs like calendars, weather services, or databases, without writing a custom adapter for each.
+You can reuse pre-built MCP servers. For example, if someone already built a weather MCP server, you can just plug it in and your agent instantly has weather capabilities.
+In short, MCP lowers the friction. It makes it much easier to expand what your agents can do.
+Finally, the model, the brain, or LLM.
+If you're running agents at scale, you don't want to be locked into expensive cloud endpoints.
+With open source inference engines like VLLM and SGLANG, you can serve the model of your choice with an OpenAI compatible API.
+That gives you flexibility to run open source models like Quint3, GPT-OSS, or DeepSeq.
+You can deploy them on AMD GPUs and then connect them to your AI agentic framework of your choice.
+Let's get hands on. We'll walk through this notebook, starting with spinning a VLLM server on an AMD GPU,
+then connecting to our Pedantic AI agent, and finally wiring an NCP to give it real-world capabilities.
+VLLM is an open source inference engine that's fully OpenAI compatible.
+It allows you to run the model on GPUs such as AMD and SGLANG MI300X, and serve models like Quint3.
+This creates a local API, so you can connect it to your agentic framework of choice.
+Once you've started your VLLM server, and you have the endpoint ready, now we can define our agent.
+Pydantic AI wraps our model and connects it to an agent instance.
+At this point, the agent can reason, but can't take any actions.
+It's a pure LLM brain with no tools.
+So, let's say if you ask, what's the date today?
+It'll fail because it has no access to real-time data.
+Let's fix that by giving it a tool.
+The ability to check the current date.
+We define a simple function, decorate it with tool, and add it to our agent.
+Now, when the model encounters a time-related question, it can decide to call the function.
+This is the essence of tool calling.
+The model decides when and why to use the tool, based on its reasoning.
+Let's test it out.
+When we ask, what's the date today?
+The agent uses the tool, gets the current time, and continues the conversation.
+So now, we've officially built our first reasoning acting loop.
+Now it's time to scale this idea with MCP, the model context protocol.
+As we said before, MCP standardizes how agents discover and use tools.
+You can think of it like a package manager for agent tool.
+Instead of manually writing Python functions, you can connect a ready-made MCP server that exposes multiple tools through one unified interface.
+Here's what happens under the hood.
+The agent framework, like Pydantic AI, acts as MCP client.
+It connects to one or more MCP servers, each of which provides a tool set.
+For example, one server might offer get current time, another Airbnb search, another weather forecast.
+These servers expose the standard JSON schemas describing what each tool does, and what parameters it needs, and what output to expect.
+The agent dynamically queries these schemas, decides which tool to use, sends a request, and processes the response, all in the same reasoning loop.
+This makes MCP incredibly powerful.
+Instead of hard coding tool logic, you can plug in a pack of tools, and your agent instantly gains new abilities.
+In our notebook, we'll replace our local get current date tool with an MCP server.
+Then we'll plug in another MCP server, the Airbnb MCP, to let the agent browse listings.
+Once you go through the notebook and add Airbnb and time MCPs, you can test out the agent.
+Now our agent can browse real Airbnb listings.
+When we ask, find a place to stay in Vancouver next Sunday for three nights for two adults.
+The agent goes through the loop of reasoning.
+It first gets the current date from the time server that we define.
+Then it calculates when next Sunday is going to be.
+Then it uses the Airbnb search to find listings.
+It gets the details from the Airbnb listing details.
+And all dynamically happening within the loop.
+So you can get the final answers from your agent.
+Now that you've built the foundation, the challenge is to expand the agent.
+For example, you can integrate the weather MCP server so your agent can check the weather forecast to suggest traveling dates.
+The pattern stays the same.
+Spin up a new MCP server, just like what we did before, and add it to the toolset.
+And let the agent decide when to call it.
+Because MCP is a shared protocol, you can discover thousands of compatible servers online.
+This modular design means your agent can grow over time, gaining new skills without rewriting code.
+So to recap, LLMs become agents when they can reason and act.
+Frameworks like Pedantic AI manage this reasoning action loop.
+MCP provides a universal interface to connect any tool or API.
+And AMD GPUs give you the open, high-performance backbone to run it all efficiently.
+With these tools, you can go from static chatbots to dynamic AI systems that truly interact with the real world.
+You can plug in hundreds of tools, host your own inference, and control the entire agentic stack.
+All open, all yours.
+Thank you for watching, and now let's start building.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.
+Let's go to the next video.

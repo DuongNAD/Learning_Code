@@ -1,0 +1,13 @@
+3
+1001
+Nguyen Van A
+Nam
+8.5 9.0 7.0
+1002
+Tran Thi B
+Nu
+9.0 8.5 9.5
+1003
+Le Thi C
+Nu
+7.5 6.0 8.0

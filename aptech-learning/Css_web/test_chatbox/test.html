@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trợ lý AI</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .chat-container {
+            width: 400px;
+            height: 600px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .chat-header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            text-align: center;
+            border-bottom: 1px solid #0056b3;
+        }
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .message {
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 80%;
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+        .user-message {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .ai-message {
+            background-color: #e9e9eb;
+            color: black;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        .typing-indicator {
+            align-self: flex-start;
+            color: #888;
+            font-style: italic;
+        }
+        .chat-input {
+            display: flex;
+            border-top: 1px solid #e0e0e0;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        #messageInput {
+            flex-grow: 1;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            padding: 10px 15px;
+            outline: none;
+            font-size: 16px;
+        }
+        #messageInput:focus {
+            border-color: #007bff;
+        }
+        #sendButton {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        #sendButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">Trợ lý học tập ảo</div>
+    <div class="chat-messages" id="chatMessages">
+        <div class="message ai-message">Xin chào! Tôi có thể giúp gì cho bạn?</div>
+    </div>
+    <div class="chat-input">
+        <input type="text" id="messageInput" placeholder="Nhập tin nhắn...">
+        <button id="sendButton">→</button>
+    </div>
+</div>
+
+<script>
+    // --- CẤU HÌNH QUAN TRỌNG ---
+    // ❗ Dán URL Webhook của Anh vào đây.
+    // 👉 Dùng URL dạng "/webhook-test/" để gỡ lỗi trực tiếp trên n8n Editor.
+    // 👉 Dùng URL dạng "/webhook/" (sau khi đã kích hoạt Workflow) để chạy chính thức.
+    const N8N_WEBHOOK_URL = 'https://53eaf35f664c.ngrok-free.app/webhook/dd2cc16b-22c3-403e-a487-3c98dad2c66a'; 
+    // --- KẾT THÚC CẤU HÌNH ---
+
+    const chatMessages = document.getElementById('chatMessages');
+    const messageInput = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+
+    // Tạo hoặc lấy sessionId để duy trì phiên trò chuyện
+    let sessionId = localStorage.getItem('chatbotSessionId');
+    if (!sessionId) {
+        sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substring(2, 15);
+        localStorage.setItem('chatbotSessionId', sessionId);
+    }
+
+    let userLatitude = null;
+    let userLongitude = null;
+
+    // Hàm lấy vị trí địa lý của người dùng
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    userLatitude = position.coords.latitude;
+                    userLongitude = position.coords.longitude;
+                    console.log(`Vị trí đã được lấy: ${userLatitude}, ${userLongitude}`);
+                    appendMessage('Tôi đã nhận được vị trí của bạn!', 'ai-message');
+                },
+                (error) => {
+                    console.error("Lỗi khi lấy vị trí: ", error.message);
+                    appendMessage('Tôi không thể lấy được vị trí của bạn. Một số tính năng có thể bị hạn chế.', 'ai-message');
+                }
+            );
+        } else {
+            console.log("Trình duyệt không hỗ trợ Geolocation.");
+            appendMessage('Trình duyệt của bạn không hỗ trợ chia sẻ vị trí.', 'ai-message');
+        }
+    }
+    
+    // Tự động gọi hàm lấy vị trí khi trang được tải
+    window.onload = getLocation;
+
+    // Hàm chính để gửi tin nhắn đến n8n
+    async function sendMessage() {
+        const messageText = messageInput.value.trim();
+        if (messageText === '') return;
+
+        appendMessage(messageText, 'user-message');
+        messageInput.value = '';
+        const typingIndicator = appendMessage('...', 'typing-indicator');
+
+        try {
+            const response = await fetch(N8N_WEBHOOK_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    sessionId: sessionId,
+                    message: messageText,
+                    latitude: userLatitude,
+                    longitude: userLongitude
+                })
+            });
+
+            chatMessages.removeChild(typingIndicator);
+            
+            if (!response.ok) {
+                // Ném lỗi để khối catch có thể bắt được và hiển thị thông tin
+                throw new Error(`Lỗi HTTP: ${response.status} - ${response.statusText}`);
+            }
+
+            const data = await response.json();
+
+            // Hiển thị phản hồi từ AI
+            if (data.reply) {
+                appendMessage(data.reply, 'ai-message');
+            } else {
+                appendMessage('Lỗi: Không nhận được phản hồi hợp lệ từ server.', 'ai-message');
+            }
+
+        } catch (error) {
+            chatMessages.removeChild(typingIndicator);
+            console.error('Lỗi khi gửi tin nhắn:', error);
+            appendMessage(`Đã xảy ra lỗi kết nối: ${error.message}. Vui lòng kiểm tra lại cấu hình CORS trên n8n và URL webhook.`, 'ai-message');
+        }
+    }
+
+    // Hàm trợ giúp để thêm tin nhắn vào giao diện chat
+    function appendMessage(text, className) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', className);
+        messageElement.textContent = text;
+        chatMessages.appendChild(messageElement);
+        // Tự động cuộn xuống tin nhắn mới nhất
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        return messageElement;
+    }
+
+    // Gán sự kiện cho nút gửi và phím Enter
+    sendButton.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+</script>
+
+</body>
+</html>

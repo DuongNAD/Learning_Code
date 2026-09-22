@@ -1,0 +1,27 @@
+===========================================================
+Deep Analysis: extracted_gci_world/GCI World_202609/03. Lecture Materials & Homework/Session2/HW1 for Session2.ipynb
+===========================================================
+
+[Cell 000 MD] # Homework 1: Efficient Data Manipulation Using Numpy
+[Cell 000 MD] ## Deadline
+[Cell 000 MD] ## Recommended workflow
+[Cell 001 MD] ## Question
+[Cell 002 MD] ## 1. Preparation
+  [Cell 003 Code (2 lines)] Comment: # 1. Import libraries | Code: import numpy as np
+  [Cell 004 Code (2 lines)] Comment: # 2. Define a 1D NumPy array | Code: a = np.array([1, 5, 10, 3, 4, 25, 30])
+[Cell 005 MD] ## 2. Your Answer
+  [Cell 006 Code (4 lines)] Comment: # Write your answer here | Code: def homework(a):
+[Cell 007 MD] ## 3. Test Your Answer
+[Cell 008 MD] ### Test Case 1: Example from the question
+  [Cell 009 Code (3 lines)] Comment: # Run this cell after completing homework(). | Code: your_answer = homework(a)
+[Cell 011 MD] ### Test Case 2: A different array
+  [Cell 012 Code (3 lines)] | Code: case_2_input = np.array([11, 15, 20, 21, 35, 40, 45])
+[Cell 014 MD] ### Test Case 3: No matching elements
+  [Cell 015 Code (3 lines)] | Code: case_3_input = np.array([2, 4, 6, 8])
+[Cell 017 MD] ### Final checklist
+[Cell 017 MD] Before moving to Section 4, check the following:
+[Cell 018 MD] ## 4. How to Submit Your Answer to Omnicampus
+[Cell 019 MD] ### Step 1: Copy the complete `homework()` function
+[Cell 020 MD] ### Step 2: Paste it into Omnicampus and submit
+[Cell 022 MD] ### Step 3: Wait for and check the grading result
+[Cell 024 MD] ### Important Notes About Grading

@@ -1,0 +1,46 @@
+===========================================================
+Deep Analysis: extracted_gci_world/GCI World_202609/03. Lecture Materials & Homework/PreLecture_Python1&2/prelecture_notebook_answer.ipynb
+===========================================================
+
+[Cell 000 MD] # Practice Questions Solutions
+[Cell 001 MD] ## 1.7. Practice Questions
+[Cell 002 MD] (1-1) Write a program that outputs the string "Hello, World!"
+  [Cell 003 Code (1 lines)] | Code: print("Hello World!")
+  [Cell 005 Code (3 lines)] | Code: x = "Hello"
+[Cell 006 MD] (1-2) Write a program that computes and prints the quotient and remainder of 17 // 5 and 17 % 5.
+  [Cell 007 Code (8 lines)] Comment: # division | Code: x = 17
+[Cell 008 MD] (1-3) Let's assume that an integer is stored in the variable `x`. Create a program that will display (print) 0 if `x` is even, and 1 if `x` is odd.
+  [Cell 009 Code (1 lines)] | Code: x = 1 # Input example
+  [Cell 010 Code (1 lines)] | Code: print(x % 2)
+[Cell 011 MD] (1-4) Create a program to calculate BMI from height and weight. BMI = weight(kg) / (height(m))^2
+  [Cell 012 Code (6 lines)] Comment: # Input example | Code: weight = 50 # kg
+[Cell 013 MD] ## 2.5 Practice Questions
+[Cell 014 MD] (2-1) Write a list that includes all prime numbers less than 10.
+  [Cell 015 Code (2 lines)] | Code: primes_list = [2, 3, 5, 7]
+[Cell 016 MD] (2-2) Write a tuple that includes all prime numbers less than 10.
+  [Cell 017 Code (2 lines)] | Code: primes_tuple = (2, 3, 5, 7)
+[Cell 018 MD] (2-3) Write a dictionary whose key is the string `'name'` and whose value is a string containing your own name.
+  [Cell 019 Code (2 lines)] | Code: name = {'name': "Taro"}
+[Cell 020 MD] ## 3.3. Practice Questions
+[Cell 021 MD] (3-1) Let's assume a variable x contains an integer score from 0 to 100. Write a program using the if statement that prints "pass" if x is 60 or above, and "fail" otherwise.
+  [Cell 022 Code (5 lines)] | Code: x = 75
+[Cell 023 MD] (3-2) Write a program that uses a for loop to print the numbers from 1 to 5, one per line.
+  [Cell 024 Code (4 lines)] | Code: sample_list = [1, 2, 3, 4, 5]
+[Cell 025 MD] (3-3) Let's assume that a variable `x` contains a list of integers with a length of 1 or more. Create a program that returns the largest element in `x`. Achieve this without using functions like `max()`, and instead use loops (repetition with `for` statement).
+  [Cell 026 Code (1 lines)] | Code: x = [1, 2, 3]  # Input example
+  [Cell 027 Code (5 lines)] | Code: largest = x[0]
+[Cell 028 MD] (3-4) Let $a_1$ a positive integer. Consider a series:
+  [Cell 029 Code (12 lines)] | Code: a = 31
+  [Cell 030 Code (9 lines)] | Code: a = 31
+[Cell 031 MD] ## 4.2. Practice Questions
+[Cell 032 MD] (4-1) Define a function `f` that takes a string `x` with a length of 1 or more as an argument and returns the last character of `x`.
+  [Cell 033 Code (1 lines)] | Code: x = 'python'
+  [Cell 034 Code (4 lines)] | Code: def last_char(x):
+[Cell 035 MD] (4-2) Define a function `f` that takes a dictionary as an argument `x` and returns the number of keys stored in `x`.
+  [Cell 036 Code (1 lines)] | Code: x = {"a": 1, "b": 2, "c": 3, 'd':4, 'e':5}
+  [Cell 037 Code (4 lines)] | Code: def num_keys(x):
+[Cell 038 MD] (4-3)
+  [Cell 039 Code (1 lines)] | Code: x = [3, 9, 7, 1, 0]
+  [Cell 040 Code (7 lines)] | Code: def f(x):
+[Cell 041 MD] (4-4) The following function was intended to display "I am X years old." However, as it is, it results in an error. Please modify the function below. The argument for the function, `age`, is expected to be an integer. Assign the string you want to display to `msg`, store it in a dictionary. Then, print the value from the dictionary by specifying its key.
+  [Cell 042 Code (6 lines)] | Code: def print_my_age(age):

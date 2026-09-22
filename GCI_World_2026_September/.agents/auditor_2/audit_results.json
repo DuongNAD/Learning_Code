@@ -1,0 +1,53 @@
+{
+  "checks": {
+    "file_existence_and_volume": "PASS",
+    "prohibited_patterns": "PASS",
+    "python_ast_validity": "PASS",
+    "dummy_functions": "PASS",
+    "mermaid_diagrams": "PASS",
+    "active_recall_flashcards": "PASS",
+    "test_suite_sincerity": "PASS",
+    "ground_truth_alignment": "PASS"
+  },
+  "metrics": {
+    "notes": {
+      "00_Index_and_Roadmap.md": {
+        "bytes": 38096,
+        "lines": 477,
+        "chars": 31919
+      },
+      "01_Python_Foundations.md": {
+        "bytes": 36882,
+        "lines": 706,
+        "chars": 31534
+      },
+      "02_Statistics_and_EDA.md": {
+        "bytes": 39251,
+        "lines": 495,
+        "chars": 32575
+      },
+      "03_NumPy_Computing.md": {
+        "bytes": 31955,
+        "lines": 475,
+        "chars": 27058
+      },
+      "04_Supervised_Regression.md": {
+        "bytes": 34799,
+        "lines": 518,
+        "chars": 29567
+      },
+      "05_Supervised_Classification.md": {
+        "bytes": 33375,
+        "lines": 504,
+        "chars": 28141
+      },
+      "06_ML_Landscape_and_Strategy.md": {
+        "bytes": 43703,
+        "lines": 549,
+        "chars": 35734
+      }
+    },
+    "prohibited_markers_found": 0
+  },
+  "violations": []
+}

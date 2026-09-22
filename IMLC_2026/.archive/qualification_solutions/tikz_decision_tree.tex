@@ -1,0 +1,95 @@
+% TikZ Decision Tree Visualization for IMLC 2026 Problem B (Greenhouse Ventilation)
+% Author: Candidate [SENIOR-2026-VN-0428]
+% Architecture: Optimal CART Induction incorporating continuous CO2 split (threshold = 1250 ppm)
+
+\begin{tikzpicture}[
+    decision/.style={
+        rectangle,
+        draw=blue!75!black,
+        fill=blue!8,
+        thick,
+        rounded corners=4pt,
+        inner sep=7pt,
+        align=center,
+        font=\small\bfseries
+    },
+    leaf_open/.style={
+        rectangle,
+        draw=green!65!black,
+        fill=green!18,
+        thick,
+        rounded corners=3pt,
+        inner sep=6pt,
+        align=center,
+        font=\small\bfseries,
+        text=green!40!black
+    },
+    leaf_closed/.style={
+        rectangle,
+        draw=red!75!black,
+        fill=red!15,
+        thick,
+        rounded corners=3pt,
+        inner sep=6pt,
+        align=center,
+        font=\small\bfseries,
+        text=red!50!black
+    },
+    edge_label/.style={
+        font=\footnotesize\itshape,
+        text=black!85,
+        midway
+    },
+    tree_arrow/.style={
+        ->,
+        >=stealth,
+        thick,
+        draw=gray!70!black
+    }
+]
+
+% Root Node: Temperature Check
+\node[decision] (root) {Is Temperature $T > 28^\circ\text{C}$?};
+
+% Level 1: Left Leaf (OPEN) and Right Decision (Humidity Check)
+\node[leaf_open, below left=1.4cm and 1.2cm of root] (open1) {
+    \textbf{OPEN ROOF} \\
+    \footnotesize (Row 1: $T=31^\circ\text{C}$)
+};
+
+\node[decision, below right=1.4cm and 1.2cm of root] (humidity) {
+    Is Humidity $H > 70\%$?
+};
+
+% Level 2: Left Leaf (OPEN) and Right Decision (CO2 Check)
+\node[leaf_open, below left=1.4cm and 0.9cm of humidity] (open2) {
+    \textbf{OPEN ROOF} \\
+    \footnotesize (Row 2: $H=75\%$)
+};
+
+\node[decision, below right=1.4cm and 0.9cm of humidity] (co2) {
+    Is $\text{CO}_2 > 1250\text{ ppm}$?
+};
+
+% Level 3: Final Partitions
+\node[leaf_open, below left=1.4cm and 0.6cm of co2] (open3) {
+    \textbf{OPEN ROOF} \\
+    \footnotesize (Rows 5 \& 6: $\text{CO}_2 \ge 1400$)
+};
+
+\node[leaf_closed, below right=1.4cm and 0.6cm of co2] (closed) {
+    \textbf{KEEP CLOSED} \\
+    \footnotesize (Rows 3 \& 4: $\text{CO}_2 \le 1100$)
+};
+
+% Directed Connectors with Explicit Branch Annotations
+\draw[tree_arrow] (root) -- node[edge_label, above left] {Yes ($T > 28$)} (open1);
+\draw[tree_arrow] (root) -- node[edge_label, above right] {No ($T \le 28$)} (humidity);
+
+\draw[tree_arrow] (humidity) -- node[edge_label, above left] {Yes ($H > 70$)} (open2);
+\draw[tree_arrow] (humidity) -- node[edge_label, above right] {No ($H \le 70$)} (co2);
+
+\draw[tree_arrow] (co2) -- node[edge_label, above left] {Yes ($\text{CO}_2 > 1250$)} (open3);
+\draw[tree_arrow] (co2) -- node[edge_label, above right] {No ($\text{CO}_2 \le 1250$)} (closed);
+
+\end{tikzpicture}
