@@ -1,0 +1,133 @@
+{
+  "title": "AI Agents 101",
+  "subtitle": "Từ vòng lặp ReAct cơ bản đến MCP, mô hình mã nguồn mở và kiểm soát an toàn",
+  "theme": "midnight",
+  "lessons": [
+    {
+      "title": "Vòng lặp agent: Ai làm gì trong ReAct?",
+      "summary": "Khám phá kiến trúc máy trạng thái ReAct, phân định ranh giới giữa suy luận của LLM và quyền thực thi của Code.",
+      "theme": "midnight",
+      "icon": "ph:arrows-clockwise-duotone",
+      "minutes": 20,
+      "dir": "01-vong-lap-agent",
+      "when": "Tuần 2 · Thứ Ba 20/10"
+    },
+    {
+      "title": "Mổ xẻ Lab 1: Parser, state và các bẫy thường gặp",
+      "summary": "Phân tích mã nguồn Lab 1, nhận diện các bẫy của regex parser và quản lý state, thiết lập chuẩn DoD cho my_react.py.",
+      "theme": "titanium",
+      "icon": "ph:bug-beetle-duotone",
+      "minutes": 25,
+      "dir": "02-mo-xe-lab-1",
+      "when": "Tuần 2 · Thứ Bảy 24/10"
+    },
+    {
+      "title": "Tool calling: Tool là hợp đồng có kiểu",
+      "summary": "Mô hình tự quyết định gọi hàm là bản chất của tool calling; chuyển từ regex sang JSON Schema có kiểm tra kiểu dữ liệu.",
+      "theme": "ocean",
+      "icon": "ph:wrench-duotone",
+      "minutes": 25,
+      "dir": "03-tool-calling-va-schema",
+      "when": "Tuần 3 · Thứ Bảy 31/10"
+    },
+    {
+      "title": "Tự sửa sai và giải mã có ràng buộc",
+      "summary": "Phân tích cơ chế tự sửa sai qua phản hồi lỗi có cấu trúc và giới hạn kiểm tra tham số của vLLM.",
+      "theme": "daylight",
+      "icon": "ph:shield-check-duotone",
+      "minutes": 25,
+      "dir": "04-tu-sua-sai-va-giai-ma-rang-buoc",
+      "when": "Tuần 5 · Thứ Bảy 14/11"
+    },
+    {
+      "title": "Memory & State: Context window là bộ nhớ làm việc",
+      "summary": "Bản chất stateless của LLM API, kiểm soát chi phí token qua sliding window, rolling summary và entity store.",
+      "theme": "sunset",
+      "icon": "ph:cpu-duotone",
+      "minutes": 25,
+      "dir": "05-memory-va-state",
+      "when": "Tuần 6 · Thứ Bảy 21/11"
+    },
+    {
+      "title": "Giao thức MCP: Dây nối chuẩn hóa toàn cầu",
+      "summary": "Kiến trúc Host-Client-Server, giao thức JSON-RPC 2.0, transport stdio và Streamable HTTP, giải quyết bài toán N x M.",
+      "theme": "forest",
+      "icon": "ph:plugs-connected-duotone",
+      "minutes": 25,
+      "dir": "06-giao-thuc-mcp",
+      "when": "Tuần 7 · Thứ Bảy 28/11"
+    },
+    {
+      "title": "Thực hành MCP Server: Time, Airbnb và Inspector",
+      "summary": "Kết nối PydanticAI với MCP Server đa nguồn, debug qua Inspector và phân tích chuỗi tác vụ câu hỏi Vancouver.",
+      "theme": "aurora",
+      "icon": "ph:magnifying-glass-duotone",
+      "minutes": 25,
+      "dir": "07-thuc-hanh-mcp-server",
+      "when": "Tuần 8 · Thứ Bảy 05/12"
+    },
+    {
+      "title": "Suy luận mã nguồn mở và Phần cứng AMD ROCm",
+      "summary": "Tự host LLM với vLLM hoặc Ollama qua API tương thích OpenAI, ước lượng băng thông bộ nhớ và định cỡ KV Cache.",
+      "theme": "titanium",
+      "icon": "ph:cpu-duotone",
+      "minutes": 25,
+      "dir": "08-suy-luan-ma-nguon-mo-va-amd-rocm",
+      "when": "Tuần 10 · Thứ Bảy 19/12"
+    },
+    {
+      "title": "Lab chính thức: PydanticAI kết nối MCP và vLLM",
+      "summary": "Thực hành 7 bước từ notebook AMD: từ agent đơn giản, custom tool đến tích hợp hệ thống MCP hoàn chỉnh.",
+      "theme": "midnight",
+      "icon": "ph:code-duotone",
+      "minutes": 25,
+      "dir": "09-lab-pydanticai-mcp-vllm",
+      "when": "Tuần 11 · Thứ Bảy 26/12"
+    },
+    {
+      "title": "Thử thách Weather MCP và Truy vết Execution Trace",
+      "summary": "Mở rộng agent với server thời tiết, kiểm chứng tính xác thực của dữ liệu và đối soát vết thực thi.",
+      "theme": "liquid",
+      "icon": "ph:cloud-sun-duotone",
+      "minutes": 25,
+      "dir": "10-thu-thach-weather-mcp-va-trace",
+      "when": "Tuần 12 · Thứ Ba 29/12"
+    },
+    {
+      "title": "Patterns, Framework hay Code thuần",
+      "summary": "5 mẫu thiết kế (Chaining, Routing, Orchestrator...), kiến trúc đồ thị LangGraph và tiêu chuẩn chọn giải pháp tối giản.",
+      "theme": "paper",
+      "icon": "ph:tree-structure-duotone",
+      "minutes": 25,
+      "dir": "11-patterns-framework-hay-code-thuan",
+      "when": "Tuần 13 · Thứ Năm 07/01/2027"
+    },
+    {
+      "title": "Đánh giá, An toàn và Guardrails cho Agent",
+      "summary": "Mô hình rủi ro Lethal Trifecta, OWASP LLM01, Human-in-the-loop và xây dựng bộ eval kiểm thử định lượng.",
+      "theme": "sunset",
+      "icon": "ph:shield-warning-duotone",
+      "minutes": 25,
+      "dir": "12-danh-gia-an-toan-va-guardrails",
+      "when": "Tuần 14 · Thứ Năm 14/01/2027"
+    },
+    {
+      "title": "Dự án Tổng hợp: Trợ lý Hạn chót Học tập",
+      "summary": "Tích hợp trọn vẹn LLM local, MCP Server tự viết, Guardrails và bộ đánh giá tự động.",
+      "theme": "aurora",
+      "icon": "ph:flag-checkered-duotone",
+      "minutes": 30,
+      "dir": "13-du-an-tong-hop",
+      "when": "Tuần 15 · Thứ Bảy 23/01/2027"
+    },
+    {
+      "title": "RAG cho Agent: Chunking và Contextual Retrieval",
+      "summary": "Kiến trúc nạp và truy xuất tài liệu, đo lường hit@k và đánh giá thực nghiệm tính hiệu quả của semantic chunking.",
+      "theme": "forest",
+      "icon": "ph:books-duotone",
+      "minutes": 20,
+      "dir": "14-rag-cho-agent",
+      "when": "Tuần 16 · Thứ Năm 28/01/2027"
+    }
+  ]
+}

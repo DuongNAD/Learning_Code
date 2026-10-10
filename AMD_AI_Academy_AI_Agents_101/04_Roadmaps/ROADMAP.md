@@ -211,7 +211,7 @@ flowchart TD
 - Mô hình tự viết "Observation" rồi "Final Answer" -> kết quả dựa trên quan sát bịa -> có câu trả lời mà không tool nào chạy.
 
 **Tài liệu**
-- Trong thư mục: transcript Phần 1-3 và 8 (15 phút); [Lab 1](../03_Materials_Code/01_pure_react_agent.py) (30 phút); [01_foundations_and_agent_architecture.md](../02_Notes_Summaries/01_foundations_and_agent_architecture.md) Chương 4.2 (10 phút); Stage_04 notes, temperature (10 phút).
+- Trong thư mục: transcript Phần 1-3 và 8 (15 phút); [Slide bài 1a](../05_Slides/ai-agents-101/01-vong-lap-agent/index.html) (20 phút); [Slide bài 1b](../05_Slides/ai-agents-101/02-mo-xe-lab-1/index.html) (25 phút); [Lab 1](../03_Materials_Code/01_pure_react_agent.py) (30 phút); [01_foundations_and_agent_architecture.md](../02_Notes_Summaries/01_foundations_and_agent_architecture.md) Chương 4.2 (10 phút); Stage_04 notes, temperature (10 phút).
 - Bên ngoài: [ReAct paper (arXiv 2210.03629)](https://arxiv.org/abs/2210.03629) - abstract, Hình 1, Mục 2 (30 phút); [HF Agents Course, Unit 1](https://huggingface.co/learn/agents-course/unit1/introduction) - messages, chat template, Think-Act-Observe (60 phút); [Anthropic, Building effective agents](https://www.anthropic.com/research/building-effective-agents) - "What are agents?" (15 phút).
 
 **Thực hành**

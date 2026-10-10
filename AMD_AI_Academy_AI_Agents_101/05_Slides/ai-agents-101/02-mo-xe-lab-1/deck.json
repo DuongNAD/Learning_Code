@@ -1,0 +1,308 @@
+{
+  "title": "Mổ xẻ Lab 1: Parser, state và các bẫy thường gặp",
+  "subtitle": "Phân tích các lỗ hổng kỹ thuật trong ReAct thuần và thiết lập tiêu chí hoàn thành cho my_react.py",
+  "lang": "vi",
+  "theme": "titanium",
+  "accent": "orange",
+  "slides": [
+    {
+      "type": "title",
+      "title": "Mổ Xẻ Lab 1:\n++Bốn Bẫy ReAct++",
+      "subtitle": "Phân tích parser, state và chuẩn DoD cho my_react.py",
+      "icon": "ph:bug-beetle-duotone",
+      "source": "Khóa học · Lab 1 & ROADMAP.md",
+      "notes": "Mục tiêu bài 1b: làm chủ cơ chế xử lý ngoại lệ, thấu hiểu vì sao ngành công nghiệp chuyển dịch từ regex sang tool calling có schema."
+    },
+    {
+      "type": "palace",
+      "id": "palace-agent-loop-recall",
+      "eyebrow": "Khởi động đầu giờ (Active Recall)",
+      "title": "Đi lại 7 trạm vòng lặp từ Bài 1a",
+      "subtitle": "Nhắc lại nhanh 7 trạng thái trước khi đi sâu vào mã nguồn chi tiết",
+      "mode": "recall",
+      "stations": [
+        {
+          "place": "1. Cửa ra vào",
+          "item": "Nhận mục tiêu & Reset State",
+          "icon": "ph:door-duotone"
+        },
+        {
+          "place": "2. Kệ giày",
+          "item": "Ghép Prompt & Gửi LLM",
+          "icon": "ph:paper-plane-tilt-duotone"
+        },
+        {
+          "place": "3. Ghế sofa",
+          "item": "Parser bóc tách chuỗi",
+          "icon": "ph:scissors-duotone"
+        },
+        {
+          "place": "4. Màn hình TV",
+          "item": "Lối thoát Final Answer",
+          "icon": "ph:television-duotone"
+        },
+        {
+          "place": "5. Bàn ăn",
+          "item": "Code thực thi Tool",
+          "icon": "ph:wrench-duotone"
+        },
+        {
+          "place": "6. Cánh tủ lạnh",
+          "item": "Cập nhật History Buffer",
+          "icon": "ph:notepad-duotone"
+        },
+        {
+          "place": "7. Bếp nấu (Cầu dao)",
+          "item": "Kiểm tra Ngân sách (max_steps)",
+          "icon": "ph:timer-duotone"
+        }
+      ],
+      "source": "Mở rộng · phương pháp loci",
+      "notes": "Kích hoạt trí nhớ dài hạn trước khi phân tích chi tiết từng trạm sofa (Parser) và trạm tủ lạnh (State)."
+    },
+    {
+      "type": "section",
+      "title": "Mổ Xẻ ReActParser",
+      "subtitle": "Cấu trúc bóc tách văn bản thô từ phản hồi của LLM",
+      "icon": "ph:code-duotone"
+    },
+    {
+      "type": "code",
+      "eyebrow": "Mổ xẻ mã nguồn (1/2)",
+      "title": "ReActParser: Ưu tiên Final Answer",
+      "file": "../../../03_Materials_Code/01_pure_react_agent.py",
+      "lines": "135-137,140",
+      "steps": [
+        {
+          "lines": "135-137",
+          "text": "Quét `Final Answer:`; nếu thấy, lập tức trích xuất chuỗi kết quả."
+        },
+        {
+          "lines": "140",
+          "text": "Trả về `(thought, None, None, final_ans)` và kết thúc hàm parse."
+        }
+      ],
+      "source": "Khóa học · Lab 1 dòng 133-140",
+      "notes": "Ưu tiên Final Answer ở đầu hàm parse là nguyên nhân dẫn đến bẫy bỏ qua Action khi LLM tự sinh cả Action lẫn Final Answer trong cùng một lượt."
+    },
+    {
+      "type": "code",
+      "eyebrow": "Mổ xẻ mã nguồn (2/2)",
+      "title": "ReActParser: Bóc tách Action hai định dạng",
+      "file": "../../../03_Materials_Code/01_pure_react_agent.py",
+      "lines": "148-151,155-156,159",
+      "steps": [
+        {
+          "lines": "148-151",
+          "text": "Định dạng 1: Bắt cú pháp ngoặc `Action: tool_name[arg]`."
+        },
+        {
+          "lines": "155-156,159",
+          "text": "Định dạng 2: Bắt cú pháp 2 dòng `Action:` và `Action Input:`."
+        }
+      ],
+      "source": "Khóa học · Lab 1 dòng 146-161",
+      "notes": "Hỗ trợ cả hai cú pháp nhưng regex dùng lazy match nên dễ lỗi khi gặp ngoặc lồng."
+    },
+    {
+      "type": "section",
+      "title": "Bốn Bẫy Kỹ Thuật",
+      "subtitle": "Phân tích 4 bẫy phổ biến trong điều phối ReAct",
+      "icon": "ph:warning-duotone"
+    },
+    {
+      "type": "predict",
+      "eyebrow": "Bẫy kỹ thuật (1/4)",
+      "title": "Bẫy Regex lười: Cắt cụt biểu thức toán",
+      "question": "**Tình huống:** LLM sinh lệnh `Action: calculate[(2+3)*4]`.\n*Dự đoán kết quả parse và lỗi từ tool_calculate!*",
+      "code": "lab = __import__(\"01_pure_react_agent\")\nprint(lab.ReActParser.parse(\"Action: calculate[(2+3)*4]\"))\nprint(lab.tool_calculate(\"(2+3\"))",
+      "lang": "python",
+      "output": "('', 'calculate', '(2+3', None)\nCalculation Error: '(' was never closed (<string>, line 1)",
+      "explain": "Regex dòng 147 dùng `(.*?)` với `[\\]\\)]` nên dừng ở dấu `)` đầu tiên. Tham số bị cắt thành `(2+3` khiến eval báo lỗi `never closed`.",
+      "hints": [
+        "Toán tử khớp lười dừng ngay ở dấu đóng ngoặc đầu tiên."
+      ],
+      "source": "Khóa học · Lab 1 dòng 23-36, 147-151",
+      "notes": "Minh chứng cho sự mong manh của việc bóc tách chuỗi bằng regex so với parser có cấu trúc."
+    },
+    {
+      "type": "predict",
+      "eyebrow": "Bẫy kỹ thuật (2/4)",
+      "title": "Bẫy Observation tự bịa: Bỏ qua chạy Tool",
+      "question": "**Tình huống:** LLM sinh cả Action và Final Answer trong 1 lượt.\n*Dự đoán: Tool có được chạy không, số bước là bao nhiêu?*",
+      "code": "lab = __import__(\"01_pure_react_agent\")\nF = type(\"F\", (), {\"generate\": lambda s, p, q:\n    \"Action: calculate[2+3]\\nFinal Answer: 5\"})\nprint(lab.ReActAgent(llm_engine=F()).run(\"2+3\", verbose=False))",
+      "lang": "python",
+      "output": "{'success': True, 'final_answer': '5', 'steps': 1, 'tools_executed': []}",
+      "explain": "Parser bắt `Final Answer:` trước và return ngay tại dòng 274, bỏ qua tool (`steps=1, tools=[]`). Cần đặt `stop_sequences` hoặc ưu tiên Action.",
+      "hints": [
+        "Parser luôn bắt Final Answer trước Action và hàm run() thoát ngay."
+      ],
+      "source": "Khóa học · Lab 1 dòng 135-140, 274-283",
+      "notes": "Lỗ hổng này khiến hệ thống tin tưởng kết quả ảo giác của LLM mà không thực sự kiểm chứng qua công cụ."
+    },
+    {
+      "type": "predict",
+      "eyebrow": "Bẫy kỹ thuật (3/4)",
+      "title": "Bẫy tái sử dụng Mock: step counter không reset",
+      "question": "**Tình huống:** Gọi `agent.run()` lần thứ 2 với cùng một instance Mock LLM mặc định.\n*Dự đoán số bước và danh sách tool ở lần chạy 2!*",
+      "code": "lab = __import__(\"01_pure_react_agent\")\nagent = lab.ReActAgent()\nfor i in (1, 2):\n    r = agent.run(\"NPU TOPS cluster...\", verbose=False)\n    print(i, r[\"steps\"], r[\"tools_executed\"])",
+      "lang": "python",
+      "output": "1 4 ['lookup_hardware', 'calculate', 'calculate']\n2 1 []",
+      "explain": "DeterministicMockLLM lưu biến `self.step` trên instance. Lần 1 `step=4`, lần 2 `step=5` rơi vào nhánh else trả Final Answer ngay mà không chạy tool. Cần tạo mock mới cho mỗi lần `run()`.",
+      "hints": [
+        "Biến self.step trong Mock LLM không được reset sau lượt chạy đầu tiên."
+      ],
+      "source": "Khóa học · Lab 1 dòng 170-202",
+      "notes": "State của từng phiên chạy phải độc lập để tránh rò rỉ trạng thái giữa các lần gọi."
+    },
+    {
+      "type": "split",
+      "eyebrow": "Bẫy kỹ thuật (4/4)",
+      "title": "Xử Lý Tool Không Tồn Tại",
+      "text": "Khi LLM đề xuất gọi tool ngoài danh mục như `Action: query_pricing[\"MI300X\"]`, hệ thống xử lý thế nào để không bị crash?",
+      "items": [
+        "**Kiểm tra an toàn (dòng 290):** Kiểm tra `if tool_name in TOOLS:` trước khi gọi hàm, chặn lỗi `KeyError`.",
+        "**Observation báo lỗi (dòng 294):** Gán `observation = f\"Error: Tool '{tool_name}' does not exist...\"`.",
+        "**Ghi vào History (dòng 300-302):** Nối Observation lỗi vào `history` như dữ kiện bình thường.",
+        "**Tự sửa sai cần LLM thật:** Quá trình tự sửa sai đòi hỏi LLM thật đọc Observation trong prompt lượt sau; `DeterministicMockLLM` trong Lab 1 bỏ qua prompt nên không thể tự sửa."
+      ],
+      "code": {
+        "file": "../../../03_Materials_Code/01_pure_react_agent.py",
+        "lines": "290-294,300-302"
+      },
+      "source": "Khóa học · Lab 1 dòng 290-294, 300-302",
+      "notes": "Biến đổi ngoại lệ thành thông báo lỗi trong Observation giúp LLM có cơ hội tự điều chỉnh hành động ở vòng lặp kế tiếp."
+    },
+    {
+      "type": "notebook",
+      "eyebrow": "Ghi chép cốt lõi",
+      "title": "Sổ tay phòng chống 4 bẫy ReAct",
+      "page": "AI Agents 101 · Bài 1b",
+      "lines": [
+        "# 4 Bẫy thường gặp cần phòng tránh",
+        "! 1. Regex ngoặc lồng: lazy matching cắt cụt (2+3)*4 thành (2+3",
+        "! 2. LLM bịa Observation: cài đặt stop_sequences=['Observation:']",
+        "! 3. State thuộc từng lần chạy: tạo mock/agent mới cho mỗi run()",
+        "! 4. Tool lạ: bắt lỗi tại biên, trả danh sách tool vào Observation",
+        "# Nguyên tắc thiết kế",
+        "@ Sofa: cây kéo cùn cắt thư = regex lười cắt cụt ngoặc lồng"
+      ],
+      "source": "ROADMAP.md mục 4 (M1) & Khóa học · Lab 1",
+      "notes": "Ghi nhớ 4 bẫy kỹ thuật và nguyên tắc thiết kế bộ điều phối an toàn trước khi bắt tay vào viết my_react.py."
+    },
+    {
+      "type": "section",
+      "title": "Luyện Tập & Chuẩn DoD",
+      "subtitle": "Áp dụng kiến thức và thiết lập tiêu chí cho my_react.py",
+      "icon": "ph:target-duotone"
+    },
+    {
+      "type": "exercise",
+      "eyebrow": "Luyện tập thực hành (Cấp độ 1/3)",
+      "title": "Bài tập: Bóc tách tham số ngoặc an toàn",
+      "level": "easy",
+      "problem": "Thiết kế phương án bóc tách tên tool và tham số cho chuỗi `Action: calculate[(2+3)*4]`, đảm bảo không bị cắt cụt biểu thức toán học như Lab 1.",
+      "time": 120,
+      "hints": [
+        "Tìm cặp ngoặc ngoài cùng thay vì dùng regex khớp lười."
+      ],
+      "solution": [
+        "1. Tìm ký tự `[` đầu tiên để lấy tên tool phía trước",
+        "2. Tìm ký tự `]` cuối cùng bằng `rfind(']')`",
+        "3. Trích xuất toàn bộ biểu thức bên trong: `(2+3)*4`"
+      ],
+      "answer": "Bóc tách chính xác tên tool `calculate` và biểu thức `(2+3)*4`.",
+      "source": "Khóa học · Lab 1 dòng 147-151 & ROADMAP.md mục 4 (M1)",
+      "notes": "Rèn luyện tư duy xử lý chuỗi biên giới hạn mà không bị phụ thuộc vào biểu thức chính quy đơn giản."
+    },
+    {
+      "type": "exercise",
+      "eyebrow": "Luyện tập thực hành (Cấp độ 2/3)",
+      "title": "Bài tập: Vô hiệu hóa Observation bịa đặt",
+      "level": "medium",
+      "problem": "Nếu LLM sinh ra cả Action và Final Answer trong cùng một lượt, hãy thiết kế luồng kiểm soát để đảm bảo Action luôn được thực thi trước.",
+      "time": 180,
+      "hints": [
+        "Đảo thứ tự ưu tiên trong parser: kiểm tra Action trước Final Answer."
+      ],
+      "solution": [
+        "1. Quét khối Action trước khối Final Answer",
+        "2. Nếu có Action, gán `final_answer = None` và ưu tiên chạy tool",
+        "3. Chỉ trả kết quả khi phản hồi thuần túy là Final Answer"
+      ],
+      "answer": "Ưu tiên Action trước Final Answer để chặn mô hình tự bịa kết quả.",
+      "source": "Khóa học · Lab 1 dòng 135-161, 274-286",
+      "notes": "Thiết lập rào chắn luồng điều khiển (Control Flow Guardrails) để ngăn ngừa ảo giác."
+    },
+    {
+      "type": "exercise",
+      "eyebrow": "Thử thách tự viết mã (Cấp độ 3/3)",
+      "title": "Bài tập lớn: Viết my_react.py",
+      "level": "hard",
+      "problem": "Tự viết `my_react.py` từ file trống đạt 4 tiêu chuẩn DoD:\n1. Có `max_steps` chặn lặp vô hạn\n2. Bắt lỗi Tool lạ vào Observation\n3. Chặn Final Answer đi kèm Action chưa chạy\n4. Parse đúng ngoặc lồng `calculate[(2+3)*4]`",
+      "time": 300,
+      "hints": [
+        "Đăng ký TOOLS dictionary và quản lý state cục bộ trong run()."
+      ],
+      "solution": [
+        "1. Viết parser bóc tách ngoặc ngoài cùng an toàn",
+        "2. Viết ReActAgent có chốt chặn max_steps và bắt lỗi tool lạ",
+        "3. Viết 4 câu lệnh assert kiểm tra 4 tiêu chuẩn DoD"
+      ],
+      "answer": "Chạy `py -3.11 03_Materials_Code/my_work/my_react.py` đạt toàn bộ 4/4 asserts.",
+      "source": "AGENTS.md & ROADMAP.md mục 3.2 (Tuần 3), 4 (M1)",
+      "notes": "Tuân thủ nghiêm ngặt quy tắc AGENTS.md: DeepTutor chỉ cung cấp tiêu chuẩn nghiệm thu DoD và gợi ý phương pháp, người học tự hoàn thiện mã nguồn."
+    },
+    {
+      "type": "flashcards",
+      "eyebrow": "Ôn tập chủ động",
+      "title": "Lật thẻ củng cố kiến thức Lab 1",
+      "cards": [
+        {
+          "front": "ReActParser.parse trả về mấy giá trị?",
+          "back": "4 giá trị: (thought, tool_name, tool_arg, final_answer).",
+          "icon": "ph:brackets-curly-duotone"
+        },
+        {
+          "front": "Vì sao Action: calculate[(2+3)*4] bị lỗi trong Lab 1?",
+          "back": "Regex lười (.*?) dừng ngay tại dấu đóng ngoặc tròn đầu tiên, cắt cụt biểu thức.",
+          "icon": "ph:warning-duotone"
+        },
+        {
+          "front": "Biện pháp phòng ngừa LLM tự bịa Observation?",
+          "back": "Cài đặt stop_sequences tại 'Observation:' và ưu tiên bóc tách Action trước Final Answer.",
+          "icon": "ph:shield-check-duotone"
+        },
+        {
+          "front": "Khi LLM gọi tool không tồn tại, code cần làm gì?",
+          "back": "Không để crash, trả thông báo lỗi có cấu trúc kèm danh sách tool hợp lệ vào Observation.",
+          "icon": "ph:wrench-duotone"
+        }
+      ],
+      "source": "Khóa học · Lab 1 & ROADMAP.md mục 4 (M1)",
+      "notes": "Học viên lật từng thẻ để củng cố các điểm chốt trước khi làm bài tập điền khuyết."
+    },
+    {
+      "type": "cloze",
+      "eyebrow": "Kiểm tra ghi nhớ",
+      "title": "Điền từ vào nguyên lý ReAct",
+      "text": "Trong mô hình ReAct, LLM cung cấp năng lực [[suy luận]], nhưng chính các công cụ định nghĩa phạm vi [[hành động]].\n\nKhi trích xuất lệnh từ văn bản thô, phương pháp [[Regex]] rất dễ vỡ trước các biểu thức phức tạp. Vì vậy, các hệ thống thực tế chuyển sang dùng [[JSON Schema]] và Tool Calling có kiểm tra kiểu dữ liệu.",
+      "source": "Khóa học · transcript 02:13-02:17 & ROADMAP.md mục 4 (M1, M2)",
+      "notes": "Khắc sâu sự đối chiếu giữa 2 nửa: Suy luận (LLM) vs Hành động (Tool); Regex (thô sơ) vs JSON Schema (chuyên nghiệp)."
+    },
+    {
+      "type": "summary",
+      "eyebrow": "Tổng kết Module 1",
+      "title": "Tạm biệt Regex, Tiến lên JSON Tool Calling!",
+      "items": [
+        "Đã làm chủ cơ chế máy trạng thái và luồng điều phối của ReAct Agent",
+        "Đã nhận diện và biết cách khắc chế 4 bẫy: Ngoặc lồng, Ảo giác Observation, Ô nhiễm State, và Tool lạ",
+        "Nhiệm vụ tuần này: Hoàn thành `my_react.py` đạt 4/4 asserts theo đúng tiêu chuẩn DoD",
+        "**Động lực Module 2:** Tại sao phải xử lý regex phức tạp khi ta có thể dùng Tool Calling chuẩn JSON Schema với kiểm tra kiểu dữ liệu?"
+      ],
+      "score": true,
+      "source": "ROADMAP.md mục 4 (M1, M2) & Khóa học · transcript 05:44-06:49",
+      "notes": "Tạo cầu nối tự nhiên dẫn dắt học viên bước sang Module 2: Tool calling và Type-safe JSON Schema."
+    }
+  ]
+}

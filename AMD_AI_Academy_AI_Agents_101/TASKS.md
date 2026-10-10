@@ -40,8 +40,12 @@ Materials & Code: [03_Materials_Code](file:///D:/02_Learning_Knowledge/AMD_AI_Ac
 - [x] [Deadline: 2026-09-22 23:59] [Priority: P2] Xây dựng mẫu Tool Calling Agent với JSON schema: [02_tool_calling_agent.py](file:///D:/02_Learning_Knowledge/AMD_AI_Academy_AI_Agents_101/03_Materials_Code/02_tool_calling_agent.py).
 - [x] [Deadline: 2026-09-22 23:59] [Priority: P2] Xây dựng Memory & Conversation State Agent: [03_memory_state_agent.py](file:///D:/02_Learning_Knowledge/AMD_AI_Academy_AI_Agents_101/03_Materials_Code/03_memory_state_agent.py).
 - [x] [Deadline: 2026-09-22 23:59] [Priority: P2] Xây dựng StateGraph Multi-agent với LangGraph: [04_framework_agent_langgraph.py](file:///D:/02_Learning_Knowledge/AMD_AI_Academy_AI_Agents_101/03_Materials_Code/04_framework_agent_langgraph.py).
-- [ ] [Deadline: 2026-09-30 23:59] [Priority: P1] Chạy bộ kiểm thử xác thực labs [verify_labs.py](file:///D:/02_Learning_Knowledge/AMD_AI_Academy_AI_Agents_101/03_Materials_Code/verify_labs.py) sau khi thiết lập môi trường Python 3.11+.
+- [x] [Deadline: 2026-09-30 23:59] [Priority: P1] Chạy bộ kiểm thử xác thực labs [verify_labs.py](file:///D:/02_Learning_Knowledge/AMD_AI_Academy_AI_Agents_101/03_Materials_Code/verify_labs.py) sau khi thiết lập môi trường Python 3.11+ (Status: Đạt 4/4 PASS, hoàn thành trong 0.33s).
+- [x] [Deadline: 2026-10-10 23:59] [Priority: P2] Xây dựng slide học tập tương tác Aurora Keynote cho Lab 1 Pure ReAct Agent tại [05_Slides/lab01_pure_react_agent](file:///D:/02_Learning_Knowledge/AMD_AI_Academy_AI_Agents_101/05_Slides/lab01_pure_react_agent) (18 slides, 0 audit errors, PDF & HTML offline).
 - [ ] [Deadline: 2026-10-01 23:59] [Priority: P2] Tích hợp công cụ tính toán toán học và tìm kiếm dữ liệu tùy biến vào vòng lặp tool execution của ReAct Agent.
+- [x] [Deadline: 2026-10-10 23:59] [Priority: P2] Dựng khóa Aurora "AI Agents 101" (trang khóa học 14 bài, nhãn lịch học) và 2 bài đầu 1a, 1b theo ROADMAP M1 tại [05_Slides/ai-agents-101](file:///D:/02_Learning_Knowledge/AMD_AI_Academy_AI_Agents_101/05_Slides/ai-agents-101/index.html); thay cho bản lab01_pure_react_agent (code gõ lại và sai khái niệm).
+- [ ] [Deadline: 2026-10-20 23:59] [Priority: P2] Học bài 1a "Vòng lặp agent: ai làm gì" (slide, chép trang vở, đi palace, 2 slide dự đoán).
+- [ ] [Deadline: 2026-10-24 23:59] [Priority: P2] Học bài 1b "Mổ xẻ Lab 1" và bắt đầu my_react.py theo DoD 4 tiêu chí.
 
 ## 3. Advanced Agent Pipelines & Production Patterns
 - [ ] [Deadline: 2026-10-03 23:59] [Priority: P2] Thiết kế Human-in-the-loop (HITL) checkpointing cho tác vụ nhạy cảm (ghi đè file, gọi API bên ngoài).

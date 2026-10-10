@@ -1,0 +1,348 @@
+{
+  "title": "Vòng lặp agent: Ai làm gì trong ReAct?",
+  "subtitle": "Phân định ranh giới giữa suy luận xác suất của LLM và quyền thực thi tất định của Code",
+  "lang": "vi",
+  "theme": "midnight",
+  "accent": "cyan",
+  "slides": [
+    {
+      "type": "title",
+      "title": "Vòng Lặp Agent:\n++Ai Làm Gì++ Trong ReAct?",
+      "subtitle": "Phân định ranh giới giữa suy luận xác suất của LLM và quyền thực thi tất định của Code",
+      "icon": "ph:arrows-clockwise-duotone",
+      "source": "Khóa học · transcript 01:05-03:07",
+      "notes": "Bài học đặt nền móng kiến trúc: LLM chỉ là bộ não suy luận ngôn ngữ, không tự chạy được lệnh. Mọi hành động tương tác với thế giới đều do Code Python bên ngoài điều phối."
+    },
+    {
+      "type": "section",
+      "title": "Nguyên Lý ReAct",
+      "subtitle": "Phân định ranh giới giữa suy luận và hành động",
+      "icon": "ph:brain-duotone"
+    },
+    {
+      "type": "statement",
+      "kicker": "Nguyên lý vận hành cốt lõi",
+      "text": "LLM chỉ có quyền ==đề xuất hành động==.\nChỉ có **Code** mới thực thi công cụ và quyết định ==khi nào dừng==.",
+      "source": "Khóa học · transcript 02:13-02:17",
+      "notes": "Mô hình ngôn ngữ lớn bản chất là một bộ sinh token tự hồi quy. Nó không có tiến trình hệ điều hành, không có kết nối mạng. Khi LLM xuất chuỗi Action, đó thuần túy là văn bản cho tới khi code Python bắt lấy và gọi hàm."
+    },
+    {
+      "type": "analogy",
+      "eyebrow": "Mô hình liên tưởng từ bài giảng",
+      "title": "LLM Là Não Bộ, Agent Là Não Gắn Tay Chân",
+      "known": {
+        "label": "Cuốn sách bách khoa",
+        "icon": "ph:book-bookmark-duotone"
+      },
+      "concept": {
+        "label": "AI Agent hoàn chỉnh",
+        "icon": "ph:robot-duotone"
+      },
+      "pairs": [
+        {
+          "known": "Biết câu trả lời lý thuyết nhưng không tự cầm bút viết",
+          "concept": "LLM suy luận và lập kế hoạch nhưng không tự gọi API"
+        },
+        {
+          "known": "Cùng một cuốn sách, người thợ khác nhau làm ra việc khác nhau",
+          "concept": "Cùng một LLM, cấp bộ công cụ khác nhau tạo ra Agent khác nhau"
+        },
+        {
+          "known": "Không có đồng hồ đeo tay thì không biết mấy giờ",
+          "concept": "Không có tool ngày giờ thì trả lời sai câu hỏi thời gian thực"
+        }
+      ],
+      "limit": "Cuốn sách là tri thức tĩnh; nhưng LLM là mô hình xác suất có thể bị ảo giác và tính nhẩm sai. Agent cần công cụ toán học và tra cứu để đảm bảo tính tất định.",
+      "source": "Khóa học · transcript 01:05-02:21, 06:03-06:09",
+      "notes": "Nhấn mạnh câu chốt của giảng viên Mahdi Ghodsi: 'LLMs provide the reasoning, but the tools define the actions. Same brain, different tools.'"
+    },
+    {
+      "type": "compare",
+      "eyebrow": "So sánh cơ chế xử lý",
+      "title": "LLM Đơn Lẻ vs ReAct Agent",
+      "vs": true,
+      "columns": [
+        {
+          "title": "LLM Đơn Lẻ (Zero-Shot / CoT)",
+          "icon": "ph:x-circle-duotone",
+          "tone": "bad",
+          "items": [
+            "Chỉ dựa vào trọng số đóng băng tại thời điểm huấn luyện",
+            "Dễ tính nhẩm sai các phép toán nhiều chữ số",
+            "Không thể truy cập dữ liệu thời gian thực (ngày, giờ, giá cả)"
+          ]
+        },
+        {
+          "title": "ReAct Agent (Reason + Act)",
+          "icon": "ph:check-circle-duotone",
+          "tone": "good",
+          "highlight": true,
+          "items": [
+            "Xen kẽ suy nghĩ (`Thought`) và hành động (`Action`) từng bước",
+            "Ủy thác tính toán số học chính xác cho Python (`calculate`)",
+            "Thu thập dữ kiện thời gian thực qua công cụ (`Observation`)"
+          ]
+        }
+      ],
+      "source": "Khóa học · transcript 02:21-03:07",
+      "notes": "Bài báo ReAct chứng minh: kết hợp suy luận với hành động giúp giảm ảo giác so với Chain-of-Thought đơn thuần trên HotpotQA và FEVER."
+    },
+    {
+      "type": "section",
+      "title": "Kiến Trúc Máy Trạng Thái",
+      "subtitle": "7 bước tuần hoàn và quy tắc điều phối của ReActAgent",
+      "icon": "ph:arrows-clockwise-duotone"
+    },
+    {
+      "type": "diagram",
+      "eyebrow": "Kiến trúc hệ thống",
+      "title": "Máy trạng thái của Vòng lặp Agent",
+      "caption": "Mỗi vòng là một lượt của for step in range(1, max_iterations + 1); LLM chỉ đề xuất, code quyết định mọi nhánh",
+      "code": "flowchart LR\n  G{\"Còn lượt?\"} -->|\"Còn\"| P[\"Ghép prompt,<br/>gọi LLM\"]\n  G -->|\"Hết\"| X([\"Dừng: thất bại\"])\n  P --> R{\"Có Final<br/>Answer?\"}\n  R -->|\"Có\"| F([\"Dừng: trả<br/>Final Answer\"])\n  R -->|\"Không\"| T{\"Action?\"}\n  T -->|\"Tool hợp lệ\"| E[\"Chạy tool,<br/>ghi Observation\"]\n  T -->|\"Tool lạ\"| O[\"Ghi Observation lỗi<br/>kèm danh sách tool\"]\n  T -->|\"Không có\"| N[\"Ghi nguyên<br/>phản hồi\"]\n  E --> G\n  O --> G\n  N --> G",
+      "source": "Khóa học · Lab 1 dòng 259-313",
+      "notes": "Đúng theo ReActAgent.run: mỗi vòng for (dòng 259) ghép lại prompt (264), gọi LLM (265), parse (268). Final Answer là lối thoát (274-283), không phải một bước trong vòng. Tool có trong TOOLS thì code chạy (290-292), tool lạ thì code ghi Observation lỗi (294), không parse được Action thì ghi nguyên phản hồi (303-306). Hết lượt thì trả thất bại (308-313). LLM chỉ đề xuất; code quyết định mọi nhánh."
+    },
+    {
+      "type": "palace",
+      "id": "palace-agent-loop",
+      "eyebrow": "Mỏ neo trí nhớ (Memory Anchor)",
+      "title": "7 Bước Vòng Lặp Agent:\nMột vòng quanh nhà bạn",
+      "subtitle": "Gắn chặt 7 trạng thái của State Machine vào 7 vị trí quen thuộc",
+      "mode": "learn",
+      "stations": [
+        {
+          "place": "1. Cửa ra vào",
+          "item": "Nhận mục tiêu & Reset State",
+          "hook": "Khách bấm chuông đưa tờ giấy ghi câu hỏi; bạn xóa sạch bảng trắng treo ở cửa để chuẩn bị ghi chép",
+          "icon": "ph:door-duotone"
+        },
+        {
+          "place": "2. Kệ giày",
+          "item": "Ghép Prompt & Gửi LLM",
+          "hook": "Xếp toàn bộ lịch sử hội thoại vào một chiếc cặp tài liệu rồi gửi chuyển phát nhanh cho chuyên gia LLM",
+          "icon": "ph:paper-plane-tilt-duotone"
+        },
+        {
+          "place": "3. Ghế sofa",
+          "item": "Parser bóc tách chuỗi",
+          "hook": "Ngồi trên sofa cầm kéo cắt bức thư phản hồi thành 4 mảnh: Thought, Tool, Arg, Final Answer",
+          "icon": "ph:scissors-duotone"
+        },
+        {
+          "place": "4. Màn hình TV",
+          "item": "Lối thoát Final Answer",
+          "hook": "Bật TV thấy hiện đáp án cuối cùng rực rỡ; bạn tắt nguồn TV và hoàn thành nhiệm vụ ngay lập tức",
+          "icon": "ph:television-duotone"
+        },
+        {
+          "place": "5. Bàn ăn",
+          "item": "Code thực thi Tool",
+          "hook": "Mở hộp đồ nghề trên bàn ăn, cắm máy tính bấm '8 * 50 = 400' tạo ra kết quả Observation thực tế",
+          "icon": "ph:wrench-duotone"
+        },
+        {
+          "place": "6. Cánh tủ lạnh",
+          "item": "Cập nhật History Buffer",
+          "hook": "Dán nam châm đính mảnh giấy Thought, Action, Observation vừa làm xong lên cánh tủ lạnh",
+          "icon": "ph:notepad-duotone"
+        },
+        {
+          "place": "7. Bếp nấu (Cầu dao)",
+          "item": "Kiểm tra Ngân sách (max_steps)",
+          "hook": "Đồng hồ hẹn giờ bếp reo reng reng; nếu đếm quá 6 lần mà chưa xong thì cầu dao tự ngắt điện",
+          "icon": "ph:timer-duotone"
+        }
+      ],
+      "source": "Mở rộng · phương pháp loci",
+      "notes": "Hãy hình dung thật sống động lộ trình này trong ngôi nhà của bạn từ Cửa ra vào -> Kệ giày -> Sofa -> TV -> Bàn ăn -> Tủ lạnh -> Bếp. Lát nữa chúng ta sẽ đi bộ kiểm tra lại."
+    },
+    {
+      "type": "split",
+      "eyebrow": "Ranh giới thực thi",
+      "title": "Ai Làm Gì Trong Từng Vòng Lặp?",
+      "text": "Sự phân định rạch ròi giữa trí tuệ nhân tạo và mã nguồn điều phối.",
+      "items": [
+        "**Phần LLM sinh:** Chuỗi suy nghĩ phân tích (`Thought:`), tên công cụ cần dùng (`Action: tool_name[arg]`), hoặc kết luận cuối cùng (`Final Answer:`).",
+        "**Phần Code thực thi:** Lắp ghép prompt ngữ cảnh, gọi hàm parser bóc tách regex, kiểm tra an toàn và chạy hàm Python `TOOLS[tool_name](arg)`, đo lường số bước và ngắt vòng lặp."
+      ],
+      "source": "Khóa học · Lab 1 dòng 259-313",
+      "notes": "Rất nhiều lập trình viên mới lầm tưởng Agent tự gọi tool. Thực tế, mô hình chỉ sinh chuỗi văn bản; hàm Python TOOLS[tool_name](tool_arg) ở dòng 291 mới là nơi thực sự kích hoạt tính toán."
+    },
+    {
+      "type": "code",
+      "eyebrow": "Mã nguồn tham chiếu (1/2)",
+      "title": "Trái tim vòng lặp: Khởi tạo & Lối thoát",
+      "file": "../../../03_Materials_Code/01_pure_react_agent.py",
+      "lines": "259,264-265,268,274",
+      "steps": [
+        {
+          "lines": "259",
+          "text": "Vòng lặp đếm bước với chốt chặn cứng `max_iterations = 6`."
+        },
+        {
+          "lines": "264-265,268",
+          "text": "Tái tạo `context_prompt` và gọi Parser bóc tách chuỗi."
+        },
+        {
+          "lines": "274",
+          "text": "Nếu có `final_answer`: Thoát ngay lập tức, không gọi tool."
+        }
+      ],
+      "source": "Khóa học · Lab 1 dòng 259-283",
+      "notes": "Khởi tạo vòng lặp và kiểm tra điều kiện thoát Final Answer ngay ở đầu mỗi lượt lặp."
+    },
+    {
+      "type": "code",
+      "eyebrow": "Mã nguồn tham chiếu (2/2)",
+      "title": "Trái tim vòng lặp: Thực thi Tool & State",
+      "file": "../../../03_Materials_Code/01_pure_react_agent.py",
+      "lines": "286,290-291,300-302",
+      "steps": [
+        {
+          "lines": "286,290-291",
+          "text": "Nếu có `tool_name`: Chạy hàm trong `TOOLS` dict để tạo Observation."
+        },
+        {
+          "lines": "300-302",
+          "text": "Ghi nhận Thought, Action, Observation vào `history` buffer."
+        }
+      ],
+      "source": "Khóa học · Lab 1 dòng 286-303",
+      "notes": "Code Python thực thi hàm công cụ và cập nhật lịch sử tương tác vào bộ nhớ context."
+    },
+    {
+      "type": "notebook",
+      "eyebrow": "Ghi chép cốt lõi",
+      "title": "Sổ tay kiến trúc Vòng lặp Agent",
+      "page": "AI Agents 101 · Bài 1a",
+      "lines": [
+        "# 1. Bản chất ReAct",
+        {
+          "term": "ReAct",
+          "def": "LLM suy luận (Thought), Code thực thi (Action -> Observation)"
+        },
+        "# 2. Công thức Token tích lũy",
+        "= \\text{Tokens} = T \\cdot p + k \\cdot \\frac{T(T-1)}{2}",
+        "# 3. Quy tắc an toàn",
+        "! LLM chỉ đề xuất; Code nắm quyền thực thi và dừng",
+        "! Luôn có max_iterations; Final Answer là điều kiện thoát",
+        "@ Cầu dao bếp reo chuông = max_iterations ngắt vòng lặp"
+      ],
+      "source": "ROADMAP.md mục 4 (M1) & Khóa học · Lab 1 dòng 245, 274",
+      "notes": "Hãy chép công thức token vào sổ tay giấy: với prompt gốc p=1500, mỗi bước thêm k=400, khi T=10 bước tiêu tốn 33.000 token; khi T=20 bước bùng nổ lên 106.000 token (tăng gấp 3,2 lần dù số bước chỉ tăng 2 lần)."
+    },
+    {
+      "type": "section",
+      "title": "Dự Đoán & Ôn Tập",
+      "subtitle": "Kiểm chứng thực tế vết thực thi và đánh giá ghi nhớ",
+      "icon": "ph:check-circle-duotone"
+    },
+    {
+      "type": "predict",
+      "eyebrow": "Thực hành dự đoán (Predict-then-Run)",
+      "title": "Dự đoán vết thực thi: 8 APU Ryzen AI 9 HX 370",
+      "question": "**Câu hỏi:** Tính tổng NPU TOPS của cụm 8 máy AMD Ryzen AI 9 HX 370 và so sánh với Apple M3.\n\n*Hãy dự đoán số lượt lặp, chuỗi Tool được gọi và kết quả tính toán trước khi chạy lệnh!*",
+      "command": "py -3.11 01_pure_react_agent.py",
+      "output": "🎯 Question: Calculate total NPU TOPS of an edge cluster with 8 AMD Ryzen AI 9 HX 370 systems and compare with Apple M3.\n\n--- [Turn 1/6] ---\n💭 Thought: I need to determine the NPU TOPS of the AMD Ryzen AI 9 HX 370 processor.\n🛠️  Action: lookup_hardware[Ryzen AI 9 HX 370]\n👁️  Observation: AMD Ryzen AI 9 HX 370: Strix Point APU, 12 cores / 24 threads (Zen 5 + Zen 5c), Radeon 890M iGPU (16 CUs), XDNA 2 NPU delivering 50 NPU TOPS, total platform compute up to 80 TOPS, configurable TDP 15W-54W.\n\n--- [Turn 2/6] ---\n💭 Thought: The Ryzen AI 9 HX 370 provides 50 NPU TOPS. Now I must calculate the total NPU TOPS for an edge cluster containing 8 of these APUs.\n🛠️  Action: calculate[8 * 50]\n👁️  Observation: 400\n\n--- [Turn 3/6] ---\n💭 Thought: The 8-node cluster delivers 400 NPU TOPS total. Now I need to compare this with Apple M3's Neural Engine (18 TOPS) by calculating the compute ratio.\n🛠️  Action: calculate[400 / 18]\n👁️  Observation: 22.2222\n\n--- [Turn 4/6] ---\n💭 Thought: I have gathered all necessary hardware specifications and completed the math.\n\n🎯 Final Answer:\nAn edge AI cluster equipped with 8 AMD Ryzen AI 9 HX 370 APUs delivers a combined 400 NPU TOPS (50 TOPS per node via XDNA 2). Compared to an Apple M3 processor (18 NPU TOPS), the AMD cluster provides approximately 22.22x higher on-device neural compute density.",
+      "explain": "Tại dòng 178-202 của Lab 1, `DeterministicMockLLM` khớp từ khóa `cluster` và trả về kịch bản tuần tự qua 4 bước: tra cứu phần cứng (dòng 182), tính tổng 8 * 50 = 400 TOPS (dòng 188), tính tỉ lệ 400 / 18 = 22.2222 (dòng 194), và trả Final Answer ở bước 4 (dòng 199).",
+      "hints": [
+        "Mock LLM kiểm tra từ khóa trong câu hỏi để chọn kịch bản 4 bước."
+      ],
+      "source": "Khóa học · Lab 1 dòng 178-202",
+      "notes": "Đây là kịch bản Scenario 1 trong DeterministicMockLLM. Toàn bộ các bước khớp chính xác với luồng điều phối của ReActAgent."
+    },
+    {
+      "type": "predict",
+      "eyebrow": "Thực hành dự đoán (Predict-then-Run)",
+      "title": "Dự đoán khi hỏi: 'What is ReAct?'",
+      "question": "**Câu hỏi:** Chuyện gì xảy ra nếu ta truyền câu hỏi lý thuyết: `What is ReAct?` vào Lab 1?\n\n*Mock LLM có trả lời đúng định nghĩa ReAct hay không?*",
+      "command": "py -3.11 01_pure_react_agent.py --query \"What is ReAct?\"",
+      "output": "🎯 Question: What is ReAct?\n\n--- [Turn 1/6] ---\n💭 Thought: I will search the knowledge base for foundational AI Agent architectural pillars.\n🛠️  Action: search_knowledge_base[four pillars]\n👁️  Observation: The 4 Architectural Pillars of an AI Agent are: Perception (input processing), Planning & Reasoning (LLM core & decomposition), Action & Tool Use (API/code execution), and Memory (short-term context & long-term storage).\n\n--- [Turn 2/6] ---\n💭 Thought: I have retrieved the foundational pillars.\n\n🎯 Final Answer:\nThe four core pillars of an AI Agent are Perception, Planning & Reasoning, Action & Tool Use, and Memory (Short-term & Long-term).",
+      "explain": "Tại dòng 178 và 205 của Lab 1, `DeterministicMockLLM` chỉ kiểm tra các từ khóa `cluster`, `ryzen`, `tops`, `rocm`, `mi300x`. Do không có nhánh cho `react`, chương trình lọt vào nhánh Fallback ở dòng 225, gọi tìm kiếm `four pillars` (dòng 229) và trả Final Answer ở bước 2 (dòng 234). Mock LLM hoạt động theo biến đếm `step`, không hiểu ngữ nghĩa câu hỏi.",
+      "hints": [
+        "Kiểm tra các câu lệnh if/elif trong hàm generate của Mock LLM xem có khớp 'react' không."
+      ],
+      "source": "Khóa học · Lab 1 dòng 225-236",
+      "notes": "Điểm cốt lõi giúp học viên phân biệt giữa việc kiểm thử logic điều phối của Code và năng lực hiểu ngôn ngữ tự nhiên của LLM thật."
+    },
+    {
+      "type": "palace",
+      "from": "palace-agent-loop",
+      "eyebrow": "Kiểm tra chủ động (Active Recall)",
+      "title": "Đi bộ kiểm tra 7 trạm State Machine",
+      "subtitle": "Hãy nhắm mắt, đi lại 7 vị trí trong nhà và tự gọi tên trạng thái tương ứng",
+      "mode": "recall",
+      "source": "Mở rộng · phương pháp loci",
+      "notes": "Học viên tự đánh giá mức độ ghi nhớ từng trạm (1. Cửa ra vào -> 2. Kệ giày -> 3. Sofa -> 4. TV -> 5. Bàn ăn -> 6. Tủ lạnh -> 7. Bếp). Nếu quên trạm nào, hãy quay lại xem hook liên tưởng tương ứng."
+    },
+    {
+      "type": "quiz",
+      "eyebrow": "Kiểm tra hiểu biết (1/2)",
+      "question": "Trong vòng lặp ReAct chuẩn, khi LLM sinh ra văn bản chứa 'Final Answer: ...', điều gì sẽ diễn ra tiếp theo trong mã nguồn Python?",
+      "options": [
+        {
+          "text": "Vòng lặp kết thúc ngay lập tức và trả kết quả, không chạy thêm tool.",
+          "explain": "Chính xác! Final Answer là điều kiện dừng (Exit condition) được kiểm tra và trả về ngay tại dòng 274."
+        },
+        {
+          "text": "Code thực thi lệnh Action viết trước Final Answer rồi mới trả về kết quả.",
+          "explain": "Sai. Khi đã có Final Answer, parser bỏ qua Action và hàm run() return ngay lập tức."
+        },
+        {
+          "text": "Bản thân LLM tự đóng tiến trình Python để kết thúc vòng lặp.",
+          "explain": "Sai. LLM chỉ sinh chuỗi văn bản, chỉ có Code Python mới điều khiển luồng thực thi và dừng vòng lặp."
+        },
+        {
+          "text": "Vòng lặp tiếp tục chạy cho đến khi chạm ngưỡng max_iterations mới dừng.",
+          "explain": "Sai. Nhánh if final_answer trả về kết quả ngay ở bước hiện tại, không đợi hết max_iterations."
+        }
+      ],
+      "answer": 0,
+      "explanation": "Theo đúng thiết kế tại dòng 274-283 của Lab 1, `if final_answer:` kích hoạt lệnh `return` ngay lập tức, ngắt chu trình lặp.",
+      "source": "Khóa học · Lab 1 dòng 274-283",
+      "notes": "Đảm bảo học viên khắc sâu khái niệm Final Answer là lối thoát của vòng lặp, không phải một trạng thái tuần hoàn bên trong."
+    },
+    {
+      "type": "quiz",
+      "eyebrow": "Kiểm tra hiểu biết (2/2)",
+      "question": "SYSTEM_PROMPT ghi chuỗi Thought/Action có thể lặp tối đa 5 lần, nhưng ReActAgent đặt max_iterations = 6. Yếu tố nào thực sự quyết định số lần lặp tối đa?",
+      "options": [
+        {
+          "text": "Code Python với self.max_iterations quyết định; prompt chỉ là chỉ dẫn.",
+          "explain": "Chính xác! Code Python nắm quyền điều khiển vòng lặp bằng `range(1, self.max_iterations + 1)` tại dòng 259."
+        },
+        {
+          "text": "Mô hình LLM sẽ tự động dừng ở bước 5 theo đúng chỉ dẫn trong prompt.",
+          "explain": "Sai. Hướng dẫn trong prompt không có tính cưỡng chế đối với tiến trình Python."
+        },
+        {
+          "text": "Bộ parser sẽ phát sinh lỗi cú pháp khi bước lặp vượt quá 5.",
+          "explain": "Sai. Parser chỉ bóc tách chuỗi từng lượt độc lập, không kiểm soát số bước."
+        },
+        {
+          "text": "Vòng lặp dừng ở lượt 5 vì SYSTEM_PROMPT được ghép lại vào prompt ở mỗi lượt.",
+          "explain": "Sai. SYSTEM_PROMPT được ghép lại mỗi lượt (dòng 264) nhưng chỉ là văn bản gửi cho mô hình; số lượt do range(1, self.max_iterations + 1) ở dòng 259 quyết định."
+        }
+      ],
+      "answer": 0,
+      "explanation": "Mã nguồn Python nắm quyền kiểm soát luồng thực thi. Hướng dẫn trong SYSTEM_PROMPT (dòng 124) chỉ là lời yêu cầu tới mô hình; điều kiện dừng cứng tại dòng 259 là `for step in range(1, self.max_iterations + 1):`.",
+      "source": "Khóa học · Lab 1 dòng 124, 245, 259",
+      "notes": "Phát hiện quan trọng từ việc đối soát mã nguồn: phân biệt rõ giữa chỉ thị văn bản (prompt) và kiểm soát luồng cứng bằng mã nguồn (code)."
+    },
+    {
+      "type": "summary",
+      "eyebrow": "Đúc kết kiến thức",
+      "title": "Những điều cốt lõi của Bài 1a",
+      "items": [
+        "LLM chỉ là bộ não đề xuất suy luận; Code Python mới là thực thể điều phối và thực thi công cụ",
+        "Vòng lặp ReAct gồm 7 trạng thái khép kín với điều kiện dừng cứng (`max_iterations = 6`)",
+        "Chi phí token đầu vào tăng lũy tiến bậc hai $O(T^2)$ theo số lượt lặp $T$",
+        "Mock LLM trong Lab 1 chỉ là kịch bản tất định theo bước (`step`), không đọc ngữ nghĩa prompt",
+        "Chuẩn bị bước sang Bài 1b: Mổ xẻ các bẫy của Regex Parser và Quản lý State!"
+      ],
+      "score": true,
+      "source": "Khóa học · Lab 1 & ROADMAP.md mục 4 (M1)",
+      "notes": "Học viên hoàn tất phần lý thuyết nền móng của vòng lặp. Chuyển tiếp ngay sang bài 1b để thực hành mổ xẻ code chi tiết."
+    }
+  ]
+}
