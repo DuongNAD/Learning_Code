@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GCI World 2026 · Buoi 2: Tính Toán Hiệu Năng Cao Với NumPy (High-Performance NumPy &amp; Visualizers)</title>
+
+  <!-- Reveal.js Core Stylesheets -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+
+  <!-- Syntax Highlighting (Atom One Dark) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
+
+  <!-- KaTeX Mathematical Typography -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+  <!-- Custom Glassmorphic Theme & Widgets -->
+  <link rel="stylesheet" href="../css/reveal-gci-theme.css">
+  <link rel="stylesheet" href="../css/slide-widgets.css">
+</head>
+<body>
+  <!-- HUD Header Overlay -->
+  <div class="deck-hud-header">
+    <div><strong>GCI WORLD 2026</strong> · Matsuo-Iwasawa Lab (Đại học Tokyo)</div>
+    <div style="display:flex; gap:12px; align-items:center;">
+      <a href="../index.html" style="color:var(--text-dim); text-decoration:none;">[Cổng Hub Slide]</a>
+      <span class="slide-header-badge emerald">BUỔI 2: TÍNH TOÁN HIỆU NĂNG CAO VỚI NUMPY</span>
+      <button id="hud-trigger-btn" class="widget-btn" style="padding:2px 8px; font-size:11px;">[? Trợ giúp]</button>
+    </div>
+  </div>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ===================================================================
+           CHAPTER 0: WELCOME & HIGH-PERFORMANCE COMPUTING OVERVIEW
+           =================================================================== -->
+      <section>
+        <section>
+          <div class="slide-header-badge emerald">BUỔI 2 · NUMPY HIỆU NĂNG CAO (SESSION 2 · NUMPY HIGH PERFORMANCE)</div>
+          <h1>Mảng Đa Chiều, Bước Nhảy Bộ Nhớ &amp; Vector Hóa SIMD</h1>
+          <p style="font-size:1.1em; color:#cbd5e1;">Multi-Dimensional Arrays, Memory Strides &amp; SIMD Vectorization · Global Consumer Intelligence</p>
+          <div class="gci-card" style="margin-top:24px; max-width:750px;">
+            <p style="margin:0; font-size:0.95em;">
+              <strong>Bài giảng tham chiếu (Lecture Reference):</strong> YouTube Playlist Session 2 (Opening, Lecture, Closing) · Matsuo-Iwasawa Lab.<br>
+              <strong>Lõi mô phỏng tương tác (Interactive Core):</strong> 3 bộ mô phỏng trực quan thời gian thực (Broadcasting, Bước nhảy bộ nhớ Strides, Đo điểm chuẩn SIMD).<br>
+              <strong>Phím điều hướng (Navigation):</strong> Nhấn <code class="inline-code">Space</code> hoặc <code class="inline-code">Phím phải</code> để tiến tới, <code class="inline-code">Phím xuống</code> để trải nghiệm các bộ mô phỏng tương tác.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge">KIẾN TRÚC LỘ TRÌNH GIÁO TRÌNH (CURRICULUM ARCHITECTURE)</div>
+          <h2>Tiến Trình Học Phân Mảnh Buổi 2 (Buoi 2 Micro-Learning Progression)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>Phần I: Bộ Nhớ &amp; Chỉ Mục (Part I: Memory &amp; Indexing)</h3>
+              <ul>
+                <li><strong>MS2.1:</strong> Kiến trúc <code class="inline-code">ndarray</code>, Bộ nhớ RAM Liên tục C-Contiguous &amp; Bước nhảy Strides (ndarray Architecture, C-Contiguous RAM &amp; Strides)</li>
+                <li><strong>Mô phỏng Trực quan 2:</strong> Cắt Lát Động, Ánh Xạ Địa Chỉ Affine &amp; Cấp Phát View vs Copy (Interactive Visualizer 2: Live Slicing, Affine Addressing &amp; Views vs Copies)</li>
+                <li><strong>MS2.2:</strong> Hàm Vạn Năng ufuncs &amp; Thu Gọn Đa Trục (Universal Functions &amp; Multi-Axis Reductions)</li>
+              </ul>
+            </div>
+            <div class="gci-card">
+              <h3>Phần II: Lan Truyền Chiều &amp; Tăng Tốc Phần Cứng (Part II: Broadcasting &amp; Hardware Acceleration)</h3>
+              <ul>
+                <li><strong>MS2.3:</strong> Quy Tắc Lan Truyền Broadcasting &amp; Ô Ảo Bước Nhảy Bằng 0 (Broadcasting Rules &amp; Zero-Stride Virtual Cells)</li>
+                <li><strong>Mô phỏng Trực quan 1:</strong> Bộ Mô Phỏng Căn Chỉnh Số Chiều &amp; Tiết Kiệm Bộ Nhớ (Interactive Visualizer 1: Dimension Alignment &amp; Memory Savings Simulator)</li>
+                <li><strong>MS2.4:</strong> Đo Điểm Chuẩn Vector Hóa SIMD vs Vòng Lặp for Python (SIMD Vectorization vs Python Loop Benchmark)</li>
+                <li><strong>Mô phỏng Trực quan 3:</strong> Đường Cong Tăng Tốc &amp; Đường Đua Hoạt Họa Trực Quan (Interactive Visualizer 3: Live Speedup Curve &amp; Animated Race Track)</li>
+                <li><strong>MS2.5 &amp; MS2.S:</strong> Tổng Hợp Thực Hành &amp; Sổ Tay Cornell (Practical Synthesis &amp; Cornell Notes)</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================================================================
+           CHAPTER 1: NDARRAY ARCHITECTURE & MEMORY STRIDES (WIDGET 2)
+           =================================================================== -->
+      <section>
+        <section>
+          <div class="slide-header-badge cyan">BÀI HỌC VI MÔ 2.1 (MICRO-SESSION 2.1)</div>
+          <h2>Giải Phẫu Cấu Trúc <code class="inline-code">ndarray</code> (The Anatomy of an ndarray)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>Cấu Trúc C Nội Tại (Internal C Structure)</h3>
+              <p>Một đối tượng <code class="inline-code">ndarray</code> trong NumPy gồm 2 thành phần hoàn toàn tách biệt:</p>
+              <ul>
+                <li><strong>Vùng đệm dữ liệu (Data Buffer):</strong> Một khối byte 1D lưu trữ liên tục trên bộ nhớ RAM vật lý.</li>
+                <li><strong>Siêu dữ liệu Tiêu đề Mảng (Array Header Metadata):</strong>
+                  <ul>
+                    <li><code class="inline-code">dtype</code>: Kích thước và kiểu dữ liệu phần tử (ví dụ <code class="inline-code">float64</code> = 8 bytes)</li>
+                    <li><code class="inline-code">shape</code>: Tuple kích thước các chiều $(d_0, d_1, \dots)$</li>
+                    <li><code class="inline-code">strides</code>: Bước nhảy byte $(s_0, s_1, \dots)$ cần bước qua để tiến 1 đơn vị theo từng trục</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+            <div class="gci-card">
+              <h3>Ánh Xạ Địa Chỉ Byte Affine (Affine Byte Address Mapping)</h3>
+              <p>Để truy xuất phần tử tại chỉ số $(i, j)$ trong mảng 2D, NumPy tính toán:</p>
+              <div class="katex-display">
+                $$\text{Addr}(i, j) = \text{Base} + i \times \text{stride}_0 + j \times \text{stride}_1$$
+              </div>
+              <p style="font-size:0.85em; color:var(--text-muted);">
+                Với mảng liên tục theo hàng (C-contiguous) kích thước $(R, C)$ có độ lớn phần tử $B$ bytes:
+                $$\text{stride}_1 = B, \quad \text{stride}_0 = C \times B$$
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- WIDGET 2 SLIDE -->
+        <section>
+          <div class="slide-header-badge emerald">MÔ PHỎNG TRỰC QUAN 2 · STRIDES &amp; CẮT LÁT (INTERACTIVE VISUALIZER 2)</div>
+          <h3 style="margin-bottom:8px;">Cắt Lát Động, Ánh Xạ Địa Chỉ Affine &amp; Cấp Phát Khung Nhìn View vs Bản Sao Copy (Live Slicing, Affine Addressing &amp; View vs Copy Allocation)</h3>
+          <div id="widget-strides-container">
+            <!-- Fallback DOM will be rendered by widgets-bundle.js -->
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+              <span id="strides-slice-code">arr[0:3:1, 1:5:2]</span>
+            </div>
+            <div id="strides-grid-container"></div>
+            <div id="strides-ram-strip"></div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge cyan">MICRO-SESSION 2.1 · DEEP-DIVE (ĐÀO SÂU)</div>
+          <h2>Phân Định Bộ Nhớ: Khung Nhìn (View) vs Bản Sao (Copy)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h3 style="margin:0;">Cắt Lát Cơ Bản (Khung Nhìn View)</h3>
+                <span class="badge-tag view">[VIEW: 0 BYTES]</span>
+              </div>
+              <p style="font-size:0.9em; margin-top:10px;">
+                Sinh ra từ cú pháp cắt lát <code class="inline-code">arr[start:stop:step]</code>. Trả về tiêu đề mới trỏ chung vào <strong>cùng vùng đệm dữ liệu gốc</strong> mà không cấp phát thêm RAM.
+              </p>
+              <pre><code class="language-python">sub = arr[::2, 1:] # 0 byte cấp phát!
+assert sub.base is arr # Dùng chung buffer
+sub[0, 0] = 999        # Biến đổi luôn mảng gốc arr!</code></pre>
+            </div>
+            <div class="gci-card">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h3 style="margin:0;">Chỉ Mục Nâng Cao (Bản Sao Copy)</h3>
+                <span class="badge-tag copy">[COPY: HEAP ALLOCATION]</span>
+              </div>
+              <p style="font-size:0.9em; margin-top:10px;">
+                Sinh ra từ mặt nạ boolean <code class="inline-code">arr[arr > 0]</code> hoặc danh sách chỉ số nguyên <code class="inline-code">arr[[0, 2]]</code>. Luôn cấp phát một <strong>mảng heap hoàn toàn mới</strong>.
+              </p>
+              <pre><code class="language-python">copy_arr = arr[[0, 2]] # Cấp phát buffer mới
+assert copy_arr.base is None
+copy_arr[0, 0] = 999   # Mảng gốc hoàn toàn nguyên vẹn!</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge">TÓM TẮT SỔ TAY VIẾT TAY (HANDWRITTEN NOTEBOOK SUMMARY)</div>
+          <h2>Tóm Tắt Cornell · MS2.1 Kiến Trúc ndarray (Memory Strides)</h2>
+          <div class="cornell-slide-card">
+            <div class="cornell-col cornell-cues">
+              <div class="cornell-header">Gợi nhớ / Câu hỏi (Cues)</div>
+              <ul>
+                <li>3 mục siêu dữ liệu (metadata) xác định một View trong ndarray là gì?</li>
+                <li>Việc chỉnh sửa dữ liệu trên một View ảnh hưởng như thế nào tới mảng cha ban đầu?</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-notes">
+              <div class="cornell-header">Lý Thuyết Cốt Lõi (Core Notes)</div>
+              <ul>
+                <li><strong>Con Trỏ Bộ Nhớ:</strong> Cắt lát chỉ cập nhật <code class="inline-code">shape</code>, <code class="inline-code">strides</code> và địa chỉ gốc (base offset); 0 byte dữ liệu bị sao chép.</li>
+                <li><strong>Địa Chỉ Affine:</strong> $\text{Addr} = \text{Base} + \sum i_k \cdot \text{stride}_k$.</li>
+                <li><strong>Nguy Cơ Biến Dị Dữ Liệu:</strong> Chỉnh sửa trên View trực tiếp làm thay đổi giá trị trong vùng đệm dữ liệu của mảng gốc.</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-actions">
+              <div class="cornell-header">Hành Động &amp; Bất Biến Code (Actions)</div>
+              <ul>
+                <li>Kiểm tra chia sẻ bộ nhớ: <code class="inline-code">b.base is a</code> hoặc <code class="inline-code">np.shares_memory(a, b)</code>.</li>
+                <li>Chủ động tạo bản sao an toàn độc lập: <code class="inline-code">sub = arr[::2].copy()</code>.</li>
+              </ul>
+            </div>
+            <div class="cornell-summary-bar">
+              <strong>Tóm tắt cốt lõi [Chep vao vo]:</strong> Một <code class="inline-code">ndarray</code> tách rời khối byte liên tục vật lý khỏi metadata (shape, strides). Cắt lát cơ bản tạo ra Khung nhìn View (0 byte sao chép); chỉ mục nâng cao (fancy indexing) tạo ra Bản sao Copy cấp phát trên Heap.
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================================================================
+           CHAPTER 2: UFUNCS & MULTI-AXIS REDUCTIONS
+           =================================================================== -->
+      <section>
+        <section>
+          <div class="slide-header-badge indigo">BÀI HỌC VI MÔ 2.2 (MICRO-SESSION 2.2)</div>
+          <h2>Hàm Vạn Năng (Universal Functions) &amp; Thu Gọn Đa Trục (Multi-Axis Reductions)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>Hàm Vạn Năng (Universal Functions - ufuncs)</h3>
+              <p>ufunc là các hàm C biên dịch sẵn thực thi cực nhanh trên từng phần tử mảng ndarray:</p>
+              <ul>
+                <li>Toán học: <code class="inline-code">np.add</code>, <code class="inline-code">np.multiply</code>, <code class="inline-code">np.exp</code>, <code class="inline-code">np.log</code></li>
+                <li>Lượng giác: <code class="inline-code">np.sin</code>, <code class="inline-code">np.cos</code>, <code class="inline-code">np.arctan2</code></li>
+                <li>Thao tác bit: <code class="inline-code">np.bitwise_and</code>, <code class="inline-code">np.left_shift</code></li>
+              </ul>
+              <p style="font-size:0.85em; color:var(--text-muted);">
+                ufuncs thực thi ở tốc độ phần cứng biên dịch mà không chịu chi phí thông dịch từng phần tử của Python.
+              </p>
+            </div>
+            <div class="gci-card">
+              <h3>Hình Học Thu Gọn Trục (Axis Reduction Geometry)</h3>
+              <p>Thiết lập <code class="inline-code">axis=k</code> sẽ triệt tiêu chiều không gian đó:</p>
+              <ul>
+                <li><strong><code class="inline-code">axis=0</code>:</strong> Thu gọn dọc theo các hàng (tính toán tổng hợp theo từng cột). Kích thước kết quả: $(C,)$.</li>
+                <li><strong><code class="inline-code">axis=1</code>:</strong> Thu gọn ngang theo các cột (tính toán tổng hợp theo từng hàng). Kích thước kết quả: $(R,)$.</li>
+              </ul>
+              <div class="katex-display">
+                $$\text{mean}_{\text{cột}} = \frac{1}{R} \sum_{i=0}^{R-1} X_{i, j}, \quad \text{axis}=0$$
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge indigo">MICRO-SESSION 2.2 · DEEP-DIVE (ĐÀO SÂU)</div>
+          <h2>Vai Trò Sống Còn Của Tham Số <code class="inline-code">keepdims=True</code></h2>
+          <div class="gci-card">
+            <p>Khi tính toán các chỉ số thống kê phục vụ chuẩn hóa đặc trưng, việc thu gọn một trục sẽ làm sụp đổ số chiều tensor:</p>
+            <pre><code class="language-python">X = np.random.randn(100, 5) # 100 mẫu, 5 đặc trưng
+
+# Gặp lỗi: vector trung bình có shape (5,), làm mất chiều tensor 2D
+mu = X.mean(axis=0) 
+
+# Chuẩn hóa bền vững với keepdims: kích thước được bảo toàn (1, 5)
+mu_2d = X.mean(axis=0, keepdims=True)
+sigma_2d = X.std(axis=0, keepdims=True)
+
+# Broadcasting được đảm bảo căn chỉnh chuẩn xác trên tất cả các trục tensor
+X_standardized = (X - mu_2d) / (sigma_2d + 1e-8)
+assert X_standardized.shape == (100, 5)</code></pre>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge">TÓM TẮT SỔ TAY VIẾT TAY (HANDWRITTEN NOTEBOOK SUMMARY)</div>
+          <h2>Tóm Tắt Cornell · MS2.2 Hàm ufuncs &amp; Các Trục (ufuncs &amp; Axes)</h2>
+          <div class="cornell-slide-card">
+            <div class="cornell-col cornell-cues">
+              <div class="cornell-header">Gợi nhớ / Câu hỏi (Cues)</div>
+              <ul>
+                <li>Trong ma trận 2D, trục nào đại diện cho hàng và trục nào đại diện cho cột?</li>
+                <li>Tại sao tham số <code class="inline-code">keepdims=True</code> lại mang tính quyết định khi chuẩn hóa dữ liệu?</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-notes">
+              <div class="cornell-header">Lý Thuyết Cốt Lõi (Core Notes)</div>
+              <ul>
+                <li><strong>Quy Tắc Triệt Tiêu Trục:</strong> Đặt <code class="inline-code">axis=k</code> sẽ loại bỏ chiều thứ $k$ ra khỏi tuple kích thước (shape).</li>
+                <li><strong>Cơ Chế ufunc:</strong> Tự động lặp ở mức mã máy C trên các con trỏ ô nhớ liên tục.</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-actions">
+              <div class="cornell-header">Hành Động &amp; Bất Biến Code (Actions)</div>
+              <ul>
+                <li>Chuẩn hóa đặc trưng: <code class="inline-code">(X - X.mean(axis=0, keepdims=True)) / X.std(axis=0, keepdims=True)</code>.</li>
+                <li>Tuyệt đối không dùng vòng lặp for của Python để tính tổng theo hàng/cột.</li>
+              </ul>
+            </div>
+            <div class="cornell-summary-bar">
+              <strong>Tóm tắt cốt lõi [Chep vao vo]:</strong> ufuncs chạy ở tốc độ mã C biên dịch. Thu gọn trục triệt tiêu chiều được chỉ định (<code class="inline-code">axis=0</code> &rarr; tổng hợp theo cột). Luôn dùng <code class="inline-code">keepdims=True</code> để bảo toàn số chiều phục vụ broadcasting.
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================================================================
+           CHAPTER 3: BROADCASTING MECHANICS (WIDGET 1)
+           =================================================================== -->
+      <section>
+        <section>
+          <div class="slide-header-badge cyan">BÀI HỌC VI MÔ 2.3 (MICRO-SESSION 2.3)</div>
+          <h2>Quy Tắc Lan Truyền Kích Thước (Broadcasting) &amp; Ô Ảo Bước Nhảy 0</h2>
+          <div class="gci-card">
+            <p>Lan truyền (Broadcasting) cho phép các hàm ufuncs nhị phân (như phép cộng hoặc phép nhân) vận hành mượt mà trên các mảng có kích thước khác nhau mà không phải cấp phát bộ nhớ nhân bản dữ liệu.</p>
+          </div>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>3 Quy Tắc Chính Thức (The 3 Formal Rules)</h3>
+              <ol style="font-size:0.88em; line-height:1.6;">
+                <li><strong>Căn chỉnh Chiều từ Phải sang Trái (Trailing Dimension Alignment):</strong> So sánh kích thước từng chiều từ phải sang trái.</li>
+                <li><strong>Điều kiện Tương thích (Compatibility Condition):</strong> Hai chiều tương thích khi và chỉ khi:
+                  <ul>
+                    <li>Chúng bằng nhau ($d_A = d_B$), HOẶC</li>
+                    <li>Một trong hai chiều bằng 1 ($d_A = 1$ hoặc $d_B = 1$).</li>
+                  </ul>
+                </li>
+                <li><strong>Mở rộng Ảo với Bước Nhảy Bằng 0 (Zero-Stride Virtual Expansion):</strong> Chiều có kích thước bằng 1 được kéo giãn ảo để khớp với chiều lớn hơn.</li>
+              </ol>
+            </div>
+            <div class="gci-card">
+              <h3>Bí Quyết Bước Nhảy Bộ Nhớ Vật Lý (The Physical Stride Trick)</h3>
+              <p style="font-size:0.9em;">Làm sao NumPy kéo giãn mảng $(3, 1)$ thành $(3, 4)$ mà không nhân bản dữ liệu trên RAM?</p>
+              <div class="katex-display">
+                $$\text{stride}_{\text{mở rộng}} = 0 \text{ Bytes}$$
+              </div>
+              <p style="font-size:0.85em; color:var(--text-muted);">
+                Bằng cách gán bước nhảy bằng 0, mỗi khi CPU dịch chuyển dọc theo trục đó, con trỏ địa chỉ cộng thêm 0:
+                $$\text{Addr}(i, j) = \text{Base} + i \times 8 + j \times 0 = \text{Base} + i \times 8$$
+                Cùng một byte dữ liệu được CPU đọc lặp lại trực tiếp từ bộ nhớ đệm L1 Cache siêu tốc!
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- WIDGET 1 SLIDE -->
+        <section>
+          <div class="slide-header-badge emerald">MÔ PHỎNG TRỰC QUAN 1 · BỘ MÔ PHỎNG BROADCASTING (INTERACTIVE VISUALIZER 1)</div>
+          <h3 style="margin-bottom:8px;">Căn Chỉnh Số Chiều Tương Tác &amp; Động Cơ Ô Ảo Bước Nhảy Bằng 0 (Interactive Dimension Alignment &amp; Virtual Zero-Stride Cell Engine)</h3>
+          <div id="widget-broadcasting-container">
+            <!-- Fallback DOM will be rendered by widgets-bundle.js -->
+            <div id="broadcast-alignment-card"></div>
+            <div class="broadcast-grids-wrapper">
+              <div id="broadcast-grid-a"></div>
+              <div id="broadcast-grid-b"></div>
+              <div id="broadcast-grid-c"></div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge">TÓM TẮT SỔ TAY VIẾT TAY (HANDWRITTEN NOTEBOOK SUMMARY)</div>
+          <h2>Tóm Tắt Cornell · MS2.3 Quy Tắc Broadcasting</h2>
+          <div class="cornell-slide-card">
+            <div class="cornell-col cornell-cues">
+              <div class="cornell-header">Gợi nhớ / Câu hỏi (Cues)</div>
+              <ul>
+                <li>Các chiều mảng được căn chỉnh theo hướng nào khi thực hiện broadcasting?</li>
+                <li>NumPy làm thế nào để mở rộng kích thước mảng mà không tốn dung lượng RAM?</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-notes">
+              <div class="cornell-header">Lý Thuyết Cốt Lõi (Core Notes)</div>
+              <ul>
+                <li><strong>Căn Chỉnh Từ Phải Sang Trái:</strong> Bổ sung các chiều 1 ở phía trước cho mảng có số chiều ít hơn.</li>
+                <li><strong>Cơ Chế Zero-Stride:</strong> Mở rộng ảo thiết lập <code class="inline-code">stride=0</code>; CPU đọc dữ liệu đệm trong cache mà không cấp phát thêm RAM.</li>
+                <li><strong>Kích Hoạt Lỗi:</strong> Các chiều không bằng nhau mà không có chiều nào bằng 1 sẽ làm phát sinh lỗi <code class="inline-code">ValueError</code>.</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-actions">
+              <div class="cornell-header">Hành Động &amp; Bất Biến Code (Actions)</div>
+              <ul>
+                <li>Tích ngoài ma trận thông qua broadcasting: <code class="inline-code">a[:, None] * b[None, :]</code>.</li>
+                <li>Cộng vector cột vào ma trận: <code class="inline-code">M + v[:, np.newaxis]</code>.</li>
+              </ul>
+            </div>
+            <div class="cornell-summary-bar">
+              <strong>Tóm tắt cốt lõi [Chep vao vo]:</strong> Broadcasting căn chỉnh kích thước từ phải sang trái. Trục có kích thước 1 được mở rộng ảo qua <code class="inline-code">stride=0</code>, đạt hiệu năng tối ưu mà không sao chép bộ nhớ.
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================================================================
+           CHAPTER 4: VECTORIZATION BENCHMARK (WIDGET 3)
+           =================================================================== -->
+      <section>
+        <section>
+          <div class="slide-header-badge amber">BÀI HỌC VI MÔ 2.4 (MICRO-SESSION 2.4)</div>
+          <h2>Cơ Chế Hoạt Động: Vector Hóa vs Vòng Lặp for Python (Vectorization vs Python Loop Execution Mechanics)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>Sự Chậm Chạp Của Vòng Lặp for Python</h3>
+              <p>Trong một vòng lặp <code class="inline-code">for</code> Python tuần tự tiêu chuẩn:</p>
+              <ul>
+                <li><strong>Đóng gói Đối tượng (Object Boxing):</strong> Mỗi số nguyên là một đối tượng heap 28 byte đầy đủ (<code class="inline-code">PyObject</code>).</li>
+                <li><strong>Kiểm tra Kiểu Động (Type Inspection):</strong> Việc kiểm tra kiểu dữ liệu và điều phối hàm diễn ra ở mọi vòng lặp.</li>
+                <li><strong>Hụt Bộ Đệm (Cache Misses):</strong> Các con trỏ rải rác trên heap phá hủy tính cục bộ không gian của bộ đệm L1/L2.</li>
+                <li><strong>Khóa GIL (GIL Overhead):</strong> Khóa thông dịch viên toàn cục GIL cản trở khả năng mở rộng đa lõi song song.</li>
+              </ul>
+            </div>
+            <div class="gci-card">
+              <h3>Sức Mạnh Tốc Độ Của NumPy SIMD</h3>
+              <p>Trong các phép toán vector hóa:</p>
+              <ul>
+                <li><strong>Bộ Nhớ C Liên Tục:</strong> Các byte dữ liệu thô được nén liên tiếp trên RAM.</li>
+                <li><strong>SIMD Phần Cứng:</strong> Các thanh ghi vector CPU (AVX-256 / AVX-512) tính toán đồng thời 8 đến 16 số thực 64-bit trong 1 chu kỳ xung nhịp.</li>
+                <li><strong>Tải Trước Phần Cứng (Hardware Prefetching):</strong> Bộ tải trước của CPU dự đoán chính xác 100% mẫu hình truy xuất ô nhớ.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- WIDGET 3 SLIDE -->
+        <section>
+          <div class="slide-header-badge emerald">MÔ PHỎNG TRỰC QUAN 3 · ĐO ĐIỂM CHUẨN SIMD (INTERACTIVE VISUALIZER 3)</div>
+          <h3 style="margin-bottom:8px;">Môi Trường Đo Điểm Chuẩn Trực Tiếp: Vector Hóa vs Vòng Lặp Python (Live Benchmark Playground: Vectorization vs Python Loop)</h3>
+          <div id="widget-vectorization-container">
+            <!-- Fallback DOM will be rendered by widgets-bundle.js -->
+            <div class="vec-visual-race">
+              <div class="race-track"><div id="race-bar-numpy"></div></div>
+              <div class="race-track"><div id="race-bar-python"></div></div>
+            </div>
+            <svg id="vec-speedup-svg"></svg>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge">TÓM TẮT SỔ TAY VIẾT TAY (HANDWRITTEN NOTEBOOK SUMMARY)</div>
+          <h2>Tóm Tắt Cornell · MS2.4 Vector Hóa SIMD</h2>
+          <div class="cornell-slide-card">
+            <div class="cornell-col cornell-cues">
+              <div class="cornell-header">Gợi nhớ / Câu hỏi (Cues)</div>
+              <ul>
+                <li>Tính năng phần cứng nào mang lại gia tốc tăng tốc vector hóa từ 100x đến 300x?</li>
+                <li>Tại sao NumPy lại chậm hơn Python đối với các mảng siêu nhỏ ($N &lt; 50$)?</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-notes">
+              <div class="cornell-header">Lý Thuyết Cốt Lõi (Core Notes)</div>
+              <ul>
+                <li><strong>SIMD &amp; Bộ Đệm:</strong> Xử lý Lệnh đơn - Đa dữ liệu kết hợp tải trước dòng bộ đệm L1 Cache.</li>
+                <li><strong>Chi Phí Gọi C (C Overhead):</strong> Việc chuyển đổi từ Python sang hàm C mất $\approx 2.5\,\mu\text{s}$. Với mảng siêu nhỏ, độ trễ này chiếm ưu thế.</li>
+                <li><strong>Trần Tiệm Cận:</strong> Kiến trúc AVX-512 hiện đại giới hạn mức tăng tốc ở khoảng $\approx 297.6\times$.</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-actions">
+              <div class="cornell-header">Hành Động &amp; Bất Biến Code (Actions)</div>
+              <ul>
+                <li>Thay thế <code class="inline-code">for i in range(len(a)): c[i] = a[i] + b[i]</code> bằng <code class="inline-code">c = a + b</code>.</li>
+                <li>Sử dụng <code class="inline-code">np.dot(A, B)</code> hoặc toán tử <code class="inline-code">A @ B</code> cho phép nhân ma trận BLAS.</li>
+              </ul>
+            </div>
+            <div class="cornell-summary-bar">
+              <strong>Tóm tắt cốt lõi [Chep vao vo]:</strong> Vector hóa triệt tiêu chi phí thông dịch bằng cách truyền dòng bộ nhớ liên tục vào các thanh ghi vector SIMD. Mức tăng tốc đạt từ $10\times$ tới $300\times$ khi $N \ge 10^5$.
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================================================================
+           CHAPTER 5: PRACTICAL SYNTHESIS & HOMEWORK HW1
+           =================================================================== -->
+      <section>
+        <section>
+          <div class="slide-header-badge cyan">BÀI HỌC VI MÔ 2.5 (MICRO-SESSION 2.5)</div>
+          <h2>Phân Tích Dữ Liệu Thực Tế &amp; Hướng Dẫn Bài Tập HW1 (Practical Data Analysis &amp; Homework HW1 Guide)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>Yêu Cầu Cốt Lõi Bài Tập HW1</h3>
+              <ul>
+                <li>Tạo và xử lý các mảng đa chiều từ dữ liệu bảng CSV.</li>
+                <li>Thực hiện chuẩn hóa đặc trưng theo từng hàng và theo từng cột.</li>
+                <li>Cài đặt phép nhân ma trận và tính ma trận tương quan không dùng vòng lặp.</li>
+                <li>Nộp notebook đã chạy đủ kết quả lên Omnicampus trước hạn chót.</li>
+              </ul>
+            </div>
+            <div class="gci-card">
+              <h3>Tính Hiệp Phương Sai &amp; Ma Trận Tương Quan Siêu Tốc Qua BLAS</h3>
+              <pre><code class="language-python"># Trừ trung bình để đưa ma trận dữ liệu X về tâm: (N, D)
+X_c = X - np.mean(X, axis=0, keepdims=True)
+
+# Ma trận hiệp phương sai: (D, D) thông qua tích ma trận
+Cov = (X_c.T @ X_c) / (N - 1)
+
+# Độ lệch chuẩn của từng đặc trưng
+std = np.sqrt(np.diag(Cov))
+
+# Ma trận tương quan chuẩn hóa thông qua broadcasting
+Corr = Cov / (std[:, None] * std[None, :])</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge">TÓM TẮT SỔ TAY VIẾT TAY (HANDWRITTEN NOTEBOOK SUMMARY)</div>
+          <h2>Tóm Tắt Cornell · MS2.5 Tổng Hợp Bài Tập HW1 (HW1 Synthesis)</h2>
+          <div class="cornell-slide-card">
+            <div class="cornell-col cornell-cues">
+              <div class="cornell-header">Gợi nhớ / Câu hỏi (Cues)</div>
+              <ul>
+                <li>Làm cách nào xây dựng ma trận tương quan hoàn toàn bằng phép nhân ma trận không vòng lặp?</li>
+                <li>Những lỗi nộp bài phổ biến nhất trên Omnicampus là gì?</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-notes">
+              <div class="cornell-header">Lý Thuyết Cốt Lõi (Core Notes)</div>
+              <ul>
+                <li><strong>Tăng Tốc BLAS:</strong> Phép toán <code class="inline-code">X_c.T @ X_c</code> kích hoạt thư viện OpenBLAS/MKL GEMM tối ưu hóa đa luồng.</li>
+                <li><strong>Trích Xuất Đường Chéo:</strong> Lấy phương sai đường chéo qua <code class="inline-code">np.diag(Cov)</code>.</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-actions">
+              <div class="cornell-header">Hành Động &amp; Bất Biến Code (Actions)</div>
+              <ul>
+                <li>Luôn chạy "Restart Kernel and Run All Cells" trước khi xuất file nộp bài.</li>
+                <li>Đảm bảo thời gian chạy nằm gọn trong giới hạn timeout của Omnicampus.</li>
+              </ul>
+            </div>
+            <div class="cornell-summary-bar">
+              <strong>Tóm tắt cốt lõi [Chep vao vo]:</strong> Bài tập HW1 kiểm tra khả năng làm chủ chỉ mục mảng đa chiều, ufuncs và đại số tuyến tính không vòng lặp. Luôn khởi động lại kernel và chạy toàn bộ cell trước khi nộp.
+            </div>
+          </div>
+        </section>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js Core Engine & Plugins -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/markdown/markdown.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/zoom/zoom.js"></script>
+
+  <!-- Interactive Slide Widgets & Initializer -->
+  <script src="../js/widgets-bundle.js"></script>
+  <script src="../js/reveal-init.js"></script>
+  <script>
+    window.initGciReveal();
+  </script>
+</body>
+</html>

@@ -1,42 +1,63 @@
-# 📚 02_Learning_Knowledge — Kho Tài Liệu & Dự Án Học Tập
+---
+document_type: repository_overview
+version: 2.0.0
+last_updated: 2026-09-23
+master_index: file:///D:/02_Learning_Knowledge/INDEX.md
+focus_board: file:///D:/02_Learning_Knowledge/ACTIVE_LEARNING.md
+rfc2119_compliance: strict
+emoji_policy: none
+---
 
-Thư mục lưu trữ toàn bộ mã nguồn, bài tập thực hành, tài liệu nghiên cứu và ghi chú lập trình qua các ngôn ngữ, công nghệ và chủ đề khác nhau.
+# 02_Learning_Knowledge - Repository Hub & Learning Directory
 
-Toàn bộ kho lưu trữ này được đồng bộ từ Git repository:
-🔗 **GitHub**: [DuongNAD/Learning_Code](https://github.com/DuongNAD/Learning_Code.git)
+Master Knowledge Map: [INDEX.md](file:///D:/02_Learning_Knowledge/INDEX.md)
+Active Focus Board: [ACTIVE_LEARNING.md](file:///D:/02_Learning_Knowledge/ACTIVE_LEARNING.md)
+Task Tracker: [TASKS.md](file:///D:/02_Learning_Knowledge/TASKS.md)
+Remote Git Origin: [https://github.com/DuongNAD/Learning_Code.git](https://github.com/DuongNAD/Learning_Code.git)
 
-> 🎯 **Active Learning Hub:** Tham khảo [`ACTIVE_LEARNING.md`](./ACTIVE_LEARNING.md) để theo dõi 4–5 dự án trọng tâm và vòng quay quyết định hàng ngày (Roulette).
+This repository serves as the centralized workspace for programming source code, practical coursework, competitive research, and algorithmic problem sets across diverse technologies and domains.
 
 ---
 
-## 🗂️ Mục Lục Chủ Đề
+## 1. Architectural Routing
 
-| Chủ đề / Ngôn ngữ | Thư mục | Nội dung chính |
+AI agents and human engineers MUST refer to [INDEX.md](file:///D:/02_Learning_Knowledge/INDEX.md) for the complete sitemap, condition-action navigation matrix, and dormant topic catalogs.
+
+- Top 5 Active Projects: Detailed in [ACTIVE_LEARNING.md](file:///D:/02_Learning_Knowledge/ACTIVE_LEARNING.md) and [INDEX.md](file:///D:/02_Learning_Knowledge/INDEX.md). Backlog subjects MUST be promoted to active status ONLY IF an active slot is cleared. Active subjects MUST NEVER exceed the WIP limit of 5.
+- Decision Roulette Runner: [roll_study.bat](file:///D:/02_Learning_Knowledge/roll_study.bat) (Windows) and [roll_study.command](file:///D:/02_Learning_Knowledge/roll_study.command) (macOS) wrapping [pick_today.py](file:///D:/02_Learning_Knowledge/pick_today.py).
+
+---
+
+## 2. Subject Directory Catalog
+
+| Subject / Technology | Directory Link | Focus Domain |
 | :--- | :--- | :--- |
-| **API** | `API/` | Thiết kế REST API, tích hợp dịch vụ bên ngoài |
-| **Assembly** | `Asembly/` | Kiến trúc x86 / ASM, thanh ghi, chỉ lệnh cơ bản |
-| **C Language** | `C/` | Cấu trúc dữ liệu, thuật toán, con trỏ và quản lý bộ nhớ C |
-| **C# (.NET)** | `C#/` | Lập trình hướng đối tượng, ứng dụng .NET |
-| **Computer Vision** | `CV/` | Xử lý ảnh số, OpenCV, thị giác máy tính |
-| **Web Frontend** | `Html-Css-Js/` | HTML5, CSS3, JavaScript ES6+ căn bản |
-| **Java** | `Java/` | Java Core, OOP, đa luồng và bài tập thuật toán |
-| **Machine Learning** | `Machine_Learning/`, `Learning_Machine/` | Scikit-learn, hồi quy, phân loại, mạng nơ-ron |
-| **PHP** | `PHP/` | Backend web script, MVC, tương tác MySQL |
-| **Python** | `PythonProject/` | Thuật toán, automation scripts, xử lý dữ liệu Python |
-| **Python Master** | `Python_Master/` | Bộ luyện thi Python Master 2026 (Bảng B), đề thi & chứng chỉ COS Pro |
-| **Quantum Computing** | `Quantum_Computing/` | Katas thuật toán lượng tử, Qiskit / Qsim, QFT, QEC |
-| **React** | `React/` | Frontend ReactJS, component lifecycle, hooks, Single Page Apps |
-| **Databases / SQL** | `SQL/` | Thiết kế cơ sở dữ liệu quan hệ, truy vấn tối ưu SQL |
-| **Embedded / Robotics** | `TestArm/` | Điều khiển cánh tay robot DENSO, ArUco markers, Arduino |
-| **UI / UX Design** | `UI-UX/` | Thiết kế giao diện người dùng, layout, design tokens |
+| API | [API](file:///D:/02_Learning_Knowledge/API) | REST API design, external HTTP service integrations |
+| Assembly | [Asembly](file:///D:/02_Learning_Knowledge/Asembly) | x86 architecture, registers, basic assembly instructions |
+| C Language | [C](file:///D:/02_Learning_Knowledge/C) | Data structures, algorithms, pointers, dynamic memory |
+| C# (.NET) | [C#](file:///D:/02_Learning_Knowledge/C#) | Object-oriented programming, .NET applications |
+| Computer Vision | [CV](file:///D:/02_Learning_Knowledge/CV) | Digital image processing, OpenCV, computer vision |
+| Web Frontend | [Html-Css-Js](file:///D:/02_Learning_Knowledge/Html-Css-Js) | HTML5, CSS3, modern ECMAScript / JavaScript |
+| Java | [Java](file:///D:/02_Learning_Knowledge/Java) | Java Core, OOP, concurrency, algorithm sets |
+| Machine Learning | [Machine_Learning](file:///D:/02_Learning_Knowledge/Machine_Learning) | Scikit-learn, regression, classification, deep learning |
+| PHP | [PHP](file:///D:/02_Learning_Knowledge/PHP) | Backend scripting, MVC architecture, MySQL persistence |
+| Python | [PythonProject](file:///D:/02_Learning_Knowledge/PythonProject) | Algorithms, automation scripts, data wrangling |
+| Python Master | [Python_Master](file:///D:/02_Learning_Knowledge/Python_Master) | Table B certification prep, mock tests, COS Pro |
+| Quantum Computing | [Quantum_Computing](file:///D:/02_Learning_Knowledge/Quantum_Computing) | Quantum algorithms, katas, Qiskit/Qsim, QFT, QEC |
+| React | [React](file:///D:/02_Learning_Knowledge/React) | ReactJS, component lifecycle, hooks, Single Page Apps |
+| Databases / SQL | [SQL](file:///D:/02_Learning_Knowledge/SQL) | Relational schema design, query optimization |
+| Embedded / Robotics | [TestArm](file:///D:/02_Learning_Knowledge/TestArm) | DENSO robotic arm control, ArUco markers, Arduino |
+| UI / UX Design | [UI-UX](file:///D:/02_Learning_Knowledge/UI-UX) | Interface design, wireframes, layout, design tokens |
+| GCI World 2026 | [GCI_World_2026_September](file:///D:/02_Learning_Knowledge/GCI_World_2026_September) | Global Competition Initiative curriculum & assignments |
+| AMD AI Academy | [AMD_AI_Academy_AI_Agents_101](file:///D:/02_Learning_Knowledge/AMD_AI_Academy_AI_Agents_101) | AI Agents 101 architectures and tool-use code |
 
 ---
 
-## ⚙️ Lưu Ý Khi Sử Dụng Git Trên Ổ SSD exFAT
+## 3. exFAT Filesystem & Git Operational Rules
 
-Định dạng exFAT không lưu trữ quyền sở hữu tệp (POSIX file ownership). Do đó, Git trên cả Windows và macOS có thể cảnh báo `dubious ownership in repository`.
+The workspace resides on an exFAT formatted SSD (Kingston XS2000). exFAT does not store POSIX file permissions.
 
-Để làm việc mượt mà không gặp lỗi:
-1. **Trên Windows**: Chạy `Setup_Win.bat` ở thư mục gốc (hoặc chạy lệnh `git config --global --add safe.directory "D:/02_Learning_Knowledge"`).
-2. **Trên macOS**: Chạy `Setup_Mac.command` ở thư mục gốc (hoặc chạy lệnh `git config --global --add safe.directory "/Volumes/KINGSTON/02_Learning_Knowledge"`).
-3. **Môi trường ảo & Dependencies**: Tránh commit thư mục nặng như `node_modules` hoặc `.venv` trực tiếp lên ổ SSD exFAT để giữ hiệu năng tối đa và tránh nghẽn I/O khi quét tệp nhỏ.
+To prevent Git `dubious ownership` warnings:
+1. Windows: Execute `git config --global --add safe.directory "D:/02_Learning_Knowledge"`.
+2. macOS: Execute `git config --global --add safe.directory "/Volumes/KINGSTON/02_Learning_Knowledge"`.
+3. Dependency Isolation: Dependencies (`node_modules`, `.venv`, `vendor`) and build caches MUST NOT be committed to git to protect exFAT I/O throughput. Secrets, credentials, and API keys MUST NEVER be committed under any circumstances.

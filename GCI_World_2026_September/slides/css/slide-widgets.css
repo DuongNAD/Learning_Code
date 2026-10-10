@@ -1,0 +1,507 @@
+/**
+ * ThreeUI Explorable Slide Widgets & Cornell Note Layout Stylesheet
+ * Strict Compliance: emoji_policy: none (Zero Unicode Emojis)
+ */
+
+/* =========================================================================
+   1. Interactive Visualizer Common Styles
+   ========================================================================= */
+
+.widget-root {
+  background: rgba(13, 19, 33, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.05), 0 12px 30px rgba(0, 0, 0, 0.45);
+  font-family: var(--font-sans);
+  color: var(--text-main);
+  box-sizing: border-box;
+}
+
+.widget-controls-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.widget-btn-group {
+  display: flex;
+  gap: 8px;
+}
+
+.widget-btn {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.widget-btn:hover {
+  background: rgba(51, 65, 85, 0.9);
+  color: #ffffff;
+  border-color: var(--accent-cyan);
+}
+
+.widget-btn.active {
+  background: rgba(6, 182, 212, 0.2);
+  border-color: var(--accent-cyan);
+  color: #67e8f9;
+  font-weight: 600;
+}
+
+.widget-telemetry-badge {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #94a3b8;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(15, 23, 42, 0.8);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.widget-telemetry-val {
+  color: var(--accent-cyan);
+  font-weight: 600;
+}
+
+/* =========================================================================
+   2. Widget 1: Broadcasting Simulator
+   ========================================================================= */
+
+#widget-broadcasting-container {
+  min-height: 480px;
+}
+
+#broadcast-alignment-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.broadcast-align-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0;
+}
+
+.broadcast-dim-cell {
+  width: 32px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.broadcast-dim-cell.match {
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  color: #34d399;
+}
+
+.broadcast-dim-cell.stretch {
+  background: rgba(6, 182, 212, 0.2);
+  border: 1px dashed rgba(6, 182, 212, 0.6);
+  color: #67e8f9;
+}
+
+.broadcast-dim-cell.error {
+  background: rgba(244, 63, 94, 0.25);
+  border: 1px solid rgba(244, 63, 94, 0.8);
+  color: #fb7185;
+}
+
+.broadcast-grids-wrapper {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  align-items: center;
+  gap: 14px;
+  margin: 16px 0;
+}
+
+.broadcast-matrix-panel {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.matrix-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.matrix-grid-table {
+  display: inline-grid;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.matrix-cell {
+  width: 44px;
+  height: 38px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.matrix-cell.real {
+  background: rgba(30, 41, 59, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.matrix-cell.virtual {
+  background: rgba(6, 182, 212, 0.08);
+  border: 1px dashed rgba(6, 182, 212, 0.5);
+  color: #67e8f9;
+}
+
+.matrix-cell.result {
+  background: rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  color: #c7d2fe;
+}
+
+.cell-stride-badge {
+  font-size: 8px;
+  color: #38bdf8;
+  letter-spacing: -0.05em;
+  margin-top: -2px;
+}
+
+.broadcast-operator {
+  font-size: 24px;
+  font-weight: 700;
+  color: #64748b;
+  font-family: var(--font-mono);
+}
+
+.broadcast-telemetry-strip {
+  display: flex;
+  justify-content: space-around;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-top: 14px;
+}
+
+/* =========================================================================
+   3. Widget 2: ndarray Indexing & Slicing Visualizer
+   ========================================================================= */
+
+#widget-strides-container {
+  min-height: 480px;
+}
+
+.strides-controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.slider-group label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #94a3b8;
+  display: flex;
+  justify-content: space-between;
+}
+
+.slider-group input[type="range"] {
+  accent-color: var(--accent-cyan);
+  cursor: pointer;
+}
+
+#strides-slice-code {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  background: #090d16;
+  border: 1px solid var(--accent-cyan);
+  color: #38bdf8;
+  padding: 6px 14px;
+  border-radius: 6px;
+  display: inline-block;
+  font-weight: 600;
+}
+
+.strides-display-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 12px;
+}
+
+#strides-grid-container {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.grid-2d-table {
+  display: grid;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.grid-2d-cell {
+  height: 38px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  transition: all 0.15s ease;
+}
+
+.grid-2d-cell.active-slice {
+  background: rgba(6, 182, 212, 0.25);
+  border: 1px solid var(--accent-cyan);
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+}
+
+.grid-2d-cell .cell-byte-addr {
+  font-size: 8px;
+  color: #94a3b8;
+}
+
+#strides-ram-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 12px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.ram-cell {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  border-radius: 4px;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #64748b;
+}
+
+.ram-cell.active-slice {
+  background: rgba(16, 185, 129, 0.25);
+  border: 1px solid #10b981;
+  color: #6ee7b7;
+  font-weight: 700;
+}
+
+/* =========================================================================
+   4. Widget 3: Vectorization vs Python Loop Benchmark Playground
+   ========================================================================= */
+
+#widget-vectorization-container {
+  min-height: 480px;
+}
+
+.vec-telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.vec-stat-box {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+.vec-stat-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.vec-stat-val {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.vec-stat-val.cyan { color: var(--accent-cyan); }
+.vec-stat-val.rose { color: var(--accent-rose); }
+.vec-stat-val.emerald { color: var(--accent-emerald); }
+
+.vec-visual-race {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+}
+
+.race-row {
+  margin: 8px 0;
+}
+
+.race-label {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  margin-bottom: 4px;
+  color: #cbd5e1;
+}
+
+.race-track {
+  height: 12px;
+  background: rgba(30, 41, 59, 0.8);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.race-bar {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+#race-bar-numpy {
+  background: linear-gradient(90deg, #10b981, #06b6d4);
+  width: 100%;
+}
+
+#race-bar-python {
+  background: linear-gradient(90deg, #f43f5e, #f59e0b);
+  width: 5%;
+}
+
+#vec-speedup-svg {
+  width: 100%;
+  height: 180px;
+  background: rgba(10, 15, 29, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  display: block;
+}
+
+/* =========================================================================
+   5. Cornell Handwritten Summary Cards (3 Columns + Summary)
+   ========================================================================= */
+
+.cornell-slide-card {
+  background: rgba(17, 24, 39, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: grid;
+  grid-template-columns: 260px 1fr 300px;
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+.cornell-col {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  padding-right: 14px;
+}
+
+.cornell-col:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.cornell-header {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-cyan);
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+}
+
+.cornell-cues ul, .cornell-notes ul, .cornell-actions ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+.cornell-cues li, .cornell-notes li, .cornell-actions li {
+  margin-bottom: 6px;
+  line-height: 1.45;
+}
+
+.cornell-summary-bar {
+  grid-column: 1 / -1;
+  background: rgba(6, 182, 212, 0.08);
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-top: 10px;
+  font-size: 13px;
+  color: #e2e8f0;
+}
+
+.cornell-summary-bar strong {
+  color: var(--accent-cyan);
+  font-family: var(--font-mono);
+}

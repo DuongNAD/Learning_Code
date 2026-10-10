@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark" data-view="document">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GCI World 2026 · Buoi 1 Interactive Explorable Document & Slide Deck</title>
+
+  <!-- ThreeUI Engine Stylesheet -->
+  <link rel="stylesheet" href="../engine/threeui-engine.css">
+
+  <!-- KaTeX Typography & Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+
+  <style>
+    /* Specific Model & Chart Styling */
+    .buoi1-chart-svg {
+      width: 100%;
+      height: 220px;
+      overflow: visible;
+    }
+    .flywheel-chart-svg {
+      width: 100%;
+      height: 300px;
+      overflow: visible;
+    }
+    .chip-latency {
+      font-family: var(--threeui-font-mono);
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--threeui-accent-emerald);
+      color: var(--threeui-accent-emerald);
+    }
+    .btn-pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0;
+    }
+    .btn-pill {
+      font-family: var(--threeui-font-mono);
+      font-size: 0.75rem;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      background: var(--threeui-surface-elevated);
+      border: 1px solid var(--threeui-border-medium);
+      color: var(--threeui-text-muted);
+      cursor: pointer;
+      transition: all var(--threeui-dur-fast) ease-out;
+    }
+    .btn-pill:hover {
+      color: var(--threeui-text);
+      border-color: var(--threeui-border-highlight);
+      background: var(--threeui-surface-subtle);
+    }
+    .btn-pill.active {
+      color: #0f172a;
+      background: var(--threeui-accent-cyan);
+      border-color: #38bdf8;
+      font-weight: 700;
+      box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+    }
+    .callout-compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .callout-card {
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-size: 0.90rem;
+      line-height: 1.5;
+    }
+    .callout-card.vulnerable {
+      background: rgba(244, 63, 94, 0.08);
+      border: 1px solid rgba(244, 63, 94, 0.35);
+    }
+    .callout-card.defensible {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+    .callout-title {
+      font-family: var(--threeui-font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .callout-card.vulnerable .callout-title {
+      color: var(--threeui-accent-rose);
+    }
+    .callout-card.defensible .callout-title {
+      color: var(--threeui-accent-emerald);
+    }
+    .metric-progress-track {
+      width: 100%;
+      height: 8px;
+      background: var(--threeui-surface-elevated);
+      border-radius: 9999px;
+      overflow: hidden;
+      margin-top: 6px;
+      border: 1px solid var(--threeui-border-subtle);
+    }
+    .metric-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--threeui-accent-cyan), var(--threeui-accent-emerald));
+      border-radius: 9999px;
+      transition: width var(--threeui-dur-fast) ease-out;
+    }
+    .step-banner {
+      background: rgba(99, 102, 241, 0.10);
+      border: 1px solid var(--threeui-border-accent);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin: 10px 0;
+    }
+    .step-badge {
+      font-family: var(--threeui-font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--threeui-accent);
+    }
+    .step-desc {
+      font-size: 0.88rem;
+      color: var(--threeui-text);
+      margin-top: 4px;
+    }
+    .synthesis-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin: 16px 0;
+    }
+    .synthesis-table th, .synthesis-table td {
+      border: 1px solid var(--threeui-border-subtle);
+      padding: 10px 12px;
+      text-align: left;
+    }
+    .synthesis-table th {
+      background: var(--threeui-surface-elevated);
+      color: var(--threeui-text-muted);
+      font-family: var(--threeui-font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body data-view="document" data-theme="dark" class="threeui-view-doc">
+
+  <!-- Ambient WebGL / Canvas 2D Shader Background -->
+  <canvas id="threeui-bg-canvas"></canvas>
+
+  <!-- Top Navigation HUD -->
+  <header class="threeui-header">
+    <div class="threeui-brand">
+      <span class="brand-badge">[Buoi 1 · Explorable]</span>
+      <span class="brand-title">GCI World 2026 · Data Mindset &amp; AI Moat</span>
+    </div>
+
+    <div class="threeui-nav-controls">
+      <!-- Performance & Latency Telemetry -->
+      <span class="chip-latency" id="engine-latency-chip">[Latency: &lt;1.0ms | 60 FPS]</span>
+
+      <!-- View Mode Switcher -->
+      <div class="btn-group">
+        <button id="view-doc-btn" class="threeui-btn active" data-view-btn="document" onclick="ThreeUIEngine.setViewMode('document')">[Doc View]</button>
+        <button id="view-deck-btn" class="threeui-btn" data-view-btn="deck" onclick="ThreeUIEngine.setViewMode('deck')">[Slide Deck]</button>
+      </div>
+
+      <!-- Theme Switcher -->
+      <button id="theme-toggle-btn" class="threeui-btn" data-theme-btn onclick="ThreeUIEngine.toggleTheme()">[Theme: Dark]</button>
+    </div>
+  </header>
+
+  <!-- Main Viewport / Explorable Document Stream -->
+  <div class="slide-deck-viewport">
+    <main class="slide-deck-stage threeui-doc-container" id="threeui-container">
+
+      <!-- ===================================================================
+           Slide 0 / Chapter 0: Orientation, Data Explosion & AI Moat Triad
+           =================================================================== -->
+      <section class="slide-frame doc-section active" id="slide-0" data-slide-index="0" data-slide-title="Buoi 1 Orientation: Data Mindset &amp; AI Moat">
+        <div class="doc-section-header">
+          <div class="doc-section-badge">[Module 00 · Orientation &amp; Mindset]</div>
+          <h1 class="doc-section-title">Buoi 1: Tu duy Khoa hoc Du lieu &amp; Hao luy AI Moat</h1>
+          <p class="doc-section-subtitle">Chuong trinh 14 tuan Matsuo-Iwasawa Lab, Tam giac nang luc va Chu trinh CRISP-DM</p>
+        </div>
+
+        <div class="threeui-split-pane">
+          <!-- Left: Pedagogical Exposition & Mindset -->
+          <div class="content-pane">
+            <p>
+              Chao mung den voi khoa hoc <strong>Global Consumer Intelligence (GCI) World 2026</strong>. 
+              Trong thoi dai bung no thong tin, tong luong du lieu toan cau du kien dat 
+              <strong>527 Zettabytes</strong> vao nam 2029 (tang 8.23 lan chi trong vong mot thap ky). 
+              Tuy nhien, luu tru du lieu khong phai la muc tieu; gia tri thuc su nam o 
+              <strong>nang luc trich xuat tri thuc va ra quyet dinh hanh dong</strong>.
+            </p>
+
+            <p>
+              Khoa hoc xac lap <strong>Tam giac nang luc Data Science</strong> gom 3 cot tru:
+              <strong>Domain Knowledge (Kien thuc nghiep vu, chiem 60-70% thanh cong)</strong>, 
+              <strong>Data Science (Tu duy phan tich, mo hinh hoa toan hoc)</strong> va 
+              <strong>Data Engineering (Ky thuat lap trinh, toi uu hoa bo nho)</strong>.
+            </p>
+
+            <!-- Cornell 3-Column [Chep vao vo] Note Block -->
+            <div class="threeui-cornell-box">
+              <div class="threeui-cornell-header">
+                <span class="threeui-cornell-tag">[Chep vao vo - Cornell 3 Cot]</span>
+                <span class="threeui-cornell-time">Thoi gian viet: 15 phut</span>
+              </div>
+              <div class="threeui-cornell-grid">
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 1: Tu khoa / Cues</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>CRISP-DM 6 Buoc</li>
+                      <li>Domain Knowledge (60-70%)</li>
+                      <li>Zettabyte Explosion (527 ZB)</li>
+                      <li>Actionable Insights</li>
+                      <li>Human-AI Co-Evolution</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 2: Co che / So do</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>(1) Business -&gt; (2) Data Understanding</li>
+                      <li>(3) Data Prep -&gt; (4) Modeling</li>
+                      <li>(5) Evaluation -&gt; (6) Deployment</li>
+                      <li>Vong lap phan hoi tu Evaluation ve Business neu R2 chua dat KPI</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 3: Invariant / Ket luan</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>Du lieu chi co y nghia khi dan toi hanh dong can thiep!</li>
+                      <li>AI thay the viec kiem dinh gia thuyet song song; con nguoi thiet lap bai toan.</li>
+                      <li>Diem danh khat khe: 12/14 buoi.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="cornell-summary-box">
+                <div class="cornell-summary-title">[Ket luan cot loi 2 phut]</div>
+                <div>Data Science khong phai la go code mo hinh phuc tap; do la qua trinh chuyen hoa bai toan nghiep vu mo ho thanh chi so toan hoc do luong duoc va thuc thi hanh dong mang lai gia tri kinh te.</div>
+              </div>
+            </div>
+
+            <!-- Stepper Items (Revealed in Deck Mode) -->
+            <div class="step-hidden" data-step="1">
+              <p><strong>[Buoc 1 - Tu duy]:</strong> Chuyen hoa mong muon nghiep vu thanh KGI/KPI toan hoc ro rang.</p>
+            </div>
+            <div class="step-hidden" data-step="2">
+              <p><strong>[Buoc 2 - Ky thuat]:</strong> Nam vung cong cu Numby, Pandas, Scikit-learn tu ban chat bo nho.</p>
+            </div>
+            <div class="step-hidden" data-step="3">
+              <p><strong>[Buoc 3 - Hao luy]:</strong> Xay dung banh da du lieu khong the sao chep boi mo hinh nen cong cong.</p>
+            </div>
+          </div>
+
+          <!-- Right: Interactive Navigation & Telemetry Card -->
+          <div class="interactive-pane">
+            <div class="threeui-glass-card threeui-slider-card">
+              <div class="doc-section-badge">[Muc luc mo hinh tuong tac]</div>
+              <h2 style="font-size: 1.15rem; margin-bottom: 12px; color: var(--threeui-text);">Cac mo hinh Explorable trong Buoi 1</h2>
+              <p style="font-size: 0.88rem; color: var(--threeui-text-muted); margin-bottom: 16px;">
+                Chon nhanh de cuon den hoac xem truc tiep tung mo hinh mo phong toan hoc:
+              </p>
+
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="threeui-btn" onclick="ThreeUIEngine.goToSlide(1, 0)" style="text-align: left; justify-content: flex-start; padding: 12px 16px;">
+                  <span style="color: var(--threeui-accent-cyan); font-weight: 700; margin-right: 8px;">[01]</span>
+                  <span><strong>Food Truck Dark Data:</strong> Nghich ly Censored Demand &amp; Newsvendor</span>
+                </button>
+                <button class="threeui-btn" onclick="ThreeUIEngine.goToSlide(2, 0)" style="text-align: left; justify-content: flex-start; padding: 12px 16px;">
+                  <span style="color: var(--threeui-accent-emerald); font-weight: 700; margin-right: 8px;">[02]</span>
+                  <span><strong>Compound Data Flywheel:</strong> Vong xoay du lieu &amp; AI Moat</span>
+                </button>
+                <button class="threeui-btn" onclick="ThreeUIEngine.goToSlide(3, 0)" style="text-align: left; justify-content: flex-start; padding: 12px 16px;">
+                  <span style="color: var(--threeui-accent-amber); font-weight: 700; margin-right: 8px;">[03]</span>
+                  <span><strong>7-Eleven Tanpin Kanri:</strong> Can bang Ton that Co hoi vs Huy bo</span>
+                </button>
+                <button class="threeui-btn" onclick="ThreeUIEngine.goToSlide(4, 0)" style="text-align: left; justify-content: flex-start; padding: 12px 16px;">
+                  <span style="color: var(--threeui-accent-rose); font-weight: 700; margin-right: 8px;">[04]</span>
+                  <span><strong>Tong ket &amp; Cornell Master:</strong> Invariant &amp; Chép vào vở</span>
+                </button>
+              </div>
+
+              <div style="margin-top: 20px; padding: 12px; border-radius: 8px; background: rgba(99, 102, 241, 0.08); border: 1px dashed var(--threeui-border-accent);">
+                <div style="font-family: var(--threeui-font-mono); font-size: 0.75rem; color: var(--threeui-accent); font-weight: 700;">[Huong dan tuong tac]</div>
+                <div style="font-size: 0.82rem; color: var(--threeui-text-muted); margin-top: 4px;">
+                  Nhan phim <strong>V</strong> hoac <strong>M</strong> de chuyen doi giua Che do Doc (Document) va Trinh chieu (Slide Deck 16:9). Nhan <strong>T</strong> de doi Theme Sang/Toi.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           Slide 1 / Chapter 1: Food Truck Censored Demand (Dark Data)
+           =================================================================== -->
+      <section class="slide-frame doc-section" id="slide-1" data-slide-index="1" data-slide-title="Food Truck Censored Demand (Dark Data)">
+        <div class="doc-section-header">
+          <div class="doc-section-badge">[Module 01 · Selection Bias &amp; Newsvendor]</div>
+          <h2 class="doc-section-title">Nghich ly Dark Data &amp; Mo hinh Newsvendor Food Truck</h2>
+          <p class="doc-section-subtitle">Doanh so ghi nhan (Observed Sales) vs Nhu cau bi che giau (Censored Dark Data)</p>
+        </div>
+
+        <div class="threeui-split-pane">
+          <!-- Left: Pedagogical Exposition & Cornell Notes -->
+          <div class="content-pane">
+            <p>
+              Gia su ban van hanh mot xe banh mi Food Truck tu 11:00 den 15:00. 
+              Moi ngay ban chuan bi dinh muc 
+              <span class="scrubbable-num" data-bind="ft_q">40</span> chiec banh. 
+              Vao luc 13:08, he thong POS thong bao ban da ban het 100% hang hoa. 
+              Nguoi quan ly truyen thong se vui mung ket luan: <em>"Nhu cau thi truong hom nay la 40, kinh doanh hoan hao!"</em>
+            </p>
+
+            <p>
+              Day chinh la <strong>Selection Bias (Thien lech chon lua)</strong> va 
+              <strong>Censored Demand (Nhu cau bi kiem duyet / Dark Data)</strong>. 
+              Doanh so ghi nhan trong database chi la:
+              <span class="katex-reactive-formula">
+                S = \min(Q, D) = \min(<span class="dyn-slot" id="slot-ft-q">40</span>, <span class="dyn-slot" id="slot-ft-d">75</span>) = <span class="dyn-slot" id="slot-ft-s">40</span>
+              </span>
+            </p>
+
+            <p>
+              Tat ca khach hang den sau khi het hang deu phai ra ve tay khong. 
+              Nhu cau that thoat 
+              <span class="katex-reactive-formula">U = \max(0, D - Q) = <span class="dyn-slot" id="slot-ft-dark">35</span></span> 
+              khong he de lai bat ky vet tich nao trong co so du lieu ban hang! 
+              Neu huan luyen Machine Learning truc tiep tren bien so Sales, mo hinh se lien tuc du bao thieu hut va lam te liet quy mo tang truong.
+            </p>
+
+            <!-- Cornell 3-Column [Chep vao vo] Note Block -->
+            <div class="threeui-cornell-box">
+              <div class="threeui-cornell-header">
+                <span class="threeui-cornell-tag">[Chep vao vo - Cornell 3 Cot]</span>
+                <span class="threeui-cornell-time">Thoi gian viet: 15 phut</span>
+              </div>
+              <div class="threeui-cornell-grid">
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 1: Tu khoa / Cues</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>Dark Data (Du lieu toi)</li>
+                      <li>Censored Demand</li>
+                      <li>Selection Bias</li>
+                      <li>Newsvendor Model</li>
+                      <li>Critical Fractile (F*)</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 2: Cong thuc / Sơ đồ</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>S = min(Q, D)</li>
+                      <li>U = max(0, D - Q) [Dark Data]</li>
+                      <li>Ton that co hoi: Cu * U = (p - c) * U</li>
+                      <li>F(Q*) = Cu / (Cu + Co) = (p - c) / (p - s) = 64.3%</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 3: Invariant / Pitfalls</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>CAM huan luyen ML tren Doanh so (Sales)!</li>
+                      <li>Ap dung Mo hinh Tobit hoac Survival Analysis.</li>
+                      <li>Het hang 100% la bieu hien cua su that thoat loi nhuan!</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="cornell-summary-box">
+                <div class="cornell-summary-title">[Ket luan cot loi 2 phut]</div>
+                <div>Doanh so POS chi la phan noi cua tang bang chim. Diem toi uu Newsvendor 64.3% yeu cau chap nhan mot luong hang ton kho nhat dinh de bao ve loi nhuan truoc nhu cau an cao gap nhieu lan chi phi scrap.</div>
+              </div>
+            </div>
+
+            <!-- Stepper Progressions (Deck Mode) -->
+            <div class="step-hidden" data-step="1">
+              <p><strong>[Buoc 1 - POS Recording]:</strong> He thong POS chi ghi nhan duoc so luong thuc te co the thanh toan (min(Q, D)).</p>
+            </div>
+            <div class="step-hidden" data-step="2">
+              <p><strong>[Buoc 2 - Dark Data Zone]:</strong> Khach hang bo di khong de lai log, gay ra ton that co hoi nghiem trong hon ca tien lam hong banh.</p>
+            </div>
+            <div class="step-hidden" data-step="3">
+              <p><strong>[Buoc 3 - Newsvendor Invariant]:</strong> Diem phan vi toi uu F* = 64.3% can bang giua rui ro thua hang va thieu hang.</p>
+            </div>
+          </div>
+
+          <!-- Right: Interactive Simulator, Sliders, Live SVG & Telemetry -->
+          <div class="interactive-pane">
+            <div class="threeui-glass-card threeui-slider-card">
+              <!-- Slider Q -->
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>Luong chuan bi (Q):</span>
+                  <span class="slider-readout" id="readout-q-val">40</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="slider-ft-q" min="10" max="150" step="5" value="40" data-slider="ft_q">
+              </div>
+
+              <!-- Slider D0 -->
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>Nhu cau co so (D0):</span>
+                  <span class="slider-readout" id="readout-d0-val">75</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="slider-ft-d0" min="30" max="120" step="5" value="75" data-slider="ft_d0">
+              </div>
+
+              <!-- Weather Presets -->
+              <div style="margin: 12px 0;">
+                <div style="font-size: 0.8rem; color: var(--threeui-text-muted); margin-bottom: 6px;">He so thoi tiet (W):</div>
+                <div class="btn-pill-group">
+                  <button class="btn-pill" id="btn-w-rain" onclick="ThreeUIEngine.set('ft_w', 0.60)">[Mua lon: 0.60x]</button>
+                  <button class="btn-pill active" id="btn-w-normal" onclick="ThreeUIEngine.set('ft_w', 1.00)">[Binh thuong: 1.00x]</button>
+                  <button class="btn-pill" id="btn-w-sun" onclick="ThreeUIEngine.set('ft_w', 1.25)">[Nang dep: 1.25x]</button>
+                </div>
+              </div>
+
+              <!-- Live SVG Gaussian Distribution Curve -->
+              <div style="margin: 12px 0;">
+                <svg class="buoi1-chart-svg" viewBox="0 0 520 200" id="svg-food-truck-distribution"></svg>
+              </div>
+
+              <!-- Telemetry Metrics Grid -->
+              <div class="telemetry-grid">
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Nhu cau thuc te (D)</span>
+                  <span class="telemetry-val accent-amber" id="readout-ft-d">75</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Doanh so ghi nhan (S)</span>
+                  <span class="telemetry-val accent-cyan" id="readout-ft-sold">40</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Dark Data bi an (U)</span>
+                  <span class="telemetry-val accent-rose" id="readout-ft-dark">35</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Loi nhuan rong</span>
+                  <span class="telemetry-val accent-emerald" id="readout-ft-profit">+180.0 $</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Ton that co hoi</span>
+                  <span class="telemetry-val accent-rose" id="readout-ft-opp-loss">157.5 $</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Trang thai het hang</span>
+                  <span class="telemetry-val" id="readout-ft-stockout" style="font-size: 0.82rem;">13:08</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           Slide 2 / Chapter 2: Compound Data Flywheel & AI Moat
+           =================================================================== -->
+      <section class="slide-frame doc-section" id="slide-2" data-slide-index="2" data-slide-title="Compound Data Flywheel &amp; AI Moat">
+        <div class="doc-section-header">
+          <div class="doc-section-badge">[Module 02 · Defensible AI Moats]</div>
+          <h2 class="doc-section-title">Banh da Du lieu Kep (Compound Data Flywheel) &amp; AI Moat</h2>
+          <p class="doc-section-subtitle">Tai sao khong co hao luy trong kho du lieu tinh: Quy trinh tac nghiep la hao luy phong thu</p>
+        </div>
+
+        <div class="threeui-split-pane">
+          <!-- Left: Pedagogical Exposition & Cornell Notes -->
+          <div class="content-pane">
+            <p>
+              Nhieu doanh nghiep truyen thong tu hao rang ho so huu hang Petabytes du lieu trong kho va do la "hao luy canh tranh" (Moat). 
+              Tuy nhien, nhu giao trinh Matsuo Lab Buoi 1 khang dinh: 
+              <strong>"There is no moat in having databases."</strong> 
+              Cac mo hinh ngon ngu lon nen tang (GPT-4, Gemini, Claude) ngay cang tro nen manh me va pho bien, de dang sao chep va thuong mai hoa cac kho du lieu tinh.
+            </p>
+
+            <p>
+              Hao luy AI thuc su chi duoc thiet lap thong qua <strong>Banh da Du lieu Kep (Compound Data Flywheel)</strong>: 
+              Nhung mo hinh truc tiep vao quy trinh cong viec hang ngay (Workflow Integration) 
+              -&gt; Ghi nhan hanh vi tuong tac va sua loi cua con nguoi (Telemetry) 
+              -&gt; Sinh ra du lieu cap doc quyen (Proprietary Data) 
+              -&gt; Tinh chinh mo hinh mien chuyen sau (SFT/DPO Fine-Tuning) 
+              -&gt; Mang lai trai nghiem vuot troi (Superior UX) khien nguoi dung khong the roi bo.
+            </p>
+
+            <!-- Callout Comparison: Traditional SaaS Silo vs Defensible Flywheel -->
+            <div class="callout-compare-grid">
+              <div class="callout-card vulnerable">
+                <div class="callout-title">[SaaS Silo Truyen thong]</div>
+                <div>Luu tru co so du lieu tinh trong SQL/NoSQL. De bi danh bai khi foundation model cong cong nang cap nang luc zero-shot. Chi phi chuyen doi thap.</div>
+              </div>
+              <div class="callout-card defensible">
+                <div class="callout-title">[Deep Workflow Flywheel]</div>
+                <div>AI hoc tu hanh dong sua loi cua chuyen gia trong luc tac nghiep. Du lieu tich luy theo cap so nhan <code>N(k) = N0*(1+gamma)^k</code>. Hao luy phong thu tang dan theo thoi gian.</div>
+              </div>
+            </div>
+
+            <!-- Cornell 3-Column [Chep vao vo] Note Block -->
+            <div class="threeui-cornell-box">
+              <div class="threeui-cornell-header">
+                <span class="threeui-cornell-tag">[Chep vao vo - Cornell 3 Cot]</span>
+                <span class="threeui-cornell-time">Thoi gian viet: 15 phut</span>
+              </div>
+              <div class="threeui-cornell-grid">
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 1: Tu khoa / Cues</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>Compound Flywheel</li>
+                      <li>AI Moat (Hao luy)</li>
+                      <li>Switching Cost</li>
+                      <li>Proprietary Data</li>
+                      <li>SFT / DPO Alignment</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 2: Co che / Vong lap</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>(01) Workflow -&gt; (02) Telemetry</li>
+                      <li>(02) Telemetry -&gt; (03) Proprietary Data</li>
+                      <li>(03) Data -&gt; (04) SFT Fine-Tuning</li>
+                      <li>(04) SFT -&gt; (05) Superior UX</li>
+                      <li>(05) UX -&gt; Khoa nguoi dung (Lock-in)</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 3: Invariant / Quy luat</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>"No moat in databases" - Kho du lieu tinh khong phai la hao luy!</li>
+                      <li>Du lieu quy la du lieu phat sinh tu human-in-the-loop.</li>
+                      <li>Moat Score hoi tu ve 100% sau 5-8 vong lap lien tuc.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="cornell-summary-box">
+                <div class="cornell-summary-title">[Ket luan cot loi 2 phut]</div>
+                <div>Xay dung san pham AI khong phai la boc vo API (wrapper); ma la tao ra mot co che tac nghiep sao cho moi giay nguoi dung su dung he thong deu dang gia co hao luy phong thu cho ban.</div>
+              </div>
+            </div>
+
+            <!-- Steppers for Deck Mode -->
+            <div class="step-hidden" data-step="1"><p><strong>[Buoc 01 - Workflow Integration]:</strong> Nhung sau vao thao tac hang ngay.</p></div>
+            <div class="step-hidden" data-step="2"><p><strong>[Buoc 02 - User Telemetry]:</strong> Ghi nhan loi sua va tuong tac thuc te.</p></div>
+            <div class="step-hidden" data-step="3"><p><strong>[Buoc 03 - Proprietary Data]:</strong> Tao du lieu cap ma doi thu khong co.</p></div>
+            <div class="step-hidden" data-step="4"><p><strong>[Buoc 04 - SFT Fine-Tuning]:</strong> Tinh chinh mo hinh mien chuyen biet.</p></div>
+            <div class="step-hidden" data-step="5"><p><strong>[Buoc 05 - Superior UX]:</strong> Trai nghiem vuot troi, tang ranh gioi khoa khach hang.</p></div>
+          </div>
+
+          <!-- Right: Interactive SVG Flywheel & Telemetry Metrics -->
+          <div class="interactive-pane">
+            <div class="threeui-glass-card threeui-slider-card">
+              <!-- Node Stepper Buttons -->
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <button class="threeui-btn" id="btn-fly-prev" onclick="var k = ThreeUIEngine.get('fly_k'); var n = ThreeUIEngine.get('fly_node'); if(n>0){ThreeUIEngine.set('fly_node', n-1);}else if(k>0){ThreeUIEngine.set('fly_k', k-1); ThreeUIEngine.set('fly_node', 4);}">[&lt;- Nut truoc]</button>
+                <button class="threeui-btn" id="btn-fly-next" onclick="var k = ThreeUIEngine.get('fly_k'); var n = ThreeUIEngine.get('fly_node'); if(n<4){ThreeUIEngine.set('fly_node', n+1);}else{ThreeUIEngine.set('fly_k', k+1); ThreeUIEngine.set('fly_node', 0);}">[Nut ke tiep -&gt;]</button>
+                <button class="threeui-btn" id="btn-fly-reset" onclick="ThreeUIEngine.set('fly_k', 0); ThreeUIEngine.set('fly_node', 0);">[Reset]</button>
+                <button class="threeui-btn" id="btn-fly-auto" onclick="toggleFlywheelAuto()">[Auto-Spin Loop]</button>
+              </div>
+
+              <!-- Node Selector Pills -->
+              <div class="btn-pill-group">
+                <button class="btn-pill active" onclick="ThreeUIEngine.set('fly_node', 0)">[01 Workflow]</button>
+                <button class="btn-pill" onclick="ThreeUIEngine.set('fly_node', 1)">[02 Telemetry]</button>
+                <button class="btn-pill" onclick="ThreeUIEngine.set('fly_node', 2)">[03 Data]</button>
+                <button class="btn-pill" onclick="ThreeUIEngine.set('fly_node', 3)">[04 SFT]</button>
+                <button class="btn-pill" onclick="ThreeUIEngine.set('fly_node', 4)">[05 UX]</button>
+              </div>
+
+              <!-- 5-Node Cyclic SVG Visualizer -->
+              <div style="margin: 8px 0;">
+                <svg class="flywheel-chart-svg" viewBox="0 0 460 300" id="svg-compound-flywheel"></svg>
+              </div>
+
+              <!-- Active Node Explanatory Banner -->
+              <div class="step-banner">
+                <div class="step-badge" id="fly-active-title">01. Workflow Integration</div>
+                <div class="step-desc" id="fly-active-desc">Nhung sau vao quy trinh tac nghiep hang ngay cua nguoi dung, khong phai widget ben ngoai.</div>
+              </div>
+
+              <!-- Telemetry Metrics Grid -->
+              <div class="telemetry-grid">
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Du lieu doc quyen N(k)</span>
+                  <span class="telemetry-val accent-cyan" id="fly-metric-data">1,000</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Do chinh xac mo hinh</span>
+                  <span class="telemetry-val accent-emerald" id="fly-metric-acc">70.0%</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Chi phi chuyen doi</span>
+                  <span class="telemetry-val accent-violet" id="fly-metric-switch">1.0 / 10</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Moat Depth Score</span>
+                  <span class="telemetry-val accent-emerald" id="fly-metric-moat">27.5%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           Slide 3 / Chapter 3: Seven-Eleven Tanpin Kanri 4-Phase Stepper
+           =================================================================== -->
+      <section class="slide-frame doc-section" id="slide-3" data-slide-index="3" data-slide-title="Seven-Eleven Tanpin Kanri Restocking">
+        <div class="doc-section-header">
+          <div class="doc-section-badge">[Module 03 · Empirical Hypothesis Cycle]</div>
+          <h2 class="doc-section-title">Quan ly Don le Tanpin Kanri (7-Eleven Empirical Loop)</h2>
+          <p class="doc-section-subtitle">Chu trinh kiem dinh gia thuyet tung mat hang va can bang Ton that Co hoi vs Ton that Huy bo</p>
+        </div>
+
+        <div class="threeui-split-pane">
+          <!-- Left: Pedagogical Exposition & Cornell Notes -->
+          <div class="content-pane">
+            <p>
+              Chuoi cua hang tien loi <strong>7-Eleven Nhat Ban</strong> thanh cong vuot bac nho triet ly quan tri 
+              <strong>Tanpin Kanri (Quan ly tung don vi mat hang - SKU)</strong> do CEO Toshifumi Suzuki sang lap. 
+              Thay vi nhap hang hang loat theo truc giac, moi nhan vien cua hang hoat dong nhu mot nha khoa hoc thuc nghiem: 
+              thu thap tin hieu moi truong, dat ra gia thuyet nhap hang cho tung gio, va kiem toan sai lech vao cuoi ngay.
+            </p>
+
+            <p>
+              Moi quyet dinh ton kho phai doi mat voi <strong>2 loai ton that kinh te doi nghich</strong>:
+            </p>
+            <ul>
+              <li><strong>Kikai Sonshitsu (Ton that co hoi):</strong> Nhap qua it hang gay het hang luc cao diem. Mat bien loi nhuan <code>Cu = p - c</code> va gay that vong cho nguoi tieu dung.</li>
+              <li><strong>Haiki Sonshitsu (Ton that huy bo / phe thai):</strong> Nhap qua nhieu do an tuoi song (com hop, sandwich) khien hang het han su dung truoc khi ban. Mat chi phi scrap <code>Co = c - s</code>.</li>
+            </ul>
+
+            <!-- Cornell 3-Column [Chep vao vo] Note Block -->
+            <div class="threeui-cornell-box">
+              <div class="threeui-cornell-header">
+                <span class="threeui-cornell-tag">[Chep vao vo - Cornell 3 Cot]</span>
+                <span class="threeui-cornell-time">Thoi gian viet: 15 phut</span>
+              </div>
+              <div class="threeui-cornell-grid">
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 1: Tu khoa / Cues</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>Tanpin Kanri (SKU-level)</li>
+                      <li>Kikai Sonshitsu (Opportunity Loss)</li>
+                      <li>Haiki Sonshitsu (Waste Loss)</li>
+                      <li>Hypothesis-Driven Restock</li>
+                      <li>Optimal Fractile (alpha*)</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 2: Co che / Cong thuc</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>(1) Tin hieu -&gt; (2) Telemetry POS</li>
+                      <li>(3) Gia thuyet SKU -&gt; (4) Kiem toan &amp; Sua</li>
+                      <li>Q(alpha) = Demand + z(alpha)*sigma</li>
+                      <li>alpha* = Cu / (Cu + Co) = 4.5 / 7.0 = 64.3%</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 3: Invariant / Hanh dong</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>Moi don hang la mot phep thu gia thuyet khoa hoc!</li>
+                      <li>Kiem toan sai lech cuoi ngay la buoc bat buoc (Bayesian update).</li>
+                      <li>Duong cong tong ton that luon co dang chu U voi diem cuc tieu tai alpha*.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="cornell-summary-box">
+                <div class="cornell-summary-title">[Ket luan cot loi 2 phut]</div>
+                <div>Khong dat hang theo thoi quen. Cua hang truong xuat sac khong phai la nguoi khong bao gio ton hang, ma la nguoi kiem soat ty le phe thai tai dung diem can bang toi thieu hoa tong ton that tai chinh (alpha* = 64.3%).</div>
+              </div>
+            </div>
+
+            <!-- Steppers for Deck Mode -->
+            <div class="step-hidden" data-step="1"><p><strong>[Buoc 1 - Tin hieu ngoai vi]:</strong> Quan sat radar thoi tiet, su kien van hoa dia phuong.</p></div>
+            <div class="step-hidden" data-step="2"><p><strong>[Buoc 2 - POS Telemetry]:</strong> Do luoc toc do tieu thu tren quay thoi gian thuc.</p></div>
+            <div class="step-hidden" data-step="3"><p><strong>[Buoc 3 - Gia thuyet SKU]:</strong> Thiet lap dinh muc nhap va trung bay tren ke.</p></div>
+            <div class="step-hidden" data-step="4"><p><strong>[Buoc 4 - Kiem toan &amp; Hieu chinh]:</strong> Doi soat doanh so cuoi ngay, sua mo hinh cho ngay mai.</p></div>
+          </div>
+
+          <!-- Right: Interactive Stepper, Stance Slider & U-Curve SVG -->
+          <div class="interactive-pane">
+            <div class="threeui-glass-card threeui-slider-card">
+              <!-- 4-Phase Stepper Navigation -->
+              <div style="font-size: 0.82rem; color: var(--threeui-text-muted); margin-bottom: 8px;">Chu trinh 4 Buoc Tanpin Kanri:</div>
+              <div class="btn-pill-group">
+                <button class="btn-pill tk-phase-pill active" onclick="ThreeUIEngine.set('tk_phase', 1)">[P1: Tin hieu]</button>
+                <button class="btn-pill tk-phase-pill" onclick="ThreeUIEngine.set('tk_phase', 2)">[P2: POS Telemetry]</button>
+                <button class="btn-pill tk-phase-pill" onclick="ThreeUIEngine.set('tk_phase', 3)">[P3: Gia thuyet SKU]</button>
+                <button class="btn-pill tk-phase-pill" onclick="ThreeUIEngine.set('tk_phase', 4)">[P4: Kiem toan &amp; Sua]</button>
+              </div>
+
+              <!-- Phase Banner -->
+              <div class="step-banner">
+                <div class="step-badge" id="tk-phase-badge">[Giai doan 1]</div>
+                <div style="font-weight: 700; font-size: 0.95rem; margin-top: 2px;" id="tk-phase-title">Signal Capture</div>
+                <div class="step-desc" id="tk-phase-desc">Thu thap tin hieu ngoai vi: Radar thoi tiet bao mua 17:00, le hoi the thao truong hoc 15:00.</div>
+              </div>
+
+              <!-- Stance Slider Alpha -->
+              <div class="threeui-slider-row" style="margin-top: 16px;">
+                <div class="threeui-slider-header">
+                  <span>Lap truong nhan vien (alpha):</span>
+                  <span class="slider-readout" id="readout-tk-alpha">0.643</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="slider-tk-alpha" min="0.0" max="1.0" step="0.01" value="0.643" oninput="ThreeUIEngine.set('tk_alpha', parseFloat(this.value)); document.getElementById('readout-tk-alpha').textContent = parseFloat(this.value).toFixed(3);">
+              </div>
+
+              <!-- Stance Presets -->
+              <div class="btn-pill-group">
+                <button class="btn-pill" onclick="ThreeUIEngine.set('tk_alpha', 0.20); document.getElementById('slider-tk-alpha').value=0.20; document.getElementById('readout-tk-alpha').textContent='0.200';">[Tiet kiem: 0.20]</button>
+                <button class="btn-pill active" onclick="ThreeUIEngine.set('tk_alpha', 0.643); document.getElementById('slider-tk-alpha').value=0.643; document.getElementById('readout-tk-alpha').textContent='0.643';">[Toi uu fractile: 0.643]</button>
+                <button class="btn-pill" onclick="ThreeUIEngine.set('tk_alpha', 0.85); document.getElementById('slider-tk-alpha').value=0.85; document.getElementById('readout-tk-alpha').textContent='0.850';">[Hung hang: 0.85]</button>
+              </div>
+
+              <!-- Live SVG U-Shape Loss Curve -->
+              <div style="margin: 12px 0;">
+                <svg class="buoi1-chart-svg" viewBox="0 0 500 220" id="svg-tanpin-kanri-curve"></svg>
+              </div>
+
+              <!-- Telemetry Metrics Grid -->
+              <div class="telemetry-grid">
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Dinh muc nhap (Q)</span>
+                  <span class="telemetry-val accent-cyan" id="tk-metric-q">53</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Mat co hoi (Cu)</span>
+                  <span class="telemetry-val accent-cyan" id="tk-metric-opp">16.1 $</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Huy bo phe thai (Co)</span>
+                  <span class="telemetry-val accent-rose" id="tk-metric-inv">16.1 $</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Tong ton that U-Curve</span>
+                  <span class="telemetry-val accent-amber" id="tk-metric-tot">32.1 $</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           Slide 4 / Chapter 4: Synthesis & Cornell Master Summary
+           =================================================================== -->
+      <section class="slide-frame doc-section" id="slide-4" data-slide-index="4" data-slide-title="Synthesis &amp; Cornell Master Summary">
+        <div class="doc-section-header">
+          <div class="doc-section-badge">[Module 04 · Synthesis &amp; Master Cornell]</div>
+          <h2 class="doc-section-title">Tong ket Buoi 1: Khung Chep vao vo Master Cornell &amp; Lo trinh 14 tuan</h2>
+          <p class="doc-section-subtitle">Xau chuoi Dark Data, AI Moat va Tanpin Kanri thanh bo cong cu thuc thi toan dien</p>
+        </div>
+
+        <div class="threeui-split-pane">
+          <!-- Left: Master Synthesis & Invariants -->
+          <div class="content-pane">
+            <p>
+              Ket thuc Buoi 1, chung ta nhan ra su khac biet song con giua 
+              <strong>Truc giac kinh doanh cam tinh</strong> va 
+              <strong>Khoa hoc Du lieu Chuan xac</strong>:
+            </p>
+
+            <table class="synthesis-table">
+              <thead>
+                <tr>
+                  <th>Chu de</th>
+                  <th>Truc giac cam tinh (Sai lam)</th>
+                  <th>Data Science Chuan xac (Matsuo Lab)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Doanh so ban het 100%</strong></td>
+                  <td>Mung ro vi "kinh doanh het sach hang hoa khong thua cai nao".</td>
+                  <td><strong>Canh bao Selection Bias:</strong> Nhu cau an (Dark Data) bi that thoat nang ne khong co vet tich.</td>
+                </tr>
+                <tr>
+                  <td><strong>Luu tru co so du lieu</strong></td>
+                  <td>Nghi rang co nhieu data trong kho la co hao luy canh tranh.</td>
+                  <td><strong>No moat in databases:</strong> Hao luy nam o Banh da du lieu (Compound Flywheel) va quy trinh tac nghiep.</td>
+                </tr>
+                <tr>
+                  <td><strong>Quyet dinh dat hang</strong></td>
+                  <td>Uoc luong so luong theo thoi quen hoac trung binh thang truoc.</td>
+                  <td><strong>Tanpin Kanri:</strong> Moi don hang la mot gia thuyet khoa hoc, can bang diem hoa von rui ro <code>alpha* = 64.3%</code>.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Cornell 3-Column [Chep vao vo] Note Block -->
+            <div class="threeui-cornell-box">
+              <div class="threeui-cornell-header">
+                <span class="threeui-cornell-tag">[Chep vao vo - Master Cornell Tong Ket]</span>
+                <span class="threeui-cornell-time">Thoi gian viet: 20 phut</span>
+              </div>
+              <div class="threeui-cornell-grid">
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 1: 3 Cot Tru Tu Duy</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>1. Dark Data &amp; Tobit</li>
+                      <li>2. Compound AI Flywheel</li>
+                      <li>3. Tanpin Kanri Restock</li>
+                      <li>4. Critical Fractile 64.3%</li>
+                      <li>5. CRISP-DM Iteration</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 2: 3 Cong Thuc Bat Bien</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>S = min(Q, D); U = max(0, D - Q)</li>
+                      <li>N(k) = N0 * (1 + gamma)^k</li>
+                      <li>alpha* = Cu / (Cu + Co) = 64.3%</li>
+                      <li>Delta Moat = f(Workflow, Telemetry)</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 3: 3 Hanh Dong Thuc Te</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>Khong train ML tren log Sales POS!</li>
+                      <li>Nhung AI truc tiep vao workflow hang ngay.</li>
+                      <li>Kiem toan sai lech vao cuoi ngay de hieu chinh niem tin.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="cornell-summary-box">
+                <div class="cornell-summary-title">[Ket luan Master 2 phut]</div>
+                <div>Data Science khong phai la mon hoc hoc thuat xa roi; do la ky luat kiem chung thuc nghiem, lien tuc dua ra gia thuyet va doi chieu voi du lieu thuc te de toi uu hoa hanh dong vi mo moi ngay.</div>
+              </div>
+            </div>
+
+            <!-- Steppers for Deck Mode -->
+            <div class="step-hidden" data-step="1"><p><strong>[Kien thuc Buoi 0]:</strong> Hoan thanh Preparatory Materials va on tap Python OOP.</p></div>
+            <div class="step-hidden" data-step="2"><p><strong>[Kien thuc Buoi 1]:</strong> Thiet lap tu duy Data-driven va AI Moat.</p></div>
+            <div class="step-hidden" data-step="3"><p><strong>[Chuan bi Buoi 2]:</strong> San sang cho NumPy High-Performance Computing, Strides va SIMD Vectorization.</p></div>
+          </div>
+
+          <!-- Right: Action Checklist & Course Progress HUD -->
+          <div class="interactive-pane">
+            <div class="threeui-glass-card threeui-slider-card">
+              <div class="doc-section-badge">[Checklist Nhiem vu Buoi 1]</div>
+              <h2 style="font-size: 1.15rem; margin-bottom: 12px; color: var(--threeui-text);">Kiem tra Tien do ca nhan</h2>
+
+              <div style="display: flex; flex-direction: column; gap: 12px; font-size: 0.88rem;">
+                <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
+                  <input type="checkbox" checked disabled style="margin-top: 4px;">
+                  <span>[x] Chep vao vo 3 khung Cornell Note (Dark Data, Flywheel, Tanpin Kanri).</span>
+                </label>
+                <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
+                  <input type="checkbox" checked disabled style="margin-top: 4px;">
+                  <span>[x] Tuong tac voi thanh truot Food Truck de quan sat Dark Data Zone tren SVG.</span>
+                </label>
+                <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
+                  <input type="checkbox" checked disabled style="margin-top: 4px;">
+                  <span>[x] Chay chu trinh Auto-Spin cua Compound Data Flywheel de kiem chung Moat Score.</span>
+                </label>
+                <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
+                  <input type="checkbox" checked disabled style="margin-top: 4px;">
+                  <span>[x] Dieu chinh lap truong alpha tren duong cong U-Curve ve dung fractile 64.3%.</span>
+                </label>
+                <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
+                  <input type="checkbox" style="margin-top: 4px;">
+                  <span>[ ] San sang buoc vao Buoi 2: NumPy Array Slicing, Strides &amp; Broadcasting.</span>
+                </label>
+              </div>
+
+              <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--threeui-border-subtle);">
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--threeui-text-muted); margin-bottom: 6px;">
+                  <span>Tien do hoan thanh Buoi 1:</span>
+                  <span style="font-weight: 700; color: var(--threeui-accent-emerald);">80%</span>
+                </div>
+                <div class="metric-progress-track">
+                  <div class="metric-progress-fill" style="width: 80%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Slide Deck Navigation HUD (Deck Mode) -->
+  <footer class="threeui-deck-hud">
+    <div class="slide-progress-bar-container">
+      <div class="slide-progress-bar" id="slide-progress"></div>
+    </div>
+
+    <div class="hud-left">
+      <button class="threeui-btn" onclick="ThreeUIEngine.prevSlide()">[&lt;- Prev]</button>
+      <button class="threeui-btn" onclick="ThreeUIEngine.nextSlide()">[Next -&gt;]</button>
+      <span class="hud-counter" id="slide-counter">1 / 5</span>
+    </div>
+
+    <div class="hud-shortcuts-hint">
+      <span class="shortcut-badge">&lt;- / -&gt; / Space</span> Navigation
+      <span class="shortcut-badge">T</span> Theme
+      <span class="shortcut-badge">V</span> View
+      <span class="shortcut-badge">O</span> Overview
+      <span class="shortcut-badge">F</span> Fullscreen
+    </div>
+
+    <div class="hud-right">
+      <button class="threeui-btn" onclick="ThreeUIEngine.view.toggleOverview()">[Overview (O)]</button>
+      <button class="threeui-btn" onclick="ThreeUIEngine.view.toggleFullscreen()">[Full (F)]</button>
+    </div>
+  </footer>
+
+  <!-- Scripts Pipeline -->
+  <script src="../engine/threeui-shader-bg.js"></script>
+  <script src="../engine/threeui-engine.js"></script>
+  <script src="models_buoi1.js"></script>
+
+  <script>
+    // Auto-spin timer handle for Flywheel
+    var flywheelTimer = null;
+
+    function toggleFlywheelAuto() {
+      var btn = document.getElementById('btn-fly-auto');
+      if (flywheelTimer) {
+        clearInterval(flywheelTimer);
+        flywheelTimer = null;
+        if (btn) btn.classList.remove('active');
+      } else {
+        if (btn) btn.classList.add('active');
+        flywheelTimer = setInterval(function () {
+          var k = ThreeUIEngine.get('fly_k') || 0;
+          var n = ThreeUIEngine.get('fly_node') || 0;
+          if (n < 4) {
+            ThreeUIEngine.set('fly_node', n + 1);
+          } else {
+            ThreeUIEngine.set('fly_k', k + 1);
+            ThreeUIEngine.set('fly_node', 0);
+          }
+        }, 2500);
+      }
+    }
+
+    // Initialize application when ThreeUIEngine and models are loaded
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.ThreeUIEngine && window.Buoi1Models) {
+        window.Buoi1Models.initBuoi1(window.ThreeUIEngine);
+
+        // Bind Sliders to live text readouts
+        var sliderQ = document.getElementById('slider-ft-q');
+        var sliderD0 = document.getElementById('slider-ft-d0');
+        if (sliderQ) {
+          sliderQ.addEventListener('input', function (e) {
+            document.getElementById('readout-q-val').textContent = e.target.value;
+          }, { passive: true });
+        }
+        if (sliderD0) {
+          sliderD0.addEventListener('input', function (e) {
+            document.getElementById('readout-d0-val').textContent = e.target.value;
+          }, { passive: true });
+        }
+
+        // Bind Weather Pills active class
+        var wRain = document.getElementById('btn-w-rain');
+        var wNormal = document.getElementById('btn-w-normal');
+        var wSun = document.getElementById('btn-w-sun');
+
+        window.ThreeUIEngine.createEffect(['ft_w'], function (w) {
+          if (wRain) wRain.classList.toggle('active', Math.abs(w - 0.60) < 0.05);
+          if (wNormal) wNormal.classList.toggle('active', Math.abs(w - 1.00) < 0.05);
+          if (wSun) wSun.classList.toggle('active', Math.abs(w - 1.25) < 0.05);
+        });
+
+        // Bind Flywheel Node Pills
+        window.ThreeUIEngine.createEffect(['fly_node'], function (nodeIdx) {
+          var pills = document.querySelectorAll('#slide-2 .btn-pill');
+          for (var i = 0; i < pills.length; i++) {
+            pills[i].classList.toggle('active', i === nodeIdx);
+          }
+        });
+
+        // Click on Flywheel SVG nodes
+        var svgFly = document.getElementById('svg-compound-flywheel');
+        if (svgFly) {
+          svgFly.addEventListener('click', function (e) {
+            var target = e.target.closest('.flywheel-node-group');
+            if (target) {
+              var idx = parseInt(target.getAttribute('data-node-idx'), 10);
+              if (!isNaN(idx)) {
+                window.ThreeUIEngine.set('fly_node', idx);
+              }
+            }
+          });
+        }
+
+        // Measure frame latency telemetry
+        window.ThreeUIEngine.createEffect(['ft_q', 'ft_d0', 'ft_w', 'fly_k', 'fly_node', 'tk_alpha'], function () {
+          var stats = window.ThreeUIEngine.getLatencyStats();
+          var chip = document.getElementById('engine-latency-chip');
+          if (chip && stats.count > 0) {
+            chip.textContent = '[Latency: ' + stats.avg + 'ms | ' + stats.fpsBound + ' FPS]';
+          }
+        });
+
+        // Initial render flush
+        window.ThreeUIEngine.flushSync();
+      }
+    });
+  </script>
+</body>
+</html>

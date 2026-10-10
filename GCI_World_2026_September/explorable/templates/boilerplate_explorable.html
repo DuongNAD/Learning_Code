@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-view="document">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ThreeUI Explorable Interactive Learning System - Extensible Course Boilerplate</title>
+  
+  <!--
+    ThreeUI Explorable Curriculum Boilerplate
+    Course: GCI World 2026 September · Matsuo-Iwasawa Laboratory (The University of Tokyo)
+    Compliance: DeepTutor RFC 2119, emoji_policy: none (Zero Unicode Emojis)
+    Architecture: Sub-16ms Reactive State DAG, Pre-compiled KaTeX Slots (CLS = 0), Dual-View Single-DOM
+    
+    =============================================================================
+    EDUCATOR QUICKSTART: CLONE & CUSTOMIZE IN UNDER 15 MINUTES
+    =============================================================================
+    Step 1: Duplicate this file to your target lesson directory:
+            e.g., cp explorable/templates/boilerplate_explorable.html explorable/buoiX/index.html
+    Step 2: Update the brand title, metadata, and lesson objectives in the <header>.
+    Step 3: In the <main> section, create your <section class="slide-frame doc-section"> chapters.
+            Each chapter contains:
+            - Left Pane (.content-pane): Pedagogical text + Cornell 3-Column Note Block
+            - Right Pane (.interactive-pane): Glassmorphism card, sliders, KaTeX slots, live SVG
+    Step 4: At the bottom <script>, initialize your reactive state DAG:
+            - window.ThreeUIEngine.createSignal('var_name', initialValue);
+            - window.ThreeUIEngine.createDerived('computed_name', ['dep1', 'dep2'], (d1, d2) => compute(d1, d2));
+            - window.ThreeUIEngine.bindKatexSlot('slot-id', 'signal_or_derived_name');
+            - window.ThreeUIEngine.createEffect(['signals...'], (values...) => updateSvgVisual(values...));
+    Step 5: Test under both file:// directly from USB drive and http:// local server.
+  -->
+
+  <!-- ThreeUI Engine Stylesheet -->
+  <link rel="stylesheet" href="../engine/threeui-engine.css">
+
+  <!-- KaTeX Mathematical Typography (Local / CDN Fallback) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+
+  <style>
+    /* Boilerplate Specific Enhancements & Layout Helpers */
+    .chip-latency {
+      font-family: var(--threeui-font-mono);
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--threeui-accent-emerald);
+      color: var(--threeui-accent-emerald);
+    }
+    .badge-status-stable {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: var(--threeui-font-mono);
+      font-size: 0.75rem;
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid var(--threeui-accent-emerald);
+      color: var(--threeui-accent-emerald);
+    }
+    .badge-status-divergent {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: var(--threeui-font-mono);
+      font-size: 0.75rem;
+      background: rgba(244, 63, 94, 0.2);
+      border: 1px solid var(--threeui-accent-rose);
+      color: var(--threeui-accent-rose);
+    }
+    .attention-heatmap-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 4px;
+      margin: 12px 0;
+      font-family: var(--threeui-font-mono);
+      font-size: 0.8rem;
+      text-align: center;
+    }
+    .attention-heatmap-table th {
+      padding: 6px;
+      color: var(--threeui-text-muted);
+      font-weight: 500;
+      border-bottom: 1px solid var(--threeui-border);
+    }
+    .attention-heatmap-table td {
+      padding: 8px 4px;
+      border-radius: 4px;
+      transition: background var(--threeui-dur-fast) ease;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .table-partition-viz {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 12px 0;
+    }
+    .partition-bar-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--threeui-font-mono);
+      font-size: 0.75rem;
+    }
+    .partition-bar-fill {
+      height: 18px;
+      border-radius: 3px;
+      transition: width var(--threeui-dur-fast) ease-out;
+    }
+    .svg-contour-canvas {
+      width: 100%;
+      height: 180px;
+      overflow: visible;
+    }
+  </style>
+</head>
+<body data-view="document" data-theme="dark" class="threeui-view-doc">
+
+  <!-- Ambient WebGL / Canvas 2D Shader Background -->
+  <canvas id="threeui-bg-canvas"></canvas>
+
+  <!-- Top Navigation HUD -->
+  <header class="threeui-header">
+    <div class="threeui-brand">
+      <span class="brand-badge">[Template]</span>
+      <span class="brand-title">GCI World 2026 · Extensible Explorable Boilerplate</span>
+    </div>
+
+    <div class="threeui-nav-controls">
+      <!-- Performance & Latency Telemetry -->
+      <span class="chip-latency" id="engine-latency-chip">[Latency: &lt;1.0ms | 60 FPS]</span>
+
+      <!-- View Mode Switcher -->
+      <div class="btn-group">
+        <button id="view-doc-btn" class="threeui-btn active" data-view-btn="document" onclick="ThreeUIEngine.setViewMode('document')">[Doc View]</button>
+        <button id="view-deck-btn" class="threeui-btn" data-view-btn="deck" onclick="ThreeUIEngine.setViewMode('deck')">[Slide Deck]</button>
+      </div>
+
+      <!-- Theme Switcher -->
+      <button id="theme-toggle-btn" class="threeui-btn" data-theme-btn onclick="ThreeUIEngine.toggleTheme()">[Theme: Dark]</button>
+    </div>
+  </header>
+
+  <!-- Explorable Main Viewport / Document Stream -->
+  <div class="slide-deck-viewport">
+    <main class="slide-deck-stage threeui-doc-container" id="threeui-container">
+
+      <!-- ===================================================================
+           Slide 1 / Chapter 1: Week 3 Boilerplate - Pandas Tabular Algebra
+           =================================================================== -->
+      <section class="slide-frame doc-section active" id="slide-pandas" data-slide-index="0" data-slide-title="Pandas Split-Apply-Combine">
+        <div class="doc-section-header">
+          <div class="doc-section-badge">[Module 01 · Pandas Tabular Algebra]</div>
+          <h1 class="doc-section-title">Bien doi Du lieu Bang &amp; Split-Apply-Combine</h1>
+          <p class="doc-section-subtitle">Truc quan hoa giam chieu du lieu tu N ve K nhom (K &le; N), hanh vi Merge va phong ngua SettingWithCopyWarning</p>
+        </div>
+
+        <div class="threeui-split-pane">
+          <!-- Left Column: Pedagogical Exposition & Cornell Handwritten Notes -->
+          <div class="content-pane">
+            <p>
+              Trong xu ly du lieu voi Pandas, co che <strong>Split-Apply-Combine</strong> (tach nhom - tong hop - gop ket qua)
+              la nen tang bien doi du lieu tho thanh ma tran dac trung. Khi tong hop <span class="dyn-slot" id="slot-pandas-n-text">100</span>
+              ban ghi tren <span class="dyn-slot" id="slot-pandas-k-text">5</span> nhom phan biet, kich thuoc dong dau ra luon thoa man
+              bat bien chieu giam:
+              <span class="katex-reactive-formula">
+                \text{Agg}(\text{DF}) \in \mathbb{R}^{K \times P}, \quad K = <span class="dyn-slot" id="slot-pandas-k-math">5</span> \le N = <span class="dyn-slot" id="slot-pandas-n-math">100</span>
+              </span>
+            </p>
+
+            <p>
+              Viec truy cap va gan gia tri cho DataFrame phai tuan thu tuyet doi quy tac: su dung <code>.loc</code> (nhan) hoac 
+              <code>.iloc</code> (chi so nguyen vi tri). Tranh gan chuoi <code>df[col][mask] = val</code> vi se tao ra ban sao trung gian 
+              va kich hoat canh bao nghiem trong <code>SettingWithCopyWarning</code>.
+            </p>
+
+            <!-- Cornell 3-Column [Chep vao vo] Note Block -->
+            <div class="threeui-cornell-box">
+              <div class="threeui-cornell-header">
+                <span class="threeui-cornell-tag">[Chep vao vo - Cornell 3 Cot]</span>
+                <span class="threeui-cornell-time">Thoi gian viet: 15 phut</span>
+              </div>
+              <div class="threeui-cornell-grid">
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 1: Tu khoa / Cues</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>Split-Apply-Combine</li>
+                      <li>groupby().agg()</li>
+                      <li>.loc vs .iloc</li>
+                      <li>SettingWithCopyWarning</li>
+                      <li>Inner vs Left Join</li>
+                      <li>Dimension Reduction</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 2: Co che / Cong thuc</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>N dong -&gt; Split theo Key -&gt; K nhom</li>
+                      <li>Apply: mean, sum, std, count</li>
+                      <li>Combine: Ma tran (K x P) voi K &le; N</li>
+                      <li>Ty le giam: (1 - K/N) * 100%</li>
+                      <li>.loc[row_mask, col] = value</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 3: Python / Pitfalls</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>df.groupby('dept')['val'].agg(['mean'])</li>
+                      <li>Tranh df['col'][row] = val</li>
+                      <li>pd.merge(A, B, on='id', how='left')</li>
+                      <li>Kiem tra null sau merge tren khoa</li>
+                      <li>Copy tu do: df = df.copy()</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="cornell-summary-box">
+                <div class="cornell-summary-title">[Ket luan cot loi 2 phut]</div>
+                <div>Split-Apply-Combine luon thu gon chieu du lieu tu N dong ban dau ve K nhom duy nhat (K &le; N). Luon dung .loc de dam bao cap nhat truc tiep vao view bo nho thay vi copy gia.</div>
+              </div>
+            </div>
+
+            <!-- Progressive Steppers for Deck View -->
+            <div class="step-hidden" data-step="1">
+              <p><strong>[Buoc 1 - Split]:</strong> Tap du lieu duoc phan vung theo nhan khoa phan loai tao thanh cac danh sach con trong bo nho.</p>
+            </div>
+            <div class="step-hidden" data-step="2">
+              <p><strong>[Buoc 2 - Combine]:</strong> Cac ket qua tong hop duoc ghep thanh DataFrame moi co so dong chinh xac bang so nhom K.</p>
+            </div>
+          </div>
+
+          <!-- Right Column: Interactive Simulators, Sliders & Visuals -->
+          <div class="interactive-pane">
+            <div class="threeui-glass-card threeui-slider-card">
+              <!-- Sliders -->
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>So dong du lieu ban dau (N):</span>
+                  <span class="slider-readout" id="readout-pandas-n">100 rows</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="slider-pandas-n" min="20" max="200" step="10" value="100">
+              </div>
+
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>So luong nhom phan loai (K):</span>
+                  <span class="slider-readout" id="readout-pandas-k">5 groups</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="slider-pandas-k" min="2" max="10" step="1" value="5">
+              </div>
+
+              <!-- Interactive Partition Visualization -->
+              <div class="threeui-glass-card" style="padding: 14px; margin: 14px 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <span style="font-size: 0.85rem; color: var(--threeui-accent);">[Phan bo Nhom &amp; Thu gon Dong]</span>
+                  <span class="badge-status-stable" id="badge-pandas-invariant">[Bat bien: K &le; N Hop le]</span>
+                </div>
+                <div class="table-partition-viz" id="pandas-partition-bars">
+                  <!-- Dynamically rendered group partition bars -->
+                </div>
+              </div>
+
+              <!-- Real-Time KaTeX Math Slot Display -->
+              <div class="katex-reactive-formula" style="width: 100%; box-sizing: border-box; justify-content: space-around;">
+                <span>Dong dau vao: <span class="dyn-slot" id="slot-pandas-n">100</span></span>
+                <span>Dong dau ra: <span class="dyn-slot" id="slot-pandas-out">5</span></span>
+                <span>Ty le giam: <span class="dyn-slot" id="slot-pandas-ratio">95.0%</span></span>
+              </div>
+
+              <!-- Telemetry Chip Grid -->
+              <div class="telemetry-grid">
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">So dong dau ra K</span>
+                  <span class="telemetry-val accent-cyan" id="metric-pandas-k">5 rows</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Do nen chieu</span>
+                  <span class="telemetry-val accent-emerald" id="metric-pandas-reduction">95.0%</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Bo nho uoc tinh</span>
+                  <span class="telemetry-val accent-violet" id="metric-pandas-mem">~4.2 KB</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           Slide 2 / Chapter 2: Week 5 & 6 Boilerplate - Machine Learning Loss
+           =================================================================== -->
+      <section class="slide-frame doc-section" id="slide-ml-loss" data-slide-index="1" data-slide-title="ML Loss Landscape & Optimization">
+        <div class="doc-section-header">
+          <div class="doc-section-badge">[Module 02 · Optimization Dynamics]</div>
+          <h2 class="doc-section-title">Khong gian Ham mat mat &amp; Gradient Descent</h2>
+          <p class="doc-section-subtitle">Khao sat be mat Loss bac hai, toc do hoc &eta;, ma tran Hessian H va ranh gioi phan ky dao dong</p>
+        </div>
+
+        <div class="threeui-split-pane">
+          <div class="content-pane">
+            <p>
+              Toi thieu hoa rui ro thuc nghiem (ERM) dieu huong trong so $\mathbf{w}$ theo huong am cua gradient:
+              $\mathbf{w}_{t+1} = \mathbf{w}_t - \eta \nabla L(\mathbf{w}_t)$. Tren be mat bac hai voi do cong Hessian lon nhat $\lambda_{\max}$,
+              thuat toan Gradient Descent co mot ranh gioi hoi tu nghiem ngat:
+            </p>
+
+            <div class="katex-reactive-formula" style="width: 100%; justify-content: center; margin: 12px 0;">
+              \eta_{\text{critical}} = \frac{2}{\lambda_{\max}(H)} = \frac{2}{<span class="dyn-slot" id="slot-ml-lambda-math">4.0</span>} = <span class="dyn-slot" id="slot-ml-crit-math">0.50</span>
+            </div>
+
+            <p>
+              Neu toc do hoc $\eta < \eta_{\text{critical}}$ (vi du $\eta = 0.40$), qua trinh toi uu hoa hoi tu don dieu ve tam cuc tieu. 
+              Nguoc lai, khi $\eta > \eta_{\text{critical}}$ (vi du $\eta = 0.60$), buoc nhay vuot qua ranh gioi parabol gay ra 
+              <strong>Hien tuong Dao dong Phan ky</strong> ($L \to \infty$).
+            </p>
+
+            <!-- Cornell 3-Column [Chep vao vo] Note Block -->
+            <div class="threeui-cornell-box">
+              <div class="threeui-cornell-header">
+                <span class="threeui-cornell-tag">[Chep vao vo - Cornell 3 Cot]</span>
+                <span class="threeui-cornell-time">Thoi gian viet: 15 phut</span>
+              </div>
+              <div class="threeui-cornell-grid">
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 1: Tu khoa / Cues</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>Loss Surface</li>
+                      <li>Gradient Vector</li>
+                      <li>Learning Rate &eta;</li>
+                      <li>Hessian Matrix H</li>
+                      <li>Critical Stability</li>
+                      <li>L1 Lasso vs L2 Ridge</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 2: Co che / Cong thuc</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>w_{t+1} = w_t - &eta; * &nabla;L(w_t)</li>
+                      <li>&eta;_crit = 2 / &lambda;_max(H) = 0.50</li>
+                      <li>&eta; &lt; 0.5: Hoi tu don dieu</li>
+                      <li>&eta; &gt; 0.5: Dao dong phan ky</li>
+                      <li>L1: goc nhan cham truc -&gt; 0</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 3: Python / Pitfalls</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>from sklearn.preprocessing import StandardScaler</li>
+                      <li>Chuan hoa X giup H tron deu!</li>
+                      <li>SGD(lr=0.01, momentum=0.9)</li>
+                      <li>Theo doi Loss moi epoch</li>
+                      <li>Dung Learning Rate Scheduler</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="cornell-summary-box">
+                <div class="cornell-summary-title">[Ket luan cot loi 2 phut]</div>
+                <div>Gradient Descent chi dam bao hoi tu khi &eta; &lt; 2 / &lambda;_max(H). Voi mat cong bat doi xung, chuan hoa dac trung (Z-Score) giup dua cac duong dong muc ve hinh tron, ngan ngua phan ky.</div>
+              </div>
+            </div>
+
+            <!-- Progressive Steppers -->
+            <div class="step-hidden" data-step="1">
+              <p><strong>[Vung on dinh]:</strong> Voi &eta; = 0.40 &lt; 0.50, gradient giam dan deu dan ve diem cuc tieu toan cuc.</p>
+            </div>
+            <div class="step-hidden" data-step="2">
+              <p><strong>[Vung bat on]:</strong> Voi &eta; = 0.60 &gt; 0.50, gia tri tham so nhay qua lai hai ben suon doc voi bien do tang dan.</p>
+            </div>
+          </div>
+
+          <div class="interactive-pane">
+            <div class="threeui-glass-card threeui-slider-card">
+              <!-- Sliders -->
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>Toc do hoc (&eta;):</span>
+                  <span class="slider-readout" id="readout-ml-eta">0.40</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="slider-ml-eta" min="0.10" max="0.90" step="0.05" value="0.40">
+              </div>
+
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>Do cong Hessian lon nhat (&lambda;_max):</span>
+                  <span class="slider-readout" id="readout-ml-lambda">4.0</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="slider-ml-lambda" min="2.0" max="6.0" step="0.5" value="4.0">
+              </div>
+
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>So buoc lap toi uu hoa (Step t):</span>
+                  <span class="slider-readout" id="readout-ml-step">5</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="slider-ml-step" min="0" max="15" step="1" value="5">
+              </div>
+
+              <!-- Live SVG Loss Contour Visualizer -->
+              <div style="margin: 14px 0;">
+                <svg class="svg-contour-canvas" viewBox="0 0 460 160" id="svg-loss-contour">
+                  <!-- Elliptical Contours -->
+                  <ellipse cx="230" cy="80" rx="200" ry="70" fill="none" stroke="var(--threeui-border-highlight)" stroke-width="1" stroke-dasharray="3,3" opacity="0.4"></ellipse>
+                  <ellipse cx="230" cy="80" rx="150" ry="52" fill="none" stroke="var(--threeui-border-highlight)" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"></ellipse>
+                  <ellipse cx="230" cy="80" rx="100" ry="35" fill="none" stroke="var(--threeui-border-highlight)" stroke-width="1.2" opacity="0.8"></ellipse>
+                  <ellipse cx="230" cy="80" rx="50" ry="18" fill="none" stroke="var(--threeui-accent-cyan)" stroke-width="1.5" opacity="0.9"></ellipse>
+                  <circle cx="230" cy="80" r="4" fill="var(--threeui-accent-emerald)"></circle>
+                  <text x="230" y="74" text-anchor="middle" font-size="10" fill="var(--threeui-accent-emerald)" font-family="var(--threeui-font-mono)">Min w*</text>
+
+                  <!-- Trajectory Path and Parameter Point -->
+                  <polyline id="contour-trajectory" points="70,30 150,110 190,65 210,88 220,76 225,82" fill="none" stroke="var(--threeui-accent-amber)" stroke-width="2"></polyline>
+                  <circle id="contour-point" cx="225" cy="82" r="6" fill="var(--threeui-accent-rose)"></circle>
+                </svg>
+              </div>
+
+              <!-- Status Banner -->
+              <div style="text-align: center; margin-bottom: 12px;">
+                <span class="badge-status-stable" id="badge-ml-status">[On dinh: Hoi tu don dieu]</span>
+              </div>
+
+              <!-- Real-Time KaTeX Math Slot Display -->
+              <div class="katex-reactive-formula" style="width: 100%; box-sizing: border-box; justify-content: space-around;">
+                <span>&eta;: <span class="dyn-slot" id="slot-ml-eta">0.40</span></span>
+                <span>&eta;_crit: <span class="dyn-slot" id="slot-ml-crit">0.50</span></span>
+                <span>Loss L(w): <span class="dyn-slot" id="slot-ml-loss">0.024</span></span>
+              </div>
+
+              <!-- Telemetry Chip Grid -->
+              <div class="telemetry-grid">
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Nguong toi han &eta;_crit</span>
+                  <span class="telemetry-val accent-amber" id="metric-ml-crit">0.50</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Khoang cach w_t - w*</span>
+                  <span class="telemetry-val accent-cyan" id="metric-ml-dist">0.048</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Trang thai hoi tu</span>
+                  <span class="telemetry-val accent-emerald" id="metric-ml-status">Stable</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           Slide 3 / Chapter 3: Advanced Deep Learning - Scaled Dot-Product Attention
+           =================================================================== -->
+      <section class="slide-frame doc-section" id="slide-attention" data-slide-index="2" data-slide-title="Scaled Dot-Product Attention">
+        <div class="doc-section-header">
+          <div class="doc-section-badge">[Module 03 · Deep Learning Attention]</div>
+          <h2 class="doc-section-title">Co che Scaled Dot-Product Attention</h2>
+          <p class="doc-section-subtitle">Giai ma ma tran Attention trong Transformer, he so chia can(d_k) va on dinh phuong sai Softmax</p>
+        </div>
+
+        <div class="threeui-split-pane">
+          <div class="content-pane">
+            <p>
+              Trong kien truc Transformer (Vaswani et al., 2017), co che chu y duoc tinh toan dua tren ba ma tran
+              truy van Query ($Q$), khoa Key ($K$) va gia tri Value ($V$).
+              Tich vo huong $Q K^T$ co phuong sai ty le thuan voi so chieu vector $d_k$:
+            </p>
+
+            <div class="katex-reactive-formula" style="width: 100%; justify-content: center; margin: 12px 0;">
+              \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V, \quad \frac{1}{\sqrt{d_k}} = \frac{1}{\sqrt{<span class="dyn-slot" id="slot-dl-dk-math">64</span>}} = <span class="dyn-slot" id="slot-dl-scale-math">0.125</span>
+            </div>
+
+            <p>
+              Neu khong chia cho $\sqrt{d_k}$, khi $d_k$ lon ($d_k \in \{16, 64, 128\}$), cac gia tri tich vo huong 
+              se qua lon ve do lon, day ham Softmax vao vung bao hoa voi dao ham cuc nho ($\approx 0$), 
+              gay ra <strong>Vanishing Gradient</strong>. Nho he so ty le $\frac{1}{\sqrt{d_k}}$, phuong sai dau vao Softmax 
+              luon duoc bao toan chinh xac bang 1.0.
+            </p>
+
+            <!-- Cornell 3-Column [Chep vao vo] Note Block -->
+            <div class="threeui-cornell-box">
+              <div class="threeui-cornell-header">
+                <span class="threeui-cornell-tag">[Chep vao vo - Cornell 3 Cot]</span>
+                <span class="threeui-cornell-time">Thoi gian viet: 15 phut</span>
+              </div>
+              <div class="threeui-cornell-grid">
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 1: Tu khoa / Cues</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>Query, Key, Value</li>
+                      <li>Scaled Dot-Product</li>
+                      <li>Scaling Factor 1/&radic;d_k</li>
+                      <li>Softmax Saturation</li>
+                      <li>Vanishing Gradient</li>
+                      <li>Attention Heatmap</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 2: Co che / Cong thuc</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>Scores = Q @ K.T</li>
+                      <li>Var(Scores) = d_k</li>
+                      <li>Var(Scores / &radic;d_k) = 1.0</li>
+                      <li>Attn = softmax(Scores / &radic;d_k)</li>
+                      <li>Output = Attn @ V</li>
+                      <li>Tong moi dong Attn = 1.00</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 3: Python / Pitfalls</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>scale = 1.0 / math.sqrt(d_k)</li>
+                      <li>attn = torch.matmul(Q, K.transpose(-2, -1)) * scale</li>
+                      <li>weights = F.softmax(attn, dim=-1)</li>
+                      <li>out = torch.matmul(weights, V)</li>
+                      <li>Tranh quen scale lam loss NaN!</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="cornell-summary-box">
+                <div class="cornell-summary-title">[Ket luan cot loi 2 phut]</div>
+                <div>Chia cho can(d_k) la bat bien bat buoc trong Transformer de giu phuong sai phan phoi bang dung 1.0, ngan chan Softmax bao hoa gay bien mat dao ham khi huan luyen mang sau.</div>
+              </div>
+            </div>
+
+            <!-- Progressive Steppers -->
+            <div class="step-hidden" data-step="1">
+              <p><strong>[Do tuong thich]:</strong> Tich vo huong Query voi Key danh gia muc do quan tam giua cac tu trong chuoi van ban.</p>
+            </div>
+            <div class="step-hidden" data-step="2">
+              <p><strong>[Tong hop gia tri]:</strong> Ma tran Softmax dong vai tro he so trong so de tong hop vector Value thanh bieu dien moi.</p>
+            </div>
+          </div>
+
+          <div class="interactive-pane">
+            <div class="threeui-glass-card threeui-slider-card">
+              <!-- Sliders & Selectors -->
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>So chieu Head dimension (d_k):</span>
+                  <span class="slider-readout" id="readout-dl-dk">64</span>
+                </div>
+                <div class="btn-group" style="width: 100%; margin-top: 6px;">
+                  <button class="threeui-btn" id="btn-dk-16" onclick="setAttentionDk(16)">d_k = 16</button>
+                  <button class="threeui-btn active" id="btn-dk-64" onclick="setAttentionDk(64)">d_k = 64</button>
+                  <button class="threeui-btn" id="btn-dk-128" onclick="setAttentionDk(128)">d_k = 128</button>
+                </div>
+              </div>
+
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>He so Nhiet do Softmax (&tau;):</span>
+                  <span class="slider-readout" id="readout-dl-temp">1.0</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="slider-dl-temp" min="0.5" max="2.0" step="0.1" value="1.0">
+              </div>
+
+              <!-- Interactive Attention Weight Matrix Heatmap -->
+              <div class="threeui-glass-card" style="padding: 12px; margin: 14px 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <span style="font-size: 0.85rem; color: var(--threeui-accent);">[Ma tran Attention Weights A (4x4)]</span>
+                  <span class="badge-status-stable" id="badge-dl-variance">[Phuong sai &asymp; 1.000]</span>
+                </div>
+
+                <table class="attention-heatmap-table" id="table-attention-heatmap">
+                  <thead>
+                    <tr>
+                      <th>Q \ K</th>
+                      <th>[The]</th>
+                      <th>[data]</th>
+                      <th>[creates]</th>
+                      <th>[value]</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody-attention">
+                    <!-- Populated dynamically via JS -->
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Real-Time KaTeX Math Slot Display -->
+              <div class="katex-reactive-formula" style="width: 100%; box-sizing: border-box; justify-content: space-around;">
+                <span>d_k: <span class="dyn-slot" id="slot-dl-dk">64</span></span>
+                <span>Scale: <span class="dyn-slot" id="slot-dl-scale">0.125</span></span>
+                <span>Phuong sai: <span class="dyn-slot" id="slot-dl-var">1.000</span></span>
+              </div>
+
+              <!-- Telemetry Chip Grid -->
+              <div class="telemetry-grid">
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">He so Scale 1/&radic;d_k</span>
+                  <span class="telemetry-val accent-cyan" id="metric-dl-scale">0.125</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Kiem chung Bat bien</span>
+                  <span class="telemetry-val accent-emerald" id="metric-dl-invariant">Scale * &radic;d_k = 1.0</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Tong hang Softmax</span>
+                  <span class="telemetry-val accent-violet" id="metric-dl-rowsum">&Sigma; = 1.000</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Slide Deck Bottom HUD (Active in Deck Mode) -->
+  <footer class="threeui-deck-hud" id="deck-hud">
+    <div class="slide-progress-bar-container">
+      <div class="slide-progress-bar" id="slide-progress"></div>
+    </div>
+
+    <div class="hud-left">
+      <button class="threeui-btn" id="prev-slide-btn" onclick="ThreeUIEngine.prevSlide()">[&larr; Prev]</button>
+      <button class="threeui-btn" id="next-slide-btn" onclick="ThreeUIEngine.nextSlide()">[Next &rarr;]</button>
+      <span class="hud-counter" id="slide-counter">1 / 3</span>
+    </div>
+
+    <div class="hud-shortcuts-hint">
+      <span><span class="shortcut-badge">Space</span> Tien</span>
+      <span><span class="shortcut-badge">F</span> Fullscreen</span>
+      <span><span class="shortcut-badge">O</span> Tong quan</span>
+      <span><span class="shortcut-badge">M</span> Che do</span>
+    </div>
+
+    <div class="hud-right">
+      <button class="threeui-btn" id="overview-btn" onclick="ThreeUIEngine.view.toggleOverview()">[Overview (O)]</button>
+      <button class="threeui-btn" id="fullscreen-btn" onclick="ThreeUIEngine.view.toggleFullscreen()">[Fullscreen (F)]</button>
+      <button class="threeui-btn" onclick="ThreeUIEngine.setViewMode('document')">[Exit Deck (Doc)]</button>
+    </div>
+  </footer>
+
+  <!-- Scripts: ThreeUI Engine Core & WebGL Shader Background -->
+  <script src="../engine/threeui-engine.js"></script>
+  <script src="../engine/threeui-shader-bg.js"></script>
+
+  <script>
+    /**
+     * Helper functions exposed for HTML onclick handlers
+     */
+    function setAttentionDk(dk) {
+      if (!window.ThreeUIEngine) return;
+      window.ThreeUIEngine.set('dl_dk', dk);
+      ['16', '64', '128'].forEach(function (v) {
+        var btn = document.getElementById('btn-dk-' + v);
+        if (btn) {
+          if (parseInt(v, 10) === dk) btn.classList.add('active');
+          else btn.classList.remove('active');
+        }
+      });
+    }
+
+    /**
+     * Boilerplate Reactive Engine Wiring
+     */
+    document.addEventListener('DOMContentLoaded', function () {
+      if (!window.ThreeUIEngine) return;
+      var engine = window.ThreeUIEngine;
+
+      // =======================================================================
+      // MODULE 01: PANDAS DATA WRANGLING REACTIVE SIGNALS
+      // =======================================================================
+      var pandasN = engine.createSignal('pandas_n', 100);
+      var pandasK = engine.createSignal('pandas_k', 5);
+
+      engine.createDerived('pandas_out', ['pandas_n', 'pandas_k'], function (n, k) {
+        // Invariant: Output rows K <= N
+        return Math.min(k, n);
+      });
+
+      engine.createDerived('pandas_ratio', ['pandas_n', 'pandas_out'], function (n, out) {
+        return ((1.0 - (out / n)) * 100).toFixed(1) + '%';
+      });
+
+      engine.createDerived('pandas_mem_kb', ['pandas_n', 'pandas_out'], function (n, out) {
+        // Approximate dataframe memory footprint
+        var kb = ((n * 64 + out * 32) / 1024).toFixed(1);
+        return '~' + kb + ' KB';
+      });
+
+      // Bind KaTeX Slots for Module 01
+      engine.bindKatexSlot('slot-pandas-n', 'pandas_n');
+      engine.bindKatexSlot('slot-pandas-n-text', 'pandas_n');
+      engine.bindKatexSlot('slot-pandas-n-math', 'pandas_n');
+      engine.bindKatexSlot('slot-pandas-k-text', 'pandas_out');
+      engine.bindKatexSlot('slot-pandas-k-math', 'pandas_out');
+      engine.bindKatexSlot('slot-pandas-out', 'pandas_out');
+      engine.bindKatexSlot('slot-pandas-ratio', 'pandas_ratio');
+
+      // Bind Sliders for Module 01
+      var sliderPandasN = document.getElementById('slider-pandas-n');
+      var sliderPandasK = document.getElementById('slider-pandas-k');
+      if (sliderPandasN) {
+        sliderPandasN.addEventListener('input', function (e) {
+          var val = parseInt(e.target.value, 10);
+          engine.set('pandas_n', val);
+          document.getElementById('readout-pandas-n').textContent = val + ' rows';
+        }, { passive: true });
+      }
+      if (sliderPandasK) {
+        sliderPandasK.addEventListener('input', function (e) {
+          var val = parseInt(e.target.value, 10);
+          engine.set('pandas_k', val);
+          document.getElementById('readout-pandas-k').textContent = val + ' groups';
+        }, { passive: true });
+      }
+
+      // Visual Update Effect for Module 01 Partition Bars
+      engine.createEffect(['pandas_n', 'pandas_out', 'pandas_ratio', 'pandas_mem_kb'], function (n, k, ratio, mem) {
+        var kCard = document.getElementById('metric-pandas-k');
+        if (kCard) kCard.textContent = k + ' rows';
+        var redCard = document.getElementById('metric-pandas-reduction');
+        if (redCard) redCard.textContent = ratio;
+        var memCard = document.getElementById('metric-pandas-mem');
+        if (memCard) memCard.textContent = mem;
+
+        // Render partition distribution visualization
+        var container = document.getElementById('pandas-partition-bars');
+        if (container) {
+          var colors = [
+            'var(--threeui-accent-cyan)',
+            'var(--threeui-accent-emerald)',
+            'var(--threeui-accent-amber)',
+            'var(--threeui-accent-rose)',
+            'var(--threeui-accent-violet)',
+            '#06b6d4', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'
+          ];
+          var html = '';
+          var avgRows = Math.floor(n / k);
+          var remainder = n % k;
+          for (var i = 0; i < k; i++) {
+            var groupRows = avgRows + (i < remainder ? 1 : 0);
+            var pct = ((groupRows / n) * 100).toFixed(0);
+            var color = colors[i % colors.length];
+            html += '<div class="partition-bar-group">' +
+              '<span style="width: 50px; color: var(--threeui-text-muted);">Grp ' + (i + 1) + ':</span>' +
+              '<div style="flex: 1; background: var(--threeui-surface-elevated); border-radius: 3px; height: 18px; overflow: hidden;">' +
+                '<div class="partition-bar-fill" style="width: ' + pct + '%; background: ' + color + ';"></div>' +
+              '</div>' +
+              '<span style="width: 60px; text-align: right; color: var(--threeui-text);">' + groupRows + ' (' + pct + '%)</span>' +
+            '</div>';
+          }
+          container.innerHTML = html;
+        }
+      });
+
+      // =======================================================================
+      // MODULE 02: MACHINE LEARNING LOSS LANDSCAPE SIGNALS
+      // =======================================================================
+      var mlEta = engine.createSignal('ml_eta', 0.40);
+      var mlLambda = engine.createSignal('ml_lambda', 4.0);
+      var mlStep = engine.createSignal('ml_step', 5);
+
+      engine.createDerived('ml_crit', ['ml_lambda'], function (lam) {
+        // Critical learning rate condition: eta_critical = 2 / lambda_max
+        return (2.0 / lam).toFixed(2);
+      });
+
+      engine.createDerived('ml_is_stable', ['ml_eta', 'ml_crit'], function (eta, crit) {
+        return parseFloat(eta) < parseFloat(crit);
+      });
+
+      engine.createDerived('ml_loss', ['ml_eta', 'ml_lambda', 'ml_step'], function (eta, lam, step) {
+        var w0 = 1.0;
+        var factor = 1.0 - (eta * lam);
+        var wt = w0 * Math.pow(factor, step);
+        var loss = 0.5 * lam * wt * wt;
+        return isNaN(loss) || loss > 999 ? 'Inf' : loss.toFixed(4);
+      });
+
+      engine.createDerived('ml_dist', ['ml_eta', 'ml_lambda', 'ml_step'], function (eta, lam, step) {
+        var w0 = 1.0;
+        var factor = 1.0 - (eta * lam);
+        var wt = Math.abs(w0 * Math.pow(factor, step));
+        return isNaN(wt) || wt > 999 ? 'Inf' : wt.toFixed(3);
+      });
+
+      // Bind KaTeX Slots for Module 02
+      engine.bindKatexSlot('slot-ml-eta', 'ml_eta');
+      engine.bindKatexSlot('slot-ml-crit', 'ml_crit');
+      engine.bindKatexSlot('slot-ml-crit-math', 'ml_crit');
+      engine.bindKatexSlot('slot-ml-lambda-math', 'ml_lambda');
+      engine.bindKatexSlot('slot-ml-loss', 'ml_loss');
+
+      // Bind Sliders for Module 02
+      var sliderMlEta = document.getElementById('slider-ml-eta');
+      var sliderMlLambda = document.getElementById('slider-ml-lambda');
+      var sliderMlStep = document.getElementById('slider-ml-step');
+
+      if (sliderMlEta) {
+        sliderMlEta.addEventListener('input', function (e) {
+          var val = parseFloat(e.target.value);
+          engine.set('ml_eta', val);
+          document.getElementById('readout-ml-eta').textContent = val.toFixed(2);
+        }, { passive: true });
+      }
+      if (sliderMlLambda) {
+        sliderMlLambda.addEventListener('input', function (e) {
+          var val = parseFloat(e.target.value);
+          engine.set('ml_lambda', val);
+          document.getElementById('readout-ml-lambda').textContent = val.toFixed(1);
+        }, { passive: true });
+      }
+      if (sliderMlStep) {
+        sliderMlStep.addEventListener('input', function (e) {
+          var val = parseInt(e.target.value, 10);
+          engine.set('ml_step', val);
+          document.getElementById('readout-ml-step').textContent = val;
+        }, { passive: true });
+      }
+
+      // Visual Update Effect for Module 02 Contour
+      engine.createEffect(['ml_eta', 'ml_lambda', 'ml_step', 'ml_crit', 'ml_is_stable', 'ml_loss', 'ml_dist'], function (eta, lam, step, crit, isStable, loss, dist) {
+        var critCard = document.getElementById('metric-ml-crit');
+        if (critCard) critCard.textContent = crit;
+        var distCard = document.getElementById('metric-ml-dist');
+        if (distCard) distCard.textContent = dist;
+        var statusCard = document.getElementById('metric-ml-status');
+        if (statusCard) {
+          statusCard.textContent = isStable ? 'Stable' : 'Divergent';
+          statusCard.className = 'telemetry-val ' + (isStable ? 'accent-emerald' : 'accent-rose');
+        }
+
+        var badge = document.getElementById('badge-ml-status');
+        if (badge) {
+          if (isStable) {
+            badge.className = 'badge-status-stable';
+            badge.textContent = '[On dinh: Hoi tu don dieu (eta = ' + eta.toFixed(2) + ' < ' + crit + ')]';
+          } else {
+            badge.className = 'badge-status-divergent';
+            badge.textContent = '[Canh bao: Dao dong phan ky (eta = ' + eta.toFixed(2) + ' > ' + crit + ')]';
+          }
+        }
+
+        // Update SVG Polyline Trajectory
+        var polyline = document.getElementById('contour-trajectory');
+        var point = document.getElementById('contour-point');
+        if (polyline && point) {
+          var pts = [];
+          var centerX = 230, centerY = 80;
+          var w0 = 150.0;
+          var factor = 1.0 - (eta * lam);
+          for (var t = 0; t <= step; t++) {
+            var curW = w0 * Math.pow(factor, t);
+            var x = centerX - curW;
+            var y = centerY + Math.sin(t * 1.5) * (curW * 0.3);
+            x = Math.max(20, Math.min(440, x));
+            y = Math.max(10, Math.min(150, y));
+            pts.push(x.toFixed(1) + ',' + y.toFixed(1));
+          }
+          polyline.setAttribute('points', pts.join(' '));
+          var lastPt = pts[pts.length - 1].split(',');
+          point.setAttribute('cx', lastPt[0]);
+          point.setAttribute('cy', lastPt[1]);
+          point.setAttribute('fill', isStable ? 'var(--threeui-accent-cyan)' : 'var(--threeui-accent-rose)');
+        }
+      });
+
+      // =======================================================================
+      // MODULE 03: DEEP LEARNING ATTENTION REACTIVE SIGNALS
+      // =======================================================================
+      var dlDk = engine.createSignal('dl_dk', 64);
+      var dlTemp = engine.createSignal('dl_temp', 1.0);
+
+      engine.createDerived('dl_scale', ['dl_dk'], function (dk) {
+        return (1.0 / Math.sqrt(dk)).toFixed(3);
+      });
+
+      engine.createDerived('dl_var', ['dl_dk', 'dl_scale'], function (dk, scale) {
+        var s = parseFloat(scale);
+        var v = s * Math.sqrt(dk);
+        return v.toFixed(3);
+      });
+
+      // Bind KaTeX Slots for Module 03
+      engine.bindKatexSlot('slot-dl-dk', 'dl_dk');
+      engine.bindKatexSlot('slot-dl-dk-math', 'dl_dk');
+      engine.bindKatexSlot('slot-dl-scale', 'dl_scale');
+      engine.bindKatexSlot('slot-dl-scale-math', 'dl_scale');
+      engine.bindKatexSlot('slot-dl-var', 'dl_var');
+
+      // Bind Slider for Module 03 Temperature
+      var sliderDlTemp = document.getElementById('slider-dl-temp');
+      if (sliderDlTemp) {
+        sliderDlTemp.addEventListener('input', function (e) {
+          var val = parseFloat(e.target.value);
+          engine.set('dl_temp', val);
+          document.getElementById('readout-dl-temp').textContent = val.toFixed(1);
+        }, { passive: true });
+      }
+
+      // Visual Update Effect for Module 03 Attention Heatmap Table
+      engine.createEffect(['dl_dk', 'dl_temp', 'dl_scale', 'dl_var'], function (dk, temp, scale, variance) {
+        var readoutDk = document.getElementById('readout-dl-dk');
+        if (readoutDk) readoutDk.textContent = dk;
+
+        var scaleCard = document.getElementById('metric-dl-scale');
+        if (scaleCard) scaleCard.textContent = scale;
+
+        // Base dot products for a 4-token sequence: ["The", "data", "creates", "value"]
+        var rawScores = [
+          [2.4, 0.8, 0.2, 0.1],
+          [0.6, 3.2, 1.1, 0.5],
+          [0.3, 1.4, 2.8, 2.1],
+          [0.1, 0.9, 1.8, 3.5]
+        ];
+        var tokenLabels = ['[The]', '[data]', '[creates]', '[value]'];
+        var scaleVal = parseFloat(scale) / temp;
+
+        var tbody = document.getElementById('tbody-attention');
+        if (tbody) {
+          var rowsHtml = '';
+          for (var r = 0; r < 4; r++) {
+            // Apply scale factor and softmax
+            var exps = [];
+            var sumExp = 0.0;
+            for (var c = 0; c < 4; c++) {
+              var s = rawScores[r][c] * scaleVal;
+              var e = Math.exp(s);
+              exps.push(e);
+              sumExp += e;
+            }
+
+            rowsHtml += '<tr><td style="color: var(--threeui-accent);">' + tokenLabels[r] + '</td>';
+            for (var c = 0; c < 4; c++) {
+              var weight = exps[c] / sumExp;
+              var alpha = Math.max(0.12, weight * 0.9);
+              var bg = 'rgba(99, 102, 241, ' + alpha.toFixed(2) + ')';
+              rowsHtml += '<td style="background: ' + bg + ';">' + weight.toFixed(3) + '</td>';
+            }
+            rowsHtml += '</tr>';
+          }
+          tbody.innerHTML = rowsHtml;
+        }
+
+        // Telemetry latency check
+        var stats = engine.getLatencyStats();
+        var chip = document.getElementById('engine-latency-chip');
+        if (chip && stats.count > 0) {
+          chip.textContent = '[Latency: ' + stats.avg + 'ms | ' + stats.fpsBound + ' FPS]';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

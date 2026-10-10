@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GCI World 2026 · Cổng Hệ Sinh Thái Slide Bài Giảng Tương Tác (Master Slide Ecosystem Hub)</title>
+  <link rel="stylesheet" href="css/reveal-gci-theme.css">
+  <link rel="stylesheet" href="css/slide-widgets.css">
+  <style>
+    body {
+      overflow-y: auto;
+      padding: 40px 24px;
+      box-sizing: border-box;
+      min-height: 100vh;
+    }
+    .portal-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .hero-header {
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .hero-title {
+      font-size: 2.8em;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 1.15em;
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    .portal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    .portal-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-card);
+      border-radius: 14px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+    .portal-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 20px 40px -10px rgba(6, 182, 212, 0.2);
+    }
+    .portal-card h3 {
+      font-size: 1.4em;
+      margin: 12px 0 8px 0;
+      color: #ffffff;
+    }
+    .portal-card p {
+      font-size: 0.9em;
+      color: var(--text-muted);
+      line-height: 1.6;
+      flex-grow: 1;
+    }
+    .portal-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--accent-indigo), var(--accent-cyan));
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      margin-top: 20px;
+      transition: opacity 0.2s ease;
+    }
+    .portal-btn:hover {
+      opacity: 0.9;
+      text-decoration: none;
+      color: #ffffff;
+    }
+    .section-title {
+      font-size: 1.6em;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-card);
+      padding-bottom: 10px;
+    }
+    .widget-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .preview-box {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .preview-box h4 {
+      margin: 0 0 10px 0;
+      color: var(--accent-cyan);
+      font-size: 1.1em;
+    }
+    .preview-box ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.88em;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="portal-container">
+    <div class="hero-header">
+      <div class="slide-header-badge cyan">TRÍ TUỆ TIÊU DÙNG TOÀN CẦU (GLOBAL CONSUMER INTELLIGENCE) · 2026</div>
+      <h1 class="hero-title">Hệ Sinh Thái Slide Bài Giảng Tương Tác (Master Interactive Slide Ecosystem)</h1>
+      <p class="hero-subtitle">
+        Phòng thí nghiệm Matsuo-Iwasawa, Trường Sau đại học Kỹ thuật, Đại học Tokyo.<br>
+        Hệ thống slide bài giảng hiện đại, module hóa xây dựng trên nền tảng Reveal.js 5.1.0 CDN, công thức toán học KaTeX và các bộ mô phỏng tương tác cao.
+      </p>
+    </div>
+
+    <!-- MAIN SESSION DECKS -->
+    <h2 class="section-title">Các Bộ Slide Bài Giảng Trình Chiếu (Lecture Presentation Decks)</h2>
+    <div class="portal-grid">
+      <!-- Buoi 0 -->
+      <div class="portal-card">
+        <div>
+          <span class="slide-header-badge cyan">BUỔI 0 (SESSION 0)</span>
+          <h3>Buổi 0: Nền Tảng Tiền Trạm (Buoi 0: Preparatory Foundations)</h3>
+          <p>
+            Quy trình vòng đời Khoa học Dữ liệu 4 bước (4-Step Data Science Life Cycle), phân loại dữ liệu (Data Taxonomy), cơ chế xử lý dữ liệu khuyết thiếu (MCAR, MAR, MNAR), toán học chuẩn hóa đặc trưng (Z-score vs Min-Max), các trường phái học máy (Supervised, Unsupervised, Self-Supervised), hàng rào ngoại lai Tukey IQR Fences, và kiến trúc lập trình hướng đối tượng Scikit-Learn OOP.
+          </p>
+        </div>
+        <a href="00_preparatory/index.html" class="portal-btn">Mở Slide Buổi 0 (Launch Buoi 0 Deck) &rarr;</a>
+      </div>
+
+      <!-- Buoi 1 -->
+      <div class="portal-card">
+        <div>
+          <span class="slide-header-badge indigo">BUỔI 1 (SESSION 1)</span>
+          <h3>Buổi 1: Định Hướng &amp; Tư Duy Dữ Liệu (Buoi 1: Orientation &amp; Mindset)</h3>
+          <p>
+            Sự bùng nổ dữ liệu Zettabyte (Zettabyte Data Growth), tiêu chuẩn quy trình CRISP-DM, nghịch lý Dữ liệu tối (Dark Data) &amp; nhu cầu bị kiểm duyệt Food Truck ($F^* = c_u / (c_u + c_o)$), vòng lặp kiểm chứng giả thuyết 7-Eleven Tanpin Kanri, hào lũy AI (AI Moats) vs bánh đà dữ liệu kép (Compound Data Flywheel), và lộ trình giáo trình 14 tuần (14-Week Curriculum).
+          </p>
+        </div>
+        <a href="01_orientation/index.html" class="portal-btn">Mở Slide Buổi 1 (Launch Buoi 1 Deck) &rarr;</a>
+      </div>
+
+      <!-- Buoi 2 -->
+      <div class="portal-card">
+        <div>
+          <span class="slide-header-badge emerald">BUỔI 2 (SESSION 2)</span>
+          <h3>Buổi 2: Tính Toán Hiệu Năng Cao Với NumPy (Buoi 2: High-Performance NumPy)</h3>
+          <p>
+            Cấu trúc mảng đa chiều <code class="inline-code">ndarray</code> và ánh xạ địa chỉ bước nhảy bộ nhớ (Memory Strides), ngữ nghĩa Khung nhìn vs Bản sao (Views vs Copies), hàm vạn năng ufuncs và phép thu gọn đa trục (Multi-Axis Reductions), quy tắc lan truyền (Broadcasting) từ phải sang trái với ô ảo zero-stride, và đo điểm chuẩn tăng tốc phần cứng SIMD.
+          </p>
+        </div>
+        <a href="02_numpy/index.html" class="portal-btn">Mở Slide Buổi 2 (Launch Buoi 2 Deck) &rarr;</a>
+      </div>
+    </div>
+
+    <!-- INTERACTIVE VISUALIZER SHOWCASE -->
+    <h2 class="section-title">Khu Vực Trực Quan Hóa Mô Phỏng Tương Tác (Embedded Visualizer Showcase)</h2>
+    <div class="widget-preview-grid">
+      <div class="preview-box">
+        <h4>Widget 1: Bộ Mô Phỏng Lan Truyền Kích Thước (Broadcasting Simulator)</h4>
+        <ul>
+          <li>Tùy chỉnh số chiều ma trận và chọn các mẫu thiết lập sẵn (Presets).</li>
+          <li>Quy tắc căn chỉnh chiều từ phải sang trái (Trailing Dimension Alignment).</li>
+          <li>Hiển thị trực quan ô ảo có bước nhảy bằng 0 (<code class="inline-code">stride=0</code>).</li>
+          <li>Đo lường dung lượng RAM thực tế tiết kiệm được.</li>
+        </ul>
+        <div style="margin-top:14px;">
+          <a href="02_numpy/index.html#/3/1" style="font-family:var(--font-mono); font-size:12px; color:var(--accent-cyan); text-decoration:none;">Mở trong Slide Buổi 2 &rarr;</a>
+        </div>
+      </div>
+
+      <div class="preview-box">
+        <h4>Widget 2: Trực Quan Hóa Cắt Lát &amp; Bước Nhảy Bộ Nhớ (Slicing &amp; Strides Visualizer)</h4>
+        <ul>
+          <li>Thanh trượt điều khiển chỉ số bắt đầu, kết thúc, bước nhảy cho hàng và cột.</li>
+          <li>Đồng bộ hóa tức thì giữa ma trận logic 2D và dải ô nhớ RAM vật lý 1D.</li>
+          <li>Công thức tính toán địa chỉ byte affine trong thời gian thực.</li>
+          <li>Huy hiệu phân biệt Khung nhìn View (0 Byte) vs Bản sao Copy (Cấp phát trên Heap).</li>
+        </ul>
+        <div style="margin-top:14px;">
+          <a href="02_numpy/index.html#/1/1" style="font-family:var(--font-mono); font-size:12px; color:var(--accent-cyan); text-decoration:none;">Mở trong Slide Buổi 2 &rarr;</a>
+        </div>
+      </div>
+
+      <div class="preview-box">
+        <h4>Widget 3: Đo Điểm Chuẩn Vector Hóa SIMD (SIMD Vectorization Benchmark)</h4>
+        <ul>
+          <li>Thanh trượt kích thước mảng $\log_{10}(N)$ từ $10^2$ đến $10^7$ phần tử.</li>
+          <li>Mô hình đo thời gian thực thi: Vòng lặp for Python vs NumPy SIMD mức C.</li>
+          <li>Biểu đồ đường cong gia tốc tăng tốc SVG động.</li>
+          <li>Đường đua hoạt họa trực quan minh họa tốc độ vượt trội từ 100x đến 300x.</li>
+        </ul>
+        <div style="margin-top:14px;">
+          <a href="02_numpy/index.html#/4/1" style="font-family:var(--font-mono); font-size:12px; color:var(--accent-cyan); text-decoration:none;">Mở trong Slide Buổi 2 &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK REFERENCE & LINKS -->
+    <h2 class="section-title">Tài Nguyên Khóa Học &amp; Tài Liệu Tham Khảo (Course Resources &amp; Documentation)</h2>
+    <div class="gci-card">
+      <div style="display:flex; flex-wrap:wrap; gap:16px;">
+        <a href="../03_Materials/00_Preparatory/" class="widget-btn">Tài liệu học tập: Buổi 0 (Course Materials: Buoi 0)</a>
+        <a href="../03_Materials/01_Orientation/" class="widget-btn">Tài liệu học tập: Buổi 1 (Course Materials: Buoi 1)</a>
+        <a href="../03_Materials/02_NumPy/" class="widget-btn">Tài liệu học tập: Buổi 2 (Course Materials: Buoi 2)</a>
+        <a href="../study_notes/" class="widget-btn">Sổ tay học tập 7 chủ đề cốt lõi (Study Notes)</a>
+        <a href="../06_Notes_Transcripts/" class="widget-btn">Bóc băng video &amp; Ghi chép (Video Transcripts &amp; Notes)</a>
+        <a href="../explorable/index.html" class="widget-btn">Cổng học liệu tương tác ThreeUI Explorable Portal</a>
+      </div>
+      <div style="margin-top:16px; font-family:var(--font-mono); font-size:12px; color:var(--text-dim);">
+        Phím tắt điều hướng (Keyboard Shortcuts): <span class="kbd-badge">Space</span> Tiến tới &middot; <span class="kbd-badge">Phím mũi tên</span> Điều hướng 2D &middot; <span class="kbd-badge">O</span> Tổng quan &middot; <span class="kbd-badge">F</span> Toàn màn hình &middot; <span class="kbd-badge">S</span> Ghi chú diễn giả &middot; <span class="kbd-badge">?</span> Bảng trợ giúp HUD
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,72 +1,94 @@
 # GCI World 2026 September — Matsuo-Iwasawa Lab (The University of Tokyo)
 
-> Thư mục tổng hợp tài liệu, video bài giảng, lối tắt và thông tin học tập khóa học **GCI World (Global Consumer Intelligence / Data Science & AI)** do **Phòng nghiên cứu Matsuo-Iwasawa, Trường Sau đại học Kỹ thuật, Đại học Tokyo** tổ chức.
+> Thu muc tong hop tai lieu, video bai giang, loi tat va thong tin hoc tap khoa hoc **GCI World (Global Consumer Intelligence / Data Science & AI)** do **Phong nghien cuu Matsuo-Iwasawa, Truong Sau dai hoc Ky thuat, Dai hoc Tokyo** to chuc.
 
 ---
 
-## 1. Thông Tin Tài Khoản Học Viên
+## 1. Thong Tin Tai Khoan Hoc Vien
 
-* **Nền tảng học tập:** Omnicampus
-* **Họ và Tên (Full Name):** `Nguyen Anh Duong`
-  * **Họ (Surname / 姓):** `NGUYEN`
-  * **Tên (Given Name / 名):** `ANH DUONG`
+* **Nen tang hoc tap:** Omnicampus
+* **Ho va Ten (Full Name):** `Nguyen Anh Duong`
+  * **Ho (Surname / 姓):** `NGUYEN`
+  * **Ten (Given Name / 名):** `ANH DUONG`
 * **Account Name (Omnicampus):** `Duongne2000`
-* **Account ID:** `192261`
-* **Email đăng ký:** `duonganhdn2000@gmail.com`
-* **Tên hiển thị trên Slack (Display name):** `Duongne2000` *(bắt buộc trùng với Account Name)*
-* **Tên đầy đủ trên Slack (Full name):** `Nguyen Anh Duong`
+* **Ten hien thi tren Slack (Display name):** `Duongne2000` *(bat buoc trung voi Account Name)*
+* **Ten day du tren Slack (Full name):** `Nguyen Anh Duong`
 
 ---
 
-## 2. Toàn Bộ Đường Link Quan Trọng (Course Tools)
+## 2. Toan Bo Duong Link Quan Trong (Course Tools & Portals)
 
-| Công cụ | Mô tả & Chức năng | Đường link trực tiếp |
+| Cong cu | Mo ta & Chuc nang | Duong link truc tiep |
 | :--- | :--- | :--- |
-| **Google Drive** | Tài liệu bài giảng, Slide, Jupyter Notebooks, Assignments | [Mở Google Drive](https://drive.google.com/drive/folders/1ek_ShgcTnnMu9Am_3HvdGMYohoX5A9tv?usp=drive_link) |
-| **Omnicampus** | Nền tảng học tập, xem bài học & nộp bài tập hàng tuần | [Mở Omnicampus Course](https://edu.omnicamp.us/courses/170/) |
-| **Hồ sơ Omnicampus** | Quản lý thông tin cá nhân học viên, xem Account Name & ID | [Trang Profile Omnicampus](https://edu.omnicamp.us/en/profile/) |
-| **Student Guide** | Sổ tay học viên trên Notion: Lịch học, nội quy, giáo trình, tiêu chuẩn chứng chỉ | [Mở Student Guide](https://app.notion.com/p/GCI-World-2026-September-Student-Guide-971cfa7cece78245925781c15c64559b) |
-| **Slack Workspace** | Cộng đồng thảo luận, hỏi đáp với Trợ giảng (TA) và nhận thông báo | [Hướng dẫn vào Slack](https://curved-rambutan-a71.notion.site/GCI-World-2026-September-Register-for-Slack-3accfa7cece78245925781c15c64559b) |
-| **Q&A Google Form** | Biểu mẫu đặt câu hỏi cho giảng viên trong buổi học | [Mở Form hỏi đáp](https://forms.gle/r26jsSt4o8yE2hJi9) |
-| **Q&A Google Sheet** | Bảng tổng hợp câu hỏi và câu trả lời từ đội ngũ giảng viên | [Mở Sheet Q&A](https://docs.google.com/spreadsheets/d/1vfa_f4DdHywkdDslN_WoQ1lZMTd1zYOj5_q3L0hSyn4/edit?usp=sharing) |
-| **Zoom Meeting** | Phòng học trực tuyến buổi giảng *(Passcode: 225086)* | [Vào phòng Zoom](https://app.zoom.us/wc/94878043584/join?ref_from=launch&_x_zm_rtaid=PW4VTZ0RRwGHHFU7rIaR2g.1789642440110.86e05ccdd15789a78bb6ae5866e32a71&_x_zm_rhtaid=388&fromPWA=1&pwd=5AAkn0AZIayzjs0zlMl90T0rbNa52P.1) |
-| **Quri AI Tutor** | Trợ lý học tập AI chuyên sâu của khóa học | [Mở Quri Omnicampus](https://quri.omnicampus.us/courses/gci-world-2026-september) |
+| **Slide Portal Hub** | Cong slide tuong tac the he moi Reveal.js 5.1.0 CDN | [Mo Master Slide Hub](slides/index.html) |
+| **Slide Buoi 0** | Slide 2D: Preparatory Knowledge & DS Foundations | [Mo Slide Buoi 0](slides/00_preparatory/index.html) |
+| **Slide Buoi 1** | Slide 2D: Data-Driven Mindset, Dark Data & Flywheel | [Mo Slide Buoi 1](slides/01_orientation/index.html) |
+| **Slide Buoi 2** | Slide 2D: NumPy High Performance & 3 Interactive Widgets | [Mo Slide Buoi 2](slides/02_numpy/index.html) |
+| **Explorable ThreeUI** | He thong hoc lieu tuong tac phan ung cao cap ThreeUI | [Mo Explorable Portal](explorable/index.html) |
+| **Omnicampus** | Nen tang hoc tap, xem bai hoc & nop bai tap hang tuan | [Mo Omnicampus Course](https://edu.omnicamp.us/courses/170/) |
+| **Ho so Omnicampus** | Quan ly thong tin ca nhan hoc vien, xem Account Name & ID | [Trang Profile Omnicampus](https://edu.omnicamp.us/en/profile/) |
+| **Student Guide** | So tay hoc vien tren Notion: Lich hoc, noi quy, tieu chuan | [Mo Student Guide](https://app.notion.com/p/GCI-World-2026-September-Student-Guide-971cfa7cece78245925781c15c64559b) |
+| **Slack Workspace** | Cong dong thao luan, hoi dap voi Tro giang (TA) | [Huong dan vao Slack](https://curved-rambutan-a71.notion.site/GCI-World-2026-September-Register-for-Slack-3accfa7cece78245925781c15c64559b) |
+| **Quri AI Tutor** | Tro ly hoc tap AI chuyen sau cua khoa hoc | [Mo Quri Omnicampus](https://quri.omnicampus.us/courses/gci-world-2026-september) |
 
-*(Toàn bộ các link trên đều có sẵn file lối tắt 1-click trong thư mục `02_Shortcuts`)*.
+*(Link Google Drive tai lieu, Zoom (kem ma vao phong) va Q&A Form/Sheet chi luu cuc bo trong thu muc `02_Shortcuts`, khong dua len repo vi repo nay cong khai. Lay link trong Student Guide hoac Slack.)*
 
 ---
 
-## 3. Cấu Trúc Thư Mục Trên Ổ Cứng SSD
+## 3. Cau Truc Thu Muc Du An
 
 ```text
 GCI_World_2026_September/
-├── 01_Recordings/               # Video quay lại các buổi học trực tuyến (OBS Studio)
-│   └── Lecture_01_Introduction_2026-09-17.mov   (369 MB - Buổi 1: Giới thiệu & Khởi động)
-├── 02_Shortcuts/                # Lối tắt truy cập nhanh (hỗ trợ cả Mac .webloc và Windows .url)
-│   ├── 01_Google_Drive_Tai_Lieu
-│   ├── 02_Omnicampus_Lop_Hoc
-│   ├── 03_Omnicampus_Ho_So
-│   ├── 04_Student_Guide_Notion
-│   ├── 05_Slack_Dang_Ky
-│   ├── 06_Lecture_QA_Form
-│   ├── 07_Lecture_QA_Sheet
-│   ├── 08_Zoom_Buoi_Hoc
-│   └── 09_Omnicampus_Quri_AI_Tutor
-├── 03_Materials/                # Slide bài giảng (PDF), Notebooks (.ipynb) tải từ Drive
-├── 04_Assignments/              # Thư mục làm bài tập hàng tuần (Homework)
-├── 05_Competition/              # Dự án tham gia cuộc thi Machine Learning / Data Challenge
-├── 06_Notes_Transcripts/        # Bản bóc băng bài giảng, ghi chú học tập và tài liệu cho AI
-└── README.md                    # File tổng hợp toàn bộ thông tin khóa học này
+|-- 01_Recordings/               # Video bai giang chinh thuc & luu tru
+|   |-- Lecture_01_Orientation_Official_Recording.mp4
+|   `-- archive/
+|-- 02_Shortcuts/                # Loi tat truy cap nhanh (.url va .webloc)
+|   |-- 12_Slide_Buoi0_Preparatory (.url & .webloc)
+|   |-- 13_Slide_Buoi1_Orientation (.url & .webloc)
+|   |-- 14_Slide_Buoi2_NumPy_Interactive (.url & .webloc)
+|   `-- 18_Slides_Master_Hub (.url & .webloc)
+|-- 03_Materials/                # Tai lieu chinh thuc tu giang vien (PDF, Notebooks)
+|   |-- 00_Preparatory/          # GCI Basic Learning Materials (PDF/DOCX), Pre-lecture slides & notebooks
+|   |-- 01_Orientation/          # lec1_slides.pdf
+|   `-- 02_NumPy/                # lec2_slides.pdf, lec2_notebook.ipynb, HW1 for Session2.ipynb
+|-- 04_Assignments/              # Thuc hanh va bai tap hang tuan (HW1..HW8)
+|-- 05_Competition/              # Du an tham gia cuoc thi Machine Learning
+|-- 06_Notes_Transcripts/        # Ban boc bang YouTube Session 1 & 2 (JSON + full.md)
+|-- explorable/                  # He thong hoc lieu tuong tac ThreeUI Explorable
+|-- roadmap/                     # ROADMAP.md = lo trinh v2 (bat dau tu day); micro roadmap & matrix cu
+|-- slides/                      # He sinh thai Slide Reveal.js 5.1.0 CDN hien dai
+|   |-- index.html               # Cong Portal dieu huong Slide Hub
+|   |-- css/                     # Glassmorphic Theme & Widget styling
+|   |-- js/                      # Reveal.js bootstrap & 3 Interactive Widgets
+|   |-- 00_preparatory/          # Slide Buoi 0: Preparatory Foundations
+|   |-- 01_orientation/          # Slide Buoi 1: Orientation & Data-Driven Mindset
+|   `-- 02_numpy/                # Slide Buoi 2: NumPy High Performance (tich hop 3 widget)
+|-- study_notes/                 # 7 bo ghi chu hoc thuat chuyen sau
+|-- syllabus/                    # So tay Cornell Note (3 cot: Cues, Notes, Actions + Summary)
+|-- tests/                       # Bo kiem thu tu dong pytest (100% pass)
+|-- PROJECT.md                   # Dac ta kien truc he thong va tinh nang
+`-- README.md                    # File tong hop thong tin khoa hoc
 ```
 
 ---
 
-## 4. Điều Kiện Nhận Chứng Chỉ (Certificate of Completion)
+## 4. He Sinh Thai Slide Tuong Tac Reveal.js 5.1.0 & 3 Visualizers
 
-Khóa học do **Matsuo-Iwasawa Lab (The University of Tokyo)** cấp chứng chỉ uy tín. Để hoàn thành khóa học:
-1. **Nộp đầy đủ bài tập tuần (Assignments):** Làm trên Jupyter Notebook / Omnicampus và nộp trước deadline.
-2. **Tham gia cuộc thi Data Competition:** Có ít nhất 1 lần submit mô hình hợp lệ.
-3. **Nộp bài tập lớn cuối khóa (Final Assignment):** Nộp đúng hạn.
-4. **Lời khuyên từ giảng viên:**
-   * Dành riêng 10–20 tiếng cho Competition và 10–20 tiếng cho Final Assignment.
-   * Hoàn thành bản nháp chạy được (working draft) trước deadline ít nhất 1 tuần.
+He thong slide moi duoc thiet ke theo triet ly **DeepTutor Micro-Learning** va **ThreeUI Glassmorphic Design**:
+* **Dieu huong 2D Ma tran:** Truc ngang (phim Mui ten trai/phai) duyet qua cac Micro-Sessions; truc doc (phim Mui ten len/xuong) dao sau vao tung buoc ly thuyet, demo tuong tac, va khung tom tat Cornell [Chep vao vo].
+* **Widget 1: NumPy Broadcasting Simulator:** Mo phong truc quan quy tac trailing dimensions, highlight o ao bo nho zero-stride (`stride=0`), tinh toan ty le RAM tiet kiem so voi copy thu cong.
+* **Widget 2: ndarray Indexing & Memory Strides:** Thanh truot cat lat da chieu dynamic, cong thuc anh xa dia chi bo nho tuyen tinh affine `Addr(i, j) = Base + i*stride0 + j*stride1`, hien thi song song luoi 2D va dai RAM vat ly 1D, huy hieu phan biet View (0 bytes) vs Copy (heap allocation).
+* **Widget 3: Vectorization vs Python Loop Benchmark:** Thanh truot kich thuoc mang $N$ tu $10^2$ den $10^7$, duong cong SVG hieu nang thoi gian thuc, duong gioi han tran SIMD AVX-512 (~297.6x), thanh tien do dua toc do truc quan giua C/SIMD va Python interpreter.
+* **Phim tat ho tro (HUD):** Nhan `?` tren slide de bat bang tro giup phim tat (`Space`, `Arrows`, `O` xem overview grid, `F` toan man hinh, `S` ghi chu dien gia).
+
+---
+
+## 5. Dieu Kien Nhan Chung Chi (Certificate of Completion)
+
+Khoa hoc do **Matsuo-Iwasawa Lab (The University of Tokyo)** cap chung chi uy tin. De hoan thanh khoa hoc:
+1. **Nop day du bai tap tuan (Assignments):** Lam tren Jupyter Notebook / Omnicampus va nop truoc deadline.
+2. **Tham gia cuoc thi Data Competition:** Co it nhat 1 lan submit mo hinh hop le.
+3. **Nop bai tap lon cuoi khoa (Final Assignment):** Nop dung han.
+4. **Loi khuyen tu giang vien:**
+   * Danh rieng 10-20 tieng cho Competition va 10-20 tieng cho Final Assignment.
+   * Hoan thanh ban nhap chay duoc (working draft) truoc deadline it nhat 1 tuan.

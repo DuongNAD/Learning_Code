@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-view="document">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ThreeUI Explorable Engine & Design System Fixture</title>
+  
+  <!-- ThreeUI Engine Stylesheet -->
+  <link rel="stylesheet" href="threeui-engine.css">
+
+  <!-- KaTeX Mathematical Typography (Local / CDN Fallback) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+
+  <style>
+    /* Specific Fixture Overrides & Live SVG Styling */
+    .fixture-chart-svg {
+      width: 100%;
+      height: 140px;
+      overflow: visible;
+    }
+    .chart-bar-bg {
+      fill: var(--threeui-surface-elevated);
+      rx: 6px;
+    }
+    .chart-bar-observed {
+      fill: var(--threeui-accent-cyan);
+      transition: width var(--threeui-dur-fast) ease-out;
+      rx: 6px;
+    }
+    .chart-bar-dark {
+      fill: var(--threeui-accent-rose);
+      opacity: 0.85;
+      transition: width var(--threeui-dur-fast) ease-out, x var(--threeui-dur-fast) ease-out;
+      rx: 6px;
+    }
+    .chart-tick-line {
+      stroke: var(--threeui-border-highlight);
+      stroke-dasharray: 4, 4;
+      stroke-width: 1.5;
+    }
+    .chart-tick-label {
+      font-family: var(--threeui-font-mono);
+      font-size: 11px;
+      fill: var(--threeui-text-muted);
+    }
+    .chip-latency {
+      font-family: var(--threeui-font-mono);
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--threeui-accent-emerald);
+      color: var(--threeui-accent-emerald);
+    }
+  </style>
+</head>
+<body data-view="document" data-theme="dark" class="threeui-view-doc">
+
+  <!-- Ambient WebGL / Canvas 2D Shader Background -->
+  <canvas id="threeui-bg-canvas"></canvas>
+
+  <!-- Top Navigation HUD -->
+  <header class="threeui-header">
+    <div class="threeui-brand">
+      <span class="brand-badge">[Engine Core]</span>
+      <span class="brand-title">GCI World 2026 · ThreeUI Explorable Engine</span>
+    </div>
+
+    <div class="threeui-nav-controls">
+      <!-- Latency & Performance Telemetry -->
+      <span class="chip-latency" id="engine-latency-chip">[Latency: &lt;1.0ms | 60 FPS]</span>
+
+      <!-- View Mode Switcher -->
+      <div class="btn-group">
+        <button id="view-doc-btn" class="threeui-btn active" data-view-btn="document" onclick="ThreeUIEngine.setViewMode('document')">[Doc View]</button>
+        <button id="view-deck-btn" class="threeui-btn" data-view-btn="deck" onclick="ThreeUIEngine.setViewMode('deck')">[Slide Deck]</button>
+      </div>
+
+      <!-- Theme Switcher -->
+      <button id="theme-toggle-btn" class="threeui-btn" data-theme-btn onclick="ThreeUIEngine.toggleTheme()">[Theme: Dark]</button>
+    </div>
+  </header>
+
+  <!-- Explorable Main Viewport / Document Stream -->
+  <div class="slide-deck-viewport">
+    <main class="slide-deck-stage threeui-doc-container" id="threeui-container">
+
+      <!-- ===================================================================
+           Slide 1 / Chapter 1: Reactive State DAG & Dark Data Model
+           =================================================================== -->
+      <section class="slide-frame doc-section active" id="slide-food-truck" data-slide-index="0" data-slide-title="Food Truck Censored Demand">
+        <div class="doc-section-header">
+          <div class="doc-section-badge">[Module 01 · Reactive DAG]</div>
+          <h1 class="doc-section-title">Nghich ly Dark Data &amp; Mo hinh Newsvendor</h1>
+          <p class="doc-section-subtitle">Kiem chung su sai lech giua Doanh so Ghi nhan (Observed Sales) va Nhu cau An (Dark Data)</p>
+        </div>
+
+        <div class="threeui-split-pane">
+          <!-- Left Column: Pedagogical Exposition & Cornell Handwritten Notes -->
+          <div class="content-pane">
+            <p>
+              Trong kinh doanh thuc te, du lieu quan sat duoc tu he thong POS (Point of Sale) luon chi phan anh 
+              <strong>Doanh so ban duoc</strong>: 
+              <span class="katex-reactive-formula">
+                S = \min(Q, D) = \min(<span class="dyn-slot" id="slot-q-inline" data-katex-slot="q">40</span>, <span class="dyn-slot" id="slot-d-inline" data-katex-slot="demand">75</span>) = <span class="dyn-slot" id="slot-s-inline" data-katex-slot="observed_sales">40</span>
+              </span>
+            </p>
+
+            <p>
+              Khi luong hang chuan bi <span class="scrubbable-num" data-bind="q">40</span> nho hon nhu cau thuc te 
+              <span class="scrubbable-num" data-bind="demand">75</span>, tat ca khach hang den sau se phai ra ve tay khong. 
+              Nhu cau that thoat nay bien mat khoi co so du lieu — do chinh la <strong>Dark Data (Du lieu toi)</strong>.
+            </p>
+
+            <!-- Cornell 3-Column [Chep vao vo] Note Block -->
+            <div class="threeui-cornell-box">
+              <div class="threeui-cornell-header">
+                <span class="threeui-cornell-tag">[Chep vao vo - Cornell 3 Cot]</span>
+                <span class="threeui-cornell-time">Thoi gian viet: 15 phut</span>
+              </div>
+              <div class="threeui-cornell-grid">
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 1: Tu khoa / Cues</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>Dark Data</li>
+                      <li>Censored Demand</li>
+                      <li>Selection Bias</li>
+                      <li>Newsvendor Model</li>
+                      <li>Critical Fractile</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 2: Co che / Cong thuc</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>S = min(Q, D)</li>
+                      <li>Dark Data = max(0, D - Q)</li>
+                      <li>Ton that co hoi = Dark Data * (p - c)</li>
+                      <li>F(Q*) = Cu / (Cu + Co) = 0.60</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 3: Python / Pitfalls</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>Khong huan luyen ML tren Sales!</li>
+                      <li>Su dung mo hinh kiem duyet (Tobit)</li>
+                      <li>Giam sat ty le het hang (Stockout rate)</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="cornell-summary-box">
+                <div class="cornell-summary-title">[Ket luan cot loi 2 phut]</div>
+                <div>Doanh so POS = 100% het hang la tin hieu nguy hiem cua Selection Bias, gay that thoat loi nhuan nghiem trong ma khong de lai dau vet.</div>
+              </div>
+            </div>
+
+            <!-- Progressive Steppers (Revealed sequentially in Deck mode) -->
+            <div class="step-hidden" data-step="1">
+              <p><strong>[Buoc 1]:</strong> Quan sat: He thong ghi nhan ban het 100% hang hoa. Nguoi quan ly truyen thong se hai long va duy tri dinh muc cu.</p>
+            </div>
+            <div class="step-hidden" data-step="2">
+              <p><strong>[Buoc 2]:</strong> Thuc te: Luong khach that thoat (Dark Data) khong he co mat trong bang du lieu, gay ra Ton that co hoi lon gap nhieu lan chi phi ton kho.</p>
+            </div>
+          </div>
+
+          <!-- Right Column: Interactive Simulators, Sliders, KaTeX Slots & Live SVG -->
+          <div class="interactive-pane">
+            <div class="threeui-glass-card threeui-slider-card">
+              <!-- Parameter Sliders -->
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>So luong chuan bi (Q):</span>
+                  <span class="slider-readout" id="readout-q" data-bind="q">40</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="slider-q" min="20" max="120" step="1" value="40" data-slider="q">
+              </div>
+
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>Nhu cau thuc te (D):</span>
+                  <span class="slider-readout" id="readout-d" data-bind="demand">75</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="slider-d" min="20" max="150" step="1" value="75" data-slider="demand">
+              </div>
+
+              <!-- Live SVG Split-Bar Chart -->
+              <div style="margin: 16px 0;">
+                <svg class="fixture-chart-svg" viewBox="0 0 460 110" id="svg-demand-chart">
+                  <!-- Background Scale Track -->
+                  <rect x="10" y="24" width="440" height="36" class="chart-bar-bg"></rect>
+                  
+                  <!-- Observed Sales Bar (Cyan) -->
+                  <rect x="10" y="24" width="160" height="36" class="chart-bar-observed" id="bar-observed"></rect>
+                  
+                  <!-- Dark Data Lost Demand Bar (Rose) -->
+                  <rect x="170" y="24" width="140" height="36" class="chart-bar-dark" id="bar-dark"></rect>
+                  
+                  <!-- Threshold Tick Marker for Q -->
+                  <line x1="170" y1="16" x2="170" y2="70" class="chart-tick-line" id="line-q-marker"></line>
+                  <text x="170" y="86" text-anchor="middle" class="chart-tick-label" id="text-q-marker">Q = 40</text>
+                  
+                  <!-- Legends -->
+                  <text x="16" y="16" font-size="11" fill="var(--threeui-accent-cyan)" font-family="var(--threeui-font-mono)">[Observed: S]</text>
+                  <text x="360" y="16" font-size="11" fill="var(--threeui-accent-rose)" font-family="var(--threeui-font-mono)">[Dark Data]</text>
+                </svg>
+              </div>
+
+              <!-- Real-Time KaTeX Math Slot Display -->
+              <div class="katex-reactive-formula" style="width: 100%; box-sizing: border-box; justify-content: space-around;">
+                <span>Doanh so: <span class="dyn-slot" id="slot-sales">40</span></span>
+                <span>Dark Data: <span class="dyn-slot" id="slot-dark">35</span></span>
+              </div>
+
+              <!-- Telemetry Chip Grid -->
+              <div class="telemetry-grid">
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Doanh thu thuc te</span>
+                  <span class="telemetry-val accent-cyan" id="metric-revenue">40,000 JPY</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Loi nhuan rong</span>
+                  <span class="telemetry-val accent-emerald" id="metric-profit">+24,000 JPY</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Ton that co hoi</span>
+                  <span class="telemetry-val accent-rose" id="metric-loss">21,000 JPY</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           Slide 2 / Chapter 2: In-Place KaTeX Math & Zero CLS
+           =================================================================== -->
+      <section class="slide-frame doc-section" id="slide-math-engine" data-slide-index="1" data-slide-title="KaTeX Slot Optimization">
+        <div class="doc-section-header">
+          <div class="doc-section-badge">[Module 02 · Math Engine]</div>
+          <h2 class="doc-section-title">Toi uu hoa KaTeX Slot &amp; Zero Cumulative Layout Shift</h2>
+          <p class="doc-section-subtitle">Cap nhat cong thuc toan hoc toc do cao (&lt; 0.1ms) khong gay rung giat layout (CLS = 0)</p>
+        </div>
+
+        <div class="threeui-split-pane">
+          <div class="content-pane">
+            <p>
+              Viec re-parse toan bo chuoi LaTeX o moi khung hinh 60Hz gay qua tai CPU ($4\text{ms} - 8\text{ms}$). 
+              ThreeUI Engine giai quyet bang co che <strong>Slot Pre-compilation</strong>: Khung toan duoc render 1 lan duy nhat, 
+              sau do cac gia tri tham so duoc cap nhat truc tiep vao <code>.dyn-slot</code>.
+            </p>
+
+            <div class="threeui-glass-card" style="padding: 20px;">
+              <div style="font-family: var(--threeui-font-mono); font-size: 0.85rem; color: var(--threeui-accent); margin-bottom: 8px;">
+                [Cong thuc toi uu Newsvendor - Critical Fractile]:
+              </div>
+              <div class="katex-reactive-formula" style="font-size: 1.15rem; width: 100%; justify-content: center;">
+                F(Q^*) = \frac{C_u}{C_u + C_o} = \frac{p - c}{(p - c) + (c - s)} = \frac{600}{1000} = 0.60
+              </div>
+              <p style="font-size: 0.9rem; color: var(--threeui-text-muted); margin-top: 12px;">
+                Diem toi uu xac suat phuc vu la 60%. Doanh nghiep can dat luong hang sao cho xac suat dap ung nhu cau dat toi thieu 60%.
+              </p>
+            </div>
+
+            <!-- Stepper Items -->
+            <div class="step-hidden" data-step="1">
+              <p><strong>[Do tre cap nhat]:</strong> Do tre truyen du lieu tu thanh truot vao DOM slot chi ton &lt; 0.05ms tren moi CPU thong thuong.</p>
+            </div>
+            <div class="step-hidden" data-step="2">
+              <p><strong>[Kha nang tuong thich]:</strong> Hoat dong hoan hao ca tren giao thuc <code>file://</code> truc tiep tu USB ma khong can Node.js hay may chu web.</p>
+            </div>
+          </div>
+
+          <div class="interactive-pane">
+            <div class="threeui-glass-card" style="padding: 24px;">
+              <h3 style="font-size: 1.1rem; margin-bottom: 16px; color: var(--threeui-text);">[Kiem chung do nhay tham so]:</h3>
+              
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>Gia ban (Price p):</span>
+                  <span class="slider-readout" id="readout-price">1,000 JPY</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="slider-price" min="600" max="2000" step="50" value="1000">
+              </div>
+
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>Gia von (Cost c):</span>
+                  <span class="slider-readout" id="readout-cost">400 JPY</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="slider-cost" min="200" max="1000" step="50" value="400">
+              </div>
+
+              <div class="katex-reactive-formula" style="width: 100%; margin-top: 20px; font-size: 1.05rem;">
+                C_u = p - c = <span class="dyn-slot" id="slot-cu">600</span> \text{ JPY} \quad | \quad C_o = c = <span class="dyn-slot" id="slot-co">400</span> \text{ JPY}
+              </div>
+
+              <div class="threeui-glass-card telemetry-card" style="margin-top: 16px;">
+                <span class="telemetry-label">Critical Fractile F(Q*)</span>
+                <span class="telemetry-val accent-emerald" id="metric-fractile">60.0%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           Slide 3 / Chapter 3: Dual-View Controller & 16:9 Auto-Scaler
+           =================================================================== -->
+      <section class="slide-frame doc-section" id="slide-dual-view" data-slide-index="2" data-slide-title="Dual-View Presentation Engine">
+        <div class="doc-section-header">
+          <div class="doc-section-badge">[Module 03 · Presentation Controller]</div>
+          <h2 class="doc-section-title">Kien truc Dual-View &amp; Tu dong Can chinh 16:9</h2>
+          <p class="doc-section-subtitle">Chuyen doi lien tuc giua Tai lieu Doc cuon tu do va Slide Trinh chieu Chuyen nghiep</p>
+        </div>
+
+        <div class="threeui-split-pane">
+          <div class="content-pane">
+            <p>
+              Chi voi 1 DOM duy nhat, nguoi dung co the:
+            </p>
+            <ul>
+              <li><strong>Che do Tai lieu (Document View):</strong> Cuon doc muot ma, doc chu thich ben trai va tuong tac ben phai giu nguyen ngu canh.</li>
+              <li><strong>Che do Trinh chieu (Slide Deck):</strong> Khoa man hinh 16:9, phong to/thu nho bang CSS <code>transform: scale(min(W/1920, H/1080))</code>, chuyen slide bang ban phim.</li>
+            </ul>
+
+            <div class="threeui-glass-card" style="padding: 20px; margin-top: 16px;">
+              <h4 style="font-size: 0.95rem; margin-bottom: 12px; color: var(--threeui-accent);">[Bang Phim tat Dieu khien]:</h4>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.85rem;">
+                <div><span class="shortcut-badge">Space</span> / <span class="shortcut-badge">&rarr;</span> : Tien buoc / slide</div>
+                <div><span class="shortcut-badge">&larr;</span> : Lui buoc / slide</div>
+                <div><span class="shortcut-badge">F</span> : Bat / Tat Fullscreen</div>
+                <div><span class="shortcut-badge">O</span> : Mo Slide Overview grid</div>
+                <div><span class="shortcut-badge">T</span> : Chuyen Dark / Light Theme</div>
+                <div><span class="shortcut-badge">M</span> / <span class="shortcut-badge">V</span> : Chuyen che do Doc / Deck</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="interactive-pane">
+            <div class="threeui-glass-card" style="padding: 24px; text-align: center;">
+              <h3 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--threeui-text);">[Kich hoat Trinh chieu ngay]:</h3>
+              <p style="font-size: 0.9rem; color: var(--threeui-text-muted); margin-bottom: 20px;">
+                Nhan nut ben duoi hoac an phim <strong>M</strong> tren ban phim de thu nghiem Che do Slide Deck 16:9.
+              </p>
+              <button class="threeui-btn active" style="font-size: 1rem; padding: 10px 24px; margin-bottom: 12px;" onclick="ThreeUIEngine.setViewMode('deck')">
+                [Kich hoat Che do Slide Deck]
+              </button>
+              <div>
+                <button class="threeui-btn" onclick="ThreeUIEngine.toggleTheme()">
+                  [Doi Theme Mau (Dark / Light)]
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Slide Deck Bottom HUD (Active in Deck Mode) -->
+  <footer class="threeui-deck-hud" id="deck-hud">
+    <div class="slide-progress-bar-container">
+      <div class="slide-progress-bar" id="slide-progress"></div>
+    </div>
+
+    <div class="hud-left">
+      <button class="threeui-btn" id="prev-slide-btn" onclick="ThreeUIEngine.prevSlide()">[&larr; Prev]</button>
+      <button class="threeui-btn" id="next-slide-btn" onclick="ThreeUIEngine.nextSlide()">[Next &rarr;]</button>
+      <span class="hud-counter" id="slide-counter">1 / 3</span>
+    </div>
+
+    <div class="hud-shortcuts-hint">
+      <span><span class="shortcut-badge">Space</span> Tien</span>
+      <span><span class="shortcut-badge">F</span> Fullscreen</span>
+      <span><span class="shortcut-badge">O</span> Tong quan</span>
+      <span><span class="shortcut-badge">M</span> Che do</span>
+    </div>
+
+    <div class="hud-right">
+      <button class="threeui-btn" id="overview-btn" onclick="ThreeUIEngine.view.toggleOverview()">[Overview (O)]</button>
+      <button class="threeui-btn" id="fullscreen-btn" onclick="ThreeUIEngine.view.toggleFullscreen()">[Fullscreen (F)]</button>
+      <button class="threeui-btn" onclick="ThreeUIEngine.setViewMode('document')">[Exit Deck (Doc)]</button>
+    </div>
+  </footer>
+
+  <!-- Scripts: Engine & Ambient Shader Background -->
+  <script src="threeui-engine.js"></script>
+  <script src="threeui-shader-bg.js"></script>
+
+  <script>
+    /**
+     * Fixture Reactive Model Initialization
+     */
+    document.addEventListener('DOMContentLoaded', function () {
+      if (!window.ThreeUIEngine) return;
+      var engine = window.ThreeUIEngine;
+
+      // Define Root Signals
+      var qSig = engine.createSignal('q', 40);
+      var demandSig = engine.createSignal('demand', 75);
+      var priceSig = engine.createSignal('price', 1000);
+      var costSig = engine.createSignal('cost', 400);
+
+      // Define Derived DAG Nodes
+      engine.createDerived('observed_sales', ['q', 'demand'], function (q, d) {
+        return Math.min(q, d);
+      });
+
+      engine.createDerived('dark_data', ['q', 'demand'], function (q, d) {
+        return Math.max(0, d - q);
+      });
+
+      engine.createDerived('waste', ['q', 'demand'], function (q, d) {
+        return Math.max(0, q - d);
+      });
+
+      engine.createDerived('revenue', ['observed_sales', 'price'], function (s, p) {
+        return s * p;
+      });
+
+      engine.createDerived('total_cost', ['q', 'cost'], function (q, c) {
+        return q * c;
+      });
+
+      engine.createDerived('net_profit', ['revenue', 'total_cost'], function (rev, tc) {
+        return rev - tc;
+      });
+
+      engine.createDerived('opportunity_loss', ['dark_data', 'price', 'cost'], function (dark, p, c) {
+        return dark * (p - c);
+      });
+
+      engine.createDerived('critical_fractile', ['price', 'cost'], function (p, c) {
+        var cu = p - c;
+        var co = c;
+        return (cu / (cu + co)) * 100;
+      });
+
+      // Bind KaTeX Slots for Instant Zero-CLS Updating
+      engine.bindKatexSlot('slot-q', 'q');
+      engine.bindKatexSlot('slot-q-inline', 'q');
+      engine.bindKatexSlot('slot-d-inline', 'demand');
+      engine.bindKatexSlot('slot-s-inline', 'observed_sales');
+      engine.bindKatexSlot('slot-sales', 'observed_sales');
+      engine.bindKatexSlot('slot-dark', 'dark_data');
+      engine.bindKatexSlot('slot-cu', 'price', function (p) {
+        return (p - engine.get('cost')).toString();
+      });
+      engine.bindKatexSlot('slot-co', 'cost');
+
+      // Bind Metric Card Text
+      engine.createEffect(['revenue'], function (r) {
+        var el = document.getElementById('metric-revenue');
+        if (el) el.textContent = r.toLocaleString() + ' JPY';
+      });
+
+      engine.createEffect(['net_profit'], function (p) {
+        var el = document.getElementById('metric-profit');
+        if (el) {
+          el.textContent = (p >= 0 ? '+' : '') + p.toLocaleString() + ' JPY';
+          el.className = 'telemetry-val ' + (p >= 0 ? 'accent-emerald' : 'accent-rose');
+        }
+      });
+
+      engine.createEffect(['opportunity_loss'], function (loss) {
+        var el = document.getElementById('metric-loss');
+        if (el) el.textContent = loss.toLocaleString() + ' JPY';
+      });
+
+      engine.createEffect(['critical_fractile'], function (f) {
+        var el = document.getElementById('metric-fractile');
+        if (el) el.textContent = f.toFixed(1) + '%';
+      });
+
+      // Bind Additional Sliders on Slide 2
+      var sliderPrice = document.getElementById('slider-price');
+      var sliderCost = document.getElementById('slider-cost');
+      if (sliderPrice) {
+        sliderPrice.addEventListener('input', function (e) {
+          engine.set('price', parseFloat(e.target.value));
+          document.getElementById('readout-price').textContent = parseFloat(e.target.value).toLocaleString() + ' JPY';
+        }, { passive: true });
+      }
+      if (sliderCost) {
+        sliderCost.addEventListener('input', function (e) {
+          engine.set('cost', parseFloat(e.target.value));
+          document.getElementById('readout-cost').textContent = parseFloat(e.target.value).toLocaleString() + ' JPY';
+        }, { passive: true });
+      }
+
+      // Live SVG Chart Update Effect (< 16.6ms / 60fps)
+      engine.createEffect(['q', 'demand', 'observed_sales', 'dark_data'], function (q, d, obs, dark) {
+        var maxScale = 160;
+        var trackWidth = 440;
+        var startX = 10;
+        
+        var obsWidth = Math.min(trackWidth, (obs / maxScale) * trackWidth);
+        var darkWidth = Math.min(trackWidth - obsWidth, (dark / maxScale) * trackWidth);
+        var qMarkerX = startX + Math.min(trackWidth, (q / maxScale) * trackWidth);
+
+        var barObs = document.getElementById('bar-observed');
+        var barDark = document.getElementById('bar-dark');
+        var lineQ = document.getElementById('line-q-marker');
+        var textQ = document.getElementById('text-q-marker');
+
+        if (barObs) barObs.setAttribute('width', obsWidth);
+        if (barDark) {
+          barDark.setAttribute('x', startX + obsWidth);
+          barDark.setAttribute('width', darkWidth);
+        }
+        if (lineQ) {
+          lineQ.setAttribute('x1', qMarkerX);
+          lineQ.setAttribute('x2', qMarkerX);
+        }
+        if (textQ) {
+          textQ.setAttribute('x', qMarkerX);
+          textQ.textContent = 'Q = ' + q;
+        }
+
+        // Measure & Display Engine Frame Latency
+        var stats = engine.getLatencyStats();
+        var chip = document.getElementById('engine-latency-chip');
+        if (chip && stats.count > 0) {
+          chip.textContent = '[Latency: ' + stats.avg + 'ms | ' + stats.fpsBound + ' FPS]';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

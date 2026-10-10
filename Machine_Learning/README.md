@@ -48,6 +48,13 @@ Machine_Learning/
 │   ├── server.py                       # FastAPI Production Server (Tự động tải model, scaler, threshold)
 │   ├── client.py                       # CLI Test Client & Giao diện người dùng Streamlit
 │   └── inference.py                    # Script suy luận trực tiếp không cần mạng
+├── 08_Reinforcement_Learning/          # Học tăng cường (DQN, Policy Gradient, Game AI)
+│   └── flappy_bird_dqn/                # Deep Q-Network chơi Flappy Bird
+├── 09_LLM_From_Scratch/                # Xây dựng & huấn luyện LLM từ đầu bằng thuần PyTorch
+│   ├── 00_Reference_Original/          # Repo gốc FareedKhan-dev/train-llm-from-scratch
+│   ├── 01_Hands_On_Practice/           # 7 chặng tự code & test (Tokenizer, Attention, GPT, SFT, DPO/GRPO)
+│   ├── 02_Interactive_Notebooks/       # Notebook trực quan hóa và thực nghiệm
+│   └── 03_Environment/                 # Môi trường chạy trên GPU NVIDIA RTX 5060 Ti (16GB)
 ├── Roadmaps/                           # Lộ trình học tập cá nhân hóa do DeepTutor sinh ra
 ├── Quizzes/                            # 5 bộ đề kiểm tra chẩn đoán nhận thức & phân tích bẫy
 ├── Notes/                              # Sổ tay công thức, Cẩm nang tiền xử lý & Ma trận chọn thuật toán

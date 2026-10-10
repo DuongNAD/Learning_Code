@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-view="document">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buoi 2 · NumPy Computing, Strided Memory & Broadcasting Engine</title>
+
+  <!-- ThreeUI Engine Stylesheet -->
+  <link rel="stylesheet" href="../engine/threeui-engine.css">
+
+  <!-- KaTeX Typography (Local / CDN Fallback) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+
+  <style>
+    /* Custom Styling for Buoi 2 Models */
+    .strides-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 4px;
+      margin: 12px 0;
+    }
+    .strides-table th {
+      font-family: var(--threeui-font-mono);
+      font-size: 0.72rem;
+      color: var(--threeui-text-muted);
+      padding: 4px 6px;
+      text-align: center;
+    }
+    .strides-table th.axis-active {
+      color: var(--threeui-accent-cyan);
+      font-weight: 700;
+    }
+    .strides-cell {
+      background: var(--threeui-surface-elevated);
+      border: 1px solid var(--threeui-border-subtle);
+      border-radius: 8px;
+      padding: 10px 6px;
+      text-align: center;
+      transition: all var(--threeui-dur-fast) ease-out;
+      cursor: pointer;
+      user-select: none;
+    }
+    .strides-cell:hover {
+      transform: translateY(-2px);
+      border-color: var(--threeui-border-highlight);
+    }
+    .strides-cell.cell-selected {
+      background: rgba(6, 182, 212, 0.18);
+      border-color: var(--threeui-accent-cyan);
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.35);
+    }
+    .strides-cell.cell-selected .cell-val {
+      color: var(--threeui-accent-cyan);
+      font-weight: 700;
+    }
+    .strides-cell.cell-unselected .cell-val {
+      color: var(--threeui-text-subtle);
+    }
+    .cell-val {
+      font-family: var(--threeui-font-mono);
+      font-size: 1.05rem;
+      display: block;
+    }
+    .cell-sub {
+      font-family: var(--threeui-font-mono);
+      font-size: 0.65rem;
+      color: var(--threeui-text-subtle);
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* 1D RAM Strip */
+    .ram-strip-wrapper {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--threeui-border-subtle);
+    }
+    .ram-strip-title {
+      font-family: var(--threeui-font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--threeui-text-muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .ram-strip-container {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 4px;
+      padding-bottom: 6px;
+    }
+    .ram-block {
+      flex: 0 0 44px;
+      height: 48px;
+      background: var(--threeui-surface-elevated);
+      border: 1px solid var(--threeui-border-subtle);
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--threeui-dur-fast) ease-out;
+      user-select: none;
+    }
+    .ram-block.ram-selected {
+      background: rgba(6, 182, 212, 0.22);
+      border-color: var(--threeui-accent-cyan);
+      box-shadow: 0 0 8px rgba(6, 182, 212, 0.3);
+    }
+    .ram-block.ram-selected .ram-block-val {
+      color: var(--threeui-accent-cyan);
+      font-weight: 700;
+    }
+    .ram-block-val {
+      font-family: var(--threeui-font-mono);
+      font-size: 0.85rem;
+      color: var(--threeui-text-muted);
+    }
+    .ram-block-sub {
+      font-family: var(--threeui-font-mono);
+      font-size: 0.58rem;
+      color: var(--threeui-text-subtle);
+    }
+
+    /* Broadcasting Grids Layout */
+    .broadcast-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .broadcast-grids-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.4fr;
+      gap: 12px;
+      align-items: start;
+    }
+    .matrix-card {
+      background: var(--threeui-surface);
+      border: 1px solid var(--threeui-border-subtle);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+    }
+    .matrix-title {
+      font-family: var(--threeui-font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--threeui-text-muted);
+      margin-bottom: 8px;
+    }
+    .broadcast-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 3px;
+    }
+    .b-cell {
+      padding: 8px 4px;
+      text-align: center;
+      border-radius: 6px;
+      font-family: var(--threeui-font-mono);
+      font-size: 0.95rem;
+      position: relative;
+      user-select: none;
+      transition: all var(--threeui-dur-fast);
+    }
+    .b-cell.cell-real {
+      background: rgba(99, 102, 241, 0.16);
+      border: 1px solid var(--threeui-accent);
+      color: var(--threeui-text);
+      font-weight: 700;
+    }
+    .b-cell.cell-virtual {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px dashed var(--threeui-accent-emerald);
+      color: var(--threeui-text-muted);
+      box-shadow: inset 0 0 6px rgba(16, 185, 129, 0.15);
+    }
+    .cell-stride-tag {
+      display: block;
+      font-size: 0.55rem;
+      color: var(--threeui-accent-emerald);
+      letter-spacing: -0.02em;
+      margin-top: 1px;
+    }
+    .alignment-trace-grid {
+      background: var(--threeui-surface-subtle);
+      border: 1px solid var(--threeui-border-subtle);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      font-family: var(--threeui-font-mono);
+      font-size: 0.85rem;
+    }
+    .trace-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 3px 0;
+    }
+    .trace-divider {
+      height: 1px;
+      background: var(--threeui-border-medium);
+      margin: 4px 0;
+    }
+    .alignment-err-box {
+      background: rgba(244, 63, 94, 0.12);
+      border: 1px solid var(--threeui-accent-rose);
+      border-radius: 8px;
+      padding: 12px 14px;
+      color: var(--threeui-accent-rose);
+      font-family: var(--threeui-font-mono);
+      font-size: 0.82rem;
+    }
+    .err-title {
+      font-weight: 700;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .err-msg {
+      font-size: 0.78rem;
+      margin-bottom: 6px;
+    }
+    .broadcast-error-placeholder {
+      padding: 32px 16px;
+      text-align: center;
+      color: var(--threeui-accent-rose);
+      font-family: var(--threeui-font-mono);
+      font-size: 0.88rem;
+      background: rgba(244, 63, 94, 0.08);
+      border-radius: 8px;
+    }
+
+    /* Vectorization Benchmark Race Bars */
+    .benchmark-race-box {
+      margin: 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .race-track-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .race-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-family: var(--threeui-font-mono);
+    }
+    .race-bar-bg {
+      width: 100%;
+      height: 20px;
+      background: var(--threeui-surface-subtle);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    .race-bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      transition: width var(--threeui-dur-fast) ease-out;
+    }
+    .race-bar-python {
+      background: var(--threeui-accent-rose);
+      box-shadow: 0 0 10px rgba(244, 63, 94, 0.4);
+    }
+    .race-bar-numpy {
+      background: var(--threeui-accent-emerald);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+    }
+    .speedup-badge-center {
+      text-align: center;
+      margin: 8px 0;
+    }
+    .speedup-badge-center .brand-badge {
+      font-size: 1.15rem;
+      padding: 6px 16px;
+      border-color: var(--threeui-accent-amber);
+      color: var(--threeui-accent-amber);
+      background: rgba(245, 158, 11, 0.15);
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.25);
+    }
+
+    /* SVG Speedup Curve */
+    .speedup-svg-canvas {
+      width: 100%;
+      height: 160px;
+      margin: 10px 0;
+      overflow: visible;
+    }
+  </style>
+</head>
+<body data-view="document" data-theme="dark" class="threeui-view-doc">
+
+  <!-- Ambient WebGL / Canvas 2D Shader Background -->
+  <canvas id="threeui-bg-canvas"></canvas>
+
+  <!-- Top Navigation HUD -->
+  <header class="threeui-header">
+    <div class="threeui-brand">
+      <span class="brand-badge">[GCI World 2026]</span>
+      <span class="brand-title">Buoi 2 · NumPy Computing, Strided Memory &amp; Broadcasting Engine</span>
+    </div>
+
+    <div class="threeui-nav-controls">
+      <!-- Latency & Performance Telemetry -->
+      <span class="chip-latency" id="engine-latency-chip">[Latency: &lt;1.0ms | 60 FPS]</span>
+
+      <!-- View Mode Switcher -->
+      <div class="btn-group">
+        <button id="view-doc-btn" class="threeui-btn active" data-view-btn="document" onclick="ThreeUIEngine.setViewMode('document')">[Doc View]</button>
+        <button id="view-deck-btn" class="threeui-btn" data-view-btn="deck" onclick="ThreeUIEngine.setViewMode('deck')">[Slide Deck]</button>
+      </div>
+
+      <!-- Theme Switcher -->
+      <button id="theme-toggle-btn" class="threeui-btn" data-theme-btn onclick="ThreeUIEngine.toggleTheme()">[Theme: Dark]</button>
+    </div>
+  </header>
+
+  <!-- Explorable Main Viewport / Document Stream -->
+  <div class="slide-deck-viewport">
+    <main class="slide-deck-stage threeui-doc-container" id="threeui-container">
+
+      <!-- ===================================================================
+           Slide 1 / Section 1: NumPy Array Slicing & Strided Memory Geometry
+           =================================================================== -->
+      <section class="slide-frame doc-section active" id="slide-strides" data-slide-index="0" data-slide-title="NumPy Multi-Dimensional Array Slicing &amp; Strides">
+        <div class="doc-section-header">
+          <div class="doc-section-badge">[Module 01 · Memory Geometry]</div>
+          <h1 class="doc-section-title">NumPy Multi-Dimensional Array Slicing &amp; Memory Strides</h1>
+          <p class="doc-section-subtitle">Kho sat bo nho C-Contiguous 1D, phep chieu View vs Copy, va cong thuc anh xa dia chi byte Addr(i, j)</p>
+        </div>
+
+        <div class="threeui-split-pane">
+          <!-- Left Column: Pedagogical Exposition & Cornell Handwritten Notes -->
+          <div class="content-pane">
+            <p>
+              Nguoi lap trinh moi thuong hinh dung mang da chieu giong nhu mot danh sach long nhau (nested list). 
+              Tuy nhien, trong loi kien truc NumPy, mot <code>ndarray</code> thuc chat chi la mot <strong>khoi bo nho dem 1D tuyen tinh lien ke (C-Contiguous Buffer)</strong> 
+              trong RAM vat ly, di kem tieu de sieu du lieu (Metadata Header) gom: <code>dtype</code>, <code>shape</code>, va bo buoc nhay <code>strides</code>.
+            </p>
+
+            <p>
+              Moi phan tu toa do $(i, j)$ duoc CPU truy xuat tuc thi thong qua phep bien doi affine:
+              <span class="katex-reactive-formula">
+                \text{Addr}(i, j) = \text{BasePointer} + i \cdot S_0 + j \cdot S_1
+              </span>
+              Trong do voi kieu du lieu 64-bit (<code>int64</code> hoac <code>float64</code>), moi phan tu chiem 8 bytes:
+              $S_1 = 8\text{ bytes}$, va buoc nhay theo hang la $S_0 = \text{dim}_1 \times 8\text{ bytes} = 40\text{ bytes}$ (voi mang $4 \times 5$).
+            </p>
+
+            <!-- Cornell 3-Column [Chep vao vo] Note Block -->
+            <div class="threeui-cornell-box">
+              <div class="threeui-cornell-header">
+                <span class="threeui-cornell-tag">[Chep vao vo - Cornell 3 Cot]</span>
+                <span class="threeui-cornell-time">Thoi gian viet: 15 phut</span>
+              </div>
+              <div class="threeui-cornell-grid">
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 1: Tu khoa / Cues</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>C-Contiguity</li>
+                      <li>Memory Strides ($S_0, S_1$)</li>
+                      <li>View vs Copy</li>
+                      <li>Base Pointer Offset</li>
+                      <li>Cache Locality</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 2: Co che / Hinh hoc</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>Mang 1D trong RAM: [0][1][2]...[19]</li>
+                      <li>Luoi 2D la phep anh xa chi so</li>
+                      <li>Strides = buoc nhay byte de sang phan tu tiep theo</li>
+                      <li>Basic slice khong copy byte nao!</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 3: Cong thuc / Code</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>Addr(i, j) = Base + i*S0 + j*S1</li>
+                      <li>Basic Slice a[s:e:step] = VIEW</li>
+                      <li>Advanced Indexing = COPY</li>
+                      <li>np.shares_memory(a, b)</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="cornell-summary-box">
+                <div class="cornell-summary-title">[Ket luan cot loi 2 phut]</div>
+                <div>Lao hoa bo nho: Basic slice tao View voi Delta Alloc = 0 bytes. Sua lat cat se lam bien doi truc tiep mang goc; luon dung .copy() neu can cach ly du lieu.</div>
+              </div>
+            </div>
+
+            <!-- Progressive Steppers for Deck Mode -->
+            <div class="step-hidden" data-step="1">
+              <p><strong>[Buoc 1]:</strong> Mang NumPy thuc chat la mot dai byte lien ke duy nhat trong RAM, khong he co con tro long nhau nhu Python list.</p>
+            </div>
+            <div class="step-hidden" data-step="2">
+              <p><strong>[Buoc 2]:</strong> Thao tac cat mang (Slicing) chi can thay doi Base Pointer va gia tri Strides, toc do thuc thi la O(1) bat ke mang co hang ty phan tu.</p>
+            </div>
+            <div class="step-hidden" data-step="3">
+              <p><strong>[Buoc 3]:</strong> Can than: Chinh vi la View, bat ky thay doi gia tri nao tren lat cat deu sua thang vao du lieu goc!</p>
+            </div>
+          </div>
+
+          <!-- Right Column: Interactive Simulator -->
+          <div class="interactive-pane">
+            <div class="threeui-glass-card threeui-slider-card">
+              <!-- Slider Controls for Rows (Axis 0) -->
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>Hang bat dau (start_row):</span>
+                  <span class="slider-readout" id="readout-strides-s0">0</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="strides-slider-start-row" min="0" max="3" step="1" value="0">
+              </div>
+
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>Hang ket thuc (stop_row):</span>
+                  <span class="slider-readout" id="readout-strides-e0">3</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="strides-slider-stop-row" min="1" max="4" step="1" value="3">
+              </div>
+
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>Buoc nhay hang (step_row):</span>
+                  <span class="slider-readout" id="readout-strides-st0">1</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="strides-slider-step-row" min="1" max="3" step="1" value="1">
+              </div>
+
+              <!-- Slider Controls for Cols (Axis 1) -->
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>Cot bat dau (start_col):</span>
+                  <span class="slider-readout" id="readout-strides-s1">1</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="strides-slider-start-col" min="0" max="4" step="1" value="1">
+              </div>
+
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>Cot ket thuc (stop_col):</span>
+                  <span class="slider-readout" id="readout-strides-e1">5</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="strides-slider-stop-col" min="1" max="5" step="1" value="5">
+              </div>
+
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>Buoc nhay cot (step_col):</span>
+                  <span class="slider-readout" id="readout-strides-st1">2</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="strides-slider-step-col" min="1" max="3" step="1" value="2">
+              </div>
+
+              <!-- Fancy Indexing / Copy Simulation Toggle -->
+              <div style="margin: 12px 0; display: flex; justify-content: space-between; align-items: center;">
+                <button id="btn-toggle-fancy-indexing" class="threeui-btn">[Mode: Basic Slice (View)]</button>
+                <span id="strides-view-badge" class="brand-badge">[VIEW: 0 Bytes Allocated]</span>
+              </div>
+
+              <!-- Real-Time Formula Readout -->
+              <div class="katex-reactive-formula" style="margin: 10px 0; justify-content: space-between;">
+                <span>Lenh cat: <code id="strides-slice-code" style="color:var(--threeui-accent-cyan);">arr[0:3:1, 1:5:2]</code></span>
+              </div>
+
+              <!-- 2D Grid Visualizer -->
+              <div id="strides-grid-container" style="margin: 12px 0;"></div>
+
+              <!-- 1D RAM Linear Strip -->
+              <div class="ram-strip-wrapper">
+                <div class="ram-strip-title">[Bo nho RAM vat ly tuyen tinh 1D]</div>
+                <div id="strides-ram-strip"></div>
+              </div>
+
+              <!-- Telemetry Metrics Grid -->
+              <div class="telemetry-grid" style="margin-top: 14px;">
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Kich thuoc moi (Shape)</span>
+                  <span class="telemetry-val accent-cyan" id="strides-out-shape">(3, 2)</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Buoc nhay moi (Strides)</span>
+                  <span class="telemetry-val accent-indigo" id="strides-out-strides">(40, 16) B</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Do lech goc (Offset)</span>
+                  <span class="telemetry-val accent-violet" id="strides-out-offset">+8 B</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Bo nho cap phat</span>
+                  <span class="telemetry-val accent-emerald" id="strides-out-alloc">0 B</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           Slide 2 / Section 2: NumPy Broadcasting Rules
+           =================================================================== -->
+      <section class="slide-frame doc-section" id="slide-broadcasting" data-slide-index="1" data-slide-title="NumPy Broadcasting Rules &amp; Virtual Dimension Stretching">
+        <div class="doc-section-header">
+          <div class="doc-section-badge">[Module 02 · Tensor Algebra]</div>
+          <h2 class="doc-section-title">NumPy Broadcasting Rules &amp; Virtual Dimension Stretching</h2>
+          <p class="doc-section-subtitle">Quy tac dong hang chieu sau (Trailing Dimensions), keo gian ao khong ton bo nho (stride = 0)</p>
+        </div>
+
+        <div class="threeui-split-pane">
+          <!-- Left Column -->
+          <div class="content-pane">
+            <p>
+              Broadcasting cho phep thuc hien cac phep toan so hoc giua hai mang co kich thuoc khac nhau ma 
+              <strong>khong can sao chep du lieu (Zero-copy arithmetic)</strong>. NumPy tu dong keo gian kich thuoc bang cach 
+              dat buoc nhay <code>stride = 0</code> doc theo chieu co do dai bang 1.
+            </p>
+
+            <p>
+              Quy tac dong hang (Trailing Dimension Alignment):
+              Hai mang $A$ va $B$ tuong thich khi ta so sanh cac chieu <strong>tu phai qua trai</strong>:
+              <span class="katex-reactive-formula">
+                \text{Dieu kien: } \tilde{a}_k = \tilde{b}_k \quad \lor \quad \tilde{a}_k = 1 \quad \lor \quad \tilde{b}_k = 1
+              </span>
+              Chieu ket qua co do dai $c_k = \max(\tilde{a}_k, \tilde{b}_k)$. Neu hai chieu khac nhau va ca hai deu khac 1, NumPy se lap tuc nem ngoai le <code>ValueError</code>.
+            </p>
+
+            <!-- Cornell 3-Column [Chep vao vo] Note Block -->
+            <div class="threeui-cornell-box">
+              <div class="threeui-cornell-header">
+                <span class="threeui-cornell-tag">[Chep vao vo - Cornell 3 Cot]</span>
+                <span class="threeui-cornell-time">Thoi gian viet: 15 phut</span>
+              </div>
+              <div class="threeui-cornell-grid">
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 1: Tu khoa / Cues</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>Broadcasting Rules</li>
+                      <li>Trailing Alignment</li>
+                      <li>Stride-Zero Invariant</li>
+                      <li>Virtual Expansion</li>
+                      <li>ValueError Mismatch</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 2: Co che / Hinh hoc</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>(3, 1) + (1, 4) -> (3, 4)</li>
+                      <li>Cot A keo gian ngang 4 cot</li>
+                      <li>Hang B keo gian doc 3 hang</li>
+                      <li>Vien dut = O nho ao (stride=0)</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 3: Cong thuc / Code</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>c_k = max(a_k, b_k)</li>
+                      <li>stride_k = 0 khi a_k = 1</li>
+                      <li>a[:, None] + b[None, :]</li>
+                      <li>np.broadcast_to()</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="cornell-summary-box">
+                <div class="cornell-summary-title">[Ket luan cot loi 2 phut]</div>
+                <div>NumPy khong sao chep them du lieu khi phat thanh; no doc lai cung 1 o nho voi stride = 0. Giup tiet kiem hang tram megabyte RAM khi tinh toan tren ma tran lon.</div>
+              </div>
+            </div>
+
+            <!-- Progressive Steppers -->
+            <div class="step-hidden" data-step="1">
+              <p><strong>[Buoc 1]:</strong> Dem so 1 vao ben trai cua mang co it chieu hon de ca hai mang co so chieu bang nhau.</p>
+            </div>
+            <div class="step-hidden" data-step="2">
+              <p><strong>[Buoc 2]:</strong> So sanh tung cap chieu tu phai qua trai. Chieu co gia tri 1 duoc keo gian ao bang buoc nhay 0 byte.</p>
+            </div>
+            <div class="step-hidden" data-step="3">
+              <p><strong>[Buoc 3]:</strong> Tinh toan truc tiep tren ma tran ket qua ma khong ton them bat ky dung luong RAM trung gian nao.</p>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div class="interactive-pane">
+            <div class="threeui-glass-card threeui-slider-card">
+              <!-- Preset Scenario Buttons -->
+              <div style="margin-bottom: 12px;">
+                <div class="threeui-slider-header" style="margin-bottom: 8px;">
+                  <span>Chon kich ban phat thanh (Presets):</span>
+                  <span id="broadcast-status-badge" class="brand-badge">[BROADCAST COMPATIBLE]</span>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                  <button id="btn-broadcast-outer" class="threeui-btn active">[Preset 1: (3,1) + (1,4) -&gt; (3,4)]</button>
+                  <button id="btn-broadcast-row_bias" class="threeui-btn">[Preset 2: (4,3) + (3,) -&gt; (4,3)]</button>
+                  <button id="btn-broadcast-incompatible" class="threeui-btn">[Preset 3: (3,2) + (3,3) -&gt; FAIL]</button>
+                  <button id="btn-broadcast-tensor_3d" class="threeui-btn">[Preset 4: (2,3,1) + (1,4) -&gt; (2,3,4)]</button>
+                </div>
+              </div>
+
+              <!-- Alignment Trace Card -->
+              <div id="broadcast-alignment-card"></div>
+
+              <!-- Interactive Grids Display -->
+              <div class="broadcast-container">
+                <div class="broadcast-grids-row">
+                  <div id="broadcast-grid-a"></div>
+                  <div id="broadcast-grid-b"></div>
+                  <div id="broadcast-grid-c"></div>
+                </div>
+              </div>
+
+              <!-- Telemetry Grid -->
+              <div class="telemetry-grid" style="margin-top: 16px;">
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Phan tu thuc luu trong RAM</span>
+                  <span class="telemetry-val accent-indigo" id="broadcast-stored-elements">7 items (56 B)</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Phan tu neu sao chep day du</span>
+                  <span class="telemetry-val accent-rose" id="broadcast-naive-elements">24 items (192 B)</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">RAM tiet kiem nho Stride-0</span>
+                  <span class="telemetry-val accent-emerald" id="broadcast-memory-saved">70.8%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           Slide 3 / Section 3: Vectorization Speed Benchmark Simulator
+           =================================================================== -->
+      <section class="slide-frame doc-section" id="slide-vectorization" data-slide-index="2" data-slide-title="Vectorization Speed Benchmark &amp; SIMD Hardware Model">
+        <div class="doc-section-header">
+          <div class="doc-section-badge">[Module 03 · Hardware Architecture]</div>
+          <h2 class="doc-section-title">Vectorization Speed Benchmark Simulator &amp; SIMD Hardware Model</h2>
+          <p class="doc-section-subtitle">Khao sat chi phi Dynamic Dispatch cua Python vs Bo chi thi song song SIMD AVX-512</p>
+        </div>
+
+        <div class="threeui-split-pane">
+          <!-- Left Column -->
+          <div class="content-pane">
+            <p>
+              Tai sao trong Khoa hoc Du lieu nguoi ta tuyet doi tranh viet vong lap <code>for</code> truyen thong trong Python? 
+              Do la vi ban chat phan cung: Vong lap Python thuan bi tro ngai boi co che <strong>Dynamic Typing va Boxing</strong>. 
+              Moi so nguyen trong Python la mot <code>PyObject</code> nang 28 bytes nam rai rac khap bo nho Heap, khien CPU lien tuc bi 
+              <strong>L1/L2 Cache Miss</strong> khi truy duoi cac con tro.
+            </p>
+
+            <p>
+              Nguoc lai, NumPy sap xep du lieu lien ke thanh cac khoi 64-byte vua khop mot dong Cache Line cua CPU. 
+              Cac bo xu ly hien dai ap dung <strong>SIMD (Single Instruction, Multiple Data - vi du AVX-512)</strong>, cho phep tinh toan song song tren 
+              8 so thuc 64-bit chi trong dung 1 chu ky dong ho CPU:
+              <span class="katex-reactive-formula">
+                T_{\text{py}}(N) \approx 62.5 \times N\text{ ns}, \quad T_{\text{np}}(N) \approx 2500 + 0.21 \times N\text{ ns}
+              </span>
+              He so gia toc tang vot tu $2.5\times$ o mang nho len toi gan $300\times$ khi mang dat hang trieu phan tu!
+            </p>
+
+            <!-- Cornell 3-Column [Chep vao vo] Note Block -->
+            <div class="threeui-cornell-box">
+              <div class="threeui-cornell-header">
+                <span class="threeui-cornell-tag">[Chep vao vo - Cornell 3 Cot]</span>
+                <span class="threeui-cornell-time">Thoi gian viet: 15 phut</span>
+              </div>
+              <div class="threeui-cornell-grid">
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 1: Tu khoa / Cues</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>SIMD Vectorization</li>
+                      <li>AVX-512 (8 Doubles / Cycle)</li>
+                      <li>Cache Line Prefetching</li>
+                      <li>PyObject Boxing Overhead</li>
+                      <li>Amdahl's Law</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 2: Co che / Hinh hoc</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>Python: Mang con tro roi rac -> Cache Miss 72%</li>
+                      <li>NumPy: Mang byte dac -> Cache Miss 1.8%</li>
+                      <li>Thanh ghi 512-bit thuc thi 8 phep tinh/cycle</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="cornell-col">
+                  <div class="cornell-col-title">Cot 3: Cong thuc / Code</div>
+                  <div class="cornell-col-body">
+                    <ul>
+                      <li>S(N) = (62.5*N) / (2500 + 0.21*N)</li>
+                      <li>np.sum(arr) thay vi for x in arr</li>
+                      <li>Gia toc: 100x - 300x</li>
+                      <li>Tran gia toc ly thuyet: ~297.6x</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="cornell-summary-box">
+                <div class="cornell-summary-title">[Ket luan cot loi 2 phut]</div>
+                <div>Vectorization khong chi la viet code ngan hon; no la su chuyen doi kien truc tu truy duoi con tro don le sang dong chay du lieu song song thang vao thanh ghi SIMD cua vi xu ly.</div>
+              </div>
+            </div>
+
+            <!-- Progressive Steppers -->
+            <div class="step-hidden" data-step="1">
+              <p><strong>[Buoc 1]:</strong> O quy mo mang nho ($N = 10^2$), chi phi goi wrapper C chiem uu the, gia toc chi dat khoang 2.5x.</p>
+            </div>
+            <div class="step-hidden" data-step="2">
+              <p><strong>[Buoc 2]:</strong> Khi mang tang len $N = 10^4$, chi phi wrapper bi triet tieu, bo nho dem cache phat huy tac dung, gia toc dat 135x.</p>
+            </div>
+            <div class="step-hidden" data-step="3">
+              <p><strong>[Buoc 3]:</strong> O quy mo lon ($N \ge 10^6$), song song hoa SIMD dat hieu suat toi da, tieng toi gioi han tran ~297.6x.</p>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div class="interactive-pane">
+            <div class="threeui-glass-card threeui-slider-card">
+              <!-- Logarithmic Array Size Slider -->
+              <div class="threeui-slider-row">
+                <div class="threeui-slider-header">
+                  <span>So luong phan tu (N):</span>
+                  <span class="slider-readout accent-cyan" id="vec-val-n">10,000</span>
+                </div>
+                <input type="range" class="threeui-range-slider" id="vec-slider-n" min="2" max="7" step="0.2" value="4">
+              </div>
+
+              <!-- Operation Selector -->
+              <div style="margin: 12px 0;">
+                <div class="threeui-slider-header" style="margin-bottom: 6px;">
+                  <span>Loai phep toan so sanh:</span>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  <button id="btn-vec-op-add" class="threeui-btn active">[Cong 2 mang (a + b)]</button>
+                  <button id="btn-vec-op-cumsum" class="threeui-btn">[Tong tich luy (cumsum)]</button>
+                  <button id="btn-vec-op-filter" class="threeui-btn">[Loc mat na (a &gt; 50)]</button>
+                </div>
+              </div>
+
+              <!-- Animated Race Progress Bars -->
+              <div class="benchmark-race-box">
+                <div class="race-track-row">
+                  <div class="race-header">
+                    <span style="color:var(--threeui-accent-rose);">Python Iterative Loop:</span>
+                    <span id="vec-time-python" style="font-weight:700;">625.00 µs</span>
+                  </div>
+                  <div class="race-bar-bg">
+                    <div class="race-bar-fill race-bar-python" id="race-bar-python" style="width: 15%;"></div>
+                  </div>
+                </div>
+
+                <div class="race-track-row">
+                  <div class="race-header">
+                    <span style="color:var(--threeui-accent-emerald);">NumPy SIMD Vectorized:</span>
+                    <span id="vec-time-numpy" style="font-weight:700;">4.60 µs</span>
+                  </div>
+                  <div class="race-bar-bg">
+                    <div class="race-bar-fill race-bar-numpy" id="race-bar-numpy" style="width: 100%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Golden Speedup Badge -->
+              <div class="speedup-badge-center">
+                <span id="vec-speedup-multiplier" class="brand-badge">[135.9x Faster]</span>
+              </div>
+
+              <!-- Live SVG Speedup Curve -->
+              <div style="margin-top: 10px;">
+                <div class="threeui-slider-header">
+                  <span>Duong cong gia toc thuc te S(N) tren thang log:</span>
+                </div>
+                <svg class="speedup-svg-canvas" viewBox="0 0 460 160" id="vec-speedup-svg"></svg>
+              </div>
+
+              <!-- Telemetry Cards -->
+              <div class="telemetry-grid" style="margin-top: 14px;">
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Ty le Cache Miss</span>
+                  <span class="telemetry-val accent-rose">Python 72% / NP 1.8%</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Che do SIMD</span>
+                  <span class="telemetry-val accent-cyan">AVX-512 (8x 64-bit)</span>
+                </div>
+                <div class="threeui-glass-card telemetry-card">
+                  <span class="telemetry-label">Gioi han tran ly thuyet</span>
+                  <span class="telemetry-val accent-amber">~297.6x Max</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Slide Deck Navigation HUD (Deck Mode) -->
+  <footer class="threeui-deck-hud">
+    <!-- Top Progress Bar -->
+    <div class="slide-progress-bar-container">
+      <div class="slide-progress-bar" id="slide-progress-bar"></div>
+    </div>
+
+    <!-- Left: Prev/Next Buttons & Shortcuts -->
+    <div class="hud-left">
+      <button class="threeui-btn" id="hud-prev-btn" onclick="ThreeUIEngine.prevSlide()">[Prev]</button>
+      <button class="threeui-btn" id="hud-next-btn" onclick="ThreeUIEngine.nextSlide()">[Next]</button>
+      <span class="hud-counter" id="hud-slide-counter">[1 / 3]</span>
+    </div>
+
+    <!-- Center: Slide Title -->
+    <div class="hud-center">
+      <span class="hud-title" id="hud-slide-title" style="font-weight:600; font-size:0.9rem; color:var(--threeui-text-muted);">
+        NumPy Multi-Dimensional Array Slicing &amp; Strides
+      </span>
+    </div>
+
+    <!-- Right: Hints & Overview -->
+    <div class="hud-right">
+      <div class="hud-shortcuts-hint">
+        <span class="shortcut-badge">[&lt;- / -&gt;]</span>
+        <span>Navigate</span>
+        <span class="shortcut-badge">[M]</span>
+        <span>Mode</span>
+        <span class="shortcut-badge">[T]</span>
+        <span>Theme</span>
+        <span class="shortcut-badge">[F]</span>
+        <span>Fullscreen</span>
+        <span class="shortcut-badge">[O]</span>
+        <span>Overview</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Core Scripts -->
+  <script src="../engine/threeui-shader-bg.js"></script>
+  <script src="../engine/threeui-engine.js"></script>
+  <script src="./models_buoi2.js"></script>
+</body>
+</html>

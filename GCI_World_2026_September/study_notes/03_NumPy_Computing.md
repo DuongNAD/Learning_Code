@@ -7,6 +7,7 @@
 
 ---
 
+# PHẦN I: LÝ THUYẾT (THEORY)
 ## 1. Khung Lý Thuyết & Nền Tảng Khái Niệm (R1)
 
 ### 1.1 Động Lực Học Thuật: Tại Sao Python List Không Thích Hợp Cho Tính Toán Số Học?
@@ -106,231 +107,6 @@ Thư viện `numpy.linalg` cung cấp đầy đủ các thuật toán đại s�
 - **Phân rã ma trận (Matrix Factorization)**: Phân rã trị riêng và véc-tơ riêng (`LA.eig`), Phân rã giá trị suy biến (Singular Value Decomposition - SVD: $\mathbf{A} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T$ qua `LA.svd`).
 
 ---
-
-## 2. Mã Nguồn Python & Kỹ Thuật Thực Thi Cốt Lõi (R2)
-
-### 2.1 Minh Chứng Tốc Độ: Véc-tơ Hóa NumPy vs Vòng Lặp Python List
-
-```python
-# Import các thư viện nền tảng
-import numpy as np
-import time
-
-# Thiết lập kích thước tập dữ liệu lớn: 1 triệu phần tử
-size = 10**6
-
-# Tạo Python list và NumPy ndarray chứa cùng một dãy số từ 0 đến 999,999
-python_list = list(range(size))
-numpy_array = np.arange(size)
-
-# Đo lường thời gian tính tổng bằng vòng lặp Python chuẩn
-start_list = time.time()
-sum_python = sum(python_list)
-end_list = time.time()
-time_list = end_list - start_list
-
-# Đo lường thời gian tính tổng bằng hàm véc-tơ hóa np.sum của NumPy
-start_np = time.time()
-sum_numpy = np.sum(numpy_array)
-end_np = time.time()
-time_numpy = end_np - start_np
-
-print(f"Tổng kết quả: {sum_python} == {sum_numpy}")
-print(f"Thời gian Python List: {time_list:.6f} giây")
-print(f"Thời gian NumPy Array: {time_numpy:.6f} giây")
-print(f"Tốc độ NumPy nhanh gấp: {time_list / time_numpy:.1f} lần!")
-# Kết quả thực tế: NumPy nhanh hơn từ 40 - 80 lần nhờ C-contiguous buffer và SIMD
-```
-
----
-
-### 2.2 Thực Thi Phép Toán Ufunc & Chuyển Đổi Logarit An Toàn
-
-```python
-import numpy as np
-
-# Dữ liệu đo lượng mưa hàng ngày (mm), trong đó có những ngày hoàn toàn không mưa (0.0 mm)
-precipitation = np.array([0.0, 5.2, 0.0, 18.5, 0.0, 120.4])
-
-# 1. Thử nghiệm log thông thường: np.log(0) sẽ sinh ra -inf
-log_raw = np.log(precipitation)
-print("Log tự nhiên thông thường (có chứa -inf):", log_raw)
-# Output cảnh báo: RuntimeWarning: divide by zero encountered in log
-
-# 2. Sử dụng ufunc an toàn: np.log1p(x) = ln(1 + x), loại bỏ hoàn toàn giá trị -inf
-log_safe = np.log1p(precipitation)
-print("Log1p an toàn (chuẩn hóa dữ liệu mưa):", log_safe)
-# Output: [0.         1.82454929 0.         2.97041447 0.         4.79909068]
-
-# 3. Phép biến đổi phục hồi đảo ngược: np.expm1(y) = exp(y) - 1
-recovered_prcp = np.expm1(log_safe)
-print("Khôi phục lượng mưa gốc ban đầu:", np.round(recovered_prcp, 2))
-```
-
----
-
-### 2.3 Nguyên Lý Broadcasting & Thao Tác Trục `axis=0`, `axis=1`
-
-```python
-import numpy as np
-
-# Giả lập ma trận điểm số của 3 học sinh trên 3 môn học (3 hàng, 3 cột)
-scores = np.array([
-    [75, 80, 90],  # Học sinh 1: Văn, Toán, Anh
-    [60, 95, 85],  # Học sinh 2
-    [85, 70, 65]   # Học sinh 3
-])
-
-# 1. Tính điểm trung bình của TỪNG MÔN HỌC (theo cột): axis=0 (dọc xuống)
-subject_means = np.mean(scores, axis=0)
-print("Điểm trung bình từng môn (Văn, Toán, Anh):", subject_means)
-# Shape: (3,) -> [73.33, 81.67, 80.00]
-
-# 2. Tính điểm trung bình của TỪNG HỌC SINH (theo hàng): axis=1 (ngang qua)
-student_means = np.mean(scores, axis=1)
-print("Điểm trung bình từng học sinh:", student_means)
-# Shape: (3,) -> [81.67, 80.00, 73.33]
-
-# 3. Áp dụng Broadcasting: Trừ điểm số của từng môn cho điểm trung bình môn đó
-# Ma trận scores shape (3, 3) trừ subject_means shape (3,)
-# Mảng subject_means tự động mở rộng ảo thành shape (3, 3) bằng cách lặp lại theo hàng
-centered_by_subject = scores - subject_means
-print("Ma trận điểm số đã trừ trung bình môn (Mean-centered per subject):\n", np.round(centered_by_subject, 2))
-
-# 4. Giữ nguyên số chiều với keepdims=True để trừ trung bình học sinh
-# student_means shape (3, 1) broadcast ngang qua các cột
-student_means_2d = np.mean(scores, axis=1, keepdims=True)
-centered_by_student = scores - student_means_2d
-print("Ma trận điểm số đã trừ trung bình học sinh (shape 3x1):\n", np.round(centered_by_student, 2))
-```
-
----
-
-### 2.4 Cạm Bẫy Slicing View vs Advanced Indexing Copy
-
-```python
-import numpy as np
-
-# Khởi tạo mảng số nguyên gốc
-original = np.array([10, 20, 30, 40, 50, 60])
-
-# TRƯỜNG HỢP 1: Basic Slicing tạo ra một VIEW (bản chiếu bộ nhớ)
-view_slice = original[1:4]  # Trích xuất phần tử 20, 30, 40
-print("View ban đầu:", view_slice)
-
-# Biến đổi phần tử đầu tiên của view
-view_slice[0] = 999
-print("View sau khi đổi:", view_slice)
-print("Mảng gốc ĐÃ BỊ THAY ĐỔI THEO:", original)  # Phần tử 20 đã biến thành 999!
-
-# TRƯỜNG HỢP 2: Khắc phục bằng phương thức .copy() tường minh
-original = np.array([10, 20, 30, 40, 50, 60])
-safe_copy = original[1:4].copy()
-safe_copy[0] = 999
-print("Copy sau khi đổi:", safe_copy)
-print("Mảng gốc VẪN BẢO TOÀN NGUYÊN VẸN:", original)  # Vẫn là 20
-
-# TRƯỜNG HỢP 3: Advanced Integer Indexing tự động tạo một COPY
-index_array = original[[1, 3]]  # Lấy phần tử tại index 1 và 3
-index_array[0] = 777
-print("Mảng gốc KHÔNG BỊ ẢNH HƯỞNG bởi Advanced Indexing:", original)
-```
-
----
-
-### 2.5 Đại Số Tuyến Tính Nâng Cao (`numpy.linalg`)
-
-```python
-import numpy as np
-from numpy import linalg as LA
-
-# Định nghĩa ma trận vuông cấp 2 A
-A = np.array([[3.0, 2.0],
-              [1.0, 4.0]])
-
-# 1. Tính định thức Determinant
-det_A = LA.det(A)
-print(f"Định thức det(A) = 3*4 - 2*1 = {det_A:.2f}")  # det(A) = 10.00
-
-# 2. Tính ma trận nghịch đảo A^(-1)
-inv_A = LA.inv(A)
-print("Ma trận nghịch đảo A^(-1):\n", inv_A)
-
-# 3. Kiểm chứng tính chất A @ A^(-1) = Ma trận đơn vị Identity I
-identity = A @ inv_A  # Phép nhân ma trận bằng toán tử @
-print("Tích A @ A^(-1) (Ma trận đơn vị):\n", np.round(identity, 6))
-
-# 4. Tính các chuẩn véc-tơ của vector v = [3, -4]
-v = np.array([3.0, -4.0])
-norm_l1 = LA.norm(v, ord=1)       # L1: |3| + |-4| = 7.0
-norm_l2 = LA.norm(v, ord=2)       # L2: sqrt(3^2 + (-4)^2) = 5.0
-norm_inf = LA.norm(v, ord=np.inf) # Linf: max(|3|, |-4|) = 4.0
-print(f"Chuẩn véc-tơ v: L1={norm_l1}, L2={norm_l2}, L-infinity={norm_inf}")
-
-# 5. Phân rã giá trị suy biến Singular Value Decomposition (SVD)
-U, S, Vt = LA.svd(A)
-print("SVD - Ma trận U:\n", U)
-print("SVD - Vector giá trị suy biến Sigma:", S)
-print("SVD - Ma trận V chuyển vị:\n", Vt)
-```
-
----
-
-### 2.6 Bài Tập Về Nhà 1: Thuật Toán Lọc Mảng Chia Hết Cho 5 Và Là Số Lẻ (`HW1 for Session2.ipynb`)
-
-Đoạn mã dưới đây là lời giải mẫu đạt điểm tối đa $100\%$ trên hệ thống chấm bài tự động Omnicampus của Đại học Tokyo:
-
-```python
-import numpy as np
-
-def homework(a):
-    """
-    Hàm lọc mảng NumPy 1D theo yêu cầu Bài tập 1 Khóa học GCI World:
-    - Đầu vào: mảng 1 chiều chứa các số nguyên `a` kiểu `np.ndarray`.
-    - Điều kiện lọc đồng thời: 
-      1. Là bội số của 5: (a % 5 == 0)
-      2. Chia cho 2 dư 1 (tức là số lẻ): (a % 2 == 1) hoặc (a % 2 != 0)
-    - Đầu ra: mảng 1D chỉ chứa các phần tử thỏa mãn cả 2 tiêu chí trên.
-    """
-    # Xây dựng mặt nạ Boolean bằng toán tử bitwise & và dấu ngoặc bắt buộc
-    condition_mask = (a % 5 == 0) & (a % 2 == 1)
-    
-    # Trích xuất các phần tử thỏa mãn mặt nạ Boolean
-    my_result = a[condition_mask]
-    
-    return my_result
-
-# === HỆ THỐNG KIỂM THỬ ĐỘC LẬP (TEST SUITE) ===
-
-# Test Case 1: Ví dụ mẫu trong đề bài
-test1 = np.array([1, 5, 10, 3, 4, 25, 30])
-res1 = homework(test1)
-print("Test 1 Result:", res1)
-assert np.array_equal(res1, np.array([5, 25])), "Test 1 Thất bại!"
-
-# Test Case 2: Mảng có nhiều bội số của 5 cả chẵn lẫn lẻ
-test2 = np.array([11, 15, 20, 21, 35, 40, 45])
-res2 = homework(test2)
-print("Test 2 Result:", res2)
-assert np.array_equal(res2, np.array([15, 35, 45])), "Test 2 Thất bại!"
-
-# Test Case 3: Trường hợp biên không có phần tử nào thỏa mãn (trả về mảng rỗng)
-test3 = np.array([2, 4, 6, 8, 10, 20])
-res3 = homework(test3)
-print("Test 3 Result (Mảng rỗng):", res3)
-assert len(res3) == 0, "Test 3 Thất bại!"
-
-# Test Case 4: Trường hợp số âm là bội số của 5 và là số lẻ
-test4 = np.array([-25, -20, -15, -5, 0, 5, 10])
-res4 = homework(test4)
-print("Test 4 Result (Số âm):", res4)
-assert np.array_equal(res4, np.array([-25, -15, -5, 5])), "Test 4 Thất bại!"
-
-print("Tất cả các bài kiểm thử đã vượt qua 100% xuất sắc!")
-```
-
----
-
 ## 3. Sơ Đồ Tư Duy & Quy Trình Trực Quan (Mermaid.js) (R4)
 
 ### 3.1 Không Gian Trục Của NumPy & Cơ Chế Giảm Chiều (NumPy 2D Axis Reduction)
@@ -389,7 +165,6 @@ flowchart TD
 ```
 
 ---
-
 ## 4. Hệ Thống Thẻ Ghi Nhớ Chủ Động (Active Recall Flashcards) (R3)
 
 ### Flashcard 1
@@ -449,7 +224,6 @@ flowchart TD
   - `A @ B` là phép nhân **ma trận đại số tuyến tính (Matrix Multiplication)**: Phần tử ở vị trí $(i, j)$ bằng tích vô hướng giữa hàng thứ $i$ của ma trận $A$ và cột thứ $j$ của ma trận $B$: $\sum_k A_{ik} B_{kj}$.
 
 ---
-
 ## 5. Các Bẫy Tri Thức & Trường Hợp Biên (Edge Cases)
 
 ### 5.1 Bẫy Phép Chia Cho 0: Sự Khác Biệt Giữa Python Thuần Và NumPy
@@ -473,3 +247,242 @@ flowchart TD
 - Nếu muốn thực hiện các phép nhân ma trận hoặc phân biệt rõ ràng giữa Véc-tơ Cột (Column Vector) và Véc-tơ Hàng (Row Vector), phải chuyển đổi tường minh sang mảng 2 chiều bằng phương thức reshape:
   - Véc-tơ hàng: `v.reshape(1, -1)` $\implies$ shape `(1, 5)`.
   - Véc-tơ cột: `v.reshape(-1, 1)` $\implies$ shape `(5, 1)`. Khi đó `v.T` sẽ đảo chuyển chính xác giữa hàng và cột.
+
+# PHẦN II: THỰC HÀNH (PRACTICE)
+
+## 2. Mã Nguồn Python & Kỹ Thuật Thực Thi Cốt Lõi (R2)
+
+### 2.1 Minh Chứng Tốc Độ: Véc-tơ Hóa NumPy vs Vòng Lặp Python List
+
+**Mục tiêu:** So sánh thời gian thực thi khi tính tổng 1 triệu phần tử bằng vòng lặp Python thuần và NumPy vectorization.
+
+**[DeepTutor Socratic Scaffolding]**
+- *Level 1 (Symptom observation):* Hàm nào trong NumPy được thiết kế để tính tổng toàn bộ mảng thay vì dùng vòng lặp `for`?
+- *Level 2 (Guiding questions):* Để tính thời gian chạy, bạn có thể lấy thời điểm bắt đầu và kết thúc bằng module `time`. Bạn sẽ thực hiện phép trừ như thế nào để ra khoảng thời gian?
+
+**Mã nguồn khởi tạo (Template):**
+```python
+# Import các thư viện nền tảng
+import numpy as np
+import time
+
+# Thiết lập kích thước tập dữ liệu lớn: 1 triệu phần tử
+size = 10**6
+
+# Tạo Python list và NumPy ndarray chứa cùng một dãy số từ 0 đến 999,999
+python_list = list(range(size))
+numpy_array = np.arange(size)
+
+# TODO 1: Đo lường thời gian tính tổng bằng vòng lặp Python chuẩn (gợi ý: dùng hàm sum())
+# start_list = time.time()
+# sum_python = ...
+# end_list = time.time()
+# time_list = ...
+
+# TODO 2: Đo lường thời gian tính tổng bằng NumPy (gợi ý: dùng np.sum())
+# start_np = ...
+# sum_numpy = ...
+# end_np = ...
+# time_numpy = ...
+
+# TODO 3: In ra tỷ lệ tốc độ giữa Python list và NumPy array
+# print(f"Tổng kết quả: {sum_python} == {sum_numpy}")
+# print(f"Tốc độ NumPy nhanh gấp: {time_list / time_numpy:.1f} lần!")
+```
+
+---
+
+### 2.2 Thực Thi Phép Toán Ufunc & Chuyển Đổi Logarit An Toàn
+
+**Mục tiêu:** Áp dụng Ufunc và xử lý an toàn lỗi toán học khi chia hoặc tính logarit với số 0.
+
+**[DeepTutor Socratic Scaffolding]**
+- *Level 1 (Symptom observation):* Chuyện gì xảy ra nếu bạn gọi trực tiếp `np.log()` trên mảng có giá trị 0?
+- *Level 2 (Guiding questions):* Hàm nào trong NumPy giúp bạn tính $\ln(1 + x)$ để tránh bị âm vô cực (`-inf`)? Hàm nào dùng để khôi phục lại dữ liệu gốc?
+
+**Mã nguồn khởi tạo (Template):**
+```python
+import numpy as np
+
+# Dữ liệu đo lượng mưa hàng ngày (mm), trong đó có những ngày hoàn toàn không mưa (0.0 mm)
+precipitation = np.array([0.0, 5.2, 0.0, 18.5, 0.0, 120.4])
+
+# TODO 1: Tính log thông thường bằng np.log và quan sát cảnh báo
+# log_raw = ...
+# print("Log tự nhiên thông thường (có chứa -inf):", log_raw)
+
+# TODO 2: Sử dụng hàm ufunc an toàn log1p để biến đổi dữ liệu
+# log_safe = ...
+# print("Log1p an toàn (chuẩn hóa dữ liệu mưa):", log_safe)
+
+# TODO 3: Sử dụng hàm đảo ngược expm1 để khôi phục lại dữ liệu lượng mưa ban đầu từ log_safe
+# recovered_prcp = ...
+# print("Khôi phục lượng mưa gốc ban đầu:", np.round(recovered_prcp, 2))
+```
+
+---
+
+### 2.3 Nguyên Lý Broadcasting & Thao Tác Trục `axis=0`, `axis=1`
+
+**Mục tiêu:** Tính toán thống kê theo từng chiều và áp dụng Broadcasting để chuẩn hóa dữ liệu ma trận.
+
+**[DeepTutor Socratic Scaffolding]**
+- *Level 1 (Symptom observation):* Để tính trung bình của từng môn học (theo cột), bạn nên sử dụng `axis=0` hay `axis=1`?
+- *Level 2 (Guiding questions):* Khi trừ điểm số của từng học sinh cho điểm trung bình của chính họ, nếu kết quả trung bình có shape `(3,)`, phép trừ `scores - student_means` có hợp lệ theo quy tắc Broadcasting không?
+- *Level 3 (Application Gap):* Làm thế nào để giữ nguyên số chiều `(3, 1)` cho mảng kết quả trung bình để Broadcasting hoạt động chính xác?
+
+**Mã nguồn khởi tạo (Template):**
+```python
+import numpy as np
+
+# Giả lập ma trận điểm số của 3 học sinh trên 3 môn học (3 hàng, 3 cột)
+scores = np.array([
+    [75, 80, 90],  # Học sinh 1: Văn, Toán, Anh
+    [60, 95, 85],  # Học sinh 2
+    [85, 70, 65]   # Học sinh 3
+])
+
+# TODO 1: Tính điểm trung bình của TỪNG MÔN HỌC (theo cột)
+# subject_means = ...
+# print("Điểm trung bình từng môn (Văn, Toán, Anh):", subject_means)
+
+# TODO 2: Tính điểm trung bình của TỪNG HỌC SINH (theo hàng)
+# student_means = ...
+# print("Điểm trung bình từng học sinh:", student_means)
+
+# TODO 3: Trừ điểm số của từng môn cho điểm trung bình môn đó (Sử dụng Broadcasting)
+# centered_by_subject = ...
+# print("Ma trận điểm số đã trừ trung bình môn (Mean-centered per subject):\n", np.round(centered_by_subject, 2))
+
+# TODO 4: Giữ nguyên số chiều với keepdims=True để trừ trung bình học sinh
+# student_means_2d = ...
+# centered_by_student = ...
+# print("Ma trận điểm số đã trừ trung bình học sinh (shape 3x1):\n", np.round(centered_by_student, 2))
+```
+
+---
+
+### 2.4 Cạm Bẫy Slicing View vs Advanced Indexing Copy
+
+**Mục tiêu:** Phân biệt hành vi cấp phát bộ nhớ giữa cắt mảng cơ bản (Slicing) và chỉ mục nâng cao (Advanced Indexing).
+
+**[DeepTutor Socratic Scaffolding]**
+- *Level 1 (Symptom observation):* Cú pháp `original[1:4]` tạo ra một mảng mới hoàn toàn (Copy) hay chỉ là một lăng kính (View) chiếu vào mảng gốc?
+- *Level 2 (Guiding questions):* Làm thế nào để sửa đổi một mảng con được tạo ra từ Slicing mà không làm biến đổi mảng gốc?
+- *Level 3 (Minimal counter-example):* Khi dùng Advanced Indexing với danh sách vị trí `original[[1, 3]]`, NumPy có chia sẻ bộ nhớ (View) nữa không?
+
+**Mã nguồn khởi tạo (Template):**
+```python
+import numpy as np
+
+# Khởi tạo mảng số nguyên gốc
+original = np.array([10, 20, 30, 40, 50, 60])
+
+# TRƯỜNG HỢP 1: Basic Slicing tạo ra một VIEW (bản chiếu bộ nhớ)
+# TODO 1: Cắt mảng từ vị trí 1 đến 3, sau đó thay đổi phần tử đầu tiên của view thành 999. In ra mảng original để quan sát sự thay đổi.
+# view_slice = ...
+# view_slice[0] = 999
+# print("Mảng gốc ĐÃ BỊ THAY ĐỔI THEO:", original)
+
+# Khôi phục mảng gốc
+original = np.array([10, 20, 30, 40, 50, 60])
+
+# TRƯỜNG HỢP 2: Khắc phục bằng phương thức .copy() tường minh
+# TODO 2: Cắt mảng như cũ nhưng tạo bản sao (Copy) an toàn. Thay đổi giá trị và in ra original.
+# safe_copy = ...
+# safe_copy[0] = 999
+# print("Mảng gốc VẪN BẢO TOÀN NGUYÊN VẸN:", original)
+
+# TRƯỜNG HỢP 3: Advanced Integer Indexing
+# TODO 3: Lấy phần tử tại index 1 và 3 bằng cách truyền một danh sách các index.
+# index_array = ...
+# index_array[0] = 777
+# print("Mảng gốc KHÔNG BỊ ẢNH HƯỞNG bởi Advanced Indexing:", original)
+```
+
+---
+
+### 2.5 Đại Số Tuyến Tính Nâng Cao (`numpy.linalg`)
+
+**Mục tiêu:** Thực hành các phép toán ma trận như tính định thức, nghịch đảo, nhân vô hướng và phân rã ma trận.
+
+**[DeepTutor Socratic Scaffolding]**
+- *Level 1 (Symptom observation):* Để nhân hai ma trận đại số tuyến tính trong NumPy, bạn dùng toán tử `*` hay `@`?
+- *Level 2 (Guiding questions):* Trước khi tìm ma trận nghịch đảo, điều kiện về định thức của ma trận vuông là gì? Làm sao để tính định thức bằng module `numpy.linalg`?
+- *Level 3 (Application Gap):* Khi bạn lấy tích của một ma trận với nghịch đảo của chính nó, kết quả lý tưởng sẽ là ma trận gì?
+
+**Mã nguồn khởi tạo (Template):**
+```python
+import numpy as np
+from numpy import linalg as LA
+
+# Định nghĩa ma trận vuông cấp 2 A
+A = np.array([[3.0, 2.0],
+              [1.0, 4.0]])
+
+# TODO 1: Tính định thức của A
+# det_A = ...
+# print(f"Định thức det(A) = {det_A:.2f}")
+
+# TODO 2: Tính ma trận nghịch đảo A^(-1)
+# inv_A = ...
+# print("Ma trận nghịch đảo A^(-1):\n", inv_A)
+
+# TODO 3: Tính tích A và A^(-1) (nhớ dùng đúng toán tử nhân ma trận)
+# identity = ...
+# print("Tích A @ A^(-1) (Ma trận đơn vị):\n", np.round(identity, 6))
+
+# TODO 4: Tính các chuẩn véc-tơ của vector v = [3, -4] bằng LA.norm() với tham số ord tương ứng
+# v = np.array([3.0, -4.0])
+# norm_l1 = ...       # Gợi ý: ord=1
+# norm_l2 = ...       # Gợi ý: ord=2
+# norm_inf = ...      # Gợi ý: ord=np.inf
+# print(f"Chuẩn véc-tơ v: L1={norm_l1}, L2={norm_l2}, L-infinity={norm_inf}")
+
+# TODO 5: Thực hiện phân rã suy biến SVD cho ma trận A
+# U, S, Vt = ...
+# print("SVD - Ma trận U:\n", U)
+# print("SVD - Vector giá trị suy biến Sigma:", S)
+# print("SVD - Ma trận V chuyển vị:\n", Vt)
+```
+
+---
+
+### 2.6 Bài Tập Thực Hành: Thuật Toán Lọc Mảng Chia Hết Cho 5 Và Là Số Lẻ (`HW1 for Session2.ipynb`)
+
+Mục tiêu của bài tập này là vận dụng kỹ thuật Boolean Masking để lọc mảng một chiều mà KHÔNG sử dụng vòng lặp `for`.
+
+**Yêu cầu:**
+- Đầu vào: mảng 1 chiều chứa các số nguyên `a` kiểu `np.ndarray`.
+- Điều kiện lọc đồng thời: 
+  1. Là bội số của 5
+  2. Chia cho 2 dư 1 (tức là số lẻ)
+- Đầu ra: mảng 1D chỉ chứa các phần tử thỏa mãn cả 2 tiêu chí trên.
+
+**[DeepTutor Socratic Scaffolding]**
+- *Level 1 (Symptom observation):* Bạn sẽ sử dụng toán tử nào trong Python để lấy phần dư của phép chia? (Gợi ý: modulo).
+- *Level 2 (Guiding questions):* Làm thế nào để kết hợp hai điều kiện trong NumPy một cách an toàn? Tại sao việc sử dụng toán tử `and` của Python thuần lại báo lỗi `ValueError`?
+- *Level 3 (Application Gap):* Thứ tự ưu tiên của toán tử trong Boolean Masking rất quan trọng. Điều gì sẽ xảy ra nếu bạn không bọc mỗi điều kiện so sánh trong cặp ngoặc đơn `()`?
+
+**Mã nguồn khởi tạo (Template):**
+
+```python
+import numpy as np
+
+def homework(a):
+    # TODO 1: Khởi tạo condition_mask kết hợp 2 điều kiện (nhớ sử dụng ngoặc đơn cho từng điều kiện)
+    # condition_mask = ...
+    
+    # TODO 2: Trích xuất các phần tử thỏa mãn mặt nạ Boolean
+    # my_result = ...
+    
+    # return my_result
+    pass
+
+# === HỆ THỐNG KIỂM THỬ ĐỘC LẬP (TEST SUITE) ===
+# Bạn có thể tự viết các assert để đối chiếu mảng kết quả với mảng kỳ vọng:
+# test1 = np.array([1, 5, 10, 3, 4, 25, 30])
+# assert np.array_equal(homework(test1), np.array([5, 25]))
+```
+
+---

@@ -1,0 +1,1004 @@
+/**
+ * ThreeUI Design System & Glassmorphism Stylesheet
+ * Milestone P2-M1 Core Styling Architecture
+ *
+ * Compliance: DeepTutor RFC 2119, emoji_policy: none
+ * Layouts: Responsive Continuous Document & 16:9 Presentation Deck
+ */
+
+/* ==========================================================================
+   1. Theme Variables & Color Palette
+   ========================================================================== */
+
+:root {
+  /* ThreeUI Dark Palette (Default) */
+  --threeui-bg: #090d16;
+  --threeui-surface: #0f172a;
+  --threeui-surface-elevated: #1e293b;
+  --threeui-surface-subtle: #162032;
+
+  --threeui-glass: rgba(15, 23, 42, 0.72);
+  --threeui-glass-hover: rgba(30, 41, 59, 0.85);
+  --threeui-glass-active: rgba(51, 65, 85, 0.90);
+  --threeui-glass-fallback: rgba(15, 23, 42, 0.96);
+
+  /* Borders & Highlights */
+  --threeui-border-subtle: rgba(255, 255, 255, 0.08);
+  --threeui-border-medium: rgba(255, 255, 255, 0.14);
+  --threeui-border-highlight: rgba(255, 255, 255, 0.22);
+  --threeui-border-accent: rgba(99, 102, 241, 0.50);
+  --threeui-border-glow: rgba(99, 102, 241, 0.25);
+
+  /* Typography */
+  --threeui-text: #f8fafc;
+  --threeui-text-muted: #94a3b8;
+  --threeui-text-subtle: #64748b;
+  --threeui-text-inverse: #0f172a;
+
+  /* Semantic Accents */
+  --threeui-accent: #6366f1;           /* Electric Indigo */
+  --threeui-accent-rgb: 99, 102, 241;
+  --threeui-accent-cyan: #06b6d4;      /* Cyan (Observed Data) */
+  --threeui-accent-cyan-rgb: 6, 182, 212;
+  --threeui-accent-emerald: #10b981;   /* Emerald (Optimal Profit) */
+  --threeui-accent-emerald-rgb: 16, 185, 129;
+  --threeui-accent-amber: #f59e0b;     /* Amber (Dark Data / Warning) */
+  --threeui-accent-amber-rgb: 245, 158, 11;
+  --threeui-accent-rose: #f43f5e;      /* Rose (Waste / Stockout Loss) */
+  --threeui-accent-rose-rgb: 244, 63, 94;
+  --threeui-accent-violet: #8b5cf6;    /* Violet (AI Algorithmic Engine) */
+  --threeui-accent-violet-rgb: 139, 92, 246;
+
+  /* Code & Telemetry */
+  --threeui-code-bg: #030712;
+  --threeui-code-border: rgba(255, 255, 255, 0.08);
+
+  /* Typography Stacks */
+  --threeui-font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --threeui-font-mono: "JetBrains Mono", "Fira Code", Menlo, Monaco, Consolas, monospace;
+  --threeui-font-math: "KaTeX_Main", "KaTeX_Math", serif;
+
+  /* Glassmorphism Filters & Shadows */
+  --threeui-glass-blur: blur(16px) saturate(180%);
+  --threeui-glass-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.50),
+                          0 2px 6px -1px rgba(0, 0, 0, 0.30),
+                          inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+  --threeui-glass-shadow-hover: 0 16px 40px -8px rgba(0, 0, 0, 0.65),
+                                0 4px 12px -2px rgba(0, 0, 0, 0.40),
+                                inset 0 1px 0 0 rgba(255, 255, 255, 0.20);
+  --threeui-glow-accent: 0 0 24px -4px rgba(99, 102, 241, 0.40);
+  --threeui-glow-cyan: 0 0 24px -4px rgba(6, 182, 212, 0.40);
+
+  /* Animation Timings */
+  --threeui-ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --threeui-ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --threeui-dur-fast: 150ms;
+  --threeui-dur-normal: 250ms;
+  --threeui-dur-slow: 400ms;
+}
+
+[data-theme="light"] {
+  --threeui-bg: #f8fafc;
+  --threeui-surface: #ffffff;
+  --threeui-surface-elevated: #f1f5f9;
+  --threeui-surface-subtle: #e2e8f0;
+
+  --threeui-glass: rgba(255, 255, 255, 0.78);
+  --threeui-glass-hover: rgba(241, 245, 249, 0.92);
+  --threeui-glass-active: #e2e8f0;
+  --threeui-glass-fallback: rgba(255, 255, 255, 0.98);
+
+  --threeui-border-subtle: rgba(0, 0, 0, 0.08);
+  --threeui-border-medium: rgba(0, 0, 0, 0.14);
+  --threeui-border-highlight: rgba(0, 0, 0, 0.22);
+  --threeui-border-accent: rgba(99, 102, 241, 0.60);
+  --threeui-border-glow: rgba(99, 102, 241, 0.20);
+
+  --threeui-text: #0f172a;
+  --threeui-text-muted: #475569;
+  --threeui-text-subtle: #94a3b8;
+  --threeui-text-inverse: #f8fafc;
+
+  --threeui-code-bg: #f1f5f9;
+  --threeui-code-border: rgba(0, 0, 0, 0.08);
+
+  --threeui-glass-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08),
+                          0 2px 6px -1px rgba(0, 0, 0, 0.04),
+                          inset 0 1px 0 0 rgba(255, 255, 255, 0.80);
+  --threeui-glass-shadow-hover: 0 16px 32px -6px rgba(0, 0, 0, 0.12),
+                                0 4px 10px -2px rgba(0, 0, 0, 0.06),
+                                inset 0 1px 0 0 rgba(255, 255, 255, 0.90);
+  --threeui-glow-accent: 0 0 20px -4px rgba(99, 102, 241, 0.25);
+  --threeui-glow-cyan: 0 0 20px -4px rgba(6, 182, 212, 0.25);
+}
+
+/* ==========================================================================
+   2. Reset, Base Typography & Background Canvas
+   ========================================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--threeui-bg);
+  color: var(--threeui-text);
+  font-family: var(--threeui-font-sans);
+  line-height: 1.6;
+  min-height: 100vh;
+  transition: background-color var(--threeui-dur-normal) var(--threeui-ease-smooth),
+              color var(--threeui-dur-normal) var(--threeui-ease-smooth);
+}
+
+/* Fixed Ambient WebGL / Canvas Background */
+#threeui-bg-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Monospace & Tabular Figures */
+code, pre, .tabular-nums, .dyn-slot, .metric-val, .telemetry-val, .slider-readout {
+  font-family: var(--threeui-font-mono);
+  font-feature-settings: "tnum" 1;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* ==========================================================================
+   3. Tri-Layer Glassmorphism Surface Core
+   ========================================================================== */
+
+.threeui-glass-card {
+  background: var(--threeui-glass);
+  backdrop-filter: var(--threeui-glass-blur);
+  -webkit-backdrop-filter: var(--threeui-glass-blur);
+  border: 1px solid var(--threeui-border-subtle);
+  border-radius: 16px;
+  box-shadow: var(--threeui-glass-shadow);
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--threeui-dur-fast) var(--threeui-ease-smooth),
+              box-shadow var(--threeui-dur-normal) var(--threeui-ease-spring),
+              transform var(--threeui-dur-normal) var(--threeui-ease-spring);
+}
+
+/* Sub-pixel Top Highlight Stroke */
+.threeui-glass-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.20) 50%,
+    transparent 100%);
+  pointer-events: none;
+}
+
+[data-theme="light"] .threeui-glass-card::before {
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.80) 50%,
+    transparent 100%);
+}
+
+.threeui-glass-card:hover {
+  border-color: var(--threeui-border-medium);
+  box-shadow: var(--threeui-glass-shadow-hover);
+}
+
+/* Fallback for Legacy Browsers without backdrop-filter support */
+@supports not (backdrop-filter: blur(16px)) {
+  .threeui-glass-card,
+  .threeui-header,
+  .threeui-deck-hud,
+  .threeui-cornell-box {
+    background: var(--threeui-glass-fallback) !important;
+  }
+}
+
+/* ==========================================================================
+   4. Header & Top Navigation Bar
+   ========================================================================== */
+
+.threeui-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: var(--threeui-glass);
+  backdrop-filter: var(--threeui-glass-blur);
+  -webkit-backdrop-filter: var(--threeui-glass-blur);
+  border-bottom: 1px solid var(--threeui-border-subtle);
+  transition: background-color var(--threeui-dur-normal);
+}
+
+.threeui-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-badge {
+  font-family: var(--threeui-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid var(--threeui-border-accent);
+  color: var(--threeui-accent);
+}
+
+.brand-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--threeui-text);
+}
+
+.threeui-nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Button & Pill Styles */
+.threeui-btn {
+  font-family: var(--threeui-font-sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--threeui-border-medium);
+  background: var(--threeui-surface-elevated);
+  color: var(--threeui-text);
+  cursor: pointer;
+  transition: background-color var(--threeui-dur-fast),
+              border-color var(--threeui-dur-fast),
+              color var(--threeui-dur-fast),
+              transform var(--threeui-dur-fast) var(--threeui-ease-spring);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+}
+
+.threeui-btn:hover {
+  background: var(--threeui-glass-hover);
+  border-color: var(--threeui-border-highlight);
+  transform: translateY(-1px);
+}
+
+.threeui-btn:active {
+  transform: translateY(0);
+}
+
+.threeui-btn.active {
+  background: var(--threeui-accent);
+  color: #ffffff;
+  border-color: var(--threeui-accent);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+}
+
+.btn-group {
+  display: inline-flex;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--threeui-border-medium);
+}
+
+.btn-group .threeui-btn {
+  border-radius: 0;
+  border: none;
+  border-right: 1px solid var(--threeui-border-subtle);
+}
+
+.btn-group .threeui-btn:last-child {
+  border-right: none;
+}
+
+/* ==========================================================================
+   5. Mode 1: Explorable Document View (data-view="document")
+   ========================================================================== */
+
+body[data-view="document"] {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+body[data-view="document"] .threeui-deck-hud,
+body[data-view="document"] .slide-overview-modal {
+  display: none !important;
+}
+
+.threeui-doc-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 32px 100px 32px;
+}
+
+.doc-section {
+  margin-bottom: 72px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid var(--threeui-border-subtle);
+}
+
+.doc-section:last-child {
+  border-bottom: none;
+}
+
+.doc-section-header {
+  margin-bottom: 24px;
+}
+
+.doc-section-badge {
+  font-family: var(--threeui-font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--threeui-accent);
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.doc-section-title {
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--threeui-text);
+  margin-bottom: 8px;
+}
+
+.doc-section-subtitle {
+  font-size: 1.05rem;
+  color: var(--threeui-text-muted);
+}
+
+/* 2-Column Split-Pane Grid */
+.threeui-split-pane {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 36px;
+  align-items: start;
+}
+
+.content-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.content-pane p {
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--threeui-text);
+}
+
+.sticky-widget-column, .interactive-pane {
+  position: sticky;
+  top: 88px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Scrubbable Reactive Inline Numbers */
+.scrubbable-num, .reactive-inline-val {
+  font-family: var(--threeui-font-mono);
+  font-weight: 700;
+  color: var(--threeui-accent);
+  background: rgba(99, 102, 241, 0.12);
+  padding: 1px 6px;
+  border-radius: 4px;
+  border-bottom: 2px dashed var(--threeui-accent);
+  cursor: ew-resize;
+  user-select: none;
+  transition: background-color var(--threeui-dur-fast);
+}
+
+.scrubbable-num:hover, .reactive-inline-val:hover {
+  background: rgba(99, 102, 241, 0.25);
+}
+
+/* ==========================================================================
+   6. Mode 2: Presentation Deck View (data-view="deck")
+   ========================================================================== */
+
+body[data-view="deck"] {
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--threeui-bg);
+}
+
+body[data-view="deck"] .threeui-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 52px;
+  padding: 8px 24px;
+}
+
+/* 16:9 Stage Viewport */
+.slide-deck-viewport {
+  position: fixed;
+  inset: 0;
+  top: 52px;
+  bottom: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  perspective: 1200px;
+}
+
+.slide-deck-stage {
+  width: 1920px;
+  height: 1080px;
+  position: absolute;
+  transform-origin: center center;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Slide Cards in Deck Mode */
+body[data-view="deck"] .slide-frame,
+body[data-view="deck"] .threeui-slide {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  padding: 72px 96px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: scale(0.97) translateX(30px);
+  transition: opacity 0.35s var(--threeui-ease-smooth),
+              transform 0.35s var(--threeui-ease-spring),
+              visibility 0.35s;
+}
+
+body[data-view="deck"] .slide-frame.active,
+body[data-view="deck"] .threeui-slide.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: scale(1) translateX(0);
+}
+
+body[data-view="deck"] .slide-frame .threeui-split-pane {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  height: 100%;
+}
+
+body[data-view="deck"] .doc-section-title {
+  font-size: 2.8rem;
+  line-height: 1.2;
+}
+
+body[data-view="deck"] .doc-section-subtitle {
+  font-size: 1.4rem;
+}
+
+body[data-view="deck"] .content-pane p {
+  font-size: 1.35rem;
+  line-height: 1.65;
+}
+
+body[data-view="deck"] .sticky-widget-column,
+body[data-view="deck"] .interactive-pane {
+  position: static;
+}
+
+/* Progressive Stepper States inside Slide Deck */
+.step-hidden {
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  transition: opacity var(--threeui-dur-normal) var(--threeui-ease-smooth),
+              transform var(--threeui-dur-normal) var(--threeui-ease-spring);
+}
+
+.step-revealed {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  transition: opacity var(--threeui-dur-normal) var(--threeui-ease-smooth),
+              transform var(--threeui-dur-normal) var(--threeui-ease-spring);
+}
+
+/* ==========================================================================
+   7. Slide Deck Navigation HUD
+   ========================================================================== */
+
+.threeui-deck-hud {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 56px;
+  background: var(--threeui-glass);
+  backdrop-filter: var(--threeui-glass-blur);
+  -webkit-backdrop-filter: var(--threeui-glass-blur);
+  border-top: 1px solid var(--threeui-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 100;
+}
+
+/* Top Edge Slide Progress Bar */
+.slide-progress-bar-container {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.slide-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--threeui-accent), var(--threeui-accent-cyan));
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
+  transition: width var(--threeui-dur-fast) linear;
+}
+
+.hud-left, .hud-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hud-counter {
+  font-family: var(--threeui-font-mono);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--threeui-text-muted);
+  min-width: 60px;
+  text-align: center;
+}
+
+.hud-shortcuts-hint {
+  font-size: 0.75rem;
+  color: var(--threeui-text-subtle);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.shortcut-badge {
+  font-family: var(--threeui-font-mono);
+  font-size: 0.70rem;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--threeui-surface-elevated);
+  border: 1px solid var(--threeui-border-medium);
+  color: var(--threeui-text);
+}
+
+/* ==========================================================================
+   8. Slide Overview Modal / Thumbnail Drawer
+   ========================================================================== */
+
+.slide-overview-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.slide-overview-modal.active {
+  display: flex !important;
+}
+
+.overview-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.overview-content {
+  position: relative;
+  z-index: 10;
+  width: 90vw;
+  max-width: 1200px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+}
+
+.overview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--threeui-border-subtle);
+}
+
+.overview-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--threeui-text);
+}
+
+.overview-close-btn {
+  font-family: var(--threeui-font-mono);
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--threeui-surface-elevated);
+  border: 1px solid var(--threeui-border-medium);
+  color: var(--threeui-text-muted);
+  cursor: pointer;
+}
+
+.overview-close-btn:hover {
+  color: var(--threeui-text);
+  border-color: var(--threeui-border-highlight);
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  overflow-y: auto;
+  padding: 8px 4px;
+}
+
+.overview-thumb {
+  background: var(--threeui-surface-elevated);
+  border: 1px solid var(--threeui-border-subtle);
+  border-radius: 10px;
+  aspect-ratio: 16 / 9;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  cursor: pointer;
+  color: var(--threeui-text);
+  transition: transform var(--threeui-dur-fast) var(--threeui-ease-spring),
+              border-color var(--threeui-dur-fast),
+              box-shadow var(--threeui-dur-fast);
+}
+
+.overview-thumb:hover {
+  transform: translateY(-2px);
+  border-color: var(--threeui-accent);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.25);
+}
+
+.overview-thumb.active {
+  border: 2px solid var(--threeui-accent);
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.4);
+  background: rgba(99, 102, 241, 0.15);
+}
+
+.thumb-idx {
+  font-family: var(--threeui-font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--threeui-accent);
+}
+
+.thumb-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* ==========================================================================
+   9. Cornell Handwritten [Chép vào vở] Note Box
+   ========================================================================== */
+
+.threeui-cornell-box {
+  background: var(--threeui-glass);
+  backdrop-filter: var(--threeui-glass-blur);
+  -webkit-backdrop-filter: var(--threeui-glass-blur);
+  border: 1px solid var(--threeui-border-accent);
+  border-left: 4px solid var(--threeui-accent);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin: 20px 0;
+  box-shadow: inset 0 0 16px rgba(99, 102, 241, 0.04);
+}
+
+.threeui-cornell-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--threeui-border-subtle);
+}
+
+.threeui-cornell-tag {
+  font-family: var(--threeui-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--threeui-accent);
+  background: rgba(99, 102, 241, 0.14);
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--threeui-border-accent);
+}
+
+.threeui-cornell-time {
+  font-family: var(--threeui-font-mono);
+  font-size: 0.75rem;
+  color: var(--threeui-text-subtle);
+}
+
+.threeui-cornell-grid {
+  display: grid;
+  grid-template-columns: 2fr 5fr 3fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.cornell-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cornell-col-title {
+  font-family: var(--threeui-font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--threeui-text-muted);
+  border-bottom: 1px dashed var(--threeui-border-subtle);
+  padding-bottom: 4px;
+}
+
+.cornell-col-body {
+  font-size: 0.90rem;
+  line-height: 1.5;
+  color: var(--threeui-text);
+}
+
+.cornell-col-body ul {
+  padding-left: 16px;
+}
+
+.cornell-summary-box {
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px dashed var(--threeui-border-accent);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  color: var(--threeui-text);
+}
+
+.cornell-summary-title {
+  font-family: var(--threeui-font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--threeui-accent);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+/* ==========================================================================
+   10. Controls: Custom Range Sliders & Steppers
+   ========================================================================== */
+
+.threeui-slider-card {
+  padding: 18px 20px;
+}
+
+.threeui-slider-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.threeui-slider-row:first-child {
+  margin-top: 0;
+}
+
+.threeui-slider-row:last-child {
+  margin-bottom: 0;
+}
+
+.threeui-slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--threeui-text-muted);
+}
+
+.slider-readout {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--threeui-accent);
+}
+
+.threeui-range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--threeui-surface-elevated);
+  border-radius: 9999px;
+  outline: none;
+  border: 1px solid var(--threeui-border-subtle);
+  transition: background-color var(--threeui-dur-fast);
+}
+
+.threeui-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--threeui-accent);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
+  cursor: pointer;
+  transition: transform var(--threeui-dur-fast) var(--threeui-ease-spring),
+              box-shadow var(--threeui-dur-fast) var(--threeui-ease-spring);
+}
+
+.threeui-range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.9);
+}
+
+.threeui-range-slider::-webkit-slider-thumb:active {
+  transform: scale(1.1);
+  background: #ffffff;
+  border-color: var(--threeui-accent);
+}
+
+.threeui-range-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--threeui-accent);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   11. Telemetry Chips & Metric Cards
+   ========================================================================== */
+
+.telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.telemetry-card {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.telemetry-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--threeui-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.telemetry-val {
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--threeui-text);
+}
+
+.telemetry-val.accent-cyan {
+  color: var(--threeui-accent-cyan);
+}
+
+.telemetry-val.accent-amber {
+  color: var(--threeui-accent-amber);
+}
+
+.telemetry-val.accent-emerald {
+  color: var(--threeui-accent-emerald);
+}
+
+.telemetry-val.accent-rose {
+  color: var(--threeui-accent-rose);
+}
+
+/* ==========================================================================
+   12. KaTeX In-Place Slot Binder & Mathematical Containment
+   ========================================================================== */
+
+.katex-reactive-formula {
+  contain: layout style;
+  min-height: 2.4em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  margin: 12px 0;
+  border-radius: 10px;
+  background: var(--threeui-surface-elevated);
+  border: 1px solid var(--threeui-border-subtle);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.dyn-slot {
+  display: inline-block;
+  font-family: var(--threeui-font-mono);
+  font-weight: 700;
+  color: var(--threeui-accent);
+  padding: 0 4px;
+  border-radius: 4px;
+  background: rgba(99, 102, 241, 0.12);
+  transition: background-color var(--threeui-dur-fast);
+}
+
+/* ==========================================================================
+   13. Responsive Media Queries
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .threeui-split-pane {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .sticky-widget-column, .interactive-pane {
+    position: static;
+  }
+
+  .threeui-cornell-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .threeui-doc-container {
+    padding: 24px 16px 80px 16px;
+  }
+}

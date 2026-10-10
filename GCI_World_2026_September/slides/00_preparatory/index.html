@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GCI World 2026 · Buoi 0: Nền Tảng Tiền Trạm (Preparatory Foundations)</title>
+
+  <!-- Reveal.js Core Stylesheets -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+
+  <!-- Syntax Highlighting (Atom One Dark) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
+
+  <!-- KaTeX Mathematical Typography -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+  <!-- Custom Glassmorphic Theme & Widgets -->
+  <link rel="stylesheet" href="../css/reveal-gci-theme.css">
+  <link rel="stylesheet" href="../css/slide-widgets.css">
+</head>
+<body>
+  <!-- HUD Header Overlay -->
+  <div class="deck-hud-header">
+    <div><strong>GCI WORLD 2026</strong> · Matsuo-Iwasawa Lab (Đại học Tokyo)</div>
+    <div style="display:flex; gap:12px; align-items:center;">
+      <a href="../index.html" style="color:var(--text-dim); text-decoration:none;">[Cổng Hub Slide]</a>
+      <span class="slide-header-badge cyan">BUỔI 0: NỀN TẢNG TIỀN TRẠM</span>
+      <button id="hud-trigger-btn" class="widget-btn" style="padding:2px 8px; font-size:11px;">[? Trợ giúp]</button>
+    </div>
+  </div>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ===================================================================
+           CHAPTER 0: WELCOME & COURSE ORIENTATION
+           =================================================================== -->
+      <section>
+        <section>
+          <div class="slide-header-badge cyan">MODULE NỀN TẢNG · BUỔI 0 (FOUNDATION MODULE · BUOI 0)</div>
+          <h1>Kiến Thức Tiền Trạm &amp; Nền Tảng Khoa Học Dữ Liệu</h1>
+          <p style="font-size:1.1em; color:#cbd5e1;">Preparatory Knowledge &amp; Data Science Fundamentals · Global Consumer Intelligence</p>
+          <div class="gci-card" style="margin-top:24px; max-width:750px;">
+            <p style="margin:0; font-size:0.95em;">
+              <strong>Khung chương trình (Course Framework):</strong> Phòng thí nghiệm Matsuo-Iwasawa, Trường Sau đại học Kỹ thuật, Đại học Tokyo.<br>
+              <strong>Mô hình sư phạm (Pedagogical Model):</strong> Điều hướng 2 chiều DeepTutor: Chiều ngang (Micro-Sessions) &times; Chiều dọc (Deep-Dives đào sâu).<br>
+              <strong>Phím điều hướng (Navigation):</strong> Nhấn <code class="inline-code">Space</code> hoặc <code class="inline-code">Phím phải</code> để tiến tới, <code class="inline-code">Phím xuống</code> để đào sâu chủ đề con, <code class="inline-code">O</code> để mở lưới tổng quan slide.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge">KIẾN TRÚC LỘ TRÌNH GIÁO TRÌNH (CURRICULUM ARCHITECTURE)</div>
+          <h2>Lộ Trình Học Phân Mảnh Buổi 0 (Buoi 0 Micro-Learning Roadmap)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>Phần I: Nền Tảng Cốt Lõi (Part I: Core Foundations)</h3>
+              <ul>
+                <li><strong>MS0.1:</strong> Quy trình Vòng đời Khoa học Dữ liệu 4 bước &amp; Chuyển dịch Bài toán Nghiệp vụ (4-Step Data Science Life Cycle &amp; Problem Translation)</li>
+                <li><strong>MS0.2:</strong> Phân loại Dữ liệu, Cơ chế Điền khuyết &amp; Chuẩn hóa Đặc trưng (Data Taxonomy, Imputation &amp; Feature Scaling)</li>
+                <li><strong>MS0.3:</strong> Bức tranh Học máy &amp; Phân loại Mô hình (Machine Learning Landscape &amp; Model Taxonomy)</li>
+              </ul>
+            </div>
+            <div class="gci-card">
+              <h3>Phần II: Phương Pháp Phân Tích (Part II: Analytical Methods)</h3>
+              <ul>
+                <li><strong>MS0.4:</strong> Thống kê Ứng dụng, Điểm Dị biệt Tukey IQR &amp; Hệ số Tương quan (Applied Statistics, IQR Outliers &amp; Correlation)</li>
+                <li><strong>MS0.5:</strong> Kiến trúc Lập trình Hướng đối tượng Python OOP &amp; Ghép nối Bảng Quan hệ SQL (Python OOP Architecture &amp; SQL Relational Joins)</li>
+                <li><strong>MS0.S:</strong> Ôn tập Tổng kết &amp; Sổ tay Chép vở Cornell (Review &amp; Cornell Synthesis Notebook)</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================================================================
+           CHAPTER 1: 4-STEP DATA SCIENCE LIFE CYCLE
+           =================================================================== -->
+      <section>
+        <section>
+          <div class="slide-header-badge cyan">BÀI HỌC VI MÔ 0.1 (MICRO-SESSION 0.1)</div>
+          <h2>Quy Trình Vòng Đời Khoa Học Dữ Liệu 4 Bước (4-Step Data Science Life Cycle)</h2>
+          <div class="gci-card">
+            <p>Khoa học Dữ liệu không đơn thuần là việc lập trình các thuật toán mô hình; đây là một cỗ máy kiểm chứng giả thuyết có hệ thống, khép kín, chuyển đổi các bài toán mơ hồ trong kinh doanh thành các bài toán tối ưu toán học có thể đo lường được.</p>
+          </div>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <div style="color:var(--accent-cyan); font-weight:700; margin-bottom:8px;">1. Thấu hiểu Nghiệp vụ &amp; Đặt Bài toán (Business Understanding &amp; Framing)</div>
+              <p style="font-size:0.9em; margin:0;">Xác định rõ ràng mục tiêu kinh doanh thực tế. Thiết lập các chỉ số định lượng đo lường được: Gia tăng doanh thu, giảm tỷ lệ khách hàng rời bỏ (churn), tối thiểu hóa chi phí lưu kho tồn đọng.</p>
+            </div>
+            <div class="gci-card">
+              <div style="color:var(--accent-indigo); font-weight:700; margin-bottom:8px;">2. Thu thập &amp; Tiền xử lý Dữ liệu (Data Collection &amp; Preprocessing)</div>
+              <p style="font-size:0.9em; margin:0;">Thu thập nhật ký từ cơ sở dữ liệu quan hệ, xử lý dữ liệu khuyết thiếu, giải quyết các quan sát bị kiểm duyệt (censored data), và xây dựng các ma trận đặc trưng bất biến.</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge cyan">MICRO-SESSION 0.1 · DEEP-DIVE (ĐÀO SÂU)</div>
+          <h2>Vòng Lặp Mô Hình Hóa, Đánh Giá &amp; Triển Khai (Modeling, Evaluation &amp; Deployment Loop)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <div style="color:var(--accent-emerald); font-weight:700; margin-bottom:8px;">3. Mô hình hóa &amp; Đánh giá Chéo (Modeling &amp; Validation)</div>
+              <p style="font-size:0.9em;">Lựa chọn mô hình cơ sở (baseline) trước khi thử nghiệm mô hình phức tạp. Bắt buộc phân chia nghiêm ngặt giữa tập huấn luyện (training) và tập kiểm định ngoài mẫu (out-of-fold validation) để ngăn ngừa hiện tượng rò rỉ dữ liệu (Data Leakage).</p>
+              <pre><code class="language-python">from sklearn.model_selection import KFold
+kf = KFold(n_splits=5, shuffle=True, random_state=42)
+for train_idx, val_idx in kf.split(X):
+    X_tr, X_val = X[train_idx], X[val_idx]</code></pre>
+            </div>
+            <div class="gci-card">
+              <div style="color:var(--accent-amber); font-weight:700; margin-bottom:8px;">4. Triển khai &amp; Vòng lặp Phản hồi Liên tục (Deployment &amp; Continuous Feedback)</div>
+              <p style="font-size:0.9em;">Đưa mô hình suy luận vào luồng sản xuất thực tế (production pipeline). Đo lường liên tục hiện tượng suy thoái dữ liệu (drift), hiệu năng mô hình và tác động thực tế tới nghiệp vụ kinh doanh.</p>
+              <div style="background:rgba(245,158,11,0.1); border-left:3px solid var(--accent-amber); padding:8px; border-radius:4px; font-size:0.85em;">
+                <strong>Bất biến (Invariant):</strong> Một mô hình đạt độ chính xác 95% ngoại tuyến (offline) nhưng không thay đổi được bất kỳ quyết định sản xuất nào trong thực tế thì mang lại giá trị kinh doanh bằng đúng 0%.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge">TÓM TẮT SỔ TAY VIẾT TAY (HANDWRITTEN NOTEBOOK SUMMARY)</div>
+          <h2>Tóm Tắt Cornell · MS0.1 Vòng Đời Khoa Học Dữ Liệu (4-Step Data Science Life Cycle)</h2>
+          <div class="cornell-slide-card">
+            <div class="cornell-col cornell-cues">
+              <div class="cornell-header">Gợi nhớ / Câu hỏi (Cues)</div>
+              <ul>
+                <li>Cạm bẫy lớn nhất khi lập tức nhảy vào code mô hình ML là gì?</li>
+                <li>Tại sao kiểm định ngoài mẫu (out-of-fold validation) lại là điều bắt buộc?</li>
+                <li>Đo lường thành công khi triển khai mô hình bằng thước đo nào?</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-notes">
+              <div class="cornell-header">Lý Thuyết Cốt Lõi (Core Notes)</div>
+              <ul>
+                <li><strong>4 Giai đoạn:</strong> Đặt bài toán &rarr; Tiền xử lý &rarr; Mô hình hóa &rarr; Vòng lặp phản hồi.</li>
+                <li><strong>Quy tắc Rò rỉ (Leakage Rule):</strong> Bất kỳ phép biến đổi nào fit trên tập kiểm định đều làm sai lệch khả năng tổng quát hóa của mô hình.</li>
+                <li><strong>Đồng bộ CRISP-DM:</strong> Khâu đánh giá luôn kết nối trực tiếp ngược lại bài toán nghiệp vụ ban đầu.</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-actions">
+              <div class="cornell-header">Hành Động &amp; Bất Biến Code (Actions)</div>
+              <ul>
+                <li>Fit các bộ chuẩn hóa (scaler) DUY NHẤT trên <code class="inline-code">X_train</code>: <code class="inline-code">scaler.fit_transform(X_tr)</code>.</li>
+                <li>Biến đổi tập kiểm tra bằng tham số đã fit: <code class="inline-code">scaler.transform(X_te)</code>.</li>
+                <li>Theo dõi sát sự chênh lệch giữa chỉ số ngoại tuyến (offline) và chỉ số trực tuyến (online).</li>
+              </ul>
+            </div>
+            <div class="cornell-summary-bar">
+              <strong>Tóm tắt cốt lõi [Chep vao vo]:</strong> Khoa học Dữ liệu là ngành kỹ thuật lặp khép kín. Việc định nghĩa bài toán chặt chẽ và kiểm định không rò rỉ dữ liệu quan trọng hơn nhiều so với việc chạy theo độ phức tạp của mô hình.
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================================================================
+           CHAPTER 2: DATA TAXONOMY & PREPROCESSING
+           =================================================================== -->
+      <section>
+        <section>
+          <div class="slide-header-badge emerald">BÀI HỌC VI MÔ 0.2 (MICRO-SESSION 0.2)</div>
+          <h2>Phân Loại Dữ Liệu &amp; Nền Tảng Làm Sạch (Data Taxonomy &amp; Cleaning Fundamentals)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>Các Loại Dữ Liệu &amp; Thang Đo (Data Types &amp; Scale)</h3>
+              <ul>
+                <li><strong>Định lượng (Numerical):</strong>
+                  <ul>
+                    <li>Liên tục (Continuous): Nhiệt độ, lợi suất cổ phiếu, độ trễ mạng</li>
+                    <li>Rời rạc (Discrete): Số lượng sản phẩm, lượng khách ghé thăm, số lỗi hỏng</li>
+                  </ul>
+                </li>
+                <li><strong>Phân loại (Categorical):</strong>
+                  <ul>
+                    <li>Định danh (Nominal): Mã cửa hàng, nhóm máu (không thứ tự)</li>
+                    <li>Thứ bậc (Ordinal): Điểm đánh giá khảo sát, trình độ học vấn (có thứ tự)</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+            <div class="gci-card">
+              <h3>Cơ Chế Khuyết Thiếu Dữ Liệu (Missing Data Mechanisms)</h3>
+              <ul>
+                <li><strong>MCAR (Completely at Random - Khuyết thiếu hoàn toàn ngẫu nhiên):</strong> Cơ chế thiếu độc lập với mọi biến số quan sát hay chưa quan sát.</li>
+                <li><strong>MAR (At Random - Khuyết thiếu ngẫu nhiên có điều kiện):</strong> Xác suất thiếu phụ thuộc vào các đặc trưng quan sát được khác (ví dụ: tuổi tác dự đoán việc giấu thu nhập).</li>
+                <li><strong>MNAR (Not at Random - Khuyết thiếu không ngẫu nhiên / Có chủ đích):</strong> Xác suất thiếu phụ thuộc trực tiếp vào chính giá trị đang bị thiếu (người thu nhập cực cao không khai báo lương).</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge emerald">MICRO-SESSION 0.2 · DEEP-DIVE (ĐÀO SÂU)</div>
+          <h2>Toán Học Về Chuẩn Hóa &amp; Co Giãn Đặc Trưng (Feature Scaling &amp; Standardization Math)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>Chuẩn Hóa Thang Đo Z (Z-Score Standardization)</h3>
+              <p>Đưa biến số về kỳ vọng trung bình bằng 0 và độ lệch chuẩn bằng 1. Cực kỳ thiết yếu cho Gradient Descent, PCA và SVM.</p>
+              <div class="katex-display">
+                $$z = \frac{x - \mu}{\sigma}, \quad \mu = \frac{1}{N}\sum_{i=1}^N x_i, \quad \sigma = \sqrt{\frac{1}{N}\sum_{i=1}^N (x_i - \mu)^2}$$
+              </div>
+            </div>
+            <div class="gci-card">
+              <h3>Chuẩn Hóa Cực Tiểu - Cực Đại (Min-Max Normalization)</h3>
+              <p>Giới hạn các đặc trưng nghiêm ngặt trong đoạn $[0, 1]$. Rất nhạy cảm với các điểm ngoại lai cực trị.</p>
+              <div class="katex-display">
+                $$x_{\text{scaled}} = \frac{x - x_{\min}}{x_{\max} - x_{\min}}$$
+              </div>
+              <pre><code class="language-python"># Chuẩn hóa bền vững với Scikit-Learn
+from sklearn.preprocessing import StandardScaler, RobustScaler
+scaler = RobustScaler() # Sử dụng khoảng tứ phân vị IQR, miễn nhiễm ngoại lai
+X_scaled = scaler.fit_transform(X_train)</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge">TÓM TẮT SỔ TAY VIẾT TAY (HANDWRITTEN NOTEBOOK SUMMARY)</div>
+          <h2>Tóm Tắt Cornell · MS0.2 Tiền Xử Lý &amp; Chuẩn Hóa (Data Taxonomy &amp; Scaling)</h2>
+          <div class="cornell-slide-card">
+            <div class="cornell-col cornell-cues">
+              <div class="cornell-header">Gợi nhớ / Câu hỏi (Cues)</div>
+              <ul>
+                <li>Tại sao Min-Max nguy hiểm khi xuất hiện ngoại lai đuôi nặng?</li>
+                <li>Khi nào nên tránh sử dụng One-Hot Encoding?</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-notes">
+              <div class="cornell-header">Lý Thuyết Cốt Lõi (Core Notes)</div>
+              <ul>
+                <li><strong>Chuẩn hóa Z-Score:</strong> Bảo toàn phân phối ban đầu; giúp bước nhảy gradient hội tụ đồng đều giữa các chiều.</li>
+                <li><strong>Số lượng phân loại lớn:</strong> One-Hot tạo ma trận thưa số chiều cực lớn; hãy dùng Target hoặc Embedding Encoding.</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-actions">
+              <div class="cornell-header">Hành Động &amp; Bất Biến Code (Actions)</div>
+              <ul>
+                <li>Kiểm tra số lượng giá trị null: <code class="inline-code">df.isna().sum()</code>.</li>
+                <li>Điền khuyết trước khi co giãn: Dùng Trung vị (Median) cho dữ liệu lệch, Trung bình (Mean) cho phân phối chuẩn.</li>
+                <li>Mã hóa tập test bằng danh mục phân loại thu được từ tập train.</li>
+              </ul>
+            </div>
+            <div class="cornell-summary-bar">
+              <strong>Tóm tắt cốt lõi [Chep vao vo]:</strong> Chuẩn hóa đặc trưng liên tục ($z = (x - \mu)/\sigma$) cho các mô hình dựa trên gradient hoặc khoảng cách. Điền khuyết bằng trung vị (median) cho phân phối lệch để triệt tiêu ảnh hưởng của ngoại lai.
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================================================================
+           CHAPTER 3: MACHINE LEARNING LANDSCAPE
+           =================================================================== -->
+      <section>
+        <section>
+          <div class="slide-header-badge amber">BÀI HỌC VI MÔ 0.3 (MICRO-SESSION 0.3)</div>
+          <h2>Bức Tranh Tổng Quan &amp; Các Trường Phái Học Máy (Machine Learning Landscape &amp; Paradigms)</h2>
+          <div class="grid-3col">
+            <div class="gci-card">
+              <div style="color:var(--accent-cyan); font-weight:700; margin-bottom:8px;">Học Có Giám Sát (Supervised Learning)</div>
+              <p style="font-size:0.88em;">Dữ liệu ghép cặp $(x_i, y_i)$. Học hàm ánh xạ xấp xỉ $f(x) \approx y$.</p>
+              <ul style="font-size:0.85em;">
+                <li>Hồi quy Tuyến tính (Linear Regression) &amp; Ridge/Lasso</li>
+                <li>Hồi quy Logistic (Logistic Regression)</li>
+                <li>Cây Quyết định &amp; Mô hình Kết hợp (RandomForest, LightGBM)</li>
+              </ul>
+            </div>
+            <div class="gci-card">
+              <div style="color:var(--accent-indigo); font-weight:700; margin-bottom:8px;">Học Không Giám Sát (Unsupervised Learning)</div>
+              <p style="font-size:0.88em;">Đầu vào không gán nhãn $\{x_i\}$. Khám phá hình học nội tại và các cụm dữ liệu.</p>
+              <ul style="font-size:0.85em;">
+                <li>K-Means &amp; Hỗn hợp Phân phối Gaussian (GMM)</li>
+                <li>Phân tích Thành phần Chính (PCA)</li>
+                <li>Chiếu giảm chiều t-SNE &amp; UMAP</li>
+              </ul>
+            </div>
+            <div class="gci-card">
+              <div style="color:var(--accent-emerald); font-weight:700; margin-bottom:8px;">AI Tự Giám Sát Hiện Đại (Self-Supervised AI)</div>
+              <p style="font-size:0.88em;">Tự sinh mục tiêu tiền huấn luyện trên kho ngữ liệu khổng lồ không gán nhãn.</p>
+              <ul style="font-size:0.85em;">
+                <li>Mô hình Mặt nạ Autoencoder (BERT)</li>
+                <li>Tự hồi quy từ kế tiếp Next-Token (GPT)</li>
+                <li>Tiền huấn luyện tương phản Contrastive (CLIP)</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge amber">MICRO-SESSION 0.3 · DEEP-DIVE (ĐÀO SÂU)</div>
+          <h2>Cơ Chế Hoạt Động: Hồi Quy Tuyến Tính OLS vs Cây Quyết Định (Linear Regression vs Decision Tree Mechanics)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>Hồi Quy Tuyến Tính OLS (Linear Regression)</h3>
+              <p>Tìm vector tham số tối ưu $\hat{\beta}$ để tối thiểu hóa tổng bình phương phần dư:</p>
+              <div class="katex-display">
+                $$\hat{\beta} = (X^T X)^{-1} X^T y, \quad \mathcal{L}(\beta) = \frac{1}{2N} \|y - X\beta\|_2^2$$
+              </div>
+              <p style="font-size:0.85em; color:var(--text-muted);">Giả định quan hệ cộng tuyến tính, phương sai sai số đồng nhất (homoscedasticity) và phần dư không tương quan.</p>
+            </div>
+            <div class="gci-card">
+              <h3>Cây Quyết Định &amp; Độ Vẩn Đục Gini (Decision Trees &amp; Gini)</h3>
+              <p>Phân chia không gian đặc trưng một cách tham lam để tối thiểu hóa độ vẩn đục tại từng nút:</p>
+              <div class="katex-display">
+                $$I_G(t) = 1 - \sum_{k=1}^K p_k^2, \quad \Delta I_G = I_G(\text{parent}) - \sum \frac{N_c}{N_p} I_G(\text{child})$$
+              </div>
+              <p style="font-size:0.85em; color:var(--text-muted);">Phi tham số, bất biến trước các biến đổi co giãn đơn điệu, nắm bắt tốt tương tác bậc cao giữa các đặc trưng.</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge">TÓM TẮT SỔ TAY VIẾT TAY (HANDWRITTEN NOTEBOOK SUMMARY)</div>
+          <h2>Tóm Tắt Cornell · MS0.3 Học Máy (Machine Learning Landscape)</h2>
+          <div class="cornell-slide-card">
+            <div class="cornell-col cornell-cues">
+              <div class="cornell-header">Gợi nhớ / Câu hỏi (Cues)</div>
+              <ul>
+                <li>Khi nào phương trình chính tắc OLS $(X^T X)^{-1}$ thất bại?</li>
+                <li>Tại sao mô hình cây bất biến trước các biến đổi đơn điệu?</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-notes">
+              <div class="cornell-header">Lý Thuyết Cốt Lõi (Core Notes)</div>
+              <ul>
+                <li><strong>Đa cộng tuyến (Collinearity):</strong> Các đặc trưng phụ thuộc tuyến tính làm $X^TX$ suy biến; xử lý bằng điều chuẩn Ridge ($L_2$) hoặc Lasso ($L_1$).</li>
+                <li><strong>Phân nhánh Cây (Tree Splits):</strong> Chỉ phụ thuộc vào thứ tự xếp hạng; phép đổi $x \to \log(x)$ giữ nguyên ranh giới phân tách cấu trúc.</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-actions">
+              <div class="cornell-header">Hành Động &amp; Bất Biến Code (Actions)</div>
+              <ul>
+                <li>Kiểm tra số điều kiện: <code class="inline-code">np.linalg.cond(X)</code>.</li>
+                <li>Luôn khống chế độ sâu của cây: <code class="inline-code">max_depth=4</code> để kiểm soát hiện tượng quá khớp (overfitting).</li>
+                <li>Dùng Gini để tối ưu tốc độ tính toán, dùng Entropy cho các bài toán phân phối xác suất nhạy cảm.</li>
+              </ul>
+            </div>
+            <div class="cornell-summary-bar">
+              <strong>Tóm tắt cốt lõi [Chep vao vo]:</strong> Học có giám sát ánh xạ $(X \to y)$. Mô hình tuyến tính tối ưu hóa các siêu phẳng liên tục ($\beta = (X^TX)^{-1}X^Ty$); mô hình Cây xây dựng các siêu phẳng trực giao thông qua thuật toán tham lam giảm thiểu độ vẩn đục.
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================================================================
+           CHAPTER 4: APPLIED STATISTICS & OUTLIER DETECTION
+           =================================================================== -->
+      <section>
+        <section>
+          <div class="slide-header-badge">BÀI HỌC VI MÔ 0.4 (MICRO-SESSION 0.4)</div>
+          <h2>Toán Học Thống Kê Ứng Dụng &amp; Phát Hiện Điểm Dị Biệt (Applied Statistics &amp; Outlier Detection Math)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>Hàng Rào Ngoại Lai Tukey IQR Fences</h3>
+              <p>Ranh giới phi tham số dựa trên trung vị, hoàn toàn miễn nhiễm trước các điểm ngoại lai cực trị.</p>
+              <div class="katex-display">
+                $$\text{IQR} = Q_3 - Q_1$$
+                $$\text{Fence}_{\text{lower}} = Q_1 - 1.5 \times \text{IQR}$$
+                $$\text{Fence}_{\text{upper}} = Q_3 + 1.5 \times \text{IQR}$$
+              </div>
+              <p style="font-size:0.85em; color:var(--text-muted);">Các điểm rơi ngoài hàng rào được đánh dấu để tiến hành kiểm tra thực nghiệm.</p>
+            </div>
+            <div class="gci-card">
+              <h3>Hệ Số Tương Quan Tuyến Tính Pearson (Pearson Correlation Coefficient)</h3>
+              <p>Độ đo hiệp phương sai chuẩn hóa đánh giá mức độ phụ thuộc tuyến tính giữa 2 biến liên tục:</p>
+              <div class="katex-display">
+                $$r_{xy} = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum (x_i - \bar{x})^2 \sum (y_i - \bar{y})^2}} \in [-1, 1]$$
+              </div>
+              <div style="background:rgba(6,182,212,0.1); border-left:3px solid var(--accent-cyan); padding:8px; border-radius:4px; font-size:0.85em;">
+                <strong>Cảnh báo quan trọng:</strong> Hệ số tương quan $r = 0$ KHÔNG đồng nghĩa với độc lập thống kê (ví dụ hàm bậc hai $y = x^2$ có $r \approx 0$ dù hai biến phụ thuộc tất định 100%).
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge">TÓM TẮT SỔ TAY VIẾT TAY (HANDWRITTEN NOTEBOOK SUMMARY)</div>
+          <h2>Tóm Tắt Cornell · MS0.4 Thống Kê &amp; Điểm Dị Biệt (Applied Statistics &amp; IQR)</h2>
+          <div class="cornell-slide-card">
+            <div class="cornell-col cornell-cues">
+              <div class="cornell-header">Gợi nhớ / Câu hỏi (Cues)</div>
+              <ul>
+                <li>Tại sao giá trị trung bình rất nhạy cảm với ngoại lai trong khi trung vị lại bền vững?</li>
+                <li>Làm sao phát hiện mối quan hệ phi tuyến khi hệ số tương quan $r \approx 0$?</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-notes">
+              <div class="cornell-header">Lý Thuyết Cốt Lõi (Core Notes)</div>
+              <ul>
+                <li><strong>Điểm Sụp Đổ (Breakdown Point):</strong> Trung bình có điểm sụp đổ là $0\%$ (chỉ 1 ngoại lai $\infty$ kéo lệch toàn bộ). Trung vị có điểm sụp đổ lên tới $50\%$.</li>
+                <li><strong>Quy tắc Tukey IQR:</strong> Bao phủ $50\%$ dữ liệu ở giữa. Hàng rào $1.5 \times \text{IQR}$ bao bọc khoảng $\approx 99.3\%$ dữ liệu thuộc phân phối chuẩn.</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-actions">
+              <div class="cornell-header">Hành Động &amp; Bất Biến Code (Actions)</div>
+              <ul>
+                <li>Tính các phân vị: <code class="inline-code">q1, q3 = np.percentile(x, [25, 75])</code>.</li>
+                <li>Lọc bỏ ngoại lai: <code class="inline-code">clean_x = x[(x >= q1-1.5*iqr) &amp; (x &lt;= q3+1.5*iqr)]</code>.</li>
+                <li>Luôn quan sát đồ thị phân tán (scatter plot) trước khi tuyên bố hai biến số độc lập.</li>
+              </ul>
+            </div>
+            <div class="cornell-summary-bar">
+              <strong>Tóm tắt cốt lõi [Chep vao vo]:</strong> Hàng rào Tukey IQR ($Q_1 - 1.5\text{IQR}$, $Q_3 + 1.5\text{IQR}$) thiết lập ranh giới phát hiện ngoại lai bền vững. Hệ số Pearson $r$ chỉ đo lường mối liên kết tuyến tính đơn thuần.
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================================================================
+           CHAPTER 5: PYTHON OOP & SQL RELATIONAL MERGES
+           =================================================================== -->
+      <section>
+        <section>
+          <div class="slide-header-badge cyan">BÀI HỌC VI MÔ 0.5 (MICRO-SESSION 0.5)</div>
+          <h2>Kiến Trúc Lập Trình Hướng Đối Tượng Python OOP &amp; Ghép Nối Bảng (Python OOP &amp; Relational Joins Architecture)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>Kiến Trúc Estimator Chuẩn Scikit-Learn OOP</h3>
+              <pre><code class="language-python">class CustomScaler:
+    def __init__(self, with_mean=True):
+        self.with_mean = with_mean
+        self.mean_ = None
+        self.std_ = None
+
+    def fit(self, X):
+        self.mean_ = np.mean(X, axis=0) if self.with_mean else 0
+        self.std_ = np.std(X, axis=0)
+        return self
+
+    def transform(self, X):
+        return (X - self.mean_) / (self.std_ + 1e-8)
+
+    def fit_transform(self, X):
+        return self.fit(X).transform(X)</code></pre>
+            </div>
+            <div class="gci-card">
+              <h3>Cấu Trúc Ghép Nối Quan Hệ Trong Pandas (Pandas Relational Merge Topology)</h3>
+              <pre><code class="language-python"># Inner Join: Ghép chính xác các khóa trùng khớp ở cả 2 bảng
+df_inner = pd.merge(orders, users, on="user_id", how="inner")
+
+# Left Join: Giữ toàn bộ đơn hàng, điền NaN cho khách hàng thiếu
+df_left = pd.merge(orders, users, on="user_id", how="left")
+
+# Outer Join: Hợp toàn bộ 2 bảng, điền NaN tại các vị trí lệch
+df_outer = pd.merge(orders, users, on="user_id", how="outer")</code></pre>
+              <div style="margin-top:10px; font-size:0.85em; color:var(--text-muted);">
+                Đảm bảo các khóa ghép nối (join keys) đã được đánh chỉ mục hoặc ép kiểu về cùng một kiểu dữ liệu nguyên thủy (<code class="inline-code">int64</code> vs <code class="inline-code">str</code>) để tránh mất mát bản ghi âm thầm.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge">TÓM TẮT SỔ TAY VIẾT TAY (HANDWRITTEN NOTEBOOK SUMMARY)</div>
+          <h2>Tóm Tắt Cornell · MS0.5 OOP &amp; Ghép Nối Bảng (Python OOP &amp; SQL)</h2>
+          <div class="cornell-slide-card">
+            <div class="cornell-col cornell-cues">
+              <div class="cornell-header">Gợi nhớ / Câu hỏi (Cues)</div>
+              <ul>
+                <li>Giao ước chuẩn giữa <code class="inline-code">fit()</code> và <code class="inline-code">transform()</code> là gì?</li>
+                <li>Nguyên nhân nào dẫn tới hiện tượng bùng nổ tích Descartes âm thầm (Cartesian explosion)?</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-notes">
+              <div class="cornell-header">Lý Thuyết Cốt Lõi (Core Notes)</div>
+              <ul>
+                <li><strong>Bất biến Trạng thái:</strong> <code class="inline-code">fit()</code> lưu trữ các tham số học được vào đối tượng <code class="inline-code">self</code> với dấu gạch dưới ở cuối (<code class="inline-code">mean_</code>). <code class="inline-code">transform()</code> nhận mảng đầu vào và trả về mảng mới đã được chuẩn hóa.</li>
+                <li><strong>Trùng lặp Khóa (Key Duplication):</strong> Ghép nối trên các khóa không duy nhất ở cả hai bảng sẽ tạo ra sự sinh sôi hàng loạt bản ghi theo cấp số nhân $M \times N$.</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-actions">
+              <div class="cornell-header">Hành Động &amp; Bất Biến Code (Actions)</div>
+              <ul>
+                <li>Kiểm tra tính duy nhất của khóa chính trước khi ghép: <code class="inline-code">assert users['user_id'].is_unique</code>.</li>
+                <li>Tuyệt đối không thay đổi mảng đầu vào <code class="inline-code">X</code> tại chỗ (in-place) bên trong phương thức transform.</li>
+                <li>Luôn trả về <code class="inline-code">self</code> từ phương thức <code class="inline-code">fit()</code> để hỗ trợ cú pháp nối chuỗi phương thức (method chaining).</li>
+              </ul>
+            </div>
+            <div class="cornell-summary-bar">
+              <strong>Tóm tắt cốt lõi [Chep vao vo]:</strong> Các Estimator luôn tuân theo vòng đời giao ước <code class="inline-code">fit(X)</code> &rarr; <code class="inline-code">transform(X)</code>. Phép ghép nối bảng quan hệ đòi hỏi xác thực tính duy nhất của khóa chính để ngăn ngừa bùng nổ tích Descartes âm thầm.
+            </div>
+          </div>
+        </section>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js Core Engine & Plugins -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/markdown/markdown.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/zoom/zoom.js"></script>
+
+  <!-- Slide Initialization -->
+  <script src="../js/reveal-init.js"></script>
+  <script>
+    window.initGciReveal();
+  </script>
+</body>
+</html>

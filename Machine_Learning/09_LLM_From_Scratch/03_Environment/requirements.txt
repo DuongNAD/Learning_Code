@@ -1,0 +1,12 @@
+# LLM From Scratch - Core Dependencies
+torch>=2.0.0
+numpy>=1.24.0
+h5py>=3.8.0
+tqdm>=4.65.0
+tiktoken>=0.5.0
+requests>=2.28.0
+zstandard>=0.20.0
+datasets>=2.14.0
+matplotlib>=3.7.0
+pytest>=7.3.0
+streamlit>=1.25.0

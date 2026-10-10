@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GCI World 2026 · Buoi 1: Định Hướng &amp; Tư Duy Dữ Liệu (Orientation &amp; Data-Driven Mindset)</title>
+
+  <!-- Reveal.js Core Stylesheets -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+
+  <!-- Syntax Highlighting (Atom One Dark) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
+
+  <!-- KaTeX Mathematical Typography -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+  <!-- Custom Glassmorphic Theme & Widgets -->
+  <link rel="stylesheet" href="../css/reveal-gci-theme.css">
+  <link rel="stylesheet" href="../css/slide-widgets.css">
+</head>
+<body>
+  <!-- HUD Header Overlay -->
+  <div class="deck-hud-header">
+    <div><strong>GCI WORLD 2026</strong> · Matsuo-Iwasawa Lab (Đại học Tokyo)</div>
+    <div style="display:flex; gap:12px; align-items:center;">
+      <a href="../index.html" style="color:var(--text-dim); text-decoration:none;">[Cổng Hub Slide]</a>
+      <span class="slide-header-badge indigo">BUỔI 1: ĐỊNH HƯỚNG &amp; TƯ DUY DỮ LIỆU</span>
+      <button id="hud-trigger-btn" class="widget-btn" style="padding:2px 8px; font-size:11px;">[? Trợ giúp]</button>
+    </div>
+  </div>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ===================================================================
+           CHAPTER 0: WELCOME & EXECUTIVE ORIENTATION
+           =================================================================== -->
+      <section>
+        <section>
+          <div class="slide-header-badge indigo">ĐỊNH HƯỚNG · BUỔI 1 (ORIENTATION · BUOI 1)</div>
+          <h1>Tư Duy Định Hướng Dữ Liệu, Hào Lũy AI &amp; Định Hướng Giáo Trình</h1>
+          <p style="font-size:1.1em; color:#cbd5e1;">Data-Driven Mindset, AI Moats &amp; Curriculum Orientation · Global Consumer Intelligence</p>
+          <div class="gci-card" style="margin-top:24px; max-width:750px;">
+            <p style="margin:0; font-size:0.95em;">
+              <strong>Đơn vị học thuật:</strong> Phòng thí nghiệm Matsuo-Iwasawa, Trường Sau đại học Kỹ thuật, Đại học Tokyo.<br>
+              <strong>Mục tiêu cốt lõi:</strong> Chuyển dịch từ người tiêu thụ phần mềm thụ động sang nhà khoa học dữ liệu chủ động kiến tạo bánh đà dữ liệu kép (Compound Data Flywheel).<br>
+              <strong>Phím điều hướng (Navigation):</strong> Nhấn <code class="inline-code">Space</code> hoặc <code class="inline-code">Phím phải</code> để tiến tới, <code class="inline-code">Phím xuống</code> để đào sâu các chủ đề con.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge">KIẾN TRÚC LỘ TRÌNH GIÁO TRÌNH (CURRICULUM ARCHITECTURE)</div>
+          <h2>Đề Cương Các Bài Học Vi Mô Buổi 1 (Buoi 1 Micro-Session Syllabus)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>Phần I: Tư Duy &amp; Hiện Tượng Nghiệp Vụ (Part I: Mindset &amp; Phenomena)</h3>
+              <ul>
+                <li><strong>MS1.1:</strong> Sự Bùng Nổ Dữ Liệu Zettabyte &amp; Phương Pháp Luận CRISP-DM (Zettabyte Data Growth &amp; CRISP-DM Methodology)</li>
+                <li><strong>MS1.2:</strong> Nghịch Lý Dữ Liệu Tối &amp; Nhu Cầu Bị Kiểm Duyệt Food Truck (The Dark Data Paradox &amp; Food Truck Censored Demand)</li>
+                <li><strong>MS1.3:</strong> Quản Lý Từng Mặt Hàng Tanpin Kanri Của Suzuki Toshifumi &amp; Vòng Lặp Giả Thuyết (Toshifumi Suzuki's Tanpin Kanri &amp; Hypothesis Loop)</li>
+              </ul>
+            </div>
+            <div class="gci-card">
+              <h3>Phần II: Chiến Lược &amp; Thể Lệ Khóa Học (Part II: Strategy &amp; Mechanics)</h3>
+              <ul>
+                <li><strong>MS1.4:</strong> Mô Hình Thương Phẩm Hóa vs Bánh Đà Dữ Liệu Độc Quyền (Commoditized Models vs Proprietary Data Flywheels)</li>
+                <li><strong>MS1.5:</strong> Lộ Trình Giáo Trình 14 Tuần, Cuộc Thi &amp; Quy Chế Đánh Giá (14-Week Curriculum, Competition &amp; Grading Rules)</li>
+                <li><strong>MS1.S:</strong> Ôn Tập Tổng Kết &amp; Sổ Tay Chép Vở Cornell (Review &amp; Cornell Handwritten Synthesis)</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================================================================
+           CHAPTER 1: ZETTABYTE DATA GROWTH & CRISP-DM
+           =================================================================== -->
+      <section>
+        <section>
+          <div class="slide-header-badge cyan">BÀI HỌC VI MÔ 1.1 (MICRO-SESSION 1.1)</div>
+          <h2>Sự Bùng Nổ Dữ Liệu Zettabyte &amp; Quy Trình CRISP-DM (Zettabyte Data Growth &amp; CRISP-DM)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>Tích Lũy Dữ Liệu Theo Hàm Mũ (Exponential Data Accumulation)</h3>
+              <p>Không gian dữ liệu toàn cầu bùng nổ từ <strong>2 Zettabyte</strong> (2010) lên hơn <strong>175 Zettabyte</strong> (2025). Tuy nhiên, hơn 80% trong số đó vẫn là dữ liệu phi cấu trúc hoặc dữ liệu tối (Dark Data) chưa từng được phân tích.</p>
+              <div style="background:rgba(6,182,212,0.1); border-left:3px solid var(--accent-cyan); padding:8px; border-radius:4px; font-size:0.85em; margin-top:12px;">
+                <strong>Góc nhìn chiến lược:</strong> Khối lượng dữ liệu đơn thuần không tạo ra bất kỳ rào cản phòng thủ nào. Giá trị kinh doanh thực sự nằm ở tốc độ của vòng lặp ra quyết định và phản hồi.
+              </div>
+            </div>
+            <div class="gci-card">
+              <h3>Bộ Ba Năng Lực Khoa Học Dữ Liệu (Data Science Competency Triad)</h3>
+              <ul>
+                <li><strong>Miền chuyên môn (Domain Expertise):</strong> Thấu hiểu động lực thị trường thực tế và hành vi người tiêu dùng.</li>
+                <li><strong>Toán học &amp; Thống kê chặt chẽ (Mathematical &amp; Statistical Rigor):</strong> Xác suất, đại số tuyến tính, kiểm định giả thuyết.</li>
+                <li><strong>Khoa học máy tính &amp; Kỹ thuật phần mềm (Computer Science &amp; Engineering):</strong> Vector hóa hiệu năng cao, đường ống dữ liệu quy mô lớn.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge cyan">MICRO-SESSION 1.1 · DEEP-DIVE (ĐÀO SÂU)</div>
+          <h2>Khung Quy Trình Tiêu Chuẩn CRISP-DM (CRISP-DM Standard Process Framework)</h2>
+          <div class="gci-card">
+            <p>CRISP-DM (Quy trình Tiêu chuẩn Khai phá Dữ liệu Liên ngành) thiết lập một vòng đời kỹ thuật lặp gồm 6 giai đoạn:</p>
+            <div class="grid-3col" style="margin-top:16px;">
+              <div style="background:rgba(30,41,59,0.7); padding:12px; border-radius:6px; border:1px solid rgba(255,255,255,0.08);">
+                <strong style="color:var(--accent-cyan);">1. Thấu hiểu Nghiệp vụ</strong>
+                <p style="font-size:0.85em; margin:6px 0 0 0;">Chuyển dịch các mục tiêu kinh doanh mơ hồ thành các hàm tổn thất toán học đo lường được.</p>
+              </div>
+              <div style="background:rgba(30,41,59,0.7); padding:12px; border-radius:6px; border:1px solid rgba(255,255,255,0.08);">
+                <strong style="color:var(--accent-cyan);">2. Thấu hiểu Dữ liệu</strong>
+                <p style="font-size:0.85em; margin:6px 0 0 0;">Khảo sát phân phối, cơ chế khuyết thiếu và các sai lệch do khâu đo lường.</p>
+              </div>
+              <div style="background:rgba(30,41,59,0.7); padding:12px; border-radius:6px; border:1px solid rgba(255,255,255,0.08);">
+                <strong style="color:var(--accent-cyan);">3. Chuẩn bị Dữ liệu</strong>
+                <p style="font-size:0.85em; margin:6px 0 0 0;">Xây dựng các ma trận dữ liệu bảng sạch, đường ống đặc trưng và phân tách dữ liệu không rò rỉ.</p>
+              </div>
+              <div style="background:rgba(30,41,59,0.7); padding:12px; border-radius:6px; border:1px solid rgba(255,255,255,0.08);">
+                <strong style="color:var(--accent-indigo);">4. Mô hình hóa</strong>
+                <p style="font-size:0.85em; margin:6px 0 0 0;">Huấn luyện các thuật toán ứng viên, tinh chỉnh siêu tham số thông qua kiểm định chéo.</p>
+              </div>
+              <div style="background:rgba(30,41,59,0.7); padding:12px; border-radius:6px; border:1px solid rgba(255,255,255,0.08);">
+                <strong style="color:var(--accent-emerald);">5. Đánh giá</strong>
+                <p style="font-size:0.85em; margin:6px 0 0 0;">Xác thực nghiêm ngặt xem mô hình có đáp ứng các tiêu chí kinh doanh cốt lõi trước khi triển khai.</p>
+              </div>
+              <div style="background:rgba(30,41,59,0.7); padding:12px; border-radius:6px; border:1px solid rgba(255,255,255,0.08);">
+                <strong style="color:var(--accent-amber);">6. Triển khai</strong>
+                <p style="font-size:0.85em; margin:6px 0 0 0;">Đưa mô hình vào luồng sản xuất thực tế và theo dõi hiện tượng suy thoái dữ liệu (drift).</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge">TÓM TẮT SỔ TAY VIẾT TAY (HANDWRITTEN NOTEBOOK SUMMARY)</div>
+          <h2>Tóm Tắt Cornell · MS1.1 Quy Trình CRISP-DM</h2>
+          <div class="cornell-slide-card">
+            <div class="cornell-col cornell-cues">
+              <div class="cornell-header">Gợi nhớ / Câu hỏi (Cues)</div>
+              <ul>
+                <li>Tại sao quy trình CRISP-DM lại có tính chất lặp phi tuyến tính?</li>
+                <li>Điều gì tạo nên sự khác biệt căn bản giữa Học máy (ML) và Kỹ thuật phần mềm truyền thống?</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-notes">
+              <div class="cornell-header">Lý Thuyết Cốt Lõi (Core Notes)</div>
+              <ul>
+                <li><strong>Bản chất Lặp (Iterative Nature):</strong> Những phát hiện trong giai đoạn mô hình hóa thường xuyên đòi hỏi phải quay lại tinh chỉnh khâu chuẩn bị dữ liệu hoặc định nghĩa lại bài toán nghiệp vụ.</li>
+                <li><strong>Lỗi Suy Thoái Âm Thầm (Silent Failure):</strong> Mã nguồn ML vẫn biên dịch và thực thi trơn tru ngay cả khi dữ liệu thực tế bị trôi dạt (drift) làm vô hiệu hóa hoàn toàn kết quả dự báo.</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-actions">
+              <div class="cornell-header">Hành Động &amp; Bất Biến Code (Actions)</div>
+              <ul>
+                <li>Chuẩn hóa chỉ số kinh doanh thành hàm mục tiêu tổn thất trước khi khởi tạo mô hình.</li>
+                <li>Xây dựng các bài kiểm thử tự động xác thực kiểu dữ liệu và giá trị thiếu trong đường ống.</li>
+              </ul>
+            </div>
+            <div class="cornell-summary-bar">
+              <strong>Tóm tắt cốt lõi [Chep vao vo]:</strong> Thành công trong Khoa học Dữ liệu đòi hỏi Bộ ba Năng lực (Domain + Math + CS). CRISP-DM áp đặt một vòng lặp đảm bảo các mô hình tối ưu hóa trực tiếp các chỉ số kinh doanh.
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================================================================
+           CHAPTER 2: DARK DATA & FOOD TRUCK PARADOX
+           =================================================================== -->
+      <section>
+        <section>
+          <div class="slide-header-badge amber">BÀI HỌC VI MÔ 1.2 (MICRO-SESSION 1.2)</div>
+          <h2>Nghịch Lý Dữ Liệu Tối &amp; Nhu Cầu Bị Kiểm Duyệt (The Dark Data Paradox &amp; Censored Demand)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>Cạm Bẫy Hết Hàng Của Xe Bán Đồ Ăn (The Food Truck Stockout Trap)</h3>
+              <p>Giả sử một xe bán đồ ăn chuẩn bị $S = 50$ suất ăn mỗi ngày. Xe bán hết sạch 50 suất và hệ thống ghi nhận:</p>
+              <div class="katex-display">
+                $$\text{Observed Sales} = \min(\text{True Demand } D, \text{ Stock } S)$$
+              </div>
+              <p style="font-size:0.85em; color:var(--text-muted);">
+                Nếu nhu cầu thực tế là $D = 80$, máy POS chỉ ghi nhận được 50. 30 khách hàng đói bụng phải rời đi đại diện cho <strong>Dữ liệu tối bị kiểm duyệt (Censored Dark Data)</strong>.
+              </p>
+            </div>
+            <div class="gci-card">
+              <h3>Vòng Xoáy Tử Thần (The Downward Death Spiral)</h3>
+              <p>Các mô hình ngây thơ được huấn luyện trên doanh số quan sát sẽ nhầm lẫn giới hạn nguồn cung với trần nhu cầu thị trường:</p>
+              <ul>
+                <li>Ngày 1: Dự trữ 50 &rarr; Bán hết 50 &rarr; Dự báo ngây thơ: 50.</li>
+                <li>Ngày 2: Hạ tồn kho xuống 45 do biến động nhỏ &rarr; Bán hết 45 &rarr; Dự báo tụt xuống 45.</li>
+                <li>Ngày 3: Nhập 40 &rarr; Doanh số bị chặn ở 40 &rarr; Doanh thu teo tóp.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge amber">MICRO-SESSION 1.2 · DEEP-DIVE (ĐÀO SÂU)</div>
+          <h2>Mô Hình Người Bán Báo &amp; Toán Học Phân Vị Tới Hạn (Newsvendor Model &amp; Critical Fractile Math)</h2>
+          <div class="gci-card">
+            <p>Để tránh cạm bẫy kiểm duyệt do hết hàng, bài toán tối ưu tồn kho sử dụng <strong>Mô hình Người bán báo (Newsvendor Model)</strong> kinh điển:</p>
+            <div class="grid-2col" style="margin-top:16px;">
+              <div>
+                <p>Chi phí kinh tế do ước lượng sai:</p>
+                <ul>
+                  <li>$c_u = \text{Giá bán} - \text{Giá vốn}$ (Chi phí thiếu hàng / Mất lợi nhuận)</li>
+                  <li>$c_o = \text{Giá vốn} - \text{Giá thanh lý}$ (Chi phí ế thừa / Hủy hàng)</li>
+                </ul>
+                <div class="katex-display">
+                  $$F(S^*) = \frac{c_u}{c_u + c_o} = \text{Critical Fractile}$$
+                </div>
+              </div>
+              <div style="background:rgba(15,23,42,0.8); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:16px;">
+                <div style="color:var(--accent-cyan); font-weight:700; margin-bottom:8px;">Quy tắc Ra quyết định:</div>
+                <p style="font-size:0.9em; margin:0;">
+                  Nếu biên lợi nhuận cao ($c_u \gg c_o$), mức tồn kho tối ưu $S^*$ bắt buộc phải vượt quá nhu cầu trung bình ($\mathbb{E}[D]$) để đón đầu cơ hội và quan sát trọn vẹn phần đuôi của nhu cầu thực.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge">TÓM TẮT SỔ TAY VIẾT TAY (HANDWRITTEN NOTEBOOK SUMMARY)</div>
+          <h2>Tóm Tắt Cornell · MS1.2 Dữ Liệu Tối (Dark Data)</h2>
+          <div class="cornell-slide-card">
+            <div class="cornell-col cornell-cues">
+              <div class="cornell-header">Gợi nhớ / Câu hỏi (Cues)</div>
+              <ul>
+                <li>Định nghĩa toán học của dữ liệu bị kiểm duyệt bên phải (right-censored data) là gì?</li>
+                <li>Tại sao việc tối ưu hóa để triệt tiêu hoàn toàn rác thải ế thừa lại bóp chết sự tăng trưởng kinh doanh?</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-notes">
+              <div class="cornell-header">Lý Thuyết Cốt Lõi (Core Notes)</div>
+              <ul>
+                <li><strong>Kiểm duyệt (Censorship):</strong> Quan sát ghi nhận $Y = \min(D, S)$. Khi $D > S$, giá trị thực sự của $D$ bị ẩn hoàn toàn (Dark Data).</li>
+                <li><strong>Phân vị Tới hạn (Critical Fractile):</strong> Phân vị mục tiêu tối ưu $P(D \le S^*) = c_u / (c_u + c_o)$.</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-actions">
+              <div class="cornell-header">Hành Động &amp; Bất Biến Code (Actions)</div>
+              <ul>
+                <li>Ghi lại thời điểm hết hàng trong nhật ký thành một biến nhị phân chỉ thị.</li>
+                <li>Áp dụng hồi quy Tobit hoặc mô hình phân tích sinh tồn cho dữ liệu nhu cầu bị kiểm duyệt.</li>
+              </ul>
+            </div>
+            <div class="cornell-summary-bar">
+              <strong>Tóm tắt cốt lõi [Chep vao vo]:</strong> Dữ liệu tối (nhu cầu ẩn không quan sát được) dẫn tới vòng xoáy tử thần khi mô hình ngây thơ đồng nhất doanh số với nhu cầu. Sử dụng Phân vị Tới hạn ($c_u/(c_u + c_o)$) để phòng hộ tồn kho tối ưu.
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================================================================
+           CHAPTER 3: SEVEN-ELEVEN TANPIN KANRI
+           =================================================================== -->
+      <section>
+        <section>
+          <div class="slide-header-badge emerald">BÀI HỌC VI MÔ 1.3 (MICRO-SESSION 1.3)</div>
+          <h2>Phương Pháp Quản Lý Từng Mặt Hàng 7-Eleven Tanpin Kanri &amp; Kiểm Chứng Giả Thuyết (Seven-Eleven Tanpin Kanri)</h2>
+          <div class="gci-card">
+            <p>Được phát triển bởi <strong>Toshifumi Suzuki</strong> (Seven-Eleven Nhật Bản), phương pháp <em>Tanpin Kanri</em> (Quản lý chi tiết từng mặt hàng) bác bỏ việc tính số trung bình lịch sử thụ động, thay vào đó là tiến hành kiểm chứng các vi giả thuyết một cách chủ động hàng ngày.</p>
+          </div>
+          <div class="grid-3col">
+            <div class="gci-card">
+              <div style="color:var(--accent-cyan); font-weight:700;">1. Thiết lập Giả thuyết</div>
+              <p style="font-size:0.85em;">Mỗi sáng sớm, nhân viên cửa hàng khảo sát vi khí hậu: nhiệt độ, độ ẩm, sự kiện thể thao trường học, công trường xây dựng lân cận.</p>
+            </div>
+            <div class="gci-card">
+              <div style="color:var(--accent-indigo); font-weight:700;">2. Đặt hàng &amp; Bày biện</div>
+              <p style="font-size:0.85em;">Chủ động đặt các mặt hàng cụ thể (ví dụ: mì soba lạnh thay vì lẩu oden nóng) và bố trí diện tích quầy kệ ngang tầm mắt khách hàng.</p>
+            </div>
+            <div class="gci-card">
+              <div style="color:var(--accent-emerald); font-weight:700;">3. Xác thực Dữ liệu POS</div>
+              <p style="font-size:0.85em;">Kiểm tra đối soát nhật ký POS từng giờ vào buổi tối. So sánh tốc độ bán dự đoán với doanh số thực tế để tinh chỉnh giả thuyết cho ngày hôm sau.</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge emerald">MICRO-SESSION 1.3 · DEEP-DIVE (ĐÀO SÂU)</div>
+          <h2>Bài Học Thuật Toán Từ Triết Lý Tanpin Kanri (The Algorithmic Lesson of Tanpin Kanri)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>Tương Quan Thụ Động vs Can Thiệp Nhân Quả Chủ Động (Passive Correlation vs Active Intervention)</h3>
+              <p>Dữ liệu bán hàng lịch sử chỉ phản ánh các sắp xếp trong quá khứ. Khách hàng không thể mua trà lạnh nếu nó chưa từng được đặt lên quầy kệ.</p>
+              <div class="katex-display">
+                $$P(\text{Sale} \mid \text{See } \text{Cold Tea}) \ne P(\text{Sale} \mid \text{Do}(\text{Stock Cold Tea}))$$
+              </div>
+              <p style="font-size:0.85em; color:var(--text-muted);">
+                Bằng việc chủ động đưa các giả thuyết vào thế giới vật lý, Tanpin Kanri thực hiện <strong>thử nghiệm can thiệp nhân quả (Active Causal Experimentation)</strong>.
+              </p>
+            </div>
+            <div class="gci-card">
+              <h3>Vòng Lặp PDCA Tần Suất Cao (High-Frequency PDCA Cycle)</h3>
+              <p>Seven-Eleven giao hàng 3 lần mỗi ngày cho từng cửa hàng:</p>
+              <ul>
+                <li>Sáng: Bánh mì kẹp ăn sáng, đồ uống nóng</li>
+                <li>Trưa: Cơm hộp bento, salad tươi</li>
+                <li>Chiều tối: Món ăn tối, món tráng miệng</li>
+              </ul>
+              <div style="background:rgba(16,185,129,0.1); border-left:3px solid var(--accent-emerald); padding:8px; border-radius:4px; font-size:0.85em;">
+                <strong>Bài học then chốt:</strong> Khoa học dữ liệu không phải là một tập lệnh chạy ngoại tuyến tách biệt; nó là một vòng lặp phản hồi chủ động trong thời gian thực.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge">TÓM TẮT SỔ TAY VIẾT TAY (HANDWRITTEN NOTEBOOK SUMMARY)</div>
+          <h2>Tóm Tắt Cornell · MS1.3 Triết Lý Tanpin Kanri</h2>
+          <div class="cornell-slide-card">
+            <div class="cornell-col cornell-cues">
+              <div class="cornell-header">Gợi nhớ / Câu hỏi (Cues)</div>
+              <ul>
+                <li>Tại sao phương pháp Tanpin Kanri vượt trội hơn đường trung bình động 30 ngày?</li>
+                <li>Can thiệp nhân quả liên hệ như thế nào với toán tử <code class="inline-code">do-calculus</code>?</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-notes">
+              <div class="cornell-header">Lý Thuyết Cốt Lõi (Core Notes)</div>
+              <ul>
+                <li><strong>Từng mặt hàng (Item-by-Item):</strong> Xu hướng vĩ mô che lấp hiện tượng hết hàng vi mô. Mỗi mặt hàng có động lực nhu cầu riêng biệt.</li>
+                <li><strong>Giả thuyết đi trước:</strong> Dữ liệu dùng để đánh giá giả thuyết; dữ liệu không có giả thuyết chỉ sinh ra các mối tương quan giả tạo.</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-actions">
+              <div class="cornell-header">Hành Động &amp; Bất Biến Code (Actions)</div>
+              <ul>
+                <li>Tích hợp các biến số ngoại sinh tần suất cao (thời tiết từng giờ, lịch sự kiện địa phương).</li>
+                <li>Phân đoạn mô hình dự báo chuỗi thời gian theo các mức độ biến động của từng mặt hàng.</li>
+              </ul>
+            </div>
+            <div class="cornell-summary-bar">
+              <strong>Tóm tắt cốt lõi [Chep vao vo]:</strong> Tanpin Kanri biến ngành bán lẻ thành một quy trình kiểm chứng giả thuyết chủ động. Can thiệp nhân quả ($P(\text{Sale} \mid \text{do}(X))$) bộc lộ nhu cầu thực sự vốn bị che khuất bởi các số trung bình quan sát thụ động.
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================================================================
+           CHAPTER 4: AI MOATS & THE DATA FLYWHEEL
+           =================================================================== -->
+      <section>
+        <section>
+          <div class="slide-header-badge cyan">BÀI HỌC VI MÔ 1.4 (MICRO-SESSION 1.4)</div>
+          <h2>Mô Hình Thương Phẩm Hóa vs Bánh Đà Dữ Liệu Độc Quyền (Commoditized Models vs Proprietary Data Flywheels)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>Ảo Tưởng Về Hào Lũy Thuật Toán (The Illusion of Algorithm Moats)</h3>
+              <p>Các kiến trúc học máy hiện đại (Transformers, ResNets, XGBoost) đều là mã nguồn mở và được tiếp cận rộng rãi qua Hugging Face, PyTorch và Scikit-Learn.</p>
+              <div style="background:rgba(244,63,94,0.1); border-left:3px solid var(--accent-rose); padding:8px; border-radius:4px; font-size:0.85em; margin-top:12px;">
+                <strong>Thực tế chiến lược:</strong> Bản thân mô hình nhanh chóng bị thương phẩm hóa. Một hào lũy AI chỉ dựa vào trọng số mô hình công khai sẽ suy giảm giá trị về 0 theo thời gian.
+              </div>
+            </div>
+            <div class="gci-card">
+              <h3>Bánh Đà Dữ Liệu Kép 5 Giai Đoạn (The 5-Stage Compound Data Flywheel)</h3>
+              <ol style="font-size:0.9em; line-height:1.7;">
+                <li><strong>Trải nghiệm Sản phẩm Vượt trội:</strong> Thu hút những người dùng đầu tiên.</li>
+                <li><strong>Gia tăng Tương tác Người dùng:</strong> Sinh ra các nhật ký hành vi độc nhất vô nhị.</li>
+                <li><strong>Thu thập Phản hồi Độc quyền:</strong> Thu thập dữ liệu nhân quả phản thực tế (counter-factuals).</li>
+                <li><strong>Tái huấn luyện Liên tục:</strong> Giải quyết triệt để các trường hợp biên (edge cases) đặc thù miền.</li>
+                <li><strong>Củng cố Lợi thế Cạnh tranh:</strong> Bánh đà quay nhanh và mạnh mẽ hơn.</li>
+              </ol>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge cyan">MICRO-SESSION 1.4 · DEEP-DIVE (ĐÀO SÂU)</div>
+          <h2>Mô Hình Vi Phân Toán Học Của Bánh Đà (The Mathematical Flywheel Differential)</h2>
+          <div class="gci-card">
+            <p>Tại sao các mạng lưới dữ liệu tích lũy tăng trưởng nhanh hơn các tính năng phần mềm tuyến tính?</p>
+            <div class="katex-display">
+              $$\text{Model Utility } U(t) \propto \log(N_{\text{compute}}) + \alpha \cdot \text{Quality}(D_{\text{proprietary}})$$
+            </div>
+            <p style="font-size:0.9em;">
+              Trong khi việc gia tăng tài nguyên tính toán gặp phải quy luật lợi suất giảm dần logarit, thì dữ liệu độc quyền bao phủ các trường hợp biên ngoài phân phối sẽ đẩy toàn bộ đường cong cơ sở lên trên.
+            </p>
+            <div style="margin-top:14px; background:rgba(6,182,212,0.1); border:1px solid rgba(6,182,212,0.3); padding:10px 14px; border-radius:6px; font-family:var(--font-mono); font-size:12px;">
+              [BẤT BIẾN CỐT LÕI]: Hào lũy thực sự không phải là mô hình bạn huấn luyện hôm nay, mà là vòng lặp độc quyền tự động sinh ra mô hình của ngày mai.
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge">TÓM TẮT SỔ TAY VIẾT TAY (HANDWRITTEN NOTEBOOK SUMMARY)</div>
+          <h2>Tóm Tắt Cornell · MS1.4 Hào Lũy AI (AI Moats &amp; Data Flywheels)</h2>
+          <div class="cornell-slide-card">
+            <div class="cornell-col cornell-cues">
+              <div class="cornell-header">Gợi nhớ / Câu hỏi (Cues)</div>
+              <ul>
+                <li>Tại sao các mô hình nguồn mở lại làm xói mòn khả năng phòng thủ của phần mềm thuần túy?</li>
+                <li>Điều gì ngăn cản đối thủ sao chép một bánh đà dữ liệu?</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-notes">
+              <div class="cornell-header">Lý Thuyết Cốt Lõi (Core Notes)</div>
+              <ul>
+                <li><strong>Thương phẩm hóa (Commoditization):</strong> Mã kiến trúc công khai; trọng số mô hình được nhân bản chỉ trong vài tháng.</li>
+                <li><strong>Bất đối xứng Dữ liệu (Data Asymmetry):</strong> Vòng lặp tương tác phản hồi của người dùng thực tế không thể cào trộm từ internet công cộng.</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-actions">
+              <div class="cornell-header">Hành Động &amp; Bất Biến Code (Actions)</div>
+              <ul>
+                <li>Gắn mã thu thập viễn trắc (telemetry) phản hồi người dùng rõ ràng trong các ứng dụng thực tế.</li>
+                <li>Lưu trữ toàn bộ ảnh chụp trạng thái (snapshots) phục vụ khai phá dữ liệu học chủ động và RLHF.</li>
+              </ul>
+            </div>
+            <div class="cornell-summary-bar">
+              <strong>Tóm tắt cốt lõi [Chep vao vo]:</strong> Thuật toán là hàng hóa phổ thông; các vòng lặp phản hồi độc quyền mới là tài sản phòng thủ vững chắc. Bánh đà dữ liệu chuyển hóa các tương tác người dùng thành sự cải tiến mô hình liên tục.
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===================================================================
+           CHAPTER 5: 14-WEEK CURRICULUM & MECHANICS
+           =================================================================== -->
+      <section>
+        <section>
+          <div class="slide-header-badge amber">BÀI HỌC VI MÔ 1.5 (MICRO-SESSION 1.5)</div>
+          <h2>Lộ Trình Giáo Trình 14 Tuần &amp; Các Cột Mốc Học Thuật (14-Week Curriculum &amp; Academic Milestones)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>Tiến Trình Giáo Trình (Curriculum Progression)</h3>
+              <ul style="font-size:0.88em;">
+                <li><strong>Tuần 1-2:</strong> Python, Tính toán Hiệu năng cao với NumPy, Pandas</li>
+                <li><strong>Tuần 3-4:</strong> Phân tích Dữ liệu Khám phá (EDA) &amp; Trực quan hóa</li>
+                <li><strong>Tuần 5-7:</strong> Học máy Có giám sát &amp; Cuộc thi Kaggle Giữa kỳ</li>
+                <li><strong>Tuần 8-10:</strong> Học sâu (Deep Learning), Thị giác Máy tính &amp; Xử lý Ngôn ngữ Tự nhiên</li>
+                <li><strong>Tuần 11-14:</strong> Đồ án Tốt nghiệp Cuối khóa Capstone &amp; Báo cáo Tổng kết Toàn cầu</li>
+              </ul>
+            </div>
+            <div class="gci-card">
+              <h3>Điều Kiện Nhận Chứng Chỉ Hoàn Thành (Certificate Requirements)</h3>
+              <ol style="font-size:0.88em;">
+                <li><strong>Bài tập Hàng tuần:</strong> Nộp đầy đủ 100% bài tập Jupyter Notebook trước hạn chót hàng tuần.</li>
+                <li><strong>Cuộc thi Dữ liệu:</strong> Có ít nhất 1 lần nộp mô hình hợp lệ trên bảng xếp hạng Omnicampus.</li>
+                <li><strong>Đồ án Cuối khóa:</strong> Hoàn thành báo cáo phân tích toàn diện đáp ứng các tiêu chuẩn học thuật nghiêm ngặt.</li>
+              </ol>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge amber">MICRO-SESSION 1.5 · DEEP-DIVE (ĐÀO SÂU)</div>
+          <h2>Môi Trường Omnicampus &amp; Liêm Chính Học Thuật (Omnicampus Environment &amp; Academic Integrity)</h2>
+          <div class="grid-2col">
+            <div class="gci-card">
+              <h3>Hạ Tầng Đám Mây Omnicampus</h3>
+              <ul>
+                <li>Hộp cát Jupyter Notebook trên đám mây được tăng tốc bằng GPU.</li>
+                <li>Hệ thống chấm điểm kiểm thử tự động với giới hạn nghiêm ngặt về bộ nhớ RAM và thời gian thực thi.</li>
+                <li>Cổng thông tin tập trung điều phối bài tập và bảng xếp hạng thi đua.</li>
+              </ul>
+            </div>
+            <div class="gci-card">
+              <h3>Quy Chế Liêm Chính Học Thuật (Academic Integrity Policy)</h3>
+              <div style="background:rgba(244,63,94,0.1); border-left:3px solid var(--accent-rose); padding:10px; border-radius:6px; font-size:0.85em;">
+                <strong>Xử lý nghiêm ngặt:</strong> Hành vi đạo văn hoặc sao chép, chia sẻ giải pháp mã nguồn giữa các học viên sẽ dẫn tới việc thu hồi quyền truy cập Omnicampus và truất quyền tham gia khóa học ngay lập tức.
+              </div>
+              <p style="font-size:0.85em; margin-top:10px; color:var(--text-muted);">
+                Khuyến khích thảo luận trao đổi về mặt khái niệm; toàn bộ mã nguồn nộp lên hệ thống bắt buộc phải do cá nhân tự viết và chạy thực nghiệm độc lập.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="slide-header-badge">TÓM TẮT SỔ TAY VIẾT TAY (HANDWRITTEN NOTEBOOK SUMMARY)</div>
+          <h2>Tóm Tắt Cornell · MS1.5 Thể Lệ Khóa Học (14-Week Curriculum &amp; Mechanics)</h2>
+          <div class="cornell-slide-card">
+            <div class="cornell-col cornell-cues">
+              <div class="cornell-header">Gợi nhớ / Câu hỏi (Cues)</div>
+              <ul>
+                <li>3 điều kiện bắt buộc để nhận chứng chỉ từ Đại học Tokyo là gì?</li>
+                <li>Quỹ thời gian học tập khuyến nghị hàng tuần là bao nhiêu?</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-notes">
+              <div class="cornell-header">Lý Thuyết Cốt Lõi (Core Notes)</div>
+              <ul>
+                <li><strong>3 Cột mốc bắt buộc:</strong> Bài tập hàng tuần + Nộp bài thi đấu Leaderboard + Đồ án Capstone cuối khóa.</li>
+                <li><strong>Phân bổ Thời gian:</strong> 6-10 giờ mỗi tuần; dành riêng 15-20 giờ cho giai đoạn chạy đua Cuộc thi.</li>
+              </ul>
+            </div>
+            <div class="cornell-col cornell-actions">
+              <div class="cornell-header">Hành Động &amp; Bất Biến Code (Actions)</div>
+              <ul>
+                <li>Thiết lập git mirror cục bộ và lưu các điểm kiểm tra (checkpoints) trước hạn chót nộp bài.</li>
+                <li>Nộp một bản phác thảo mô hình cơ sở baseline hoạt động được trước hạn chính thức 1 tuần.</li>
+              </ul>
+            </div>
+            <div class="cornell-summary-bar">
+              <strong>Tóm tắt cốt lõi [Chep vao vo]:</strong> Nhận chứng chỉ hoàn thành đòi hỏi nộp 100% bài tập, tối thiểu 1 lần nộp trên leaderboard cuộc thi, và đồ án cuối khóa. Hãy xây dựng mô hình cơ sở baseline thật sớm.
+            </div>
+          </div>
+        </section>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js Core Engine & Plugins -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/markdown/markdown.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/zoom/zoom.js"></script>
+
+  <!-- Slide Initialization -->
+  <script src="../js/reveal-init.js"></script>
+  <script>
+    window.initGciReveal();
+  </script>
+</body>
+</html>

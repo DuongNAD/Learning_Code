@@ -178,3 +178,11 @@ FPT_University/InnoStart_2026/*.pdf
 .git_archive_*
 *.bak
 *.tmp
+
+# AI Model Weights & Checkpoints
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.gguf
+*.onnx
