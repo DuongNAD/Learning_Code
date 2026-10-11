@@ -195,3 +195,5 @@ aurora-progress-*.jsonl
 **/polaris/.cache/
 orion-attempts.jsonl
 **/polaris/captures/
+# Polaris learner profile: study slots, blackout dates, commitments
+.polaris/
