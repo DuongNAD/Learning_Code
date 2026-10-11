@@ -1,0 +1,57 @@
+{
+  "title": "Vòng lặp ReAct Agent từ file trống",
+  "subject": "AI Agents 101",
+  "module": "M1",
+  "language": "python",
+  "entry": "my_react.py",
+  "tests": {
+    "runner": "pytest",
+    "path": "tests/",
+    "timeoutSec": 120
+  },
+  "timeboxMinutes": 45,
+  "dod": [
+    "Có max_steps để ngắt vòng lặp khi vượt quá số lượt cho phép",
+    "Tool không xác định trả về observation báo lỗi thay vì làm sập chương trình",
+    "Không chấp nhận Final Answer đi sau một Action chưa qua thực thi",
+    "Phân tích cú pháp chính xác tham số chứa cặp ngoặc lồng nhau như calculate[(2+3)*4]"
+  ],
+  "checks": {
+    "test_final_answer_after_action": {
+      "concept": "unexecuted-action-guard",
+      "hints": [
+        "Agent chấp nhận ngay Final Answer và kết thúc sớm dù trong cùng lượt sinh đó LLM đã đưa ra một Action chưa được môi trường thực thi.",
+        "Nếu mô hình tự ý sinh cả Action lẫn Final Answer trong một phản hồi, kết quả Final Answer đó có dựa trên Observation thật từ môi trường không? Bước nào phải được ưu tiên xử lý trước?",
+        "LLM sinh: Thought: t\\nAction: calc[1+1]\\nObservation: 2\\nFinal Answer: 2. Nếu parser hoặc agent trả về Final Answer ngay thì công cụ calc không được code chạy và tools_executed bị rỗng.",
+        "Khi bóc tách phản hồi, nếu phát hiện Action: xuất hiện trước Final Answer:, gán final_answer = None để bắt buộc agent thực thi Action trước; hoặc kiểm tra if tool_name: ... trước khi xét if final_answer:."
+      ]
+    },
+    "test_max_steps": {
+      "concept": "max-steps-limit",
+      "hints": [
+        "Vòng lặp ReAct không dừng lại hoặc không trả về kết quả thất bại khi số lượt gọi vượt quá ngưỡng max_steps.",
+        "Điều kiện dừng (loop invariant) của vòng lặp agent là gì? Khi chạm giới hạn số bước, giá trị trả về của run() cần có cấu trúc và trường success như thế nào?",
+        "Khởi tạo ReActAgent(llm, tools, max_steps=3) với mock LLM luôn sinh Action lặp lại; gọi result = agent.run('test'), nếu result['success'] is not False hoặc result['steps'] > 3 thì kiểm tra thất bại.",
+        "for step in range(1, self.max_steps + 1): ... return {'success': False, 'final_answer': 'Max steps reached without a final answer.', 'steps': self.max_steps, 'tools_executed': tools_executed}"
+      ]
+    },
+    "test_nested_brackets": {
+      "concept": "nested-bracket-parsing",
+      "hints": [
+        "Tham số của Action bị cắt cụt tại dấu đóng ngoặc đầu tiên bên trong biểu thức lồng nhau, khiến chuỗi tham số mất tính toàn vẹn cú pháp.",
+        "Biểu thức chính quy dạng non-greedy \\\\[(.*?)\\\\] hoạt động như thế nào khi chuỗi bên trong chứa các dấu ngoặc đơn hoặc ngoặc vuông khác? Làm sao để tìm đúng dấu ngoặc đóng tương ứng của Action?",
+        "Chuỗi Action: calculate[(2+3)*4] khi dùng regex non-greedy \\\\[(.*?)\\\\] sẽ khớp với (2+3 thay vì toàn bộ (2+3)*4, khiến hàm tính toán báo lỗi SyntaxError: '(' was never closed.",
+        "Sử dụng bộ đếm độ sâu ngoặc (bracket depth counter) hoặc khớp cặp ngoặc ngoài cùng từ vị trí mở ngoặc đầu tiên đến dấu ngoặc đóng cuối cùng của Action: arg = text[open_pos + 1:close_pos]."
+      ]
+    },
+    "test_unknown_tool": {
+      "concept": "unknown-tool-handling",
+      "hints": [
+        "Khi LLM yêu cầu gọi một công cụ không nằm trong từ điển tools, chương trình ném ngoại lệ KeyError hoặc ngắt ngang thay vì tiếp tục vòng lặp.",
+        "Trong kiến trúc ReAct, khi phát hiện tên công cụ không hợp lệ, agent nên ném ngoại lệ làm sập tiến trình hay chuyển thông báo lỗi thành Observation đưa vào ngữ cảnh cho bước suy luận tiếp theo?",
+        "Với tools = {'calculate': ...}, LLM sinh Action: search_web[query]. Tra cứu tools.get('search_web') trả về None, dẫn đến lỗi nếu gọi trực tiếp mà không kiểm tra sự tồn tại.",
+        "if tool_name in self.tools: obs = self.tools[tool_name](tool_arg); tools_executed.append(tool_name) else: obs = f\\\"Error: Tool '{tool_name}' not found. Available: {list(self.tools.keys())}\\\""
+      ]
+    }
+  }
+}

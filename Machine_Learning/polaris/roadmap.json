@@ -1,0 +1,404 @@
+{
+  "title": "Lộ trình Machine Learning - M1 & M2.1 Linear Regression",
+  "theme": "midnight",
+  "version": "1.0",
+  "updated": "2026-10-11",
+  "goalQuote": "Cài đặt và giải thích bản chất toán học của hồi quy tuyến tính với Normal Equation và Gradient Descent trên dữ liệu StudentScore, kiểm chứng đối chiếu với scikit-learn.",
+  "outcomes": [
+    {
+      "id": "O1",
+      "text": "Viết phương trình hồi quy tuyến tính dạng ma trận với đúng shape từng thành phần và tính tay gradient của MSE, kiểm chứng bằng gradient số.",
+      "check": "Gradient số và giải tích sai số tương đối < 1e-6 trên dữ liệu thực nghiệm chuẩn hóa."
+    },
+    {
+      "id": "O2",
+      "text": "Dự đoán và phân tích được ảnh hưởng của learning rate (hội tụ, dao động, phân kỳ) và chuẩn hóa đặc trưng (feature scaling) đối với Gradient Descent.",
+      "check": "Thực nghiệm GD với các giá trị eta khác nhau (0.001, 0.1, 1.1) đối chiếu giữa dự đoán và kết quả thực tế trên biểu đồ loss."
+    },
+    {
+      "id": "O3",
+      "text": "Tự cài đặt Linear Regression bằng Normal Equation (phương trình pháp tuyến) và Gradient Descent từ đầu bằng NumPy trên dữ liệu StudentScore.",
+      "check": "Hệ số hồi quy w, b từ Normal Equation và Gradient Descent sai khác scikit-learn LinearRegression dưới 1e-3 trên tập train/test StudentScore."
+    }
+  ],
+  "prerequisites": {
+    "summary": "Kiến thức đại số tuyến tính cơ bản (nhân ma trận, ma trận chuyển vị, nghiệm hệ phương trình), giải tích vi phân (đạo hàm riêng, quy tắc chuỗi), và lập trình NumPy/pandas cơ bản.",
+    "quickSelfTest": [
+      {
+        "q": "np.arange(6).reshape(2, 3).sum(axis=0) cho kết quả là gì?",
+        "answer": "array([3, 5, 7])"
+      },
+      {
+        "q": "Đạo hàm của f(x) = x^2 * e^x theo quy tắc tích?",
+        "answer": "(x^2 + 2x) * e^x"
+      },
+      {
+        "q": "Lấy trung bình math score theo từng giá trị gender của dataframe pandas thế nào?",
+        "answer": "df.groupby('gender')['math score'].mean()"
+      }
+    ]
+  },
+  "timeBudget": {
+    "hoursPerWeek": 3,
+    "totalHours": 3,
+    "notes": "Tuần 1: 3 giờ (M1: 1.5 giờ, M2.1: 1.5 giờ) theo đúng kế hoạch lộ trình v2"
+  },
+  "status": {
+    "current": "Khởi động Tuần 1: M1 Toán nền tảng và M2.1 Hồi quy tuyến tính từ đầu bằng NumPy.",
+    "weeklySchedule": [
+      {
+        "week": 1,
+        "sessions": "Buổi A (70m Toán nền) + Buổi B (95m Cài đặt StudentScore) + Ôn (15m)",
+        "module": "M1 + M2.1",
+        "dod": "m1_gradient_lab và m2_linreg_scratch đạt DoD, sai khác scikit-learn < 1e-3",
+        "deadline": "2026-10-18"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "id": "M1",
+      "title": "M1 - Toán nền tảng cho Machine Learning",
+      "hours": 1.5,
+      "depends": [],
+      "why": "Mọi thuật toán học có giám sát đều lặp lại mô thức: biểu diễn dữ liệu bằng ma trận, định nghĩa hàm mất mát toàn cục và tối ưu hóa tham số theo hướng ngược vector gradient.",
+      "outputs": [
+        "[O1] Viết phương trình ma trận y_hat = X @ w + b chuẩn shape, tính giải tích gradient của MSE và kiểm chứng bằng gradient số với sai số tương đối < 1e-6.",
+        "[O2] Dự đoán chính xác hành vi của Gradient Descent (hội tụ, dao động đổi dấu, phân kỳ) theo các giá trị learning rate eta và giải thích vai trò của chuẩn hóa đặc trưng."
+      ],
+      "core": [
+        {
+          "text": "Dữ liệu được tổ chức thành ma trận X kích thước (n x d), dự đoán tuyến tính là tích vô hướng X @ w + b; lưu ý lỗi broadcasting khi trừ mảng (n,) với cột (n, 1) tạo ma trận vuông (n, n).",
+          "facts": [
+            "F1",
+            "F13"
+          ],
+          "label": "course"
+        },
+        {
+          "text": "Hàm mất mát Mean Squared Error (MSE) có đạo hàm giải tích nabla J = (2/n) * X.T @ (X @ w - y), thể hiện hướng tăng dốc mạnh nhất của sai số.",
+          "facts": [
+            "F2"
+          ],
+          "label": "course"
+        },
+        {
+          "text": "Kiểm tra tính chính xác của gradient giải tích bằng sai phân đối xứng hai phía dJ/dw_j approx (J(w + eps*e_j) - J(w - eps*e_j)) / (2*eps) với epsilon xấp xỉ 1e-5.",
+          "facts": [
+            "F3"
+          ],
+          "label": "course"
+        },
+        {
+          "text": "Quy tắc cập nhật Gradient Descent w = w - eta * nabla J; trên hàm bậc hai f(w) = w^2, hệ số hồi quy cập nhật thành (1 - 2*eta)*w, hội tụ khi 0 < eta < 1 và phân kỳ khi eta > 1. Với quy ước loss 1/(2n), ngưỡng phân kỳ mở rộng thành eta > 2.",
+          "facts": [
+            "F5",
+            "F6"
+          ],
+          "label": "course"
+        },
+        {
+          "text": "Chuẩn hóa đặc trưng (StandardScaler) đưa đường đồng mức elip dẹt về hình tròn đồng tâm, loại bỏ hiện tượng dao động zigzag và cho phép dùng learning rate lớn hơn để tăng tốc hội tụ.",
+          "facts": [
+            "F8",
+            "F9"
+          ],
+          "label": "course"
+        }
+      ],
+      "misconceptions": [
+        {
+          "wrong": "Gradient là vector chỉ hướng xuống dốc dốc nhất của hàm mất mát.",
+          "why": "Nhiều người học lầm tưởng vector gradient trỏ về đáy vực cực tiểu.",
+          "fix": "Gradient luôn chỉ hướng hàm số tăng nhanh nhất; thuật toán Gradient Descent phải đi ngược hướng gradient (trừ đi gradient) để hạ thấp hàm mất mát."
+        },
+        {
+          "wrong": "Trừ vector (n,) cho vector (n, 1) trong NumPy vẫn cho ra vector sai số kích thước (n,).",
+          "why": "Trộn vector hàng (n,) với vector cột (n, 1) kích hoạt broadcasting ngầm định của NumPy mà không báo lỗi.",
+          "fix": "In .shape của phần dư y - X @ w trước khi tính norm hoặc dot product để đảm bảo mảng giữ đúng kích thước 1D (n,)."
+        }
+      ],
+      "materials": [
+        {
+          "title": "math_primer.py - Đạo hàm ma trận và Gradient Check",
+          "source": "S1",
+          "path": "01_Math_Foundations/math_primer.py",
+          "minutes": 15,
+          "note": "Đọc phần đạo hàm ma trận và kiểm tra gradient số"
+        },
+        {
+          "title": "ML_Cheatsheet_Formulas.md - Mục 1: Math Foundations",
+          "source": "S2",
+          "path": "Notes/ML_Cheatsheet_Formulas.md",
+          "minutes": 15,
+          "note": "Các công thức tối ưu hóa bậc một và đạo hàm ma trận cơ bản"
+        },
+        {
+          "title": "Stanford CS229 Lecture Notes - Supervised Learning & Gradient Descent",
+          "source": "S7",
+          "url": "https://cs229.stanford.edu/main_notes.pdf",
+          "minutes": 20,
+          "note": "Đọc Chương 1.1 LMS algorithm và Batch Gradient Descent"
+        },
+        {
+          "title": "Wikipedia: Gradient descent",
+          "source": "S10",
+          "url": "https://en.wikipedia.org/wiki/Gradient_descent",
+          "minutes": 20,
+          "note": "Khái niệm gradient descent, step size và phân tích hội tụ trên hàm toàn phương"
+        }
+      ],
+      "practice": {
+        "warmup": {
+          "task": "Ghi dự đoán kích thước (shape) của các biểu thức NumPy: X @ w, X - X.mean(axis=0), y - X @ w, và y - (X @ w).reshape(-1, 1) với X shape (100, 3), w shape (3,), y shape (100,) trước khi thực thi mã nguồn.",
+          "minutes": 15,
+          "dod": "Bảng dự đoán shape ghi trước khi chạy; phát hiện và giải thích được lỗi broadcasting tạo ma trận (100, 100) trong Sổ lỗi nếu có."
+        },
+        "core": {
+          "task": "Tạo notebook 01_Math_Foundations/m1_gradient_lab.ipynb: sinh 200 điểm thực nghiệm y = 3x + 2 + nhiễu; tự tính gradient giải tích của MSE và so khớp với gradient số đối xứng (epsilon = 1e-5); chạy vòng lặp Gradient Descent 100 bước với 3 learning rate eta in {0.001, 0.1, 1.1} sau khi ghi dự đoán trước.",
+          "minutes": 50,
+          "dod": "Sai số tương đối giữa gradient giải tích và gradient số < 1e-6; hoàn thành bảng đối chiếu (eta, dự đoán, kết quả thực tế); nghiệm w, b của eta tối ưu khớp np.linalg.lstsq với sai số < 1e-3."
+        },
+        "challenge": {
+          "task": "Tạo ma trận dữ liệu có 2 cột tương quan tuyến tính hoàn hảo, đo chỉ số điều kiện np.linalg.cond(X.T @ X) và quan sát hiện tượng số học khi giải Normal Equation.",
+          "minutes": 20,
+          "dod": "Báo cáo 1 trang phân tích hình học chứng minh ma trận mất hạng cột dẫn đến không gian nghiệm vô hạn và chỉ số điều kiện cond tiến tới vô cùng."
+        }
+      },
+      "selfCheck": [
+        {
+          "q": "Viết công thức gradient giải tích nabla J của hàm mất mát sai số toàn phương trung bình J(w) = (1/n) * ||X @ w - y||^2 theo vector w.",
+          "level": "apply",
+          "answer": "nabla J = (2/n) * X.T @ (X @ w - y). Nếu dùng quy ước J = (1/(2n)) * ||X @ w - y||^2 thì nabla J = (1/n) * X.T @ (X @ w - y)."
+        },
+        {
+          "q": "Giải thích trực giác hình học vì sao việc chuẩn hóa đặc trưng (feature scaling) giúp thuật toán Gradient Descent hội tụ nhanh hơn và ổn định hơn?",
+          "level": "explain",
+          "answer": "Khi các đặc trưng có thang đo chênh lệch lớn, các đường đồng mức của hàm mất mát bị kéo dài thành hình elip rất dẹt. Vector gradient luôn vuông góc với đường đồng mức nên không trỏ về tâm cực tiểu mà dao động ngoằn ngoèo. Chuẩn hóa đặc trưng giúp các đường đồng mức trở nên tròn đều, vector gradient trỏ thẳng về cực tiểu giúp bước nhảy đi thẳng và nhanh chóng hội tụ."
+        },
+        {
+          "q": "Cho hàm mục tiêu bậc hai f(w) = w^2, điểm khởi tạo w_0 = 1, và tốc độ học eta = 0.75. Dự đoán giá trị của w_1, w_2 và nhận định thuật toán sẽ hội tụ, dao động hay phân kỳ?",
+          "level": "predict",
+          "answer": "Đạo hàm f'(w) = 2w. Công thức cập nhật: w_(t+1) = w_t - 0.75*(2w_t) = (1 - 1.5)*w_t = -0.5 * w_t. Do đó w_1 = -0.5, w_2 = 0.25. Giá trị w đổi dấu qua mỗi bước (dao động) nhưng biên độ giảm dần về 0 (| -0.5 | < 1), do đó thuật toán dao động và hội tụ về 0."
+        },
+        {
+          "q": "Trong NumPy, cho mảng a có shape (3,) và mảng b có shape (3, 1). Dự đoán kết quả shape của phép trừ (a - b) và giải thích hiện tượng này.",
+          "level": "predict",
+          "answer": "Kết quả có shape (3, 3). Do quy tắc broadcasting, mảng a được mở rộng thành hàng (1, 3) rồi sao chép thành 3 hàng, mảng b được sao chép thành 3 cột, dẫn đến ma trận kích thước (3, 3) thay vì mảng 1D (3,). Đây là lỗi broadcasting phổ biến khi tính sai số hồi quy."
+        }
+      ],
+      "checkpoint": [
+        "Notebook m1_gradient_lab.ipynb đạt Definition of Done",
+        "Đạt tối thiểu 4/5 câu hỏi tự kiểm tra mà không mở tài liệu"
+      ],
+      "lessons": 1,
+      "theme": "midnight",
+      "icon": "function"
+    },
+    {
+      "id": "M2.1",
+      "title": "M2.1 - Hồi quy tuyến tính: Normal Equation và Gradient Descent",
+      "hours": 1.5,
+      "depends": [
+        "M1"
+      ],
+      "why": "Hồi quy tuyến tính là nền móng của học có giám sát; việc tự cài đặt từ đầu bằng cả nghiệm đóng và tối ưu hóa lặp giúp làm chủ cách siêu tham số điều khiển mô hình trước khi bước sang các thuật toán phức tạp hơn.",
+      "outputs": [
+        "[O3] Tự cài đặt Linear Regression từ đầu bằng NumPy sử dụng Normal Equation và Gradient Descent trên tập dữ liệu StudentScore, đối chiếu hệ số khớp scikit-learn LinearRegression dưới 1e-3.",
+        "Giải thích hình học của Ordinary Least Squares (hình chiếu trực giao lên không gian cột của X) và các điều kiện ma trận suy biến dẫn đến đa cộng tuyến."
+      ],
+      "core": [
+        {
+          "text": "Trong hồi quy đơn biến, nghiệm giải tích đóng là w = sum((x_i - bar(x))*(y_i - bar(y))) / sum((x_i - bar(x))^2) và b = bar(y) - w*bar(x); tổng sai số phần dư sum(e_i) luôn bằng 0 khi mô hình có hệ số chặn b.",
+          "facts": [
+            "F10"
+          ],
+          "label": "course"
+        },
+        {
+          "text": "Trong hồi quy đa biến, điều kiện triệt tiêu gradient nabla J = 0 dẫn đến phương trình pháp tuyến (Normal Equation) X.T @ X @ w = X.T @ y, có nghiệm duy nhất khi ma trận thiết kế X có đầy đủ hạng cột.",
+          "facts": [
+            "F1",
+            "F4"
+          ],
+          "label": "course"
+        },
+        {
+          "text": "Bản chất hình học của OLS: vector dự đoán y_hat = X @ w_hat là hình chiếu trực giao của vector đích y lên không gian sinh bởi các cột của ma trận X, khiến vector phần dư e vuông góc với toàn bộ các đặc trưng.",
+          "facts": [
+            "F11"
+          ],
+          "label": "extension"
+        },
+        {
+          "text": "Thư viện scikit-learn triển khai LinearRegression dựa trên phân tích SVD/QR của scipy.linalg.lstsq để tăng cường ổn định số học; đánh giá chất lượng mô hình bằng hệ số R^2 (có thể âm trên tập test).",
+          "facts": [
+            "F7",
+            "F14"
+          ],
+          "label": "course"
+        },
+        {
+          "text": "Bộ dữ liệu StudentScore chứa thông tin điểm thi học sinh (thực chất định dạng CSV), yêu cầu chuẩn hóa thang đo bằng thống kê của tập huấn luyện trước khi áp dụng Gradient Descent để tránh rò rỉ dữ liệu và tối ưu tốc độ hội tụ.",
+          "facts": [
+            "F12",
+            "F8",
+            "F9"
+          ],
+          "label": "course"
+        },
+        {
+          "text": "Đa cộng tuyến hoàn hảo khiến ma trận hiệp phương sai X.T @ X suy biến, chỉ số điều kiện bùng nổ và phương trình pháp tuyến không còn nghiệm duy nhất.",
+          "facts": [
+            "F15"
+          ],
+          "label": "extension"
+        }
+      ],
+      "misconceptions": [
+        {
+          "wrong": "Hệ số xác định R^2 luôn nằm trong đoạn [0, 1] trên mọi tập dữ liệu kiểm tra.",
+          "why": "Nhiều người nhầm lẫn R^2 là bình phương hệ số tương quan Pearson r^2 nên nghĩ rằng nó luôn không âm.",
+          "fix": "R^2 chỉ bị chặn dưới bởi 0 trên tập huấn luyện của OLS có hệ số chặn; trên tập kiểm tra (test set), nếu mô hình dự đoán tệ hơn cả giá trị trung bình thì R^2 hoàn toàn có thể nhận giá trị âm."
+        },
+        {
+          "wrong": "Cách tốt nhất để giải Normal Equation trong thực tế là dùng np.linalg.inv(X.T @ X).",
+          "why": "Công thức toán học viết w = (X.T @ X)^(-1) @ X.T @ y khiến người học áp dụng hàm nghịch đảo ma trận thô trong code.",
+          "fix": "Nghịch đảo trực tiếp X.T @ X rất dễ gặp lỗi số học khi ma trận gần suy biến (ill-conditioned); các thư viện chuẩn như scikit-learn dùng phân tích SVD hoặc QR để giải bình phương tối thiểu ổn định hơn."
+        }
+      ],
+      "materials": [
+        {
+          "title": "Giáo trình Khóa học - Lesson 05: Linear Regression",
+          "source": "S2",
+          "path": "00_Curriculum_and_Materials/GIAO_TRINH_CHI_TIET_TOAN_BO_KHOA_HOC.md",
+          "minutes": 15,
+          "note": "Bài giảng lý thuyết về Hồi quy tuyến tính, hàm mất mát và phương trình pháp tuyến"
+        },
+        {
+          "title": "regression.py - Student Score Prediction Pipeline",
+          "source": "S3",
+          "path": "02_Supervised_Learning/01_Regression/regression.py",
+          "minutes": 15,
+          "note": "Xem cách triển khai pipeline tiền xử lý StandardScaler và RandomForest baseline"
+        },
+        {
+          "title": "scikit-learn User Guide - 1.1.1 Ordinary Least Squares",
+          "source": "S4",
+          "url": "https://scikit-learn.org/stable/modules/linear_model.html",
+          "minutes": 25,
+          "note": "Mục 1.1.1 Ordinary Least Squares và lưu ý triển khai qua scipy.linalg.lstsq"
+        },
+        {
+          "title": "An Introduction to Statistical Learning (ISLP) - Chương 3: Linear Regression",
+          "source": "S6",
+          "url": "https://www.statlearning.com/",
+          "minutes": 25,
+          "note": "Chương 3: Phân tích hình học OLS, ước lượng hệ số và hiện tượng đa cộng tuyến"
+        }
+      ],
+      "practice": {
+        "warmup": {
+          "task": "Tính nghiệm giải tích w, b bằng công thức giải tích đóng cho 3 điểm dữ liệu đơn giản (1, 1), (2, 2), (3, 2), sau đó kiểm tra lại bằng np.polyfit(x, y, 1).",
+          "minutes": 15,
+          "dod": "Kết quả tính tay khớp np.polyfit đến 3 chữ số thập phân; giải thích lý do toán học vì sao tổng phần dư triệt tiêu về 0 khi mô hình có hệ số chệch b."
+        },
+        "core": {
+          "task": "Tạo notebook 02_Supervised_Learning/01_Regression/m2_linreg_scratch.ipynb: đọc dữ liệu StudentScore.xls bằng pd.read_csv, thiết lập bài toán dự đoán math score từ reading score và writing score; chia tập 80/20, chuẩn hóa đặc trưng bằng thống kê của train; tự lập trình hai phương pháp tìm nghiệm: Normal Equation và Gradient Descent từ đầu bằng NumPy.",
+          "minutes": 55,
+          "dod": "Không xảy ra rò rỉ dữ liệu (chỉ dùng mean và std của train để transform test); hệ số w và bias b giữa Normal Equation, Gradient Descent và scikit-learn LinearRegression sai khác dưới 1e-3."
+        },
+        "challenge": {
+          "task": "Thực hiện thí nghiệm loại bỏ bước chuẩn hóa đặc trưng trước khi chạy Gradient Descent trên StudentScore, đo số vòng lặp và mức độ dao động của hàm mất mát.",
+          "minutes": 20,
+          "dod": "Biểu đồ đường cong hàm mất mát MSE qua 200 vòng lặp so sánh giữa có và không chuẩn hóa; giải thích tại sao không chuẩn hóa buộc learning rate phải giảm ít nhất 10 lần."
+        }
+      },
+      "selfCheck": [
+        {
+          "q": "Vì sao trong bài toán hồi quy tuyến tính đơn biến có hệ số chặn (bias b), tổng của tất cả các phần dư sum(y_i - y_hat_i) luôn bằng 0?",
+          "level": "explain",
+          "answer": "Hệ số chặn b được xác định bằng cách đặt đạo hàm riêng của tổng bình phương phần dư theo b bằng 0: d(sum (y_i - w*x_i - b)^2) / db = -2 * sum(y_i - y_hat_i) = 0. Do đó tổng các phần dư triệt tiêu hoàn toàn về 0."
+        },
+        {
+          "q": "Giải thích ý nghĩa hình học của vector dự đoán y_hat trong không gian Euclid n chiều đối với phương pháp bình phương tối thiểu OLS.",
+          "level": "explain",
+          "answer": "Trong không gian n chiều của các quan sát mẫu, vector dự đoán y_hat = X @ w là hình chiếu trực giao của vector nhãn thực tế y lên không gian con tạo bởi các cột của ma trận thiết kế X. Khoảng cách Euclid ||y - y_hat|| ngắn nhất khi vector sai số e = y - y_hat vuông góc trực giao với mọi vector cột của X."
+        },
+        {
+          "q": "Dự đoán giá trị của hệ số xác định R^2 trên tập kiểm tra (test set) khi mô hình đưa ra dự đoán kém hơn mức trung bình của tập huấn luyện.",
+          "level": "predict",
+          "answer": "Hệ số R^2 = 1 - (SS_res / SS_tot). Khi tổng bình phương sai số dự đoán SS_res lớn hơn tổng bình phương độ lệch so với trung bình SS_tot, phân số lớn hơn 1 dẫn đến R^2 nhận giá trị âm."
+        },
+        {
+          "q": "Tại sao scikit-learn sử dụng scipy.linalg.lstsq thay vì nghịch đảo trực tiếp np.linalg.inv(X.T @ X) để giải bài toán Ordinary Least Squares?",
+          "level": "remember",
+          "answer": "Nghịch đảo trực tiếp X.T @ X tốn chi phí tính toán O(d^3), làm bình phương chỉ số điều kiện cond(X)^2 khiến sai số số học tăng vọt và báo lỗi nếu ma trận suy biến. scipy.linalg.lstsq sử dụng phân tích SVD hoặc QR để tìm nghiệm bình phương tối thiểu ổn định số học và xử lý được trường hợp ma trận không khả nghịch."
+        }
+      ],
+      "checkpoint": [
+        "Notebook m2_linreg_scratch.ipynb đạt Definition of Done",
+        "Hệ số hồi quy khớp scikit-learn LinearRegression dưới sai số 1e-3",
+        "Đạt tối thiểu 4/5 câu hỏi tự kiểm tra mà không mở tài liệu"
+      ],
+      "lessons": 1,
+      "theme": "ocean",
+      "icon": "trend-up"
+    }
+  ],
+  "capstone": {
+    "title": "Linear Regression Pipeline & Scratch Benchmark",
+    "description": "Xây dựng pipeline hồi quy hoàn chỉnh trên StudentScore: tiền xử lý, kiểm tra gradient số, tự cài đặt Normal Equation và GD, đánh giá R^2, MSE, đối chiếu scikit-learn.",
+    "dod": "Báo cáo thực nghiệm so sánh nghiệm đóng, GD và scikit-learn sai khác < 1e-3, giải thích hình học và các cạm bẫy broadcasting/scaling.",
+    "scope": [
+      "StudentScore.xls",
+      "01_Math_Foundations",
+      "02_Supervised_Learning/01_Regression"
+    ],
+    "minHours": 1
+  },
+  "review": {
+    "schedule": [
+      {
+        "module": "M1",
+        "date": "2026-10-12",
+        "d1": "2026-10-13",
+        "d3": "2026-10-15",
+        "d7": "2026-10-19",
+        "d21": "2026-11-02"
+      },
+      {
+        "module": "M2.1",
+        "date": "2026-10-14",
+        "d1": "2026-10-15",
+        "d3": "2026-10-17",
+        "d7": "2026-10-21",
+        "d21": "2026-11-04"
+      }
+    ],
+    "interleaved": [
+      {
+        "name": "Ôn tập xen kẽ #1: Tối ưu hóa giải tích vs Tối ưu hóa lặp",
+        "date": "2026-10-18",
+        "focus": "So sánh Gradient Descent vs Normal Equation: độ phức tạp tính toán O(n*d^2 + d^3) vs O(k*n*d), yêu cầu bộ nhớ và độ nhạy thang đo đặc trưng"
+      }
+    ]
+  },
+  "olderMaterial": [
+    {
+      "file": "01_Regression/regression.py",
+      "usable": "Khung tiền xử lý đặc trưng số và phân loại",
+      "purpose": "Tham khảo cấu trúc ColumnTransformer và Pipeline scikit-learn baseline"
+    },
+    {
+      "file": "01_Math_Foundations/math_primer.py",
+      "usable": "Hàm kiểm tra gradient số đối xứng",
+      "purpose": "Mã nguồn đối chiếu kiểm tra gradient và vector hóa ma trận NumPy"
+    }
+  ],
+  "progressTracking": [
+    "M1 Toán nền tảng cho ML: m1_gradient_lab.ipynb đạt Definition of Done",
+    "M2.1 Hồi quy tuyến tính: m2_linreg_scratch.ipynb đạt Definition of Done",
+    "Capstone: Báo cáo thực nghiệm so sánh nghiệm đóng, GD và scikit-learn hoàn thành"
+  ]
+}

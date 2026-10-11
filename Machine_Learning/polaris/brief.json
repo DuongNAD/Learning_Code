@@ -1,0 +1,43 @@
+{
+  "subject": "Machine Learning - M1 + M2.1 Linear Regression",
+  "slug": "machine-learning",
+  "goal": "Cài đặt và giải thích bản chất toán học của hồi quy tuyến tính với Normal Equation và Gradient Descent trên dữ liệu StudentScore, kiểm chứng đối chiếu với scikit-learn.",
+  "outcomes": [
+    {
+      "id": "O1",
+      "text": "Viết phương trình hồi quy tuyến tính dạng ma trận với đúng shape từng thành phần và tính tay gradient của MSE, kiểm chứng bằng gradient số.",
+      "check": "Gradient số và giải tích sai số tương đối < 1e-6 trên dữ liệu thực nghiệm chuẩn hóa."
+    },
+    {
+      "id": "O2",
+      "text": "Dự đoán và phân tích được ảnh hưởng của learning rate (hội tụ, dao động, phân kỳ) và chuẩn hóa đặc trưng (feature scaling) đối với Gradient Descent.",
+      "check": "Thực nghiệm GD với các giá trị eta khác nhau (0.001, 0.1, 1.1) đối chiếu giữa dự đoán và kết quả thực tế trên biểu đồ loss."
+    },
+    {
+      "id": "O3",
+      "text": "Tự cài đặt Linear Regression bằng Normal Equation (phương trình pháp tuyến) và Gradient Descent từ đầu bằng NumPy trên dữ liệu StudentScore.",
+      "check": "Hệ số hồi quy w, b từ Normal Equation và Gradient Descent sai khác scikit-learn LinearRegression dưới 1e-3 trên tập train/test StudentScore."
+    }
+  ],
+  "start": "2026-10-12",
+  "hoursPerWeek": 3,
+  "sourcesOfTruth": [
+    "01_Math_Foundations/math_primer.py",
+    "Notes/ML_Cheatsheet_Formulas.md",
+    "00_Curriculum_and_Materials/GIAO_TRINH_CHI_TIET_TOAN_BO_KHOA_HOC.md",
+    "02_Supervised_Learning/01_Regression/StudentScore.xls",
+    "02_Supervised_Learning/01_Regression/regression.py"
+  ],
+  "scope": {
+    "in": [
+      "M1 Toán nền tảng đạo hàm ma trận, MSE loss, gradient số, convergence GD",
+      "M2.1 Linear Regression với Normal Equation và Gradient Descent trên StudentScore"
+    ],
+    "out": [
+      "M2.2 Logistic Regression",
+      "M2.3 Decision Tree, Random Forest, Boosting",
+      "M3 Đánh giá mô hình nâng cao"
+    ]
+  },
+  "roadmapPath": "polaris/ROADMAP.polaris.md"
+}

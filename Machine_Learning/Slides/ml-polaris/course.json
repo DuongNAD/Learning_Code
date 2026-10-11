@@ -1,0 +1,25 @@
+{
+  "title": "Lộ trình Machine Learning - M1 & M2.1 Linear Regression",
+  "subtitle": "Cài đặt và giải thích bản chất toán học của hồi quy tuyến tính với Normal Equation và Gradient Descent trên dữ liệu StudentScore, kiểm chứng đối chiếu với scikit-learn.",
+  "lang": "vi",
+  "theme": "midnight",
+  "font": "vietnam",
+  "lessons": [
+    {
+      "title": "M1 - Toán nền tảng cho Machine Learning",
+      "summary": "[O1] Viết phương trình ma trận y_hat = X @ w + b chuẩn shape, tính giải tích gradient của MSE và kiểm chứng bằng gradient số với sai số tương đối < 1e-6.",
+      "dir": "01-m1-toan-nen-tang-cho-machine-learning",
+      "icon": "function",
+      "theme": "midnight",
+      "minutes": 20
+    },
+    {
+      "title": "M2.1 - Hồi quy tuyến tính: Normal Equation và Gradient Descent",
+      "summary": "[O3] Tự cài đặt Linear Regression từ đầu bằng NumPy sử dụng Normal Equation và Gradient Descent trên tập dữ liệu StudentScore, đối chiếu hệ số khớp scikit-learn LinearRegression dưới 1e-3.",
+      "dir": "02-m2-1-hoi-quy-tuyen-tinh-normal-equation-va-gradient-descent",
+      "icon": "trend-up",
+      "theme": "ocean",
+      "minutes": 20
+    }
+  ]
+}

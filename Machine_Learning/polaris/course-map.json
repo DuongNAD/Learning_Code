@@ -1,0 +1,24 @@
+{
+  "courseDir": "D:\\02_Learning_Knowledge\\Machine_Learning\\Slides\\ml-polaris",
+  "updated": "2026-10-11",
+  "lessons": [
+    {
+      "module": "M1",
+      "part": "a",
+      "dir": "01-m1-toan-nen-tang-cho-machine-learning",
+      "title": "M1 - Toán nền tảng cho Machine Learning",
+      "theme": "midnight",
+      "icon": "function",
+      "minutes": 20
+    },
+    {
+      "module": "M2.1",
+      "part": "a",
+      "dir": "02-m2-1-hoi-quy-tuyen-tinh-normal-equation-va-gradient-descent",
+      "title": "M2.1 - Hồi quy tuyến tính: Normal Equation và Gradient Descent",
+      "theme": "ocean",
+      "icon": "trend-up",
+      "minutes": 20
+    }
+  ]
+}

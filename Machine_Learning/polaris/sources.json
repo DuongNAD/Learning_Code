@@ -1,0 +1,134 @@
+[
+  {
+    "id": "S1",
+    "kind": "local",
+    "title": "math_primer.py - Vector and Matrix Calculus Foundations",
+    "path": "D:/02_Learning_Knowledge/Machine_Learning/01_Math_Foundations/math_primer.py",
+    "label": "course",
+    "quality": {
+      "score": 5,
+      "why": "Local course material providing matrix derivative implementations and numerical gradient checks."
+    },
+    "accessed": "2026-10-11"
+  },
+  {
+    "id": "S2",
+    "kind": "local",
+    "title": "GIAO_TRINH_CHI_TIET_TOAN_BO_KHOA_HOC.md - Lesson 05: Linear Regression",
+    "path": "D:/02_Learning_Knowledge/Machine_Learning/00_Curriculum_and_Materials/GIAO_TRINH_CHI_TIET_TOAN_BO_KHOA_HOC.md",
+    "label": "course",
+    "quality": {
+      "score": 5,
+      "why": "Primary curriculum document covering linear regression theory, loss functions, and normal equation."
+    },
+    "accessed": "2026-10-11"
+  },
+  {
+    "id": "S3",
+    "kind": "local",
+    "title": "regression.py & StudentScore.xls - Baseline Implementation & Dataset",
+    "path": "D:/02_Learning_Knowledge/Machine_Learning/02_Supervised_Learning/01_Regression/regression.py",
+    "label": "course",
+    "quality": {
+      "score": 5,
+      "why": "Local course reference script and dataset for regression experiments."
+    },
+    "accessed": "2026-10-11"
+  },
+  {
+    "id": "S4",
+    "kind": "web",
+    "title": "scikit-learn User Guide: 1.1.1 Ordinary Least Squares",
+    "url": "https://scikit-learn.org/stable/modules/linear_model.html",
+    "label": "course",
+    "quality": {
+      "score": 5,
+      "why": "Official documentation for scikit-learn LinearRegression, normal equation solving via scipy.linalg.lstsq."
+    },
+    "accessed": "2026-10-11",
+    "capture": "captures/S4.md"
+  },
+  {
+    "id": "S5",
+    "kind": "web",
+    "title": "scikit-learn User Guide: 1.5 Stochastic Gradient Descent",
+    "url": "https://scikit-learn.org/stable/modules/sgd.html",
+    "label": "course",
+    "quality": {
+      "score": 5,
+      "why": "Official documentation for SGDRegressor, detailing loss functions, learning rate schedules, and scaling sensitivity."
+    },
+    "accessed": "2026-10-11",
+    "capture": "captures/S5.md"
+  },
+  {
+    "id": "S6",
+    "kind": "book",
+    "title": "An Introduction to Statistical Learning (ISLP) - Chapter 3: Linear Regression",
+    "author": "Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani",
+    "url": "https://www.statlearning.com/",
+    "label": "extension",
+    "quality": {
+      "score": 5,
+      "why": "Gold-standard statistical learning textbook providing geometric interpretation of OLS and residuals."
+    },
+    "accessed": "2026-10-11",
+    "capture": "captures/S6.md"
+  },
+  {
+    "id": "S7",
+    "kind": "paper",
+    "title": "Stanford CS229 Lecture Notes: Supervised Learning, Linear Regression & Gradient Descent",
+    "author": "Andrew Ng",
+    "url": "https://cs229.stanford.edu/main_notes.pdf",
+    "label": "extension",
+    "quality": {
+      "score": 5,
+      "why": "Foundational Stanford CS229 course notes covering LMS algorithm, batch gradient descent, and normal equations derivation via trace/matrix calculus."
+    },
+    "accessed": "2026-10-11",
+    "capture": "captures/S7.md"
+  },
+  {
+    "id": "S9",
+    "kind": "paper",
+    "title": "Influence of Feature Scaling on Convergence of Gradient Iterative Algorithm",
+    "date": "2019",
+    "url": "https://doi.org/10.1088/1742-6596/1213/3/032021",
+    "label": "extension",
+    "quality": {
+      "score": 4,
+      "why": "Peer-reviewed analysis demonstrating how feature scaling balances Hessian eigenvalues and eliminates zigzag oscillations in gradient descent."
+    },
+    "accessed": "2026-10-11",
+    "capture": "captures/S9.md"
+  },
+  {
+    "id": "S10",
+    "kind": "web",
+    "title": "Wikipedia: Gradient descent",
+    "url": "https://en.wikipedia.org/wiki/Gradient_descent",
+    "label": "extension",
+    "quality": {
+      "score": 4,
+      "why": "Comprehensive overview of first-order optimization, step size selection, convergence on quadratic functions, and history."
+    },
+    "accessed": "2026-10-11",
+    "capture": "captures/S10.md"
+  },
+  {
+    "id": "S8",
+    "kind": "paper",
+    "title": "Special Properties of Gradient Descent with Large Learning Rates",
+    "author": "Atish Agarwala, Fabian Pedregosa",
+    "date": "2022",
+    "url": "https://arxiv.org/abs/2205.15142",
+    "label": "extension",
+    "quality": {
+      "score": 4,
+      "why": "Open-access arXiv paper on gradient descent dynamics with large learning rates on quadratic/linear problems."
+    },
+    "accessed": "2026-10-11",
+    "capture": "captures/S8.md"
+  }
+]

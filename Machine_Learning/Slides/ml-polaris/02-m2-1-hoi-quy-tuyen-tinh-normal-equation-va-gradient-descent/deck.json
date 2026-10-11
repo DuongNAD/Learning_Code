@@ -1,0 +1,248 @@
+{
+  "font": "vietnam",
+  "lang": "vi",
+  "slides": [
+    {
+      "align": "center",
+      "eyebrow": "Machine Learning · Module 2.1",
+      "icon": "ph:trend-up-duotone",
+      "meta": "Thời lượng: 20 phút · Nguồn: Giáo trình Khóa học & ISLP",
+      "source": "Khóa học · S2 & S6",
+      "subtitle": "Làm chủ bản chất hình học OLS, nghiệm ma trận đóng và thuật toán tối ưu trên dữ liệu StudentScore",
+      "title": "Hồi quy: ++Normal Equation++ & ++Gradient Descent++",
+      "type": "title"
+    },
+    {
+      "eyebrow": "Lộ trình bài học",
+      "source": "Khóa học · polaris/ROADMAP.polaris.md",
+      "title": "Nội dung trọng tâm",
+      "type": "agenda"
+    },
+    {
+      "eyebrow": "Phần 1: Nền tảng toán học",
+      "icon": "ph:compass-tool-duotone",
+      "number": 1,
+      "source": "Khóa học · S6 @ Sec. 3.2.1",
+      "subtitle": "Từ trực giác hình chiếu đến phương trình pháp tuyến",
+      "title": "Lý thuyết cốt lõi & Hình học OLS",
+      "type": "section"
+    },
+    {
+      "by": "An Introduction to Statistical Learning (ISLP), Mục 3.2",
+      "kicker": "Bản chất hình học",
+      "source": "Mở rộng · S6 @ Sec. 3.2.1",
+      "text": "Vector dự đoán $\\hat{\\mathbf{y}}$ là ++hình chiếu trực giao++ của $\\mathbf{y}$ lên không gian cột của ma trận thiết kế $X$.",
+      "type": "statement"
+    },
+    {
+      "code": "flowchart LR\n  D[\"Dữ liệu X, y\"] --> J[\"Hàm mất mát MSE J(w)\"]\n  J --> G[\"Gradient ∇J = (2/n)X^T(Xw - y)\"]\n  G -->|Đặt ∇J = 0| NE[\"Normal Equation: X^TXw = X^Ty\"]\n  G -->|Bước lặp -η∇J| GD[\"Gradient Descent: w ← w - η∇J\"]\n  NE --> SVD[\"Giải số học bằng SVD / QR\"]\n  GD --> SC[\"Yêu cầu chuẩn hóa đặc trưng\"]",
+      "eyebrow": "Dòng chảy dữ liệu & Tối ưu",
+      "source": "Khóa học · S1 @ lines 52-68, S7 @ p. 11",
+      "title": "Từ hàm mất mát đến hai con đường tìm nghiệm",
+      "type": "diagram"
+    },
+    {
+      "eyebrow": "Phương trình pháp tuyến",
+      "formula": "X^\\top X \\mathbf{w} = X^\\top \\mathbf{y} \\implies \\hat{\\mathbf{w}} = (X^\\top X)^{-1} X^\\top \\mathbf{y}",
+      "legend": [
+        {
+          "meaning": "Ma trận thiết kế gồm n quan sát và d đặc trưng",
+          "symbol": "X \\in \\mathbb{R}^{n \\times d}"
+        },
+        {
+          "meaning": "Vector nhãn mục tiêu thực tế",
+          "symbol": "\\mathbf{y} \\in \\mathbb{R}^n"
+        },
+        {
+          "meaning": "Ma trận hiệp phương sai mẫu, yêu cầu khả nghịch (đủ hạng cột)",
+          "symbol": "X^\\top X"
+        }
+      ],
+      "source": "Khóa học · S7 @ [p. 11] & S4 @ #ordinary-least-squares",
+      "text": "scikit-learn giải qua SVD/QR của scipy.linalg.lstsq để đảm bảo ổn định số học khi ma trận suy biến.",
+      "title": "Nghiệm giải tích đóng của OLS",
+      "type": "formula"
+    },
+    {
+      "columns": [
+        {
+          "icon": "ph:equals-duotone",
+          "items": [
+            "Không cần chọn learning rate η",
+            "Không cần chuẩn hóa đặc trưng",
+            "Độ phức tạp O(d³) theo số đặc trưng",
+            "Chậm và tốn bộ nhớ khi d rất lớn"
+          ],
+          "title": "Normal Equation (Giải tích)"
+        },
+        {
+          "icon": "ph:arrows-clockwise-duotone",
+          "items": [
+            "Bắt buộc chọn learning rate phù hợp",
+            "Nhạy cảm: bắt buộc chuẩn hóa đặc trưng",
+            "Độ phức tạp O(k·n·d) theo số vòng lặp",
+            "Mở rộng tốt trên tập dữ liệu khổng lồ"
+          ],
+          "title": "Gradient Descent (Lặp)"
+        }
+      ],
+      "eyebrow": "So sánh phương pháp",
+      "source": "Khóa học · S5 @ Sec. 1.5.4 & S7 @ p. 12",
+      "title": "Normal Equation đối đầu Gradient Descent",
+      "type": "compare",
+      "vs": true
+    },
+    {
+      "eyebrow": "Lâu đài ký ức",
+      "id": "linreg_palace",
+      "source": "Khóa học · polaris/lessons/02-m2-1-hoi-quy-tuyen-tinh-normal-equation-va-gradient-descent.outline.md",
+      "stations": [
+        {
+          "hook": "Mở cửa thấy tệp StudentScore.xls rơi ra, bóc lớp vỏ thấy ruột là định dạng CSV",
+          "icon": "ph:door-duotone",
+          "item": "Đọc dữ liệu CSV",
+          "place": "Cửa chính ra vào"
+        },
+        {
+          "hook": "Đặt chiếc cân StandardScaler cạnh kệ giày: gọt hai đặc trưng về cùng một cỡ",
+          "icon": "ph:scales-duotone",
+          "item": "Chuẩn hóa thang đo",
+          "place": "Kệ để giày"
+        },
+        {
+          "hook": "Trên mặt bàn có chiếc compa đo góc vuông giữa phần dư e và mặt phẳng bàn",
+          "icon": "ph:pencil-line-duotone",
+          "item": "Tính vector gradient",
+          "place": "Bàn làm việc"
+        },
+        {
+          "hook": "Bước lùi từng bậc cầu thang theo hướng ngược dốc với tốc độ học eta vừa vặn",
+          "icon": "ph:stairs-duotone",
+          "item": "Bước nhảy Gradient Descent",
+          "place": "Bậc cầu thang"
+        },
+        {
+          "hook": "Soi kết quả w, b vào gương thấy phản chiếu khớp scikit-learn LinearRegression tới 1e-3",
+          "icon": "ph:chart-line-up-duotone",
+          "item": "Đối chiếu scikit-learn",
+          "place": "Gương phòng khách"
+        }
+      ],
+      "subtitle": "Đặt 5 bước cài đặt hồi quy tuyến tính vào các vị trí quen thuộc",
+      "title": "Một vòng căn nhà nhớ quy trình hồi quy",
+      "type": "palace"
+    },
+    {
+      "eyebrow": "Trang vở ghi chép",
+      "lines": [
+        "# Hồi quy tuyến tính: OLS & Gradient Descent",
+        "= \\hat{\\mathbf{y}} = X\\mathbf{w} + b, \\quad J(\\mathbf{w}) = \\frac{1}{n}\\|X\\mathbf{w} - \\mathbf{y}\\|^2",
+        "= \\nabla J = \\frac{2}{n}X^\\top(X\\mathbf{w} - \\mathbf{y}), \\quad X^\\top X\\mathbf{w} = X^\\top \\mathbf{y}",
+        "! R^2 có thể âm trên test set nếu dự đoán tệ hơn trung bình",
+        "! Trừ vector (n,) cho cột (n,1) gây lỗi broadcasting (n,n)",
+        "@ Chiếc cân kệ giày = Chuẩn hóa đặc trưng trước khi chạy GD"
+      ],
+      "page": "Bài 02 · M2.1",
+      "source": "Khóa học · polaris/lessons/02-m2-1-hoi-quy-tuyen-tinh-normal-equation-va-gradient-descent.outline.md",
+      "title": "Trang vở M2.1: Hồi quy tuyến tính OLS",
+      "type": "notebook"
+    },
+    {
+      "eyebrow": "Phần 2: Thực nghiệm số học",
+      "icon": "ph:terminal-window-duotone",
+      "number": 2,
+      "source": "Khóa học · S3 & S4",
+      "subtitle": "Dự đoán trước khi chạy và đối chiếu scikit-learn",
+      "title": "Thực hành & Đo đạc thực nghiệm",
+      "type": "section"
+    },
+    {
+      "command": "python verify_ols.py",
+      "dedent": true,
+      "explain": "Nghiệm giải tích đóng cho w = Cov(x, y)/Var(x) = 0.5, b = mean(y) - w*mean(x) = 5/3 - 0.5*2 = 2/3 ≈ 0.6667. Vì mô hình có hệ số chặn b, tổng các sai số phần dư luôn triệt tiêu về đúng bằng 0.",
+      "eyebrow": "Dự đoán kết quả (Predict-then-Run)",
+      "file": "verify_ols.py",
+      "lines": "1-8",
+      "output": "coef: [0.5] intercept: 0.6667\nsum residuals: -0.0",
+      "question": "Cho 3 điểm dữ liệu x = [1, 2, 3] và y = [1, 2, 2]. Dự đoán hệ số góc w, hệ số chặn b và tổng các phần dư sum(y - y_hat) khi huấn luyện LinearRegression.",
+      "source": "Khóa học · Thí nghiệm thực nghiệm python chạy thật tại %TEMP%",
+      "title": "Kiểm tra tổng phần dư và nghiệm OLS đơn biến",
+      "type": "predict"
+    },
+    {
+      "eyebrow": "Kiểm tra nhận thức sai lệch",
+      "options": [
+        {
+          "correct": false,
+          "explain": "Sai: Nhầm R² với bình phương tương quan r². Trên tập test, nếu dự đoán tệ hơn trung bình, R² hoàn toàn có thể âm.",
+          "text": "R² luôn bị chặn trong khoảng [0, 1] trên mọi tập dữ liệu kiểm tra."
+        },
+        {
+          "correct": true,
+          "explain": "Chính xác! Theo định nghĩa R² = 1 - (SS_res / SS_tot), khi SS_res > SS_tot thì R² < 0.",
+          "text": "R² có thể nhận giá trị âm trên tập test nếu sai số dự đoán lớn hơn phương sai dữ liệu."
+        },
+        {
+          "correct": false,
+          "explain": "Sai: R² train có thể bằng 1.0 nhưng vẫn bị quá khớp nặng trên dữ liệu mới.",
+          "text": "R² càng cao thì chắc chắn mô hình không bao giờ bị quá khớp."
+        },
+        {
+          "correct": false,
+          "explain": "Sai: R² là tỷ lệ không thứ nguyên, không phụ thuộc chuẩn hóa.",
+          "text": "Không thể tính được R² nếu dữ liệu chưa qua bước chuẩn hóa."
+        }
+      ],
+      "question": "Phát biểu nào sau đây là ĐÚNG về hệ số xác định R² trong hồi quy tuyến tính?",
+      "source": "Khóa học · S4 @ Sec. Regression metrics",
+      "type": "quiz"
+    },
+    {
+      "eyebrow": "Ổn định số học trong cài đặt",
+      "options": [
+        {
+          "correct": true,
+          "explain": "Chính xác! Nghịch đảo trực tiếp làm bình phương chỉ số điều kiện cond(X)^2, gây mất độ chính xác dấu phẩy động nghiêm trọng.",
+          "text": "Nghịch đảo trực tiếp dễ gặp lỗi số học khi ma trận gần suy biến; nên dùng SVD/QR qua lstsq."
+        },
+        {
+          "correct": false,
+          "explain": "Sai: Ma trận X.T @ X hoàn toàn khả nghịch nếu X có đầy đủ hạng cột.",
+          "text": "Vì ma trận X.T @ X không bao giờ có thể nghịch đảo được trong bài toán nhiều chiều."
+        },
+        {
+          "correct": false,
+          "explain": "Sai: Hàm np.linalg.inv hỗ trợ ma trận vuông với kích thước tùy ý.",
+          "text": "Vì hàm np.linalg.inv chỉ hỗ trợ ma trận kích thước tối đa 2x2."
+        }
+      ],
+      "question": "Tại sao trong thực tế không nên giải Normal Equation bằng lệnh np.linalg.inv(X.T @ X)?",
+      "source": "Khóa học · S4 & S7",
+      "type": "quiz"
+    },
+    {
+      "eyebrow": "Đi bộ hồi tưởng",
+      "from": "linreg_palace",
+      "mode": "recall",
+      "source": "Khóa học · polaris/lessons/02-m2-1-hoi-quy-tuyen-tinh-normal-equation-va-gradient-descent.outline.md",
+      "subtitle": "Kiểm tra khả năng truy hồi chủ động từng bước quy trình",
+      "title": "Ôn lại 5 trạm ghi nhớ hồi quy",
+      "type": "palace"
+    },
+    {
+      "eyebrow": "Tổng kết bài học",
+      "items": [
+        "Vector dự đoán y_hat là hình chiếu trực giao của y lên không gian cột của X.",
+        "Normal Equation cho nghiệm đóng nhưng chi phí O(d³); Gradient Descent mở rộng tốt nhưng bắt buộc chuẩn hóa thang đo.",
+        "R² trên test set hoàn toàn có thể âm nếu mô hình tệ hơn đường trung bình.",
+        "Thực hành tiếp: Mở notebook m2_linreg_scratch.ipynb và đối chiếu với scikit-learn để hoàn thành Definition of Done."
+      ],
+      "source": "Khóa học · polaris/ROADMAP.polaris.md",
+      "title": "Ghi nhớ then chốt & Bước tiếp theo",
+      "type": "summary"
+    }
+  ],
+  "subtitle": "Bài học M2.1 · Bản chất hình học OLS, nghiệm giải tích đóng và thuật toán tối ưu bậc một",
+  "theme": "ocean",
+  "title": "Hồi quy tuyến tính: Normal Equation và Gradient Descent"
+}

@@ -46,6 +46,7 @@ Materials & Code: [03_Materials_Code](file:///D:/02_Learning_Knowledge/AMD_AI_Ac
 - [x] [Deadline: 2026-10-10 23:59] [Priority: P2] Dựng khóa Aurora "AI Agents 101" (trang khóa học 14 bài, nhãn lịch học) và 2 bài đầu 1a, 1b theo ROADMAP M1 tại [05_Slides/ai-agents-101](file:///D:/02_Learning_Knowledge/AMD_AI_Academy_AI_Agents_101/05_Slides/ai-agents-101/index.html); thay cho bản lab01_pure_react_agent (code gõ lại và sai khái niệm).
 - [ ] [Deadline: 2026-10-20 23:59] [Priority: P2] Học bài 1a "Vòng lặp agent: ai làm gì" (slide, chép trang vở, đi palace, 2 slide dự đoán).
 - [ ] [Deadline: 2026-10-24 23:59] [Priority: P2] Học bài 1b "Mổ xẻ Lab 1" và bắt đầu my_react.py theo DoD 4 tiêu chí.
+- [ ] [Deadline: 2026-10-31 23:59] [Priority: P2] Lab Orion my_react.py (M1): viết từ file trống, dùng orion predict/run/hint, đạt 4/4 check DoD tại [03_Materials_Code/my_work](file:///D:/02_Learning_Knowledge/AMD_AI_Academy_AI_Agents_101/03_Materials_Code/my_work/README.md).
 
 ## 3. Advanced Agent Pipelines & Production Patterns
 - [ ] [Deadline: 2026-10-03 23:59] [Priority: P2] Thiết kế Human-in-the-loop (HITL) checkpointing cho tác vụ nhạy cảm (ghi đè file, gọi API bên ngoài).

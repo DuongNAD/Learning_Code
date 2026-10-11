@@ -1,0 +1,192 @@
+[
+  {
+    "id": "F1",
+    "claim": "Dự đoán tuyến tính dạng ma trận được biểu diễn là y_hat = X @ w + b với X thuộc R^(n x d), w thuộc R^(d,), bias b thuộc R, hoặc dạng mở rộng cột bias là y_hat = X_bar @ theta với X_bar thuộc R^(n x (d+1)).",
+    "source": "S1",
+    "locator": "lines 18-35",
+    "label": "course",
+    "modules": [
+      "M1",
+      "M2.1"
+    ],
+    "crossCheck": [
+      "S7"
+    ]
+  },
+  {
+    "id": "F2",
+    "claim": "Hàm mất mát sai số toàn phương trung bình (MSE) có dạng J(w) = (1/n) * ||X @ w - y||^2 và gradient giải tích tương ứng là nabla J = (2/n) * X.T @ (X @ w - y).",
+    "source": "S1",
+    "locator": "lines 52-68",
+    "label": "course",
+    "modules": [
+      "M1",
+      "M2.1"
+    ],
+    "crossCheck": [
+      "S7"
+    ]
+  },
+  {
+    "id": "F3",
+    "claim": "Đạo hàm giải tích của hàm mất mát được kiểm tra tính chính xác qua gradient số đối xứng với công thức dJ/dw_j approx (J(w + epsilon * e_j) - J(w - epsilon * e_j)) / (2 * epsilon) với epsilon xấp xỉ 1e-5.",
+    "source": "S1",
+    "locator": "lines 80-105",
+    "label": "course",
+    "modules": [
+      "M1"
+    ],
+    "crossCheck": [
+      "S7"
+    ]
+  },
+  {
+    "id": "F4",
+    "claim": "Điều kiện dừng tối ưu đặt gradient nabla J = 0 dẫn đến phương trình pháp tuyến (Normal Equation) X.T @ X @ w = X.T @ y, có nghiệm duy nhất khi ma trận hiệp phương sai X.T @ X khả nghịch (full column rank).",
+    "source": "S7",
+    "locator": "[p. 11], Sec. 1.2",
+    "label": "course",
+    "modules": [
+      "M1",
+      "M2.1"
+    ],
+    "crossCheck": [
+      "S4"
+    ]
+  },
+  {
+    "id": "F5",
+    "claim": "Cập nhật tham số trong Gradient Descent theo quy tắc w_(t+1) = w_t - eta * nabla J. Với hàm mục tiêu bậc hai f(w) = w^2, hệ số cập nhật là w_(t+1) = (1 - 2*eta)*w_t, hội tụ khi 0 < eta < 1, dao động đổi dấu khi 0.5 < eta < 1, và phân kỳ khi eta > 1.",
+    "source": "S10",
+    "locator": "Sec. Convergence and step size",
+    "label": "course",
+    "modules": [
+      "M1"
+    ],
+    "crossCheck": [
+      "S8"
+    ]
+  },
+  {
+    "id": "F6",
+    "claim": "Khi hàm mất mát viết dưới dạng J = (1/(2n)) * ||X @ w - y||^2 (chuẩn quy ước Stanford CS229), gradient thu được là (1/n) * X.T @ (X @ w - y), làm miền hội tụ của learning rate tăng gấp đôi (eta < 2 thay vì eta < 1).",
+    "source": "S7",
+    "locator": "[p. 10], Sec. 1.1",
+    "label": "course",
+    "modules": [
+      "M1"
+    ],
+    "crossCheck": [
+      "S1"
+    ]
+  },
+  {
+    "id": "F7",
+    "claim": "Phương thức scikit-learn LinearRegression giải bài toán bình phương tối thiểu thông qua scipy.linalg.lstsq dựa trên phân tích SVD hoặc QR, không dùng nghịch đảo trực tiếp np.linalg.inv để đảm bảo độ ổn định số học khi ma trận suy biến.",
+    "source": "S4",
+    "locator": "#ordinary-least-squares",
+    "label": "course",
+    "modules": [
+      "M2.1"
+    ]
+  },
+  {
+    "id": "F8",
+    "claim": "Nếu dữ liệu có các đặc trưng mang thang đo chênh lệch lớn, mặt mức (contour) của hàm mất mát trở thành hình elip dẹt, khiến Gradient Descent di chuyển ngoằn ngoèo (zigzag) và buộc phải giảm learning rate rất nhỏ để tránh phân kỳ.",
+    "source": "S5",
+    "locator": "Sec. 1.5.4 Tips on Practical Use",
+    "label": "course",
+    "modules": [
+      "M1",
+      "M2.1"
+    ],
+    "crossCheck": [
+      "S7"
+    ]
+  },
+  {
+    "id": "F9",
+    "claim": "Chuẩn hóa đặc trưng (StandardScaler: z = (x - mu) / sigma) đưa các đường đồng mức về hình tròn đồng tâm, giúp gradient trỏ gần như trực diện về điểm cực tiểu toàn cục và tăng tốc độ hội tụ của thuật toán tối ưu bậc một.",
+    "source": "S5",
+    "locator": "Sec. 1.5.4 Tips on Practical Use",
+    "label": "course",
+    "modules": [
+      "M1",
+      "M2.1"
+    ]
+  },
+  {
+    "id": "F10",
+    "claim": "Trong bài toán hồi quy đơn biến y = w*x + b, nghiệm giải tích đóng là w = sum((x_i - bar(x))*(y_i - bar(y))) / sum((x_i - bar(x))^2) và b = bar(y) - w*bar(x), bảo đảm tổng các phần dư sum(e_i) = 0 khi có bias.",
+    "source": "S6",
+    "locator": "Sec. 3.1.1 Estimating the Coefficients",
+    "label": "course",
+    "modules": [
+      "M2.1"
+    ],
+    "crossCheck": [
+      "S2",
+      "S7"
+    ]
+  },
+  {
+    "id": "F11",
+    "claim": "Hình học của OLS: vector dự đoán y_hat = X @ w_hat là hình chiếu trực giao (orthogonal projection) của vector mục tiêu y lên không gian cột của ma trận thiết kế X, do đó vector phần dư e = y - y_hat vuông góc với mọi cột của X.",
+    "source": "S6",
+    "locator": "Sec. 3.2.1 Multiple Linear Regression",
+    "label": "extension",
+    "modules": [
+      "M2.1"
+    ],
+    "crossCheck": [
+      "S7"
+    ]
+  },
+  {
+    "id": "F12",
+    "claim": "Tập dữ liệu StudentScore chứa thông tin điểm thi học sinh gồm các biến đầu vào điểm đọc, điểm viết và biến mục tiêu math score; tệp mang định dạng thực chất là CSV phân tách bởi dấu phẩy dù có phần mở rộng .xls.",
+    "source": "S3",
+    "locator": "lines 1-20",
+    "label": "course",
+    "modules": [
+      "M2.1"
+    ]
+  },
+  {
+    "id": "F13",
+    "claim": "Lỗi phát thanh (broadcasting) trong NumPy xảy ra khi trừ vector 1D (n,) với vector cột 2D (n, 1), tạo ra ma trận vuông (n, n) thay vì mảng sai số 1D, dẫn đến tính toán gradient sai lệch nghiêm trọng mà không báo lỗi runtime.",
+    "source": "S1",
+    "locator": "lines 110-125",
+    "label": "course",
+    "modules": [
+      "M1"
+    ],
+    "crossCheck": [
+      "S3"
+    ]
+  },
+  {
+    "id": "F14",
+    "claim": "Hệ số xác định R^2 đo lường tỷ lệ phương sai của biến mục tiêu được giải thích bởi mô hình; trên tập kiểm tra (test set), R^2 có thể nhận giá trị âm nếu mô hình dự đoán tệ hơn việc lấy trung bình đơn giản của tập huấn luyện.",
+    "source": "S4",
+    "locator": "Sec. Regression metrics",
+    "label": "extension",
+    "modules": [
+      "M2.1"
+    ],
+    "crossCheck": [
+      "S6"
+    ]
+  },
+  {
+    "id": "F15",
+    "claim": "Khi tồn tại hiện tượng đa cộng tuyến hoàn hảo (multicollinearity) giữa các cột của X, chỉ số điều kiện cond(X.T @ X) tiến tới vô cùng, khiến phương trình pháp tuyến có vô số nghiệm và độ dao động của hệ số cực lớn.",
+    "source": "S6",
+    "locator": "Sec. 3.3.3 Collinearity",
+    "label": "extension",
+    "modules": [
+      "M1",
+      "M2.1"
+    ]
+  }
+]
