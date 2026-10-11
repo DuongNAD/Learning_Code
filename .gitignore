@@ -186,3 +186,10 @@ FPT_University/InnoStart_2026/*.pdf
 *.safetensors
 *.gguf
 *.onnx
+
+# Personal learning data: Vega memory collection and Aurora progress events (never publish)
+.vega/
+**/progress.jsonl
+aurora-progress-*.jsonl
+# Polaris regenerable API cache (legacy in-subject location)
+**/polaris/.cache/
