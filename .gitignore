@@ -194,3 +194,4 @@ aurora-progress-*.jsonl
 # Polaris regenerable API cache (legacy in-subject location)
 **/polaris/.cache/
 orion-attempts.jsonl
+**/polaris/captures/
