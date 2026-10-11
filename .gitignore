@@ -193,3 +193,4 @@ FPT_University/InnoStart_2026/*.pdf
 aurora-progress-*.jsonl
 # Polaris regenerable API cache (legacy in-subject location)
 **/polaris/.cache/
+orion-attempts.jsonl
