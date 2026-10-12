@@ -7,9 +7,14 @@ Dynamically parses ACTIVE_LEARNING.md and project TASKS.md to select today's act
 Enforces the Time & Deadline Sentinel Protocol: checks system clock against task deadlines,
 computes countdowns, and automatically flags or overrides priority when deadlines approach (< 48h).
 Uses cryptographically secure hardware entropy (os.urandom / secrets).
+Sirius triage interop: tasks the learner has superseded, parked, or snoozed (decisions recorded by the Sirius tool
+in .sirius/triage.json) are kept out of deadline alerts, the sentinel report, and the priority override; only a
+one-line count is shown. Pass --no-triage to ignore that file and behave exactly as without Sirius.
+Usage: python pick_today.py [ACTIVE_LEARNING.md] [--roll] [--sentinel | --check] [--no-triage]
 Emoji Policy: strictly 0 emojis.
 """
 
+import json
 import os
 import re
 import sys
@@ -29,6 +34,8 @@ SCRIPT_DIR = Path(__file__).parent.resolve()
 INDEX_FILE = SCRIPT_DIR / "INDEX.md"
 ACTIVE_FILE = SCRIPT_DIR / "ACTIVE_LEARNING.md"
 CENTRAL_TASKS_FILE = SCRIPT_DIR / "TASKS.md"
+TRIAGE_FILE = SCRIPT_DIR / ".sirius" / "triage.json"  # derived file written by Sirius; optional
+TRIAGE_SCHEMA_VERSION = 1
 
 def parse_deadline_datetime(deadline_str: str | None) -> datetime | None:
     """Parse deadline string in YYYY-MM-DD HH:mm, YYYY/MM/DD HH:mm, ISO, or date-only formats."""
@@ -289,23 +296,73 @@ def normalize_task_desc(desc: str, known_prefixes: list[str] | None = None) -> s
     s = re.sub(r"[^\w\s]", "", s)
     return re.sub(r"\s+", " ", s).strip()
 
-def collect_all_tasks(active_file: Path, projects: list, now: datetime | None = None) -> list[dict]:
+def task_key(task: dict, known_prefixes: list[str] | None = None) -> tuple[str, str | None]:
+    """Identity of a task across boards: (normalized description, deadline string). Shared by dedupe and triage."""
+    return (normalize_task_desc(task["description"], known_prefixes), task["deadline_str"])
+
+def load_triage_exclusions(path: Path, known_prefixes: list[str] | None = None, now: datetime | None = None) -> dict:
+    """
+    Read task-triage decisions recorded by Sirius in <workspace>/.sirius/triage.json.
+    Returns {task_key: entry}. Each key is computed from parse_task_line(entry["raw"]) with task_key(), i.e. with the
+    same parsing and normalisation as live tasks, so one entry matches every deduplicated copy of its task.
+    An entry excludes its task when decision is 'superseded' or 'parked', or 'snoozed' with until >= today's local
+    date (taken from now); any other decision is ignored. The file is optional and advisory: a missing or unreadable
+    file, invalid JSON, a wrong schema version, or malformed entries are skipped silently, so this never raises.
+    """
+    try:
+        data = json.loads(Path(path).read_text(encoding="utf-8-sig"))
+    except Exception:
+        return {}
+    if not isinstance(data, dict) or type(data.get("v")) is not int or data["v"] != TRIAGE_SCHEMA_VERSION:
+        return {}
+    entries = data.get("entries")
+    if not isinstance(entries, list):
+        return {}
+
+    today = (now if now is not None else datetime.now()).date()
+    exclusions = {}
+    for entry in entries:
+        try:
+            if not isinstance(entry, dict) or not isinstance(entry.get("raw"), str):
+                continue
+            decision = entry.get("decision")
+            if decision == "snoozed":
+                until = parse_deadline_datetime(entry["until"]) if isinstance(entry.get("until"), str) else None
+                if until is None or until.date() < today:
+                    continue
+            elif decision not in ("superseded", "parked"):
+                continue
+            task = parse_task_line(entry["raw"], now=now)
+            if task is not None:
+                exclusions.setdefault(task_key(task, known_prefixes), entry)
+        except Exception:
+            continue
+    return exclusions
+
+def collect_all_tasks(active_file: Path, projects: list, now: datetime | None = None,
+                      base_dir: Path | None = None, use_triage: bool = True) -> list[dict]:
     """
     Collect and deduplicate tasks from ACTIVE_LEARNING.md, central TASKS.md,
     and active subproject TASKS.md boards. Avoids duplicate reads of the same file.
     Prefers authoritative project boards for source and details.
+    base_dir replaces the workspace root (central TASKS.md, project folders, .sirius/triage.json); default SCRIPT_DIR.
+    With use_triage, a task matching an active Sirius triage entry gets t["triaged"] = decision. It stays in the list
+    with every other field intact; alerts and subject selection skip it (see is_triaged).
     """
     tasks = []
     task_map = {}  # key -> index in tasks
     parsed_files = set()
+
+    root = SCRIPT_DIR if base_dir is None else Path(base_dir)
+    central_tasks_file = CENTRAL_TASKS_FILE if base_dir is None else root / "TASKS.md"
+    triage_file = TRIAGE_FILE if base_dir is None else root / ".sirius" / "triage.json"
 
     known_prefixes = [p["title"] for p in projects] + [re.sub(r"^\d+\.\s*", "", p["title"]) for p in projects]
 
     def add_task(t: dict | None, is_project_board: bool = False):
         if not t:
             return
-        norm = normalize_task_desc(t["description"], known_prefixes)
-        key = (norm, t["deadline_str"])
+        key = task_key(t, known_prefixes)
         if key not in task_map:
             task_map[key] = len(tasks)
             tasks.append(t)
@@ -332,9 +389,9 @@ def collect_all_tasks(active_file: Path, projects: list, now: datetime | None = 
                 add_task(parse_task_line(line, src_label, now), is_project_board=False)
 
     # 2. Parse central TASKS.md
-    if CENTRAL_TASKS_FILE.exists():
-        parsed_files.add(CENTRAL_TASKS_FILE.resolve())
-        content = CENTRAL_TASKS_FILE.read_text(encoding="utf-8")
+    if central_tasks_file.exists():
+        parsed_files.add(central_tasks_file.resolve())
+        content = central_tasks_file.read_text(encoding="utf-8")
         for line in content.splitlines():
             if re.match(r"^\s*-\s*\[[ xX]\]", line):
                 add_task(parse_task_line(line, "System Task Board", now), is_project_board=False)
@@ -349,7 +406,7 @@ def collect_all_tasks(active_file: Path, projects: list, now: datetime | None = 
                 if cand.exists():
                     p_tasks_file = cand
         if not p_tasks_file:
-            p_dir = resolve_project_dir(p["directory"], SCRIPT_DIR)
+            p_dir = resolve_project_dir(p["directory"], root)
             if p_dir and p_dir.is_dir():
                 p_tasks_file = (p_dir / "TASKS.md").resolve()
 
@@ -360,8 +417,8 @@ def collect_all_tasks(active_file: Path, projects: list, now: datetime | None = 
                 if re.match(r"^\s*-\s*\[[ xX]\]", line):
                     add_task(parse_task_line(line, p["title"], now), is_project_board=True)
 
-    # 4. Check subdirectories under SCRIPT_DIR with TASKS.md not yet parsed
-    for sub in SCRIPT_DIR.iterdir():
+    # 4. Check subdirectories under the workspace root (SCRIPT_DIR by default) with TASKS.md not yet parsed
+    for sub in root.iterdir():
         if sub.is_dir():
             sub_file = (sub / "TASKS.md").resolve()
             if sub_file.exists() and sub_file not in parsed_files:
@@ -370,6 +427,12 @@ def collect_all_tasks(active_file: Path, projects: list, now: datetime | None = 
                 for line in content.splitlines():
                     if re.match(r"^\s*-\s*\[[ xX]\]", line):
                         add_task(parse_task_line(line, sub.name, now), is_project_board=True)
+
+    # 5. Flag tasks excluded by Sirius triage. Keys match the dedupe above, so every merged copy is covered at once.
+    if use_triage:
+        for key, entry in load_triage_exclusions(triage_file, known_prefixes, now).items():
+            if key in task_map:
+                tasks[task_map[key]]["triaged"] = entry["decision"]
 
     return tasks
 
@@ -396,6 +459,23 @@ def task_urgency_sort_key(t: dict) -> tuple:
     p_rank = PRIORITY_RANK.get(t.get("priority", "P2").upper(), 2)
     rem = t.get("remaining_hours") if t.get("remaining_hours") is not None else float("inf")
     return (tier, p_rank, rem)
+
+def is_triaged(task: dict) -> bool:
+    """True when Sirius triage excludes this open task from deadline alerts and subject selection."""
+    return bool(task.get("triaged")) and not task.get("is_completed")
+
+def select_urgent_tasks(tasks: list) -> list[dict]:
+    """
+    Open tasks that are overdue or due within 48 hours, most urgent first (see task_urgency_sort_key).
+    Tasks excluded by Sirius triage never count as urgent, so they cannot trigger the priority override.
+    """
+    urgent = [
+        t for t in tasks
+        if not t["is_completed"] and t["remaining_hours"] is not None and t["remaining_hours"] < 48.0
+        and not is_triaged(t)
+    ]
+    urgent.sort(key=task_urgency_sort_key)
+    return urgent
 
 def match_task_to_project(task: dict, projects: list) -> dict | None:
     """Associate a task with an active project dynamically without fragile hardcoded keywords."""
@@ -460,11 +540,21 @@ def display_spinner(projects: list):
             time.sleep(0.04 + (i * 0.015))
         print("\r" + " " * 67 + "\r", end="")
 
+def print_triage_notice(tasks: list):
+    """Print a one-line count of open tasks hidden by Sirius triage (silent when there are none)."""
+    count = sum(1 for t in tasks if is_triaged(t))
+    if count:
+        print(f"Triaged by Sirius (excluded from deadline alerts): {count} task(s) - see .sirius/triage.json")
+
 def print_sentinel_report(tasks: list, now: datetime):
-    """Detailed Sentinel audit report of all task deadlines."""
+    """Detailed Sentinel audit report of all task deadlines (Sirius-triaged tasks are summarised by count)."""
     print("\n" + "=" * 30 + " TIME SENTINEL AUDIT " + "=" * 30)
     print(f"Timestamp: {now.strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 81)
+
+    # Triaged tasks are not audited below; print_triage_notice reports how many were left out
+    all_tasks = tasks
+    tasks = [t for t in all_tasks if not is_triaged(t)]
 
     overdue = [t for t in tasks if t["category"] == "overdue"]
     critical = [t for t in tasks if t["category"] == "critical"]
@@ -492,6 +582,7 @@ def print_sentinel_report(tasks: list, now: datetime):
     print_group("UPCOMING (> 72H) - ON TRACK", upcoming)
     print_group("UNSCHEDULED (NO DEADLINE SET)", unscheduled)
     print(f"\n[COMPLETED MILESTONES] ({len(completed)} items verified)")
+    print_triage_notice(all_tasks)
     print("=" * 81 + "\n")
 
 def main():
@@ -500,6 +591,7 @@ def main():
     # CLI argument parsing
     force_roll = "--roll" in sys.argv
     sentinel_mode = "--sentinel" in sys.argv or "--check" in sys.argv
+    use_triage = "--no-triage" not in sys.argv
 
     custom_files = [Path(a) for a in sys.argv[1:] if not a.startswith("-")]
     target_file = custom_files[0] if custom_files else ACTIVE_FILE
@@ -510,18 +602,14 @@ def main():
         sys.exit(1)
 
     # Collect tasks across workspace and project boards
-    tasks = collect_all_tasks(target_file, projects, now)
+    tasks = collect_all_tasks(target_file, projects, now, use_triage=use_triage)
 
     if sentinel_mode:
         print_sentinel_report(tasks, now)
         return
 
-    # Check for approaching (< 48 hours) or overdue tasks
-    urgent_tasks = [
-        t for t in tasks
-        if not t["is_completed"] and t["remaining_hours"] is not None and t["remaining_hours"] < 48.0
-    ]
-    urgent_tasks.sort(key=task_urgency_sort_key)
+    # Check for approaching (< 48 hours) or overdue tasks; tasks triaged by Sirius never count as urgent
+    urgent_tasks = select_urgent_tasks(tasks)
 
     override_project = None
     override_task = None
@@ -558,6 +646,8 @@ def main():
         else:
             print("NOTICE: Urgent cross-cutting or unassigned tasks detected.")
             print("=" * 71)
+
+    print_triage_notice(tasks)
 
     # Select mission
     if override_project and not force_roll:
@@ -600,6 +690,7 @@ def main():
     pending_dated_tasks = [
         t for t in tasks
         if not t["is_completed"] and t["deadline_dt"] is not None and t["remaining_hours"] is not None
+        and not is_triaged(t)
     ]
     pending_dated_tasks.sort(key=lambda t: t["remaining_hours"])
     if pending_dated_tasks:
