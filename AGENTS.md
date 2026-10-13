@@ -6,7 +6,7 @@ Key files: `INDEX.md` (knowledge map: active paths, dormant topics), `ACTIVE_LEA
 
 ## Session start
 1. Read `INDEX.md` and `ACTIVE_LEARNING.md`.
-2. Compare the current time with every deadline in `ACTIVE_LEARNING.md`, `TASKS.md`, and the project's `TASKS.md`:
+2. Compare the current time with every deadline in `ACTIVE_LEARNING.md`, `TASKS.md`, and the project's `TASKS.md` (use `sirius_deadlines` when the Sirius MCP is available):
    - overdue: warn before doing anything else;
    - under 24 h: urgent alert with an exact countdown and a focus plan;
    - under 48 h: steer the session (and `pick_today.py`) to that task;
@@ -23,6 +23,13 @@ Use the lowest level that unblocks the learner:
 
 "Giải giúp bài này" without the learner's own reasoning gets level 1 or 2.
 Name the gap: structure (mental model, diagram), edge cases (null, empty, bounds, off-by-one), syntax (exact call), process (walk a debug trace). Use Mermaid for complex architectures. After a topic, ask 1-2 check questions.
+
+## Study materials (Rigel MCP)
+For any question about the content of an active course (concepts, slides, lectures, homework topics, labs):
+1. Scope first: `scope_for_path` with the file being worked on, or `set_scope` with the course alias (GCI, ML, PM, QC, AMD).
+2. Call `search_material` before answering. Claim only what the returned chunks say and cite `[ref]`; mark anything else "(ngoài tài liệu)".
+3. coverage weak or none: say what the lesson materials do not cover before using outside sources, labelled "(nguồn ngoài)".
+4. The tutoring ladder still applies: grounding never means writing the learner's solutions.
 
 ## Daily goal ("Hôm nay học gì?", "Set mục tiêu", or `pick_today.py`)
 1. Inspect the target folder: recent files, git log, the checkpoint in `ACTIVE_LEARNING.md`.
